@@ -12,7 +12,10 @@
     "baseUrl": "./src",
     "paths": {
       "@features/*": ["./features", "./features/*"],
-      "@lib/*": ["./lib", "./lib/*"],
+      "@lib": ["./lib"],
+      "@lib/*": ["./lib/*"],
+      "@config": ["./config"],
+      "@config/*": ["./config/*"],
       "@/*": ["./", "./*"]
     },
     "incremental": true
