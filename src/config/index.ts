@@ -1,3 +1,4 @@
 import {databaseConfig} from "./database.config";
+import {jwtConfig} from "./jwt.config";
 
-export {databaseConfig};
+export {databaseConfig, jwtConfig};
