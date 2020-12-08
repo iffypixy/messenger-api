@@ -16,12 +16,12 @@ export class AuthMiddleware implements NestMiddleware {
   async use(req: IExtendedRequest, res: Response, next: NextFunction): Promise<void> {
     const exception = new UnauthorizedException("Invalid token");
 
-    const accessToken: string = req.cookies["access-token"];
+    const token: string = req.cookies["access-token"];
 
-    if (!accessToken) throw exception;
+    if (!token) throw exception;
 
     try {
-      const {userId} = this.jwtService.verify(accessToken);
+      const {userId} = this.jwtService.verify(token);
 
       const user = await this.userService.findById(userId);
 

@@ -18,6 +18,6 @@ export class RefreshSession {
   @JoinColumn()
   user: User;
 
-  @Column("date")
+  @Column("timestamp")
   expiresIn: Date;
 }

@@ -34,7 +34,7 @@ export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({path: "credentials", method: RequestMethod.GET});
+      .forRoutes({path: "auth/credentials", method: RequestMethod.GET});
   }
 } {
 }

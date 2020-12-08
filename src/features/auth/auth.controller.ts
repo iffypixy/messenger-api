@@ -53,6 +53,8 @@ export class AuthController {
 
     if (!isPasswordsMatch) throw new BadRequestException(error);
 
+    await this.refreshSessionService.delete({fingerprint});
+
     const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);
 
     res.cookie("access-token", accessToken, this.getAccessTokenOptions());
@@ -85,7 +87,10 @@ export class AuthController {
 
     if (isExpired) throw error;
 
-    const {accessToken, refreshToken: newRefreshToken} = await this.authService.getJWTs(refreshSession.user, fingerprint);
+    await this.refreshSessionService.remove(refreshSession);
+
+    const {accessToken, refreshToken: newRefreshToken} = await this.authService
+      .getJWTs(refreshSession.user, fingerprint);
 
     res.cookie("access-token", accessToken, this.getAccessTokenOptions());
     res.cookie("refresh-token", newRefreshToken, this.getRefreshTokenOptions());
@@ -96,9 +101,9 @@ export class AuthController {
   async logout(
     @Req() req: Request
   ): Promise<void> {
-    const refreshToken = req.cookies["refresh-token"];
+    const token = req.cookies["refresh-token"];
 
-    await this.refreshSessionService.delete({token: refreshToken});
+    await this.refreshSessionService.delete({token});
   }
 
   @Get("credentials")

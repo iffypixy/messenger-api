@@ -1,6 +1,6 @@
 import {InjectRepository} from "@nestjs/typeorm";
 import {Injectable} from "@nestjs/common";
-import {DeepPartial, DeleteResult, FindConditions, Repository} from "typeorm";
+import {DeepPartial, DeleteResult, FindConditions, RemoveOptions, Repository} from "typeorm";
 import {ConfigService} from "@nestjs/config";
 
 import {RefreshSession} from "../entity";
@@ -26,6 +26,10 @@ export class RefreshSessionService {
   
   delete(conditions: FindConditions<RefreshSession>): Promise<DeleteResult> {
     return this.refreshSessionRepository.delete(conditions);
+  }
+
+  remove(entity: RefreshSession, options?: RemoveOptions): Promise<RefreshSession> {
+    return this.refreshSessionRepository.remove(entity, options);
   }
 
   getExpirationDate(): Date {
