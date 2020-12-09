@@ -7,7 +7,7 @@ import {UserService, IUserPublicData, User} from "@features/user";
 import {RefreshSessionService, AuthService} from "./services";
 import {LoginDto, RegisterDto} from "./dto";
 import {AuthGuard} from "./guard";
-import {GetUser} from "@features/auth/decorator";
+import {GetUser} from "./decorator";
 
 @Controller("auth")
 export class AuthController {
@@ -96,6 +96,7 @@ export class AuthController {
     res.cookie("refresh-token", newRefreshToken, this.getRefreshTokenOptions());
   }
 
+  @UseGuards(AuthGuard)
   @Post("logout")
   @HttpCode(205)
   async logout(
