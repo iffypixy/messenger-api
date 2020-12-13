@@ -24,7 +24,11 @@ export class AuthController {
   async register(
     @Body() {email, firstName, lastName, password, fingerprint}: RegisterDto,
     @Res({passthrough: true}) res: Response
-  ): Promise<{user: IUserPublicData}> {
+  ): Promise<{credentials: IUserPublicData}> {
+    const existedUser = await this.userService.findByEmail(email);
+
+    if (existedUser) throw new BadRequestException("Email has been already used");
+
     const user = await this.userService.create({email, firstName, lastName, password});
 
     const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);
@@ -33,7 +37,7 @@ export class AuthController {
     res.cookie("refresh-token", refreshToken, this.getRefreshTokenOptions());
 
     return {
-      user: user.getPublicData()
+      credentials: user.getPublicData()
     };
   }
 
@@ -42,7 +46,7 @@ export class AuthController {
   async login(
     @Body() {email, password, fingerprint}: LoginDto,
     @Res({passthrough: true}) res: Response
-  ): Promise<{user: IUserPublicData}> {
+  ): Promise<{credentials: IUserPublicData}> {
     const error = new BadRequestException("Invalid credentials");
 
     const user = await this.userService.findByEmail(email);
@@ -61,7 +65,7 @@ export class AuthController {
     res.cookie("refresh-token", refreshToken, this.getRefreshTokenOptions());
 
     return {
-      user: user.getPublicData()
+      credentials: user.getPublicData()
     };
   }
 
@@ -107,8 +111,8 @@ export class AuthController {
     await this.refreshSessionService.delete({token});
   }
 
-  @Get("credentials")
   @UseGuards(AuthGuard)
+  @Get("credentials")
   @HttpCode(200)
   getCredentials(
     @GetUser() user: User
