@@ -2,17 +2,21 @@ import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 
-import {databaseConfig, jwtConfig} from "@config";
+import {databaseConfig, jwtConfig, s3Config} from "@config";
 import {UserModule, User} from "@features/user";
 import {RefreshSession, AuthModule} from "@features/auth";
+import {ChatModule, Dialog, DialogMessage} from "@features/chat";
+import {UploadModule} from "@features/upload";
 
 @Module({
   imports: [
     UserModule,
     AuthModule,
+    ChatModule,
+    UploadModule,
     ConfigModule.forRoot({
       envFilePath: [".env.development"],
-      load: [databaseConfig, jwtConfig],
+      load: [databaseConfig, jwtConfig, s3Config],
       isGlobal: true
     }),
     TypeOrmModule.forRootAsync({
@@ -26,7 +30,7 @@ import {RefreshSession, AuthModule} from "@features/auth";
         port: configService.get("database.port"),
         database: configService.get("database.name"),
         synchronize: configService.get("database.synchronize"),
-        entities: [User, RefreshSession]
+        entities: [User, RefreshSession, Dialog, DialogMessage]
       })
     })
 ]

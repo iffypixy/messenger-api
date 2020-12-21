@@ -1,5 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {JwtService} from "@nestjs/jwt";
+import {nanoid} from "nanoid";
 
 import {User} from "@features/user";
 import {RefreshSessionService} from "./refresh-session.service";
@@ -18,7 +19,7 @@ export class AuthService {
     const accessToken = this.jwtService.sign({userId: String(user.id)});
 
     const refreshSession = await this.refreshSessionService.create({
-      fingerprint, user,
+      fingerprint, user, token: nanoid(),
       expiresIn: this.refreshSessionService.getExpirationDate()
     });
 

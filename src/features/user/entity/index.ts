@@ -1,3 +1,3 @@
-import {User} from "./user.entity";
+import {User, UserPublicData} from "./user.entity";
 
-export {User};
+export {User, UserPublicData};

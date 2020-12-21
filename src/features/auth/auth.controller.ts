@@ -1,10 +1,10 @@
-import {BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards, UseInterceptors} from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {CookieOptions, Request, Response} from "express";
 import * as bcrypt from "bcryptjs";
 
-import {UserService, IUserPublicData, User} from "@features/user";
-import {RefreshSessionService, AuthService} from "./services";
+import {UserService, UserPublicData, User} from "@features/user";
+import {RefreshSessionService, AuthService} from "./service";
 import {LoginDto, RegisterDto} from "./dto";
 import {AuthGuard} from "./guard";
 import {GetUser} from "./decorator";
@@ -24,7 +24,7 @@ export class AuthController {
   async register(
     @Body() {email, firstName, lastName, password, fingerprint}: RegisterDto,
     @Res({passthrough: true}) res: Response
-  ): Promise<{credentials: IUserPublicData}> {
+  ): Promise<{credentials: UserPublicData}> {
     const existedUser = await this.userService.findByEmail(email);
 
     if (existedUser) throw new BadRequestException("Email has been already used");
@@ -46,7 +46,7 @@ export class AuthController {
   async login(
     @Body() {email, password, fingerprint}: LoginDto,
     @Res({passthrough: true}) res: Response
-  ): Promise<{credentials: IUserPublicData}> {
+  ): Promise<{credentials: UserPublicData}> {
     const error = new BadRequestException("Invalid credentials");
 
     const user = await this.userService.findByEmail(email);
@@ -116,7 +116,7 @@ export class AuthController {
   @HttpCode(200)
   getCredentials(
     @GetUser() user: User
-  ): {credentials: IUserPublicData} {
+  ): {credentials: UserPublicData} {
     return {
       credentials: user.getPublicData()
     };

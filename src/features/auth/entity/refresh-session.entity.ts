@@ -1,4 +1,4 @@
-import {Column, Entity, Generated, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 
 import {User} from "@features/user";
 
@@ -7,8 +7,7 @@ export class RefreshSession {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("varchar")
-  @Generated("uuid")
+  @Column("varchar", {length: 256})
   token: string;
 
   @Column("varchar", {length: 256})

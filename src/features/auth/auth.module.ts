@@ -6,7 +6,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {UserModule} from "@features/user";
 import {RefreshSession} from "./entity";
 import {AuthGuard} from "./guard";
-import {RefreshSessionService, AuthService} from "./services";
+import {RefreshSessionService, AuthService} from "./service";
 import {AuthMiddleware} from "./middleware";
 import {AuthController} from "./auth.controller";
 
@@ -23,9 +23,7 @@ import {AuthController} from "./auth.controller";
         }
       })
     }),
-    TypeOrmModule.forFeature(
-      [RefreshSession]
-    )
+    TypeOrmModule.forFeature([RefreshSession])
   ],
   controllers: [AuthController],
   providers: [RefreshSessionService, AuthService, AuthGuard]
@@ -36,5 +34,4 @@ export class AuthModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes({path: "auth/credentials", method: RequestMethod.GET});
   }
-} {
 }

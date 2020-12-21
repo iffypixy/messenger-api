@@ -1,7 +1,7 @@
 import {AuthModule} from "./auth.module";
 import {RefreshSession} from "./entity";
-import {AuthMiddleware} from "./middleware";
 import {AuthGuard} from "./guard";
 import {GetUser} from "./decorator";
+import {AuthMiddleware} from "./middleware";
 
-export {AuthModule, RefreshSession, GetUser, AuthMiddleware, AuthGuard};
+export {AuthModule, RefreshSession, GetUser, AuthGuard, AuthMiddleware};

@@ -1,6 +1,5 @@
 import {UserModule} from "./user.module";
-import {User} from "./entity";
+import {User, UserPublicData} from "./entity";
 import {UserService} from "./user.service";
-import {IUserPublicData} from "./interface";
 
-export {UserModule, User, UserService, IUserPublicData};
+export {UserModule, User, UserService, UserPublicData};

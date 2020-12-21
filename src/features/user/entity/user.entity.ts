@@ -1,6 +1,10 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-
-import {IUserPublicData} from "../interface";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from "typeorm";
 
 @Entity()
 export class User {
@@ -25,13 +29,19 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  public getPublicData(): IUserPublicData {
+  public getPublicData(): UserPublicData {
+    const {id, firstName, lastName} = this;
+
     return {
-      ...this,
-      email: undefined,
-      password: undefined,
-      createdAt: undefined,
-      updatedAt: undefined
+      id,
+      firstName,
+      lastName
     };
   }
+}
+
+export interface UserPublicData {
+  id: number;
+  firstName: string;
+  lastName: string;
 }
