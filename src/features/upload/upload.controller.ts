@@ -1,8 +1,9 @@
-import {Body, Controller, Post} from "@nestjs/common";
+import {Body, Controller, Get, Post, Query, UploadedFile, UseInterceptors} from "@nestjs/common";
+import {FileInterceptor} from "@nestjs/platform-express";
 import {ConfigService} from "@nestjs/config";
 import {nanoid} from "nanoid";
 
-import {UploadFileDto} from "./dto/upload-file.dto";
+import {UploadFile} from "@lib/types";
 import {UploadService} from "./upload.service";
 
 @Controller("upload")
@@ -13,19 +14,21 @@ export class UploadController {
     ) {}
 
     @Post()
-    async uploadFile(
-        @Body() {extension}: UploadFileDto 
-    ): Promise<{url: string, key: string}> {
+    @UseInterceptors(FileInterceptor("file"))
+    upload(@UploadedFile() file: UploadFile): Promise<{url: string}> {
         const s3 = this.uploadService.getS3();
 
-        const key = nanoid();
-
-        const url = await s3.getSignedUrlPromise("putObject", {
-            ContentType: extension,
-            Bucket: this.configService.get("s3.bucketName"),
-            Key: key
+        return new Promise((resolve) => {
+            s3.upload({
+                ContentType: file.mimetype,
+                Bucket: this.configService.get("s3.bucketName"),
+                Key: nanoid(),
+                Body: file.buffer
+            }, (error, data) => {
+                if (error) throw error;
+    
+                resolve({url: data.Location});
+            }); 
         });
-
-        return {url, key};
     }
 }

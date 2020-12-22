@@ -1,5 +1,6 @@
 import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
+import {MulterModule} from "@nestjs/platform-express";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 
 import {databaseConfig, jwtConfig, s3Config} from "@config";
@@ -14,6 +15,7 @@ import {UploadModule} from "@features/upload";
     AuthModule,
     ChatModule,
     UploadModule,
+    MulterModule.register(),
     ConfigModule.forRoot({
       envFilePath: [".env.development"],
       load: [databaseConfig, jwtConfig, s3Config],
