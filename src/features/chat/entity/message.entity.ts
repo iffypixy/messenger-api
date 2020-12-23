@@ -8,11 +8,11 @@ import {
 } from "typeorm";
 
 import {UserPublicData, User} from "@features/user";
-import {Dialog} from "./dialog.entity";
-import {Attachment, AttachmentPublicData} from "./attachment";
+import {Chat} from "./chat.entity";
+import {Attachments, AttachmentsPublicData} from "./attachments";
 
 @Entity()
-export class DialogMessage {
+export class Message {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,32 +25,30 @@ export class DialogMessage {
   })
   text: string;
 
-  @Column(type => Attachment)
-  attachment: Attachment;
+  @Column(type => Attachments)
+  attachments: Attachments;
 
-  @ManyToOne(type => Dialog)
-  dialog: Dialog;
+  @ManyToOne(type => Chat)
+  chat: Chat;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  public getPublicData(): DialogMessagePublicData {
-    const {id, sender, text, attachment, createdAt} = this;
+  getPublicData(): MessagePublicData {
+    const {id, sender, text, attachments, createdAt} = this;
 
     return {
-      id,
+      id, text, createdAt,
       sender: sender.getPublicData(),
-      text,
-      attachment,
-      createdAt
+      attachments: attachments.getPublicData()
     };
   }
 }
 
-export interface DialogMessagePublicData {
+export interface MessagePublicData {
   id: number;
   sender: UserPublicData;
   text: string;
-  attachment: AttachmentPublicData;
+  attachments: AttachmentsPublicData;
   createdAt: Date;
 }

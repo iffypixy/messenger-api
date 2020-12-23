@@ -1,4 +1,4 @@
 import {ChatModule} from "./chat.module";
-import {Dialog, DialogMessage} from "./entity";
+import {Chat, Message} from "./entity";
 
-export {ChatModule, Dialog, DialogMessage};
+export {ChatModule, Chat, Message};

@@ -12,16 +12,16 @@ import {
 
 import {AuthGuard, GetUser} from "@features/auth";
 import {User, UserService} from "@features/user";
-import {CreateMessageDto} from "../dto";
-import {DialogService, DialogMessageService} from "../service";
-import {DialogMessagePublicData, DialogPublicData} from "../entity";
+import {CreateMessageDto} from "./dto";
+import {ChatService, MessageService} from "./service";
+import {Chat, DialogPublicData, MessagePublicData, Message} from "./entity";
 
 @UseGuards(AuthGuard)
-@Controller("dialogs")
-export class DialogController {
+@Controller("chats")
+export class ChatController {
   constructor(
-    private readonly dialogService: DialogService,
-    private readonly dialogMessageService: DialogMessageService,
+    private readonly chatService: ChatService,
+    private readonly messageService: MessageService,
     private readonly userService: UserService
   ) {}
 
@@ -31,16 +31,16 @@ export class DialogController {
   ): Promise<{dialogs: DialogPublicData[]}> {
     const dialogsPublicData: DialogPublicData[] = [];
 
-    const dialogs = await this.dialogService.findByMemberId(user.id);
+    const dialogs = await this.chatService.findByMemberId(user.id);
 
     for (let i = 0; i < dialogs.length; i++) {
       const dialog = dialogs[i];
 
-      const latestMessage = await this.dialogMessageService.findLatestByDialogId(dialog.id);
+      const latestMessage = await this.messageService.findLatestByDialogId(dialog.id);
 
       dialogsPublicData[i] = {
         ...dialog.getPublicData(user.id), 
-        latestMessage: {...latestMessage, sender: latestMessage.sender.getPublicData()}
+        latestMessage: latestMessage.getPublicData()
       };
     }
 
@@ -58,7 +58,7 @@ export class DialogController {
 
     if (!companion) throw new NotFoundException("User not found");
 
-    const dialog = await this.dialogService.findByMembersOrCreate([companion, user]);
+    const dialog = await this.chatService.findByMembersOrCreate([companion, user]);
 
     return {
       dialog: dialog.getPublicData(user.id)
@@ -76,11 +76,11 @@ export class DialogController {
 
     if (!companion) throw new NotFoundException("User not found");
 
-    const dialog = await this.dialogService.findOneByMembers([companion, user]);
+    const dialog = await this.chatService.findOneByMembers([companion, user]);
 
     if (!dialog) throw new NotFoundException("Dialog not found");
 
-    const messages = await this.dialogMessageService.findByDialogId(dialog.id, {skip, take});
+    const messages = await this.messageService.findByDialogId(dialog.id, {skip, take});
 
     const messagesPublicData = messages.map(message => message.getPublicData());
 
@@ -92,18 +92,22 @@ export class DialogController {
   @Post(":companionId/messages")
   async createMessage(
     @GetUser() user: User,
-    @Body() {attachment, text}: CreateMessageDto,
+    @Body() {attachments: {audioId, filesIds, imagesIds}, text}: CreateMessageDto,
     @Param("companionId", ParseIntPipe) companionId: number
   ): Promise<{message: DialogMessagePublicData}> {
     const companion = await this.userService.findById(companionId);
 
     if (!companion) throw new NotFoundException("Companion not found");
 
-    const dialog = await this.dialogService.findByMembersOrCreate([user, companion]);
+    const dialog = await this.chatService.findByMembersOrCreate([user, companion]);
 
-    const message = await this.dialogMessageService.create({
+    const message = await this.messageService.create({
       sender: user, dialog, 
-      text, attachment
+      text, attachments: {
+        audio: audioId,
+        files: filesIds,
+        images: imagesIds
+      }
     });
 
     return {

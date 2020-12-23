@@ -1,10 +1,11 @@
 import {Injectable} from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {S3} from "aws-sdk";
-
 @Injectable()
 export class UploadService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService
+  ) {}
 
   getS3(): S3 {
     return new S3({

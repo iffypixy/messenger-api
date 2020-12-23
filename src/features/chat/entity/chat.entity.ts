@@ -3,14 +3,14 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  Column
 } from "typeorm";
 
 import {User, UserPublicData} from "@features/user";
-import {DialogMessagePublicData} from "./dialog-message.entity";
 
 @Entity()
-export class Dialog {
+export class Chat {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,10 +18,25 @@ export class Dialog {
   @JoinTable()
   members: User[];
 
+  @Column({
+    enum: ["dialog", "discussion"]
+  })
+  type: string;
+
+  @Column("varchar", {
+    length: 256
+  })
+  title: string;
+
+  @Column("varchar", {
+    length: 256
+  })
+  image: string; 
+
   @CreateDateColumn()
   createdAt: Date;
 
-  public getPublicData(userId: number): DialogPublicData {
+  getPublicData(userId: number): DialogPublicData {
     const {id, members} = this;
 
     const companion = members.find(member => member.id !== userId);
@@ -36,5 +51,11 @@ export class Dialog {
 export interface DialogPublicData {
   id: number;
   companion: UserPublicData;
-  latestMessage?: DialogMessagePublicData;
+}
+
+export interface DiscussionPublicData {
+  id: number;
+  members: UserPublicData[];
+  image: string;
+  title: string;
 }

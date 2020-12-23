@@ -2,33 +2,34 @@ import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {DeepPartial, FindManyOptions, Repository} from "typeorm";
 
-import {DialogMessage} from "../entity";
+import {Message} from "../entity";
 
 @Injectable()
-export class DialogMessageService {
+export class MessageService {
   constructor(
-    @InjectRepository(DialogMessage)
-    private readonly dialogMessageRepository: Repository<DialogMessage>
+    @InjectRepository(Message)
+    private readonly messageRepository: Repository<Message>
   ) {}
 
-  create(options: DeepPartial<DialogMessage>): Promise<DialogMessage> {
-    const message = this.dialogMessageRepository.create(options);
+  create(options: DeepPartial<Message>): Promise<Message> {
+    const message = this.messageRepository.create(options);
 
-    return this.dialogMessageRepository.save(message);
+    return this.messageRepository.save(message);
   }
 
-  findLatestByDialogId(dialogId: number): Promise<DialogMessage> {
-    return this.dialogMessageRepository
+  findLatestByDialogId(dialogId: number): Promise<Message> {
+    return this.messageRepository
     .createQueryBuilder("message")
     .leftJoinAndSelect("message.sender", "sender")
+    .leftJoinAndSelect("message.attachments.audio", "audio")
     .where("message.dialog.id = :dialogId", {dialogId})
     .orderBy("message.createdAt", "DESC")
     .limit(1)
     .getOne();
   }
 
-  findByDialogId(dialogId: number, {skip, take}: FindManyOptions): Promise<DialogMessage[]> {
-    return this.dialogMessageRepository
+  findByDialogId(dialogId: number, {skip, take}: FindManyOptions): Promise<Message[]> {
+    return this.messageRepository
     .createQueryBuilder("message")
     .leftJoinAndSelect("message.sender", "sender")
     .where("message.dialog.id = :dialogId", {dialogId})

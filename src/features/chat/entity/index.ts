@@ -1,4 +1,13 @@
-import {Dialog, DialogPublicData} from "./dialog.entity";
-import {DialogMessage, DialogMessagePublicData} from "./dialog-message.entity";
+import {AttachmentsPublicData, Attachments} from "./attachments";
+import {Chat, DialogPublicData, DiscussionPublicData} from "./chat.entity";
+import {Message, MessagePublicData} from "./message.entity";
 
-export {Dialog, DialogMessage, DialogMessagePublicData, DialogPublicData};
+export {
+  AttachmentsPublicData,
+  Attachments,
+  Chat,
+  Message,
+  MessagePublicData,
+  DialogPublicData,
+  DiscussionPublicData
+};

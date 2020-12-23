@@ -1,14 +1,20 @@
 import {IsArray, IsString, ValidateNested} from "class-validator";
 
-class Attachment {
-  @IsString({message: "Audio type must be string"})
-  audio?: string;
+class Attachments {
+  @IsString({message: "Audio id type must be number"})
+  audioId: number;
 
   @IsArray({
       each: true,
-      message: "Image type must be string"
+      message: "Image id type must be string"
   })
-  images: string[];
+  imagesIds: number[];
+
+  @IsArray({
+    each: true,
+    message: "File id type must be number"
+  })
+  filesIds: number[];
 }
 
 export class CreateMessageDto {
@@ -16,5 +22,5 @@ export class CreateMessageDto {
   text: string;
 
   @ValidateNested()
-  attachment: Attachment;
+  attachments: Attachments;
 }
