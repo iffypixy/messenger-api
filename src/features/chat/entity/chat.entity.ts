@@ -16,7 +16,7 @@ export class Chat {
 
   @ManyToMany(() => User)
   @JoinTable()
-  members: User[];
+  members: User[] | number[];
 
   @Column({
     enum: ["dialog", "discussion"]
@@ -24,12 +24,14 @@ export class Chat {
   type: string;
 
   @Column("varchar", {
-    length: 256
+    length: 256,
+    nullable: true
   })
   title: string;
 
   @Column("varchar", {
-    length: 256
+    length: 256,
+    nullable: true
   })
   image: string; 
 
@@ -39,7 +41,7 @@ export class Chat {
   getPublicData(userId: number): DialogPublicData {
     const {id, members} = this;
 
-    const companion = members.find(member => member.id !== userId);
+    const companion = (members as User[]).find(member => member.id !== userId);
 
     return {
       id,

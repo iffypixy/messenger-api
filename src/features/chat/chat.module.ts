@@ -5,31 +5,29 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 
 import {AuthMiddleware} from "@features/auth";
 import {UserModule} from "@features/user";
+import {UploadModule} from "@features/upload";
 import {DialogController} from "./controller";
-import {DialogMessageService, DialogService} from "./service";
-import {Dialog, DialogMessage} from "./entity";
+import {MessageService, DialogService} from "./service";
+import {Chat, Message} from "./entity";
 
 @Module({
   imports: [
-      UserModule,
-      JwtModule.registerAsync({
-          imports: [ConfigModule],
-          inject: [ConfigService],
-          useFactory: (configService: ConfigService) => ({
-              secret: configService.get("jwt.secretKey")
-          })
-      }),
-      TypeOrmModule.forFeature(
-        [Dialog, DialogMessage]
-      )
-    ],
+    UploadModule,
+    UserModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get("jwt.secretKey")
+      })
+    }),
+    TypeOrmModule.forFeature([Chat, Message])
+  ],
   controllers: [DialogController],
-  providers: [DialogService, DialogMessageService]
+  providers: [DialogService, MessageService]
 })
 export class ChatModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer
-    .apply(AuthMiddleware)
-    .forRoutes(DialogController)
+    consumer.apply(AuthMiddleware).forRoutes(DialogController);
   }
 }

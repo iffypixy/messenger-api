@@ -1,4 +1,4 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
 import {User} from "@features/user";
 
@@ -13,8 +13,7 @@ export class RefreshSession {
   @Column("varchar", {length: 256})
   fingerprint: string;
 
-  @OneToOne(type => User, {eager: true})
-  @JoinColumn()
+  @ManyToOne(type => User, {eager: true})
   user: User;
 
   @Column("timestamp")
