@@ -25,7 +25,7 @@ import {File} from "./entity";
   ],
   controllers: [UploadController],
   providers: [UploadService, FileService],
-  exports: [FileService]
+  exports: [FileService, UploadService]
 })
 export class UploadModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

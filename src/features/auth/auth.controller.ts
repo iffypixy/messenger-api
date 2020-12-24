@@ -1,9 +1,11 @@
-import {BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards, UseInterceptors} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards} from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
 import {CookieOptions, Request, Response} from "express";
 import * as bcrypt from "bcryptjs";
+import * as jdenticon from "jdenticon";
 
 import {UserService, UserPublicData, User} from "@features/user";
+import {UploadService} from "@features/upload";
 import {RefreshSessionService, AuthService} from "./service";
 import {LoginDto, RegisterDto} from "./dto";
 import {AuthGuard} from "./guard";
@@ -15,7 +17,8 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly refreshSessionService: RefreshSessionService,
     private readonly userService: UserService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly uploadService: UploadService
   ) {
   }
 
@@ -29,7 +32,11 @@ export class AuthController {
 
     if (existedUser) throw new BadRequestException("Email has been already used");
 
-    const user = await this.userService.create({email, firstName, lastName, password});
+    const png = jdenticon.toPng(`${firstName} ${lastName}`, 300);
+
+    const {Location: avatar} = await this.uploadService.upload(png, "image/png");
+
+    const user = await this.userService.create({email, firstName, lastName, password, avatar});
 
     const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);
 

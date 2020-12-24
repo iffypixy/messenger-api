@@ -4,6 +4,7 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
 
 import {UserModule} from "@features/user";
+import {UploadModule } from "@features/upload";
 import {RefreshSession} from "./entity";
 import {AuthGuard} from "./guard";
 import {RefreshSessionService, AuthService} from "./service";
@@ -13,6 +14,7 @@ import {AuthController} from "./auth.controller";
 @Module({
   imports: [
     UserModule,
+    UploadModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

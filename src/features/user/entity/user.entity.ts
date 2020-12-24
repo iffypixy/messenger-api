@@ -23,6 +23,9 @@ export class User {
   @Column("varchar", {length: 256})
   password: string;
 
+  @Column("varchar", {length: 256})
+  avatar: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -30,12 +33,13 @@ export class User {
   updatedAt: Date;
 
   public getPublicData(): UserPublicData {
-    const {id, firstName, lastName} = this;
+    const {id, firstName, lastName, avatar} = this;
 
     return {
       id,
       firstName,
-      lastName
+      lastName,
+      avatar
     };
   }
 }
@@ -44,4 +48,5 @@ export interface UserPublicData {
   id: number;
   firstName: string;
   lastName: string;
+  avatar: string;
 }
