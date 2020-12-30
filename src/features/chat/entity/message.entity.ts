@@ -13,8 +13,8 @@ import {Attachments, AttachmentsPublicData} from "./attachments";
 
 @Entity()
 export class Message {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @ManyToOne(type => User)
   @JoinColumn()
@@ -31,24 +31,29 @@ export class Message {
   @ManyToOne(type => Chat)
   chat: Chat;
 
+  @Column("boolean")
+  isRead: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
   getPublicData(): MessagePublicData {
-    const {id, sender, text, attachments, createdAt} = this;
+    const {id, sender, text, attachments, createdAt, isRead} = this;
 
     return {
       id, text, createdAt,
+      isRead,
       sender: sender.getPublicData(),
-      attachments: attachments.getPublicData()
+      attachments: attachments?.getPublicData()
     };
   }
 }
 
 export interface MessagePublicData {
-  id: number;
+  id: string;
   sender: UserPublicData;
   text: string;
   attachments: AttachmentsPublicData;
+  isRead: boolean;
   createdAt: Date;
 }

@@ -4,8 +4,8 @@ import {User} from "@features/user";
 
 @Entity()
 export class RefreshSession {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column("varchar", {length: 256})
   token: string;

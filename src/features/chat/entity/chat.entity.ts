@@ -11,8 +11,8 @@ import {User, UserPublicData} from "@features/user";
 
 @Entity()
 export class Chat {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @ManyToMany(() => User)
   @JoinTable()
@@ -38,7 +38,7 @@ export class Chat {
   @CreateDateColumn()
   createdAt: Date;
 
-  getPublicData(userId: number): DialogPublicData {
+  getPublicData(userId: string): DialogPublicData {
     const {id, members} = this;
 
     const companion = (members as User[]).find(member => member.id !== userId);
@@ -51,12 +51,12 @@ export class Chat {
 }
 
 export interface DialogPublicData {
-  id: number;
+  id: string;
   companion: UserPublicData;
 }
 
 export interface DiscussionPublicData {
-  id: number;
+  id: string;
   members: UserPublicData[];
   image: string;
   title: string;

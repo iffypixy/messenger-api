@@ -21,7 +21,7 @@ export class FileService {
     return this.fileRepository.findOne(conditions);
   }
 
-  findByIdsAndUserIdAndExtensions(ids: number[], userId: number, extensions?: string[]): Promise<File[]> {
+  findByIdsAndUserIdAndExtensions(ids: string[], userId: string, extensions?: string[]): Promise<File[]> {
     const queryBuilder = this.fileRepository
       .createQueryBuilder("file")
       .leftJoinAndSelect("file.user", "user")

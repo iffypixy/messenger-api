@@ -15,16 +15,12 @@ export class Attachments {
   files: File[];
 
   getPublicData(): AttachmentsPublicData {
-    const audioPublicData = this.audio?.url;
-    const imagesPublicData =
-      this.images && this.images.map(({url}) => url);
-    const filesPublicData =
-      this.files && this.files.map(file => file.getPublicData());
+    const audio = this.audio?.url;
+    const images = this.images.map(({url}) => url);
+    const files = this.files.map(file => file.getPublicData());
 
     return {
-      audio: audioPublicData,
-      images: imagesPublicData,
-      files: filesPublicData
+      audio, images, files
     };
   }
 }

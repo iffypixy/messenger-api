@@ -14,7 +14,7 @@ export class DialogService {
     private readonly messageRepository: Repository<Message>
   ) {}
 
-  async findByUserId(id: number): Promise<Chat[]> {
+  async findByUserId(id: string): Promise<Chat[]> {
     const dialogs = await this.chatRepository
       .createQueryBuilder("dialog")
       .leftJoinAndSelect("dialog.members", "members")
@@ -25,7 +25,7 @@ export class DialogService {
     );
   }
 
-  findLastMessageById(id: number): Promise<Message> {
+  findLastMessageById(id: string): Promise<Message> {
     return this.messageRepository
       .createQueryBuilder("message")
       .leftJoinAndSelect("message.sender", "sender")
@@ -35,7 +35,7 @@ export class DialogService {
       .leftJoinAndSelect("message.attachments.audio", "audio")
       .where("chat.id = :id", {id})
       .andWhere("chat.type = :type", {type: "dialog"})
-      .orderBy("chat.createdAt", "DESC")
+      .orderBy("message.createdAt", "DESC")
       .limit(1)
       .getOne();
   }
@@ -52,7 +52,7 @@ export class DialogService {
     return dialog;
   }
 
-  async findOneByUsersIds(usersIds: number[]): Promise<Chat> {
+  async findOneByUsersIds(ids: string[]): Promise<Chat> {
     const dialogs = await this.chatRepository
       .createQueryBuilder("dialog")
       .leftJoinAndSelect("dialog.members", "members")
@@ -60,14 +60,14 @@ export class DialogService {
       .getMany();
 
     const dialog = dialogs.find(({members}) =>
-      (members as User[]).map(({id}) => id).every(id => usersIds.includes(id))
+      (members as User[]).map(({id}) => id).every(id => ids.includes(id))
     );
 
     return dialog;
   }
 
   findMessagesById(
-    id: number,
+    id: string,
     {take, skip}: FindManyOptions
   ): Promise<Message[]> {
     return this.messageRepository
@@ -78,7 +78,7 @@ export class DialogService {
       .leftJoinAndSelect("message.attachments.images", "images")
       .leftJoinAndSelect("message.attachments.audio", "audio")
       .where("chat.id = :chatId", {chatId: id})
-      .orderBy("message.createdAt", "DESC")
+      .orderBy("message.createdAt", "ASC")
       .limit(take)
       .skip(skip)
       .getMany();

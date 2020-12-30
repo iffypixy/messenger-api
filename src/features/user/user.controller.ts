@@ -15,7 +15,7 @@ export class UserController {
 
   @Get(":id")
   async getUser(
-    @Param("id", ParseIntPipe) id: number
+    @Param("id") id: string
   ): Promise<{user: UserPublicData}> {
     const user = await this.userService.findById(id);
 

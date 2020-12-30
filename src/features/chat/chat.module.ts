@@ -6,9 +6,10 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import {AuthMiddleware} from "@features/auth";
 import {UserModule} from "@features/user";
 import {UploadModule} from "@features/upload";
-import {DialogController} from "./controller";
+import {DialogController, MessageController} from "./controller";
 import {MessageService, DialogService} from "./service";
 import {Chat, Message} from "./entity";
+import {DialogGateway} from "./gateway";
 
 @Module({
   imports: [
@@ -23,8 +24,8 @@ import {Chat, Message} from "./entity";
     }),
     TypeOrmModule.forFeature([Chat, Message])
   ],
-  controllers: [DialogController],
-  providers: [DialogService, MessageService]
+  controllers: [DialogController, MessageController],
+  providers: [DialogService, MessageService, DialogGateway]
 })
 export class ChatModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

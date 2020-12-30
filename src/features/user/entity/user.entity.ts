@@ -8,8 +8,8 @@ import {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column("varchar", {length: 128, unique: true})
   email: string;
@@ -45,7 +45,7 @@ export class User {
 }
 
 export interface UserPublicData {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   avatar: string;

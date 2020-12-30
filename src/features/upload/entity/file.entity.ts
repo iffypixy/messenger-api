@@ -4,8 +4,8 @@ import {User} from "@features/user";
 
 @Entity()
 export class File {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
     @Column("varchar")
     name: string;
@@ -30,7 +30,7 @@ export class File {
 }
 
 export interface FilePublicData {
-    id: number;
+    id: string;
     name: string;
     size: number;
     extension: string;

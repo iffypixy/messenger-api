@@ -48,12 +48,11 @@ export class DialogController {
         dialog.id
       );
 
-      const dialogPublicData = dialog.getPublicData(user.id);
-      const lastMessagePublicData = lastMessage.getPublicData();
+      if (!lastMessage) continue;
 
       dialogsPublicData[i] = {
-        ...dialogPublicData,
-        lastMessage: lastMessagePublicData
+        ...dialog.getPublicData(user.id),
+        lastMessage: lastMessage.getPublicData()
       };
     }
 
@@ -62,28 +61,9 @@ export class DialogController {
     };
   }
 
-  @Get(":companionId")
-  async getDialog(
-    @Param("companionId", ParseIntPipe) companionId: number,
-    @GetUser() user: User
-  ): Promise<{dialog: DialogPublicData}> {
-    const companion = await this.userService.findById(companionId);
-
-    if (!companion) throw new NotFoundException("User not found");
-
-    const dialog = await this.dialogService.findOneByUsersIdsOrCreate([
-      companion,
-      user
-    ]);
-
-    return {
-      dialog: dialog.getPublicData(user.id)
-    };
-  }
-
   @Get(":companionId/messages")
   async getMessages(
-    @Param("companionId", ParseIntPipe) companionId: number,
+    @Param("companionId") companionId: string,
     @GetUser() user: User,
     @Query("take", ParseIntPipe) take: number,
     @Query("skip", ParseIntPipe) skip: number
@@ -113,40 +93,30 @@ export class DialogController {
   async createMessage(
     @GetUser() user: User,
     @Body()
-    {attachments: {audioId, filesIds, imagesIds}, text}: CreateMessageDto,
-    @Param("companionId", ParseIntPipe) companionId: number
+    {attachments, text}: CreateMessageDto,
+    @Param("companionId") companionId: string
   ): Promise<{message: MessagePublicData}> {
     const companion = await this.userService.findById(companionId);
 
     if (!companion) throw new NotFoundException("Companion not found");
 
-    const dialog = await this.dialogService.findOneByUsersIdsOrCreate([
-      user,
-      companion
-    ]);
+    const dialog = await this.dialogService
+    .findOneByUsersIdsOrCreate([user, companion]);
 
-    const files = await this.fileService.findByIdsAndUserIdAndExtensions(
-      filesIds,
-      user.id
-    );
+    const {audioId, filesIds, imagesIds} = attachments || {};
 
-    const images = await this.fileService.findByIdsAndUserIdAndExtensions(
-      imagesIds,
-      user.id,
-      IMAGES_EXTENSIONS
-    );
+    const files = filesIds && await this.fileService
+    .findByIdsAndUserIdAndExtensions(filesIds, user.id);
 
-    const audio = await this.fileService.findOne({
-      id: audioId,
-      user,
-      extension: ".mp3"
-    });
+    const images = imagesIds && await this.fileService
+    .findByIdsAndUserIdAndExtensions(imagesIds, user.id, IMAGES_EXTENSIONS);
+
+    const audio = audioId && await this.fileService
+    .findOne({id: audioId, user, extension: ".mp3"});
 
     const message = await this.messageService.create({
-      sender: user,
-      chat: dialog,
-      text,
-      attachments: {audio, files, images}
+      sender: user, chat: dialog, isRead: false,
+      text, attachments: {audio, files, images}
     });
 
     return {

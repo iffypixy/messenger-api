@@ -1,6 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {DeepPartial, Repository} from "typeorm";
+import {DeepPartial, FindConditions, Repository, UpdateResult} from "typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 import {Message} from "../entity";
 
@@ -15,5 +16,9 @@ export class MessageService {
     const message = this.messageRepository.create(options);
 
     return this.messageRepository.save(message);
+  }
+
+  update(criteria: FindConditions<Message>, partialEntity: QueryDeepPartialEntity<Message>): Promise<UpdateResult> {
+    return this.messageRepository.update(criteria, partialEntity);
   }
 }
