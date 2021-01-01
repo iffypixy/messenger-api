@@ -35,14 +35,13 @@ export class Message {
   isRead: boolean;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: string;
 
   getPublicData(): MessagePublicData {
     const {id, sender, text, attachments, createdAt, isRead} = this;
 
     return {
-      id, text, createdAt,
-      isRead,
+      id, text, createdAt, isRead,
       sender: sender.getPublicData(),
       attachments: attachments?.getPublicData()
     };
@@ -53,7 +52,7 @@ export interface MessagePublicData {
   id: string;
   sender: UserPublicData;
   text: string;
-  attachments: AttachmentsPublicData;
+  attachments: AttachmentsPublicData | undefined;
   isRead: boolean;
-  createdAt: Date;
+  createdAt: string;
 }

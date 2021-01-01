@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  ManyToMany,
-  JoinTable,
-  Column
-} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany, JoinTable, Column} from "typeorm";
 
 import {User, UserPublicData} from "@features/user";
 
@@ -16,12 +9,12 @@ export class Chat {
 
   @ManyToMany(() => User)
   @JoinTable()
-  members: User[] | number[];
+  members: User[];
 
   @Column({
     enum: ["dialog", "discussion"]
   })
-  type: string;
+  type: "dialog" | "discussion";
 
   @Column("varchar", {
     length: 256,
@@ -33,18 +26,16 @@ export class Chat {
     length: 256,
     nullable: true
   })
-  image: string; 
+  image: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: string;
 
-  getPublicData(userId: string): DialogPublicData {
-    const {id, members} = this;
-
-    const companion = (members as User[]).find(member => member.id !== userId);
+  getDialogPublicData(userId: string): DialogPublicData {
+    const companion = this.members.find(member => member.id !== userId);
 
     return {
-      id,
+      id: this.id,
       companion: companion.getPublicData()
     };
   }

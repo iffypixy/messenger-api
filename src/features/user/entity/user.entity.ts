@@ -27,10 +27,10 @@ export class User {
   avatar: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: string;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: string;
 
   public getPublicData(): UserPublicData {
     const {id, firstName, lastName, avatar} = this;

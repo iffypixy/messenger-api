@@ -19,6 +19,11 @@ interface HandleCreateMessage {
   message: MessagePublicData;
 }
 
+interface HandleReadMessages {
+  recipientId: string;
+  ids: string[];
+}
+
 @WebSocketGateway({origins: "http://localhost:3000"})
 export class DialogGateway {
   @WebSocketServer()
@@ -41,6 +46,17 @@ export class DialogGateway {
     const recipient = this.getSocketByUserId(recipientId);
 
     if (recipient) this.server.to(recipient.id).emit("message", {message});
+  }
+
+  @SubscribeMessage("read-messages")
+  handleReadMessages(
+    @MessageBody() {recipientId, ids}: HandleReadMessages,
+    @ConnectedSocket() socket: IExtendedSocket
+  ): void {
+    const recipient = this.getSocketByUserId(recipientId);
+
+    if (recipient)
+      this.server.to(recipient.id).emit("read-messages", {ids, companionId: socket.userId});
   }
 
   getSocketByUserId(id: string): IExtendedSocket {
