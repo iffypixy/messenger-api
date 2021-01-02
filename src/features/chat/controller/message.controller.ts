@@ -17,7 +17,7 @@ export class MessageController {
         @Body("ids") ids: string[]
     ): Promise<void> {
         for (let i = 0; i < ids.length; i++) {
-            await this.messageService.update({id: ids[i], sender: Not(user)}, {isRead: true});
+            await this.messageService.update({id: ids[i], sender: {id: Not(user.id)}}, {isRead: true});
         }
     }
 

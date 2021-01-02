@@ -45,43 +45,4 @@ export class MessageService {
   find(options: FindManyOptions<Message>): Promise<Message[]> {
     return this.messageRepository.find(options);
   }
-
-  // findLastByChatId(id: string): Promise<Message> {
-  //   return this.messageRepository.findOne({
-  //     join: {
-  //       alias: "msg",
-  //       leftJoinAndSelect: {
-  //         sender: "msg.sender",
-  //         chat: "msg.chat",
-  //         files: "msg.attachments.files",
-  //         images: "msg.attachments.images",
-  //         audio: "msg.attachments.audio"
-  //       }
-  //     },
-  //     where: {
-  //       chat: {id}
-  //     },
-  //     order: {
-  //       createdAt: "DESC"
-  //     }
-  //   });
-  // }
-  //
-  // findByChatId(id: string, {take, skip}: FindManyOptions): Promise<Message[]> {
-  //   return this.messageRepository.find({
-  //     join: {
-  //       alias: "msg",
-  //       leftJoinAndSelect: {
-  //         sender: "msg.sender",
-  //         chat: "msg.chat",
-  //         files: "msg.attachments.files",
-  //         images: "msg.attachments.images",
-  //         audio: "msg.attachments.audio"
-  //       }
-  //     },
-  //     where: {chat: id},
-  //     order: {createdAt: "DESC"},
-  //     take, skip
-  //   });
-  // }
 }

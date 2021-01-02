@@ -1,7 +1,7 @@
 import {
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
@@ -35,12 +35,7 @@ export class User {
   public getPublicData(): UserPublicData {
     const {id, firstName, lastName, avatar} = this;
 
-    return {
-      id,
-      firstName,
-      lastName,
-      avatar
-    };
+    return {id, firstName, lastName, avatar,};
   }
 }
 
