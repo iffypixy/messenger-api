@@ -7,6 +7,7 @@ import {UserModule, User} from "@features/user";
 import {RefreshSession, AuthModule} from "@features/auth";
 import {ChatModule, Chat, Message} from "@features/chat";
 import {UploadModule, File} from "@features/upload";
+import {ProfileModule} from "@features/profile";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import {UploadModule, File} from "@features/upload";
     AuthModule,
     ChatModule,
     UploadModule,
+    ProfileModule,
     ConfigModule.forRoot({
       envFilePath: [".env.development"],
       load: [databaseConfig, jwtConfig, s3Config],

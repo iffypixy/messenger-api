@@ -29,6 +29,8 @@ import {DialogGateway} from "./gateway";
 })
 export class ChatModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(AuthMiddleware).forRoutes(DialogController, MessageController);
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes(DialogController, MessageController);
   }
 }

@@ -14,15 +14,23 @@ interface HandleCredentialsData {
   userId: string;
 }
 
-interface HandleCreateMessage {
+interface HandleCreateMessageData {
   recipientId: string;
   message: MessagePublicData;
 }
 
-interface HandleReadMessages {
+interface HandleReadMessagesData {
   recipientId: string;
   ids: string[];
 }
+
+interface HandleTypingData {
+  recipientId: string;
+}
+
+const COMPANION_STATUSES = {
+  typing: "typing..."
+};
 
 @WebSocketGateway({origins: "http://localhost:3000"})
 export class DialogGateway {
@@ -41,7 +49,7 @@ export class DialogGateway {
 
   @SubscribeMessage("message")
   handleCreateMessage(
-    @MessageBody() {recipientId, message}: HandleCreateMessage
+    @MessageBody() {recipientId, message}: HandleCreateMessageData
   ): void {
     const recipient = this.getSocketByUserId(recipientId);
 
@@ -50,13 +58,24 @@ export class DialogGateway {
 
   @SubscribeMessage("read-messages")
   handleReadMessages(
-    @MessageBody() {recipientId, ids}: HandleReadMessages,
+    @MessageBody() {recipientId, ids}: HandleReadMessagesData,
     @ConnectedSocket() socket: IExtendedSocket
   ): void {
     const recipient = this.getSocketByUserId(recipientId);
 
     if (recipient)
       this.server.to(recipient.id).emit("read-messages", {ids, companionId: socket.userId});
+  }
+
+  @SubscribeMessage("typing")
+  handleTyping(
+    @MessageBody() {recipientId}: HandleTypingData,
+    @ConnectedSocket() socket: IExtendedSocket
+  ): void {
+    const recipient = this.getSocketByUserId(recipientId);
+
+    if (recipient)
+      this.server.to(recipient.id).emit("typing", {companionId: socket.userId, status: COMPANION_STATUSES.typing});
   }
 
   getSocketByUserId(id: string): IExtendedSocket {

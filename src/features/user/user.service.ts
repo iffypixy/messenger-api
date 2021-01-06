@@ -1,9 +1,10 @@
 import {InjectRepository} from "@nestjs/typeorm";
 import {Injectable} from "@nestjs/common";
-import {DeepPartial, Repository} from "typeorm";
+import {DeepPartial, FindConditions, FindManyOptions, FindOneOptions, Repository, UpdateResult} from "typeorm";
 import * as bcrypt from "bcryptjs";
 
 import {User} from "./entity";
+import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
 
 @Injectable()
 export class UserService {
@@ -28,5 +29,17 @@ export class UserService {
 
   findById(id: string): Promise<User | null> {
     return this.userRepository.findOne({id}, {cache: true});
+  }
+
+  update(criteria: FindConditions<User>, partial: QueryDeepPartialEntity<User>): Promise<UpdateResult> {
+    return this.userRepository.update(criteria, partial);
+  }
+
+  findUsersByQuery(query: string, {limit}: {limit: number}): Promise<User[]> {
+    return this.userRepository.createQueryBuilder("user")
+      .where("user.firstName like :name", {name: `%${query}%`})
+      .orWhere("user.lastName like :name", {name: `%${query}%`})
+      .limit(limit)
+      .getMany();
   }
 }
