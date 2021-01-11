@@ -1,9 +1,21 @@
 import {Request} from "express";
+import {Socket} from "socket.io";
 
 import {User} from "@features/user";
 
-export interface IExtendedRequest extends Request {
+export type ID = string;
+
+export interface ExtendedRequest extends Request {
   user: User;
+}
+
+export interface ExtendedSocket extends Socket {
+  userId: ID;
+}
+
+export interface Attachments {
+  images: ID[];
+  files: ID[];
 }
 
 export interface UploadFile {
@@ -14,3 +26,4 @@ export interface UploadFile {
   buffer: Buffer;
   size: number;
 }
+

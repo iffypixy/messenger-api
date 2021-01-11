@@ -1,10 +1,10 @@
 import {CanActivate, ExecutionContext} from "@nestjs/common";
 
-import {IExtendedRequest} from "@lib/types";
+import {ExtendedRequest} from "@lib/types";
 
 export class AuthGuard implements CanActivate {
   canActivate(ctx: ExecutionContext): boolean {
-    const req = ctx.switchToHttp().getRequest<IExtendedRequest>();
+    const req = ctx.switchToHttp().getRequest<ExtendedRequest>();
 
     return Boolean(req.user);
   }

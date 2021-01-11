@@ -1,4 +1,4 @@
+import {Attachment, Chat, Message, MessagePublicData} from "./entity";
 import {ChatModule} from "./chat.module";
-import {Chat, Message} from "./entity";
 
-export {ChatModule, Chat, Message};
+export {Attachment, Chat, Message, ChatModule, MessagePublicData};

@@ -1,4 +1,4 @@
 import {DialogController} from "./dialog.controller";
-import {MessageController} from "./message.controller";
+import {DiscussionController} from "./discussion.controller";
 
-export {DialogController, MessageController};
+export {DiscussionController, DialogController};

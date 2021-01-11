@@ -1,4 +1,4 @@
-import {GetSearchedUsers} from "./get-searched-users.dto";
+import {GetUsersByQuery} from "./get-users-by-query";
 import {UserDto} from "./user.dto";
 
-export {GetSearchedUsers, UserDto};
+export {GetUsersByQuery, UserDto};

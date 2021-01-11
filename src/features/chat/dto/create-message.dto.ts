@@ -1,26 +1,30 @@
-import {IsArray, IsString, ValidateNested} from "class-validator";
+import {IsOptional, IsString, MaxLength} from "class-validator";
 
-class Attachments {
-  @IsString({message: "Audio id type must be number"})
-  audioId: string;
-
-  @IsArray({
-      each: true,
-      message: "Image id type must be string"
-  })
-  imagesIds: string[];
-
-  @IsArray({
-    each: true,
-    message: "File id type must be number"
-  })
-  filesIds: string[];
-}
+import {ID} from "@lib/types";
 
 export class CreateMessageDto {
-  @IsString({message: "Text type must be string"})
+  @IsString()
+  @MaxLength(2048)
   text: string;
 
-  @ValidateNested()
-  attachments: Attachments;
+  @IsOptional()
+  @IsString({
+    each: true,
+    message: "Audio id type must be string"
+  })
+  audioId: ID;
+
+  @IsOptional()
+  @IsString({
+    each: true,
+    message: "File id type must be string"
+  })
+  filesIds: ID[];
+
+  @IsOptional()
+  @IsString({
+    each: true,
+    message: "File id type must be string"
+  })
+  imagesIds: ID[];
 }

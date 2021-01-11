@@ -37,8 +37,8 @@ export class UserService {
 
   findUsersByQuery(query: string, {limit}: {limit: number}): Promise<User[]> {
     return this.userRepository.createQueryBuilder("user")
-      .where("user.firstName like :name", {name: `%${query}%`})
-      .orWhere("user.lastName like :name", {name: `%${query}%`})
+      .where("user.firstName ilike :name", {name: `%${query}%`})
+      .orWhere("user.lastName ilike :name", {name: `%${query}%`})
       .limit(limit)
       .getMany();
   }

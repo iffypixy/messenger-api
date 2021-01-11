@@ -1,6 +1,6 @@
 import {IsNumberString, IsString, MinLength} from "class-validator";
 
-export class GetSearchedUsers {
+export class GetUsersByQuery {
   @IsString({message: "Query type must be a string"})
   @MinLength(1, {message: "Query length must be at least 1 character"})
   q: string;

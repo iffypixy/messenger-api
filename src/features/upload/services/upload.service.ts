@@ -9,8 +9,7 @@ import {FileService} from "./file.service";
 @Injectable()
 export class UploadService {
   constructor(
-    private readonly configService: ConfigService,
-    private readonly fileService: FileService
+    private readonly configService: ConfigService
   ) {}
 
   getS3(): S3 {

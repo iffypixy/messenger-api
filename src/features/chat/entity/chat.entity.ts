@@ -1,42 +1,45 @@
-import {Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany, JoinTable, Column} from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
 
 import {User, UserPublicData} from "@features/user";
+import {ID} from "@lib/types";
 
 @Entity()
 export class Chat {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id: ID;
 
   @ManyToMany(() => User)
   @JoinTable()
   members: User[];
 
-  @Column({
-    enum: ["dialog", "discussion"]
-  })
+  @Column("varchar", {length: 256, nullable: true})
+  title: string | null;
+
+  @Column("varchar", {length: 256, nullable: true})
+  avatar: string;
+
+  @Column("enum", {enum: ["dialog", "discussion"]})
   type: "dialog" | "discussion";
-
-  @Column("varchar", {
-    length: 256,
-    nullable: true
-  })
-  title: string;
-
-  @Column("varchar", {
-    length: 256,
-    nullable: true
-  })
-  image: string;
 
   @CreateDateColumn()
   createdAt: string;
 
-  getDialogPublicData(userId: string): DialogPublicData {
-    const companion = this.members.find(member => member.id !== userId);
+  getDiscussionPublicData(): DiscussionPublicData {
+    const {id, title, avatar, members} = this;
 
     return {
-      id: this.id,
-      companion: companion.getPublicData()
+      id, title, avatar,
+      members: members.map((member) => member.getPublicData())
+    };
+  }
+
+  getDialogPublicData(userId: ID): DialogPublicData {
+    const {id, members} = this;
+
+    const companion = members.find(({id}) => id !== userId);
+
+    return {
+      id, companion: companion && companion.getPublicData()
     };
   }
 }
@@ -47,8 +50,8 @@ export interface DialogPublicData {
 }
 
 export interface DiscussionPublicData {
-  id: string;
+  id: ID;
   members: UserPublicData[];
-  image: string;
   title: string;
+  avatar: string;
 }

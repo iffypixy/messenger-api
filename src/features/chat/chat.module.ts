@@ -1,15 +1,14 @@
 import {MiddlewareConsumer, Module, NestModule} from "@nestjs/common";
-import {TypeOrmModule} from "@nestjs/typeorm";
 import {JwtModule} from "@nestjs/jwt";
 import {ConfigModule, ConfigService} from "@nestjs/config";
+import {TypeOrmModule} from "@nestjs/typeorm";
 
-import {AuthMiddleware} from "@features/auth";
-import {UserModule} from "@features/user";
 import {UploadModule} from "@features/upload";
-import {DialogController, MessageController} from "./controller";
-import {MessageService, DialogService} from "./service";
+import {UserModule} from "@features/user";
+import {AuthMiddleware} from "@features/auth";
+import {DialogController, DiscussionController} from "./controller";
 import {Chat, Message} from "./entity";
-import {DialogGateway} from "./gateway";
+import {ChatService, MessageService} from "./service";
 
 @Module({
   imports: [
@@ -24,13 +23,13 @@ import {DialogGateway} from "./gateway";
     }),
     TypeOrmModule.forFeature([Chat, Message])
   ],
-  controllers: [DialogController, MessageController],
-  providers: [DialogService, MessageService, DialogGateway]
+  controllers: [DialogController, DiscussionController],
+  providers: [ChatService, MessageService]
 })
 export class ChatModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): void {
+  configure(consumer: MiddlewareConsumer): any {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes(DialogController, MessageController);
+      .forRoutes(DialogController, DiscussionController);
   }
 }

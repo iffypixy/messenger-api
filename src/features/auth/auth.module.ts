@@ -4,10 +4,10 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
 
 import {UserModule} from "@features/user";
-import {UploadModule } from "@features/upload";
+import {UploadModule} from "@features/upload";
 import {RefreshSession} from "./entity";
 import {AuthGuard} from "./guard";
-import {RefreshSessionService, AuthService} from "./service";
+import {AuthService, RefreshSessionService} from "./service";
 import {AuthMiddleware} from "./middleware";
 import {AuthController} from "./auth.controller";
 
@@ -34,6 +34,9 @@ export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes({path: "auth/credentials", method: RequestMethod.GET});
+      .forRoutes(
+        {path: "auth/credentials", method: RequestMethod.GET},
+        {path: "auth/logout", method: RequestMethod.POST}
+        )
   }
 }

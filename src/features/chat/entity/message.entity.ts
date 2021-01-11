@@ -1,58 +1,55 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
-import {UserPublicData, User} from "@features/user";
+import {ID} from "@lib/types";
+import {User, UserPublicData} from "@features/user";
+
+import {Attachment, AttachmentPublicData} from "./attachment.entity";
 import {Chat} from "./chat.entity";
-import {Attachments, AttachmentsPublicData} from "./attachments";
 
 @Entity()
 export class Message {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id: ID;
 
   @ManyToOne(type => User)
   @JoinColumn()
   sender: User;
 
-  @Column("varchar", {
+  @Column("text", {
     nullable: true
   })
   text: string;
 
-  @Column(type => Attachments)
-  attachments: Attachments;
+  @Column("boolean")
+  read: boolean;
+
+  @Column(type => Attachment)
+  attachment: Attachment;
 
   @ManyToOne(type => Chat)
   chat: Chat;
-
-  @Column("boolean")
-  isRead: boolean;
 
   @CreateDateColumn()
   createdAt: string;
 
   getPublicData(): MessagePublicData {
-    const {id, sender, text, attachments, createdAt, isRead} = this;
+    const {id, sender, text, read, attachment, chat, createdAt} = this;
 
     return {
-      id, text, createdAt, isRead,
-      sender: sender.getPublicData(),
-      attachments: attachments?.getPublicData()
+      id, text, read, createdAt,
+      attachment: attachment && attachment.getPublicData(),
+      sender: sender && sender.getPublicData(),
+      chatId: chat.id
     };
   }
 }
 
 export interface MessagePublicData {
-  id: string;
+  id: ID;
+  text: string | null;
   sender: UserPublicData;
-  text: string;
-  attachments: AttachmentsPublicData | undefined;
-  isRead: boolean;
+  attachment: AttachmentPublicData | null;
+  read: boolean;
+  chatId: ID;
   createdAt: string;
 }

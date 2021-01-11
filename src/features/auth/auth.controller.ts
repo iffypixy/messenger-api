@@ -36,7 +36,10 @@ export class AuthController {
 
     const {Location: avatar} = await this.uploadService.upload(png, "image/png");
 
-    const user = await this.userService.create({email, firstName, lastName, password, avatar});
+    const user = await this.userService.create({
+      email, firstName, lastName, password, avatar, online: true,
+      lastSeen: new Date().toISOString()
+    });
 
     const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);
 
@@ -81,7 +84,7 @@ export class AuthController {
   async refreshTokens(
     @Req() req: Request,
     @Res({passthrough: true}) res: Response,
-    @Body("fingerprint") fingerprint: string,
+    @Body("fingerprint") fingerprint: string
   ): Promise<void> {
     const error = new BadRequestException("Invalid refresh token");
 
@@ -111,9 +114,12 @@ export class AuthController {
   @Post("logout")
   @HttpCode(205)
   async logout(
-    @Req() req: Request
+    @Req() req: Request,
+    @Res({passthrough: true}) res: Response
   ): Promise<void> {
     const token = req.cookies["refresh-token"];
+
+    res.cookie("access-token", "", {expires: new Date(0)});
 
     await this.refreshSessionService.delete({token});
   }

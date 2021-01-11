@@ -1,5 +1,6 @@
 import {
-  Column,
+  AfterLoad, BeforeInsert, AfterRemove, AfterUpdate, BeforeRemove, BeforeUpdate,
+  Column, AfterInsert,
   CreateDateColumn,
   Entity, ManyToOne,
   PrimaryGeneratedColumn,
@@ -26,16 +27,35 @@ export class User {
   @Column("varchar", {length: 256})
   avatar: string;
 
+  @Column("boolean")
+  online: boolean;
+
+  @Column("timestamp")
+  lastSeen: string;
+
   @CreateDateColumn()
   createdAt: string;
 
   @UpdateDateColumn()
   updatedAt: string;
 
-  public getPublicData(): UserPublicData {
-    const {id, firstName, lastName, avatar} = this;
+  fullName: string;
 
-    return {id, firstName, lastName, avatar,};
+  @BeforeRemove()
+  @BeforeUpdate()
+  @AfterUpdate()
+  @AfterRemove()
+  @BeforeInsert()
+  @AfterInsert()
+  @AfterLoad()
+  getFullName(): void {
+    this.fullName = `${this.firstName} ${this.lastName}`;
+  }
+
+  public getPublicData(): UserPublicData {
+    const {id, firstName, lastName, avatar, online, fullName} = this;
+
+    return {id, firstName, lastName, avatar, online, fullName};
   }
 }
 
@@ -43,5 +63,7 @@ export interface UserPublicData {
   id: string;
   firstName: string;
   lastName: string;
+  fullName: string;
   avatar: string;
+  online: boolean;
 }

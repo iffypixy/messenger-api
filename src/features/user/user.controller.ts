@@ -1,16 +1,18 @@
-import {Controller, Get, NotFoundException, Param, Put, Query} from "@nestjs/common";
+import {Controller, Get, NotFoundException, Param, Query} from "@nestjs/common";
 
 import {UserPublicData} from "./entity";
-import {GetSearchedUsers} from "./dto";
+import {GetUsersByQuery} from "./dto";
 import {UserService} from "./user.service";
 
 @Controller("users")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService
+  ) {}
 
-  @Get("/search")
-  async getSearchedUsers(
-    @Query() {q: query, limit}: GetSearchedUsers
+  @Get("search")
+  async getUsersByQuery(
+    @Query() {q: query, limit}: GetUsersByQuery
   ): Promise<{users: UserPublicData[]}> {
     const users = await this.userService.findUsersByQuery(query, {limit});
 

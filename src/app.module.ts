@@ -8,6 +8,7 @@ import {RefreshSession, AuthModule} from "@features/auth";
 import {ChatModule, Chat, Message} from "@features/chat";
 import {UploadModule, File} from "@features/upload";
 import {ProfileModule} from "@features/profile";
+import {AppGateway} from "./app.gateway";
 
 @Module({
   imports: [
@@ -32,10 +33,11 @@ import {ProfileModule} from "@features/profile";
         port: configService.get("database.port"),
         database: configService.get("database.name"),
         synchronize: configService.get("database.synchronize"),
-        entities: [User, RefreshSession, Chat, Message, File]
+        entities: [User, RefreshSession, File, Chat, Message]
       })
     })
-]
+],
+  providers: [AppGateway]
 })
 
 export class AppModule {

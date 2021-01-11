@@ -5,10 +5,12 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import {AuthMiddleware} from "@features/auth";
 import {UserModule} from "@features/user";
 import {ProfileController} from "./profile.controller";
+import {UploadModule} from "@features/upload";
 
 @Module({
   imports: [
     UserModule,
+    UploadModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

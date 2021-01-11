@@ -1,4 +1,4 @@
+import {ChatService} from "./chat.service";
 import {MessageService} from "./message.service";
-import {DialogService} from "./dialog.service";
 
-export {DialogService, MessageService};
+export {ChatService, MessageService};

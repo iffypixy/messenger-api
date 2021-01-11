@@ -2,7 +2,7 @@ import {Injectable, NestMiddleware, UnauthorizedException} from "@nestjs/common"
 import {NextFunction, Response} from "express";
 import {JwtService} from "@nestjs/jwt";
 
-import {IExtendedRequest} from "@lib/types";
+import {ExtendedRequest} from "@lib/types";
 import {UserService} from "@features/user";
 
 @Injectable()
@@ -13,7 +13,7 @@ export class AuthMiddleware implements NestMiddleware {
   ) {
   }
 
-  async use(req: IExtendedRequest, res: Response, next: NextFunction): Promise<void> {
+  async use(req: ExtendedRequest, res: Response, next: NextFunction): Promise<void> {
     const exception = new UnauthorizedException("Invalid token");
 
     const token: string = req.cookies["access-token"];
@@ -26,6 +26,8 @@ export class AuthMiddleware implements NestMiddleware {
       const user = await this.userService.findById(userId);
 
       if (!user) throw exception;
+
+      await this.userService.update({id: user.id}, {lastSeen: new Date().toISOString()});
 
       req.user = user;
 
