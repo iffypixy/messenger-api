@@ -2,13 +2,20 @@ import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 
-import {databaseConfig, jwtConfig, s3Config} from "@config";
-import {UserModule, User} from "@features/user";
-import {RefreshSession, AuthModule} from "@features/auth";
-import {ChatModule, Chat, Message} from "@features/chat";
-import {UploadModule, File} from "@features/upload";
-import {ProfileModule} from "@features/profile";
-import {AppGateway} from "./app.gateway";
+import {databaseConfig, jwtConfig, s3Config} from "@config/index";
+import {UserModule, User} from "@modules/user";
+import {RefreshSession, AuthModule} from "@modules/auth";
+import {
+  ChatModule,
+  OneToOneChat,
+  GroupChat,
+  OneToOneChatMember,
+  OneToOneChatMessage,
+  GroupChatMessage,
+  GroupChatMember
+} from "@modules/chat";
+import {UploadModule, File} from "@modules/upload";
+import {ProfileModule} from "@modules/profile";
 
 @Module({
   imports: [
@@ -27,18 +34,26 @@ import {AppGateway} from "./app.gateway";
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: "postgres",
-        user: configService.get("database.user"),
+        username: configService.get("database.username"),
         password: configService.get("database.password"),
         host: configService.get("database.host"),
         port: configService.get("database.port"),
         database: configService.get("database.name"),
         synchronize: configService.get("database.synchronize"),
-        entities: [User, RefreshSession, File, Chat, Message]
+        entities: [
+          User,
+          RefreshSession,
+          File,
+          ChatModule,
+          OneToOneChat,
+          GroupChat,
+          OneToOneChatMember,
+          OneToOneChatMessage,
+          GroupChatMessage,
+          GroupChatMember
+        ]
       })
     })
-],
-  providers: [AppGateway]
+  ]
 })
-
-export class AppModule {
-}
+export class AppModule {}

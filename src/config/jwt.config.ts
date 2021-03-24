@@ -1,11 +1,11 @@
 import {registerAs} from "@nestjs/config";
 
 export const jwtConfig = registerAs("jwt", () => ({
-  secretKey: process.env.JWT_SECRET_KEY,
+  secret: process.env.JWT_SECRET_KEY,
   accessToken: {
-    expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN
+    expiresIn: parseInt(process.env.JWT_ACCESS_TOKEN_EXPIRES_IN, 10)
   },
   refreshToken: {
-    expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN
+    expiresIn: parseInt(process.env.JWT_REFRESH_TOKEN_EXPIRES_IN, 10)
   }
 }));
