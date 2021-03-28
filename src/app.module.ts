@@ -12,7 +12,8 @@ import {
   OneToOneChatMember,
   OneToOneChatMessage,
   GroupChatMessage,
-  GroupChatMember
+  GroupChatMember,
+  Attachment
 } from "@modules/chat";
 import {UploadModule, File} from "@modules/upload";
 import {ProfileModule} from "@modules/profile";
@@ -50,7 +51,8 @@ import {ProfileModule} from "@modules/profile";
           OneToOneChatMember,
           OneToOneChatMessage,
           GroupChatMessage,
-          GroupChatMember
+          GroupChatMember,
+          Attachment
         ]
       })
     })

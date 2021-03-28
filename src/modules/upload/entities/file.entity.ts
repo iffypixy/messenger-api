@@ -1,7 +1,7 @@
 import {Entity, Column, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
 import {User} from "@modules/user";
-import {FileExtension, extensions} from "@lib/extensions";
+import {extensions} from "@lib/extensions";
 import {FilePublicData} from "../lib/typings";
 
 @Entity()
@@ -19,10 +19,10 @@ export class File {
   size: number;
 
   @Column("enum", {
-    enum: [...extensions.audio, ...extensions.image],
+    enum: extensions.all,
     nullable: false
   })
-  extension: FileExtension;
+  extension: string;
 
   @Column("varchar", {
     length: 1024,

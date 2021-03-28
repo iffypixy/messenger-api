@@ -42,9 +42,6 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
-
   get public(): UserPublicData {
     const {id, login, avatar} = this;
 

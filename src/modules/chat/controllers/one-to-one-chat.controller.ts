@@ -15,15 +15,17 @@ import {In, Not} from "typeorm";
 import {ID} from "@lib/typings";
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
 import {User, UserPublicData, UserService} from "@modules/user";
-import {FileService} from "@modules/upload";
-import {AudioExtension, extensions, ImageExtension} from "@lib/extensions";
+import {FilePublicData, FileService} from "@modules/upload";
+import {extensions, isExtensionValid} from "@lib/extensions";
 import {
   OneToOneChatMessageService,
-  OneToOneChatMemberService
+  OneToOneChatMemberService,
+  AttachmentService
 } from "../services";
 import {CreateMessageDto} from "../dtos";
-import {ChatMessagePublicData} from "../lib/typings";
+import {AttachmentPublicData, ChatMessagePublicData} from "../lib/typings";
 import {OneToOneChatMember} from "../entities";
+import {AttachmentType} from "../lib/attachment-types";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("chats")
@@ -31,6 +33,7 @@ export class OneToOneChatController {
   constructor(
     private readonly messageService: OneToOneChatMessageService,
     private readonly memberService: OneToOneChatMemberService,
+    private readonly attachmentService: AttachmentService,
     private readonly fileService: FileService,
     private readonly userService: UserService
   ) {}
@@ -40,7 +43,9 @@ export class OneToOneChatController {
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID,
     @Query("offset", ParseIntPipe) offset: number
-  ): Promise<{messages: ChatMessagePublicData[]}> {
+  ): Promise<{
+    messages: ChatMessagePublicData[];
+  }> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
@@ -67,7 +72,7 @@ export class OneToOneChatController {
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID,
     @Body() createMessageDto: CreateMessageDto
-  ): Promise<{message: ChatMessagePublicData}> {
+  ): Promise<{message: ChatMessagePublicData & AttachmentPublicData}> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
@@ -79,7 +84,7 @@ export class OneToOneChatController {
     if (!member)
       member = await this.memberService.createByUsers([user, partner]);
 
-    const files = await this.fileService.find({
+    const documents = await this.fileService.find({
       user,
       id: In([
         ...createMessageDto.files,
@@ -88,25 +93,45 @@ export class OneToOneChatController {
       ])
     });
 
+    const files = documents.filter(
+      ({extension}) =>
+        !isExtensionValid(extension, "image") &&
+        !isExtensionValid(extension, "audio")
+    );
+
+    const images = documents.filter(({extension}) =>
+      isExtensionValid(extension, "image")
+    );
+
+    const audio =
+      documents.find(({extension}) => isExtensionValid(extension, "audio")) ||
+      null;
+
+    const doesAttachmentExist = !!files.length || !!images.length || audio;
+
+    const types: AttachmentType[] = [];
+
+    if (!!files.length) types.push("files");
+    if (!!images.length) types.push("images");
+    if (!!audio) types.push("audio");
+
+    const attachment = doesAttachmentExist
+      ? await this.attachmentService.create({
+          audio,
+          files,
+          images,
+          includes: types
+        })
+      : null;
+
     const message = await this.messageService.create({
-      attachment: {
-        audio:
-          files.find(({extension}) =>
-            extensions.audio.includes(extension as AudioExtension)
-          ) || null,
-        images: files.filter(({extension}) =>
-          extensions.image.includes(extension as ImageExtension)
-        ),
-        files: files.filter(
-          ({extension}) => !extensions.all.includes(extension)
-        )
-      },
       sender: {
         type: "user",
         member
       },
       text: createMessageDto.text,
-      chat: member.chat
+      chat: member.chat,
+      attachment
     });
 
     return {
@@ -154,11 +179,103 @@ export class OneToOneChatController {
     });
 
     return {
-      chats: partners.map(({chat, user}) => ({
-        id: chat.id,
-        partner: user.public,
-        lastMessage: messages.find(({chat}) => chat.id === chat.id).public
-      }))
+      chats: partners.map(({chat, user}) => {
+        const message = messages.find(({chat}) => chat.id === chat.id) || null;
+
+        return {
+          id: chat.id,
+          partner: user.public,
+          lastMessage: message && message.public
+        };
+      })
+    };
+  }
+
+  @Get(":partnerId/attachments/audio")
+  async getAudio(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{
+    audios: {id: ID; url: string; createdAt: Date}[];
+  }> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const member = await this.memberService.findOneByUsers([user, partner]);
+
+    const messages = await this.messageService.findManyWithAttachmentByChatId(
+      {id: member.chat.id, type: "audio"},
+      {offset}
+    );
+
+    return {
+      audios: messages.map(msg => {
+        const {id, audio, createdAt} = msg.public;
+
+        return {
+          id,
+          url: audio,
+          createdAt
+        };
+      })
+    };
+  }
+
+  @Get(":partnerId/attachments/images")
+  async getImages(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{
+    images: {id: ID; url: string; createdAt: Date}[];
+  }> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const member = await this.memberService.findOneByUsers([user, partner]);
+
+    const messages = await this.messageService.findManyWithAttachmentByChatId(
+      {id: member.chat.id, type: "images"},
+      {offset}
+    );
+
+    return {
+      images: messages.reduce((prev, current) => {
+        const {id, images, createdAt} = current.public;
+
+        return [...prev, ...images.map(url => ({id, url, createdAt}))];
+      }, [])
+    };
+  }
+
+  @Get(":partnerId/attachments/files")
+  async getFiles(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{
+    files: {id: ID; files: FilePublicData[]; createdAt: string}[];
+  }> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const member = await this.memberService.findOneByUsers([user, partner]);
+
+    const messages = await this.messageService.findManyWithAttachmentByChatId(
+      {id: member.chat.id, type: "files"},
+      {offset}
+    );
+
+    return {
+      files: messages.reduce((prev, current) => {
+        const {id, files, createdAt} = current.public;
+
+        return [...prev, ...files.map(file => ({...file, id, createdAt}))];
+      }, [])
     };
   }
 }

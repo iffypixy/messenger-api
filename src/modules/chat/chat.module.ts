@@ -11,7 +11,8 @@ import {
   OneToOneChatMemberService,
   GroupChatService,
   GroupChatMemberService,
-  GroupChatMessageService
+  GroupChatMessageService,
+  AttachmentService
 } from "./services";
 import {
   OneToOneChat,
@@ -19,7 +20,8 @@ import {
   OneToOneChatMember,
   OneToOneChatMessage,
   GroupChatMessage,
-  GroupChatMember
+  GroupChatMember,
+  Attachment
 } from "./entities";
 
 @Module({
@@ -33,7 +35,8 @@ import {
       OneToOneChatMember,
       OneToOneChatMessage,
       GroupChatMessage,
-      GroupChatMember
+      GroupChatMember,
+      Attachment
     ])
   ],
   controllers: [OneToOneChatController, GroupChatController],
@@ -43,7 +46,8 @@ import {
     OneToOneChatMemberService,
     GroupChatService,
     GroupChatMemberService,
-    GroupChatMessageService
+    GroupChatMessageService,
+    AttachmentService
   ]
 })
 export class ChatModule implements NestModule {

@@ -12,11 +12,18 @@ export interface ChatMessagePublicData {
   id: ID;
   text: string | null;
   sender: UserPublicData | null;
-  files: FilePublicData[] | null;
-  images: string[] | null;
-  audio: string | null;
   isEdited: boolean;
   isRead: boolean;
   isSystem: boolean;
-  createdAt: string;
+  createdAt: Date;
+  files: FilePublicData[] | null;
+  images: string[] | null;
+  audio: string | null;
+}
+
+export interface AttachmentPublicData {
+  id: ID;
+  files: FilePublicData[] | null;
+  images: string[] | null;
+  audio: string | null;
 }

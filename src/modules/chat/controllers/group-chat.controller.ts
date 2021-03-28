@@ -22,7 +22,7 @@ import {maxFileSize} from "@lib/constants";
 import {BufferedFile, ID} from "@lib/typings";
 import {FileService, UploadService} from "@modules/upload";
 import {cleanObject} from "@lib/functions";
-import {extensions, ImageExtension, AudioExtension} from "@lib/extensions";
+import {extensions, isExtensionValid} from "@lib/extensions";
 import {minimalNumberOfMembersToCreateGroupChat} from "../lib/constants";
 import {CreateGroupChatDto, CreateMessageDto} from "../dtos";
 import {
@@ -48,15 +48,16 @@ export class GroupChatController {
     FileInterceptor("avatar", {
       limits: {fileSize: maxFileSize},
       fileFilter: (_, file, callback) => {
-        if (
-          extensions.image.includes(
-            <ImageExtension>mime.getExtension(file.mimetype)
-          )
-        ) {
-          return callback(null, true);
+        const ext = `.${mime.getExtension(file.mimetype)}`;
+
+        if (!isExtensionValid(ext, "image")) {
+          return callback(
+            new BadRequestException("Invalid avatar extension"),
+            false
+          );
         }
 
-        callback(new BadRequestException("Invalid avatar extension"), false);
+        return callback(null, true);
       }
     })
   )
@@ -162,19 +163,7 @@ export class GroupChatController {
         type: "user",
         member
       },
-      text: createMessageDto.text,
-      attachment: {
-        audio:
-          files.find(({extension}) =>
-            extensions.audio.includes(extension as AudioExtension)
-          ) || null,
-        images: files.filter(({extension}) =>
-          extensions.image.includes(extension as ImageExtension)
-        ),
-        files: files.filter(
-          ({extension}) => !extensions.all.includes(extension)
-        )
-      }
+      text: createMessageDto.text
     });
 
     return {

@@ -1,24 +1,5 @@
-export type ImageExtension = ".jpeg" | ".png" | ".jpg" | ".gif";
-export type AudioExtension =
-  | ".aac"
-  | ".wav"
-  | ".mp3"
-  | ".mp4"
-  | ".wma"
-  | ".flac"
-  | ".webm"
-  | ".weba";
-
-export type FileExtension = ImageExtension | AudioExtension;
-
-interface Extensions {
-  image: ImageExtension[];
-  audio: AudioExtension[];
-  all: (ImageExtension | AudioExtension)[];
-}
-
-const image: ImageExtension[] = [".jpeg", ".png", ".jpg", ".gif"];
-const audio: AudioExtension[] = [
+const image = [".jpeg", ".png", ".jpg", ".gif"];
+const audio = [
   ".aac",
   ".wav",
   ".mp3",
@@ -26,11 +7,44 @@ const audio: AudioExtension[] = [
   ".wma",
   ".flac",
   ".webm",
-  ".weba"
+  ".weba",
+  ".ogg",
+  ".ogv",
+  ".oga",
+  ".ogx",
+  ".ogm",
+  ".spx",
+  ".opus"
 ];
 
-export const extensions: Extensions = {
+const other = [".txt", ".doc", ".md", ".markdown"];
+
+const all = [...image, ...audio, ...other];
+
+export type ExtensionType = "image" | "audio";
+
+export const isExtensionValid = (
+  ext: string,
+  type?: ExtensionType
+): boolean => {
+  if (type) {
+    switch (type) {
+      case "audio":
+        return audio.includes(ext);
+
+      case "image":
+        return image.includes(ext);
+
+      default:
+        return false;
+    }
+  }
+
+  return all.includes(ext);
+};
+
+export const extensions = {
   image,
   audio,
-  all: [...image, ...audio]
+  all
 };
