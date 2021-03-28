@@ -1,10 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-  ManyToOne
-} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne} from "typeorm";
 
 import {User} from "@modules/user";
 import {ID} from "@lib/typings";
@@ -16,7 +10,7 @@ export class GroupChatMember {
   id: ID;
 
   @JoinColumn()
-  @OneToOne(type => User, {
+  @ManyToOne(type => User, {
     eager: true
   })
   user: User;

@@ -1,5 +1,5 @@
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
-import {User, UserPublicData, UserService} from "@modules/user";
+import {User, UserService} from "@modules/user";
 import {
   BadRequestException,
   Body,
@@ -20,7 +20,7 @@ import * as mime from "mime";
 
 import {maxFileSize} from "@lib/constants";
 import {BufferedFile, ID} from "@lib/typings";
-import {FileService, UploadService} from "@modules/upload";
+import {FilePublicData, FileService, UploadService} from "@modules/upload";
 import {cleanObject} from "@lib/functions";
 import {isExtensionValid} from "@lib/extensions";
 import {minimalNumberOfMembersToCreateGroupChat} from "../lib/constants";
@@ -28,7 +28,8 @@ import {CreateGroupChatDto, CreateMessageDto} from "../dtos";
 import {
   GroupChatMemberService,
   GroupChatService,
-  GroupChatMessageService
+  GroupChatMessageService,
+  AttachmentService
 } from "../services";
 import {ChatMessagePublicData, GroupChatPublicData} from "../lib/typings";
 
@@ -41,7 +42,8 @@ export class GroupChatController {
     private readonly userService: UserService,
     private readonly memberService: GroupChatMemberService,
     private readonly messageService: GroupChatMessageService,
-    private readonly fileService: FileService
+    private readonly fileService: FileService,
+    private readonly attachmentService: AttachmentService
   ) {}
 
   @UseInterceptors(
@@ -52,7 +54,7 @@ export class GroupChatController {
 
         if (!isExtensionValid(ext, "image")) {
           return callback(
-            new BadRequestException("Invalid avatar extension"),
+            new BadRequestException("Invalid avatar extension."),
             false
           );
         }
@@ -66,13 +68,13 @@ export class GroupChatController {
     @GetUser() user: User,
     @Body() dto: CreateGroupChatDto,
     @UploadedFile() avatar: BufferedFile
-  ): Promise<{chat: GroupChatPublicData; members: UserPublicData[]}> {
+  ): Promise<{chat: GroupChatPublicData}> {
     const users = await this.userService.find({
       where: {id: In(dto.members)}
     });
 
     if (users.length < minimalNumberOfMembersToCreateGroupChat)
-      throw new BadRequestException("Small amount of members");
+      throw new BadRequestException("Small amount of members.");
 
     const title =
       dto.title ||
@@ -99,13 +101,12 @@ export class GroupChatController {
     }
 
     return {
-      chat: chat.public,
-      members: users.map(user => user.public)
+      chat: chat.public
     };
   }
 
   @Get()
-  async get(
+  async getMany(
     @GetUser() user: User
   ): Promise<{
     chats: ({lastMessage: ChatMessagePublicData} & GroupChatPublicData)[];
@@ -126,11 +127,11 @@ export class GroupChatController {
 
     return {
       chats: members.map(({chat}) => {
-        const msg = messages.find(msg => msg.chat.id === chat.id);
+        const msg = messages.find(msg => msg.chat.id === chat.id) || null;
 
         return {
           ...chat.public,
-          lastMessage: (msg && msg.public) || null
+          lastMessage: msg && msg.public
         };
       })
     };
@@ -140,7 +141,7 @@ export class GroupChatController {
   async createMessage(
     @GetUser() user: User,
     @Param("id") id: ID,
-    @Body() createMessageDto: CreateMessageDto
+    @Body() dto: CreateMessageDto
   ): Promise<{message: ChatMessagePublicData}> {
     const member = await this.memberService.findOne({
       where: {
@@ -149,16 +150,36 @@ export class GroupChatController {
       }
     });
 
-    if (!member) throw new NotFoundException("Chat is not found");
+    if (!member) throw new NotFoundException("Invalid credentials.");
 
-    const files = await this.fileService.find({
+    const documents = await this.fileService.find({
       user,
-      id: In([
-        ...createMessageDto.files,
-        ...createMessageDto.images,
-        createMessageDto.audio
-      ])
+      id: In([...dto.files, ...dto.images, dto.audio])
     });
+
+    const files = documents.filter(
+      ({extension}) =>
+        !isExtensionValid(extension, "image") &&
+        !isExtensionValid(extension, "audio")
+    );
+
+    const images = documents.filter(({extension}) =>
+      isExtensionValid(extension, "image")
+    );
+
+    const audio =
+      documents.find(({extension}) => isExtensionValid(extension, "audio")) ||
+      null;
+
+    const doesAttachmentExist = !!files.length || !!images.length || audio;
+
+    const attachment = doesAttachmentExist
+      ? await this.attachmentService.create({
+          audio,
+          files,
+          images
+        })
+      : null;
 
     const message = await this.messageService.create({
       chat: member.chat,
@@ -166,7 +187,8 @@ export class GroupChatController {
         type: "user",
         member
       },
-      text: createMessageDto.text
+      text: dto.text,
+      attachment
     });
 
     return {
@@ -184,7 +206,7 @@ export class GroupChatController {
       where: {id}
     });
 
-    if (!chat) throw new NotFoundException("Chat is not found");
+    if (!chat) throw new NotFoundException("Chat is not found.");
 
     const messages = await this.messageService.find({
       where: {chat},
@@ -197,6 +219,113 @@ export class GroupChatController {
 
     return {
       messages: messages.map(msg => msg.public)
+    };
+  }
+
+  @Get(":id")
+  async get(
+    @GetUser() user: User,
+    @Param("id") id: ID
+  ): Promise<{chat: GroupChatPublicData}> {
+    const member = await this.memberService.findOne({
+      where: {
+        chat: {id},
+        user
+      }
+    });
+
+    if (!member) throw new BadRequestException("Invalid credentials.");
+
+    return {
+      chat: member.chat.public
+    };
+  }
+
+  @Get(":id/files")
+  async getFiles(
+    @GetUser() user: User,
+    @Param("id") id: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{files: {id: ID; file: FilePublicData; createdAt: Date}[]}> {
+    const chat = await this.chatService.findOne({
+      where: {id}
+    });
+
+    const hasAccess = await this.memberService.findOne({where: {chat, user}});
+
+    if (!chat || !hasAccess) throw new NotFoundException("Chat is not found.");
+
+    const messages = await this.messageService.findManyWithAttachmentByChatId(
+      {id: chat.id, type: "file"},
+      {offset}
+    );
+
+    return {
+      files: messages.reduce((prev, current) => {
+        const {id, files, createdAt} = current.public;
+
+        return [...prev, ...files.map(file => ({...file, id, createdAt}))];
+      }, [])
+    };
+  }
+
+  @Get(":id/images")
+  async getImages(
+    @GetUser() user: User,
+    @Param("id") id: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{images: {id: ID; url: string; createdAt: Date}[]}> {
+    const chat = await this.chatService.findOne({
+      where: {id}
+    });
+
+    if (!chat) throw new NotFoundException("Chat is not found.");
+
+    const hasAccess = await this.memberService.findOne({where: {chat, user}});
+
+    if (!chat || !hasAccess) throw new NotFoundException("Chat is not found.");
+
+    const messages = await this.messageService.findManyWithAttachmentByChatId(
+      {id: chat.id, type: "image"},
+      {offset}
+    );
+
+    return {
+      images: messages.reduce((prev, current) => {
+        const {id, images, createdAt} = current.public;
+
+        return [...prev, ...images.map(url => ({id, url, createdAt}))];
+      }, [])
+    };
+  }
+
+  @Get(":id/audios")
+  async getAudios(
+    @GetUser() user: User,
+    @Param("id") id: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{audios: {id: ID; url: string; createdAt: Date}[]}> {
+    const chat = await this.chatService.findOne({
+      where: {id}
+    });
+
+    if (!chat) throw new NotFoundException("Chat is not found.");
+
+    const hasAccess = await this.memberService.findOne({where: {chat, user}});
+
+    if (!chat || !hasAccess) throw new NotFoundException("Chat is not found.");
+
+    const messages = await this.messageService.findManyWithAttachmentByChatId(
+      {id: chat.id, type: "audio"},
+      {offset}
+    );
+
+    return {
+      audios: messages.map(msg => ({
+        id: msg.id,
+        url: msg.public.audio,
+        createdAt: msg.createdAt
+      }))
     };
   }
 }
