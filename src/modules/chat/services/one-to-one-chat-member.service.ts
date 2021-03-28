@@ -69,7 +69,7 @@ export class OneToOneChatMemberService {
     return (
       firsts.find(
         ({chat}) =>
-          seconds.findIndex(second => second.chat.id !== chat.id) !== -1
+          seconds.findIndex(second => second.chat.id === chat.id) !== -1
       ) || null
     );
   }

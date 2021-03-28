@@ -16,7 +16,7 @@ import {ID} from "@lib/typings";
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
 import {User, UserPublicData, UserService} from "@modules/user";
 import {FilePublicData, FileService} from "@modules/upload";
-import {extensions, isExtensionValid} from "@lib/extensions";
+import {isExtensionValid} from "@lib/extensions";
 import {
   OneToOneChatMessageService,
   OneToOneChatMemberService,
@@ -25,7 +25,6 @@ import {
 import {CreateMessageDto} from "../dtos";
 import {AttachmentPublicData, ChatMessagePublicData} from "../lib/typings";
 import {OneToOneChatMember} from "../entities";
-import {AttachmentType} from "../lib/attachment-types";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("chats")
@@ -37,6 +36,27 @@ export class OneToOneChatController {
     private readonly fileService: FileService,
     private readonly userService: UserService
   ) {}
+
+  @Get(":partnerId")
+  async get(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID
+  ): Promise<{id: ID; partner: UserPublicData}> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+      [user, partner]
+    );
+
+    if (!member) throw new BadRequestException("Invalid credentials.");
+
+    return {
+      id: member.chat.id,
+      partner: partner.public
+    };
+  }
 
   @Get(":partnerId/messages")
   async getMessages(
@@ -71,7 +91,7 @@ export class OneToOneChatController {
   async createMessage(
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID,
-    @Body() createMessageDto: CreateMessageDto
+    @Body() dto: CreateMessageDto
   ): Promise<{message: ChatMessagePublicData & AttachmentPublicData}> {
     const partner = await this.userService.findById(partnerId);
 
@@ -86,11 +106,7 @@ export class OneToOneChatController {
 
     const documents = await this.fileService.find({
       user,
-      id: In([
-        ...createMessageDto.files,
-        ...createMessageDto.images,
-        createMessageDto.audio
-      ])
+      id: In([...dto.files, ...dto.images, dto.audio])
     });
 
     const files = documents.filter(
@@ -109,18 +125,11 @@ export class OneToOneChatController {
 
     const doesAttachmentExist = !!files.length || !!images.length || audio;
 
-    const types: AttachmentType[] = [];
-
-    if (!!files.length) types.push("files");
-    if (!!images.length) types.push("images");
-    if (!!audio) types.push("audio");
-
     const attachment = doesAttachmentExist
       ? await this.attachmentService.create({
           audio,
           files,
-          images,
-          includes: types
+          images
         })
       : null;
 
@@ -129,7 +138,7 @@ export class OneToOneChatController {
         type: "user",
         member
       },
-      text: createMessageDto.text,
+      text: dto.text,
       chat: member.chat,
       attachment
     });
@@ -140,7 +149,7 @@ export class OneToOneChatController {
   }
 
   @Get()
-  async get(
+  async getMany(
     @GetUser() user: User
   ): Promise<{
     chats: {
@@ -156,25 +165,15 @@ export class OneToOneChatController {
     const chatsIds = members.map(({chat}) => chat.id);
 
     const messages = await this.messageService.find({
-      where: {
-        chat: {
-          id: In(chatsIds)
-        }
-      },
-      take: 1,
-      order: {
-        createdAt: "DESC"
-      }
+      where: {chat: {id: In(chatsIds)}},
+      order: {createdAt: "DESC"},
+      take: 1
     });
 
     const partners = await this.memberService.find({
       where: {
-        chat: {
-          id: In(chatsIds)
-        },
-        user: {
-          id: Not(user.id)
-        }
+        chat: {id: In(chatsIds)},
+        user: {id: Not(user.id)}
       }
     });
 
@@ -191,7 +190,7 @@ export class OneToOneChatController {
     };
   }
 
-  @Get(":partnerId/attachments/audio")
+  @Get(":partnerId/audio")
   async getAudio(
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID,
@@ -203,7 +202,11 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([user, partner]);
+    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+      [user, partner]
+    );
+
+    if (!member) throw new BadRequestException("Invalid credentials.");
 
     const messages = await this.messageService.findManyWithAttachmentByChatId(
       {id: member.chat.id, type: "audio"},
@@ -223,7 +226,7 @@ export class OneToOneChatController {
     };
   }
 
-  @Get(":partnerId/attachments/images")
+  @Get(":partnerId/images")
   async getImages(
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID,
@@ -235,10 +238,14 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([user, partner]);
+    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+      [user, partner]
+    );
+
+    if (!member) throw new BadRequestException("Invalid credentials.");
 
     const messages = await this.messageService.findManyWithAttachmentByChatId(
-      {id: member.chat.id, type: "images"},
+      {id: member.chat.id, type: "image"},
       {offset}
     );
 
@@ -251,22 +258,26 @@ export class OneToOneChatController {
     };
   }
 
-  @Get(":partnerId/attachments/files")
+  @Get(":partnerId/files")
   async getFiles(
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID,
     @Query("offset", ParseIntPipe) offset: number
   ): Promise<{
-    files: {id: ID; files: FilePublicData[]; createdAt: string}[];
+    files: {id: ID; files: FilePublicData[]; createdAt: Date}[];
   }> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([user, partner]);
+    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+      [user, partner]
+    );
+
+    if (!member) throw new BadRequestException("Invalid credentials");
 
     const messages = await this.messageService.findManyWithAttachmentByChatId(
-      {id: member.chat.id, type: "files"},
+      {id: member.chat.id, type: "file"},
       {offset}
     );
 

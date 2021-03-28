@@ -27,3 +27,5 @@ export interface AttachmentPublicData {
   images: string[] | null;
   audio: string | null;
 }
+
+export type AttachmentType = "audio" | "image" | "file";

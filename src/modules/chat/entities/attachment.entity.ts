@@ -9,7 +9,6 @@ import {
 
 import {File} from "@modules/upload";
 import {ID} from "@lib/typings";
-import {AttachmentType, attachmentTypes} from "../lib/attachment-types";
 import {AttachmentPublicData} from "../lib/typings";
 
 @Entity()
@@ -36,13 +35,6 @@ export class Attachment {
     eager: true
   })
   files: File[];
-
-  @Column("enum", {
-    enum: attachmentTypes,
-    array: true,
-    nullable: true
-  })
-  includes: AttachmentType[];
 
   get public(): AttachmentPublicData {
     const files =

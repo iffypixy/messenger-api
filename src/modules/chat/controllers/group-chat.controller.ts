@@ -14,7 +14,7 @@ import {
   UseGuards,
   UseInterceptors
 } from "@nestjs/common";
-import {In, Not} from "typeorm";
+import {In} from "typeorm";
 import {FileInterceptor} from "@nestjs/platform-express";
 import * as mime from "mime";
 
@@ -22,7 +22,7 @@ import {maxFileSize} from "@lib/constants";
 import {BufferedFile, ID} from "@lib/typings";
 import {FileService, UploadService} from "@modules/upload";
 import {cleanObject} from "@lib/functions";
-import {extensions, isExtensionValid} from "@lib/extensions";
+import {isExtensionValid} from "@lib/extensions";
 import {minimalNumberOfMembersToCreateGroupChat} from "../lib/constants";
 import {CreateGroupChatDto, CreateMessageDto} from "../dtos";
 import {
@@ -64,19 +64,22 @@ export class GroupChatController {
   @Post()
   async create(
     @GetUser() user: User,
-    @Body() createGroupChatDto: CreateGroupChatDto,
+    @Body() dto: CreateGroupChatDto,
     @UploadedFile() avatar: BufferedFile
   ): Promise<{chat: GroupChatPublicData; members: UserPublicData[]}> {
     const users = await this.userService.find({
-      where: {id: In(createGroupChatDto.members)}
+      where: {id: In(dto.members)}
     });
 
     if (users.length < minimalNumberOfMembersToCreateGroupChat)
       throw new BadRequestException("Small amount of members");
 
     const title =
-      createGroupChatDto.title ||
-      `${user.login}, ${users.map(({login}) => login).join(", ")}`;
+      dto.title ||
+      `${user.login}, ${users
+        .filter((_, idx) => idx <= 5)
+        .map(({login}) => login)
+        .join(", ")}`;
 
     const url =
       avatar &&

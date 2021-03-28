@@ -31,8 +31,6 @@ export class UploadController {
       fileFilter: (_, file: BufferedFile, callback) => {
         const ext = `.${mime.getExtension(file.mimetype)}`;
 
-        console.log(ext);
-
         if (!isExtensionValid(ext)) {
           return callback(
             new BadRequestException("Invalid file extension"),

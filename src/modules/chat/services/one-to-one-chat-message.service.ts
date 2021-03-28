@@ -9,7 +9,7 @@ import {
 
 import {ID, RequestOptions} from "@lib/typings";
 import {OneToOneChatMessage} from "../entities";
-import {AttachmentType} from "../lib/attachment-types";
+import {AttachmentType} from "../lib/typings";
 @Injectable()
 export class OneToOneChatMessageService {
   constructor(
@@ -47,14 +47,12 @@ export class OneToOneChatMessageService {
       .leftJoinAndSelect("msg.chat", "chat")
       .leftJoinAndSelect("msg.sender.member", "member")
       .leftJoinAndSelect("member.user", "user")
-      .leftJoinAndSelect("attachment.files", "files")
-      .leftJoinAndSelect("attachment.images", "images")
+      .leftJoinAndSelect("attachment.files", "file")
+      .leftJoinAndSelect("attachment.images", "image")
       .leftJoinAndSelect("attachment.audio", "audio")
       .where("chat.id = :id", {id})
-      .andWhere(
-        "attachment.includes @> ARRAY[:types::attachment_includes_enum[]]",
-        {types: [type]}
-      )
+      .andWhere("msg.sender.type = :type", {type: "user"})
+      .andWhere(`${type} IS NOT NULL`)
       .orderBy("msg.createdAt", "DESC")
       .limit(15)
       .skip(offset)
