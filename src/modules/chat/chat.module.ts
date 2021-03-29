@@ -4,26 +4,25 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {UploadModule} from "@modules/upload";
 import {UserModule} from "@modules/user";
 import {AuthMiddleware, AuthModule} from "@modules/auth";
-import {AttachmentService} from "./services";
 import {
-  GroupChat,
-  GroupChatMember,
-  GroupChatMessage,
-  GroupChatController,
+  AttachmentService,
+  OneToOneChatMemberService,
+  OneToOneChatMessageService,
+  OneToOneChatService,
   GroupChatService,
   GroupChatMessageService,
   GroupChatMemberService
-} from "./features/group-chat";
+} from "./services";
 import {
+  Attachment,
+  GroupChat,
+  GroupChatMember,
+  GroupChatMessage,
   OneToOneChat,
   OneToOneChatMember,
-  OneToOneChatMessage,
-  OneToOneChatController,
-  OneToOneChatMemberService,
-  OneToOneChatMessageService,
-  OneToOneChatService
-} from "./features/one-to-one-chat";
-import {Attachment} from "./entities";
+  OneToOneChatMessage
+} from "./entities";
+import {GroupChatController, OneToOneChatController} from "./controllers";
 
 @Module({
   imports: [

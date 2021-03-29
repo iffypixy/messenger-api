@@ -8,26 +8,25 @@ import {
   ParseIntPipe,
   Post,
   Query,
-  UseGuards
+  UseGuards,
+  Delete,
+  HttpCode
 } from "@nestjs/common";
 import {In, Not} from "typeorm";
 
-import {ID} from "@lib/typings";
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
-import {
-  AttachmentPublicData,
-  ChatMessagePublicData,
-  CreateMessageDto
-} from "@modules/chat";
 import {User, UserPublicData, UserService} from "@modules/user";
 import {FilePublicData, FileService} from "@modules/upload";
+import {ID} from "@lib/typings";
 import {isExtensionValid} from "@lib/extensions";
 import {
+  AttachmentService,
   OneToOneChatMessageService,
   OneToOneChatMemberService
-} from "./services";
-import {OneToOneChatMember} from "./entities";
-import {AttachmentService} from "../../services";
+} from "../services";
+import {OneToOneChatMember} from "../entities";
+import {CreateMessageDto, DeleteMessagesDto} from "../dtos";
+import {ChatMessagePublicData, AttachmentPublicData} from "../lib/typings";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("chats")
@@ -291,5 +290,29 @@ export class OneToOneChatController {
         return [...prev, ...files.map(file => ({...file, id, createdAt}))];
       }, [])
     };
+  }
+
+  @HttpCode(204)
+  @Delete(":partnerId/messages")
+  async deleteMessages(
+    @GetUser() user: User,
+    @Body() dto: DeleteMessagesDto,
+    @Param("partnerId") partnerId: ID
+  ): Promise<void> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+      [user, partner]
+    );
+
+    if (!member) throw new BadRequestException("Invalid credentials");
+
+    await this.messageService.delete({
+      chat: member.chat,
+      id: In(dto.messages),
+      sender: {member}
+    });
   }
 }

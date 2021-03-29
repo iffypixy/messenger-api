@@ -1,10 +1,16 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {DeepPartial, FindManyOptions, Repository} from "typeorm";
+import {
+  DeepPartial,
+  DeleteResult,
+  FindConditions,
+  FindManyOptions,
+  Repository
+} from "typeorm";
 
 import {ID, RequestOptions} from "@lib/typings";
-import {AttachmentType} from "@modules/chat";
 import {GroupChatMessage} from "../entities";
+import {AttachmentType} from "../lib/typings";
 
 @Injectable()
 export class GroupChatMessageService {
@@ -45,5 +51,9 @@ export class GroupChatMessageService {
       .limit(15)
       .skip(offset)
       .getMany();
+  }
+
+  delete(conditions: FindConditions<GroupChatMessage>): Promise<DeleteResult> {
+    return this.messageRepository.delete(conditions);
   }
 }

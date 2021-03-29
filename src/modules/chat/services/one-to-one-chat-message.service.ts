@@ -4,12 +4,14 @@ import {
   Repository,
   FindManyOptions,
   DeepPartial,
-  FindOneOptions
+  FindOneOptions,
+  FindConditions,
+  DeleteResult
 } from "typeorm";
 
 import {ID, RequestOptions} from "@lib/typings";
-import {AttachmentType} from "@modules/chat";
 import {OneToOneChatMessage} from "../entities";
+import {AttachmentType} from "../lib/typings";
 
 @Injectable()
 export class OneToOneChatMessageService {
@@ -58,5 +60,11 @@ export class OneToOneChatMessageService {
       .limit(15)
       .skip(offset)
       .getMany();
+  }
+
+  delete(
+    conditions: FindConditions<OneToOneChatMessage>
+  ): Promise<DeleteResult> {
+    return this.messageRepository.delete(conditions);
   }
 }

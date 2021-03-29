@@ -9,14 +9,11 @@ import {
 } from "typeorm";
 
 import {ID} from "@lib/typings";
-import {
-  chatMessageSenderTypes,
-  ChatMessageSenderType,
-  Attachment,
-  ChatMessagePublicData
-} from "@modules/chat";
-import {GroupChat} from "./group-chat.entity";
-import {GroupChatMember} from "./group-chat-member.entity";
+import {Attachment} from "./attachment.entity";
+import {OneToOneChat} from "./one-to-one-chat.entity";
+import {OneToOneChatMember} from "./one-to-one-chat-member.entity";
+import {chatMessageSenderTypes} from "../lib/chat-message-sender-type";
+import {ChatMessagePublicData, ChatMessageSenderType} from "../lib/typings";
 
 class Sender {
   @Column("enum", {
@@ -24,14 +21,12 @@ class Sender {
   })
   type: ChatMessageSenderType;
 
-  @ManyToOne(type => GroupChatMember, {
-    eager: true
-  })
-  member: GroupChatMember;
+  @ManyToOne(type => OneToOneChatMember, {eager: true})
+  member: OneToOneChatMember;
 }
 
 @Entity()
-export class GroupChatMessage {
+export class OneToOneChatMessage {
   @PrimaryGeneratedColumn("uuid")
   id: ID;
 
@@ -51,10 +46,10 @@ export class GroupChatMessage {
     isRead: boolean;
   };
 
-  @ManyToOne(type => GroupChat, {
+  @ManyToOne(type => OneToOneChat, {
     eager: true
   })
-  chat: GroupChat;
+  chat: OneToOneChat;
 
   @JoinColumn()
   @OneToOne(type => Attachment, {
@@ -83,9 +78,9 @@ export class GroupChatMessage {
       isRead,
       createdAt,
       isSystem,
-      audio: attachment && attachment.audio,
+      files: attachment && attachment.files,
       images: attachment && attachment.images,
-      files: attachment && attachment.files
+      audio: attachment && attachment.audio
     };
   }
 }

@@ -12,27 +12,28 @@ import {
   Query,
   UploadedFile,
   UseGuards,
-  UseInterceptors
+  HttpCode,
+  UseInterceptors,
+  Delete
 } from "@nestjs/common";
 import {In} from "typeorm";
 import {FileInterceptor} from "@nestjs/platform-express";
 import * as mime from "mime";
 
+import {FilePublicData, FileService, UploadService} from "@modules/upload";
 import {maxFileSize} from "@lib/constants";
 import {BufferedFile, ID} from "@lib/typings";
-import {FilePublicData, FileService, UploadService} from "@modules/upload";
 import {cleanObject} from "@lib/functions";
 import {isExtensionValid} from "@lib/extensions";
-import {CreateMessageDto, ChatMessagePublicData} from "@modules/chat";
-import {CreateGroupChatDto} from "./dtos";
-import {minimalNumberOfMembersToCreateGroupChat} from "./lib/constants";
+import {CreateGroupChatDto, CreateMessageDto, DeleteMessagesDto} from "../dtos";
 import {
   GroupChatMemberService,
   GroupChatService,
-  GroupChatMessageService
-} from "./services";
-import {GroupChatPublicData} from "./lib/typings";
-import {AttachmentService} from "../../services";
+  GroupChatMessageService,
+  AttachmentService
+} from "../services";
+import {minimalNumberOfMembersToCreateGroupChat} from "../lib/constants";
+import {GroupChatPublicData, ChatMessagePublicData} from "../lib/typings";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("group-chats")
@@ -328,5 +329,29 @@ export class GroupChatController {
         createdAt: msg.createdAt
       }))
     };
+  }
+
+  @HttpCode(204)
+  @Delete(":id/messages")
+  async deleteMessages(
+    @GetUser() user: User,
+    @Body() dto: DeleteMessagesDto,
+    @Param("id") id: ID
+  ): Promise<void> {
+    const chat = await this.chatService.findOne({
+      where: {id}
+    });
+
+    if (!chat) throw new NotFoundException("Chat is not found.");
+
+    const member = await this.memberService.findOne({where: {chat, user}});
+
+    if (!member) throw new NotFoundException("Invalid credentials.");
+
+    await this.messageService.delete({
+      chat: member.chat,
+      id: In(dto.messages),
+      sender: {member}
+    });
   }
 }

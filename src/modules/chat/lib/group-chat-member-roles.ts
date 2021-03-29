@@ -1,3 +1,3 @@
-export type ChatMemberRole = "owner" | "member";
+import {ChatMemberRole} from "./typings";
 
 export const chatMemberRoles: ChatMemberRole[] = ["member", "owner"];

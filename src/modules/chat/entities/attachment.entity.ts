@@ -3,8 +3,7 @@ import {
   ManyToOne,
   JoinTable,
   Entity,
-  PrimaryGeneratedColumn,
-  Column
+  PrimaryGeneratedColumn
 } from "typeorm";
 
 import {File} from "@modules/upload";

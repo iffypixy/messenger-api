@@ -23,3 +23,13 @@ export interface AttachmentPublicData {
 }
 
 export type AttachmentType = "audio" | "image" | "file";
+
+export interface GroupChatPublicData {
+  id: ID;
+  avatar: string;
+  title: string;
+}
+
+export type ChatMessageSenderType = "user" | "system";
+
+export type ChatMemberRole = "owner" | "member";

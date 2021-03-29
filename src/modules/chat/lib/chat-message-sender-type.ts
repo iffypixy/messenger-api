@@ -1,3 +1,6 @@
-export type ChatMessageSenderType = "user" | "system";
+import {ChatMessageSenderType} from "./typings";
 
-export const chatMessageSenderTypes: ChatMessageSenderType[] = ["user", "system"];
+export const chatMessageSenderTypes: ChatMessageSenderType[] = [
+  "user",
+  "system"
+];
