@@ -5,7 +5,7 @@ import {ConfigService} from "@nestjs/config";
 import {HandshakeAuth, ExtendedSocket} from "@lib/typings";
 
 @Injectable()
-export class ChatGatewayService {
+export class GatewayService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService

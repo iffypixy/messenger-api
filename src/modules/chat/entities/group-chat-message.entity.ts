@@ -48,6 +48,11 @@ export class GroupChatMessage {
     isRead: boolean;
   };
 
+  @ManyToOne(type => GroupChatMessage, {
+    eager: true
+  })
+  replyTo: GroupChatMessage;
+
   @ManyToOne(type => GroupChat, {
     eager: true
   })

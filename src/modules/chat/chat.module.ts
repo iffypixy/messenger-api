@@ -4,6 +4,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {UploadModule} from "@modules/upload";
 import {UserModule} from "@modules/user";
 import {AuthMiddleware, AuthModule} from "@modules/auth";
+import {GatewayService} from "@lib/services";
 import {
   AttachmentService,
   OneToOneChatMemberService,
@@ -11,8 +12,7 @@ import {
   OneToOneChatService,
   GroupChatService,
   GroupChatMessageService,
-  GroupChatMemberService,
-  ChatGatewayService
+  GroupChatMemberService
 } from "./services";
 import {
   Attachment,
@@ -24,7 +24,7 @@ import {
   OneToOneChatMessage
 } from "./entities";
 import {GroupChatController, OneToOneChatController} from "./controllers";
-import {ChatGateway} from "./chat.gateway";
+import {GroupChatGateway, OneToOneChatGateway} from "./gateways";
 
 @Module({
   imports: [
@@ -49,8 +49,9 @@ import {ChatGateway} from "./chat.gateway";
     GroupChatMemberService,
     GroupChatMessageService,
     AttachmentService,
-    ChatGateway,
-    ChatGatewayService
+    GroupChatGateway,
+    OneToOneChatGateway,
+    GatewayService
   ],
   controllers: [OneToOneChatController, GroupChatController]
 })

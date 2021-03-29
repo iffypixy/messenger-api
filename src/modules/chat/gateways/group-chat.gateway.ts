@@ -8,13 +8,12 @@ import {UseGuards} from "@nestjs/common";
 
 import {ExtendedSocket} from "@lib/typings";
 import {IsSocketAuthorizedGuard} from "@lib/guards";
-import {ChatGatewayService} from "./services";
-import {events} from "./lib/gateway-events";
+import {GatewayService} from "@lib/services";
 
 @UseGuards(IsSocketAuthorizedGuard)
 @WebSocketGateway()
-export class ChatGateway implements OnGatewayConnection {
-  constructor(private readonly service: ChatGatewayService) {}
+export class GroupChatGateway implements OnGatewayConnection {
+  constructor(private readonly service: GatewayService) {}
 
   async handleConnection(client: ExtendedSocket): Promise<void> {
     const userId = await this.service.getUserIdBySocket(client);
