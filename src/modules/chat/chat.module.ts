@@ -11,7 +11,8 @@ import {
   OneToOneChatService,
   GroupChatService,
   GroupChatMessageService,
-  GroupChatMemberService
+  GroupChatMemberService,
+  ChatGatewayService
 } from "./services";
 import {
   Attachment,
@@ -23,6 +24,7 @@ import {
   OneToOneChatMessage
 } from "./entities";
 import {GroupChatController, OneToOneChatController} from "./controllers";
+import {ChatGateway} from "./chat.gateway";
 
 @Module({
   imports: [
@@ -46,7 +48,9 @@ import {GroupChatController, OneToOneChatController} from "./controllers";
     GroupChatService,
     GroupChatMemberService,
     GroupChatMessageService,
-    AttachmentService
+    AttachmentService,
+    ChatGateway,
+    ChatGatewayService
   ],
   controllers: [OneToOneChatController, GroupChatController]
 })

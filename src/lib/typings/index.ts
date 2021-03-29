@@ -1,5 +1,6 @@
 import {Request} from "express";
 import {User} from "@modules/user";
+import {Socket} from "socket.io";
 
 export interface ExtendedRequest extends Request {
   user: User;
@@ -20,3 +21,11 @@ export interface RequestOptions {
 }
 
 export type ID = string;
+
+export interface HandshakeAuth {
+  token: string;
+}
+
+export interface ExtendedSocket extends Socket {
+  userId: string;
+}
