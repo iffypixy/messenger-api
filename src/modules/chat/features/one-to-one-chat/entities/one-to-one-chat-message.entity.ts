@@ -9,14 +9,14 @@ import {
 } from "typeorm";
 
 import {ID} from "@lib/typings";
-import {OneToOneChat} from "./one-to-one-chat.entity";
-import {OneToOneChatMember} from "./one-to-one-chat-member.entity";
-import {Attachment} from "./attachment.entity";
-import {ChatMessagePublicData} from "../lib/typings";
 import {
+  Attachment,
+  ChatMessagePublicData,
   chatMessageSenderTypes,
   ChatMessageSenderType
-} from "../lib/chat-message-sender-type";
+} from "@modules/chat";
+import {OneToOneChat} from "./one-to-one-chat.entity";
+import {OneToOneChatMember} from "./one-to-one-chat-member.entity";
 
 class Sender {
   @Column("enum", {

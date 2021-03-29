@@ -1,34 +1,47 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {DeepPartial, FindManyOptions, Repository} from "typeorm";
+import {
+  Repository,
+  FindManyOptions,
+  DeepPartial,
+  FindOneOptions
+} from "typeorm";
 
 import {ID, RequestOptions} from "@lib/typings";
-import {AttachmentType} from "../lib/typings";
-import {GroupChatMessage} from "../entities";
+import {AttachmentType} from "@modules/chat";
+import {OneToOneChatMessage} from "../entities";
 
 @Injectable()
-export class GroupChatMessageService {
+export class OneToOneChatMessageService {
   constructor(
-    @InjectRepository(GroupChatMessage)
-    private readonly messageRepository: Repository<GroupChatMessage>
+    @InjectRepository(OneToOneChatMessage)
+    private readonly messageRepository: Repository<OneToOneChatMessage>
   ) {}
 
   find(
-    options: FindManyOptions<GroupChatMessage>
-  ): Promise<GroupChatMessage[]> {
+    options: FindManyOptions<OneToOneChatMessage>
+  ): Promise<OneToOneChatMessage[]> {
     return this.messageRepository.find(options);
   }
 
-  create(partial: DeepPartial<GroupChatMessage>): Promise<GroupChatMessage> {
-    const message = this.messageRepository.create(partial);
+  findOne(
+    options: FindOneOptions<OneToOneChatMessage>
+  ): Promise<OneToOneChatMessage> {
+    return this.messageRepository.findOne(options);
+  }
 
-    return this.messageRepository.save(message);
+  create(
+    partial: DeepPartial<OneToOneChatMessage>
+  ): Promise<OneToOneChatMessage> {
+    const msg = this.messageRepository.create(partial);
+
+    return this.messageRepository.save(msg);
   }
 
   findManyWithAttachmentByChatId(
     {id, type}: {id: ID; type: AttachmentType},
     {offset}: RequestOptions
-  ): Promise<GroupChatMessage[]> {
+  ): Promise<OneToOneChatMessage[]> {
     return this.messageRepository
       .createQueryBuilder("msg")
       .leftJoinAndSelect("msg.attachment", "attachment")

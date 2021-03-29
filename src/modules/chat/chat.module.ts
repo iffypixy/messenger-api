@@ -4,25 +4,26 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {UploadModule} from "@modules/upload";
 import {UserModule} from "@modules/user";
 import {AuthMiddleware, AuthModule} from "@modules/auth";
-import {OneToOneChatController, GroupChatController} from "./controllers";
+import {AttachmentService} from "./services";
 import {
-  OneToOneChatService,
-  OneToOneChatMessageService,
-  OneToOneChatMemberService,
+  GroupChat,
+  GroupChatMember,
+  GroupChatMessage,
+  GroupChatController,
   GroupChatService,
-  GroupChatMemberService,
   GroupChatMessageService,
-  AttachmentService
-} from "./services";
+  GroupChatMemberService
+} from "./features/group-chat";
 import {
   OneToOneChat,
-  GroupChat,
   OneToOneChatMember,
   OneToOneChatMessage,
-  GroupChatMessage,
-  GroupChatMember,
-  Attachment
-} from "./entities";
+  OneToOneChatController,
+  OneToOneChatMemberService,
+  OneToOneChatMessageService,
+  OneToOneChatService
+} from "./features/one-to-one-chat";
+import {Attachment} from "./entities";
 
 @Module({
   imports: [
@@ -39,7 +40,6 @@ import {
       Attachment
     ])
   ],
-  controllers: [OneToOneChatController, GroupChatController],
   providers: [
     OneToOneChatService,
     OneToOneChatMessageService,
@@ -48,7 +48,8 @@ import {
     GroupChatMemberService,
     GroupChatMessageService,
     AttachmentService
-  ]
+  ],
+  controllers: [OneToOneChatController, GroupChatController]
 })
 export class ChatModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

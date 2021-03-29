@@ -14,17 +14,20 @@ import {In, Not} from "typeorm";
 
 import {ID} from "@lib/typings";
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
+import {
+  AttachmentPublicData,
+  ChatMessagePublicData,
+  CreateMessageDto
+} from "@modules/chat";
 import {User, UserPublicData, UserService} from "@modules/user";
 import {FilePublicData, FileService} from "@modules/upload";
 import {isExtensionValid} from "@lib/extensions";
 import {
   OneToOneChatMessageService,
-  OneToOneChatMemberService,
-  AttachmentService
-} from "../services";
-import {CreateMessageDto} from "../dtos";
-import {AttachmentPublicData, ChatMessagePublicData} from "../lib/typings";
-import {OneToOneChatMember} from "../entities";
+  OneToOneChatMemberService
+} from "./services";
+import {OneToOneChatMember} from "./entities";
+import {AttachmentService} from "../../services";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("chats")

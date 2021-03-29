@@ -23,15 +23,16 @@ import {BufferedFile, ID} from "@lib/typings";
 import {FilePublicData, FileService, UploadService} from "@modules/upload";
 import {cleanObject} from "@lib/functions";
 import {isExtensionValid} from "@lib/extensions";
-import {minimalNumberOfMembersToCreateGroupChat} from "../lib/constants";
-import {CreateGroupChatDto, CreateMessageDto} from "../dtos";
+import {CreateMessageDto, ChatMessagePublicData} from "@modules/chat";
+import {CreateGroupChatDto} from "./dtos";
+import {minimalNumberOfMembersToCreateGroupChat} from "./lib/constants";
 import {
   GroupChatMemberService,
   GroupChatService,
-  GroupChatMessageService,
-  AttachmentService
-} from "../services";
-import {ChatMessagePublicData, GroupChatPublicData} from "../lib/typings";
+  GroupChatMessageService
+} from "./services";
+import {GroupChatPublicData} from "./lib/typings";
+import {AttachmentService} from "../../services";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("group-chats")

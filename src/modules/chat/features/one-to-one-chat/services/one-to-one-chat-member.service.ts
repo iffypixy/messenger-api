@@ -2,7 +2,6 @@ import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {
   DeepPartial,
-  FindConditions,
   FindManyOptions,
   FindOneOptions,
   Repository

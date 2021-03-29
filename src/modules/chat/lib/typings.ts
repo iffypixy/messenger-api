@@ -2,12 +2,6 @@ import {ID} from "@lib/typings";
 import {UserPublicData} from "@modules/user";
 import {FilePublicData} from "@modules/upload";
 
-export interface GroupChatPublicData {
-  id: ID;
-  avatar: string;
-  title: string;
-}
-
 export interface ChatMessagePublicData {
   id: ID;
   text: string | null;
