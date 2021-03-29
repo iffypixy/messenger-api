@@ -1,0 +1,92 @@
+import {INestApplicationContext} from "@nestjs/common";
+import {AbstractWsAdapter, MessageMappingProperties} from "@nestjs/websockets";
+import {isFunction, isNil} from "@nestjs/common/utils/shared.utils";
+import {DISCONNECT_EVENT} from "@nestjs/websockets/constants";
+import {Server, ServerOptions} from "socket.io";
+import {fromEvent, Observable} from "rxjs";
+import {filter, first, map, mergeMap, share, takeUntil} from "rxjs/operators";
+
+export class SocketIoAdapter extends AbstractWsAdapter {
+  constructor(app: INestApplicationContext, private origin?: any) {
+    super(app);
+  }
+
+  public create(port: number, options?: any): Server {
+    if (!options) this.createIOServer(port);
+
+    const {namespace, server, ...opt} = options;
+
+    return server && isFunction(server.of)
+      ? server.of(namespace)
+      : namespace
+      ? this.createIOServer(port, opt).of(namespace)
+      : this.createIOServer(port, opt);
+  }
+
+  public createIOServer(
+    port: number,
+    options?: Partial<ServerOptions>
+  ): Server {
+    if (this.httpServer && port === 0) {
+      return new Server(this.httpServer, {
+        cors: {
+          origin: this.origin,
+          methods: ["GET", "POST"],
+          credentials: true
+        },
+        cookie: {
+          httpOnly: true,
+          path: "/"
+        },
+        maxHttpBufferSize: 1e6
+      });
+    }
+    return new Server(port, options);
+  }
+
+  public bindMessageHandlers(
+    client: any,
+    handlers: MessageMappingProperties[],
+    transform: (data: any) => Observable<any>
+  ) {
+    const disconnect$ = fromEvent(client, DISCONNECT_EVENT).pipe(
+      share(),
+      first()
+    );
+
+    handlers.forEach(({message, callback}) => {
+      const source$ = fromEvent(client, message).pipe(
+        mergeMap((payload: any) => {
+          const {data, ack} = this.mapPayload(payload);
+          return transform(callback(data, ack)).pipe(
+            filter((response: any) => !isNil(response)),
+            map((response: any) => [response, ack])
+          );
+        }),
+        takeUntil(disconnect$)
+      );
+      source$.subscribe(([response, ack]) => {
+        if (response.event) {
+          return client.emit(response.event, response.data);
+        }
+        isFunction(ack) && ack(response);
+      });
+    });
+  }
+
+  public mapPayload(payload: any): {data: any; ack?: () => any} {
+    if (!Array.isArray(payload)) {
+      return {data: payload};
+    }
+    const lastElement = payload[payload.length - 1];
+    const isAck = isFunction(lastElement);
+    if (isAck) {
+      const size = payload.length - 1;
+      return {
+        data: size === 1 ? payload[0] : payload.slice(0, size),
+        ack: lastElement
+      };
+    }
+    return {data: payload};
+  }
+}
