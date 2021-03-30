@@ -61,12 +61,13 @@ export class OneToOneChatMessage {
   createdAt: Date;
 
   get public(): ChatMessagePublicData {
-    const {id, text, status, createdAt} = this;
+    const {id, text, status, createdAt, chat} = this;
 
     const isSystem = this.sender.type === "system";
     const isEdited = (status && status.isEdited) || false;
     const isRead = (status && status.isRead) || false;
     const sender = !isSystem ? this.sender.member.user.public : null;
+    const chatId = chat.id;
 
     const attachment = this.attachment && this.attachment.public;
 
@@ -78,6 +79,7 @@ export class OneToOneChatMessage {
       isRead,
       createdAt,
       isSystem,
+      chatId,
       files: attachment && attachment.files,
       images: attachment && attachment.images,
       audio: attachment && attachment.audio

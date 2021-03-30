@@ -48,7 +48,8 @@ export class AuthController {
       login,
       password: hashedPassword,
       avatar: "sdfgsdgsfgdsfdsf",
-      role: "user"
+      role: "user",
+      lastSeen: new Date()
     });
 
     const {accessToken, refreshToken} = await this.getJWTs(user, fingerprint);
@@ -98,7 +99,7 @@ export class AuthController {
   ): Promise<void> {
     const token: string = req.cookies["refresh-token"];
 
-    const error = new BadRequestException("Invalid refresh token");
+    const error = new BadRequestException("Invalid refresh token.");
 
     if (!token) throw error;
 

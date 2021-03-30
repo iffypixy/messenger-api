@@ -58,13 +58,13 @@ export class ProfileController {
 
     cleanObject(partial);
 
-    const updatedUser = await this.userService.save({
+    const updated = await this.userService.save({
       id: user.id,
       ...partial
     });
 
     return {
-      credentials: updatedUser.public
+      credentials: updated.public
     };
   }
 }

@@ -68,12 +68,13 @@ export class GroupChatMessage {
   createdAt: Date;
 
   get public(): ChatMessagePublicData {
-    const {id, text, status, createdAt} = this;
+    const {id, text, status, chat, createdAt} = this;
 
     const isSystem = this.sender.type === "system";
     const isEdited = (status && status.isEdited) || false;
     const isRead = (status && status.isRead) || false;
     const sender = !isSystem ? this.sender.member.user.public : null;
+    const chatId = chat.id;
 
     const attachment = this.attachment && this.attachment.public;
 
@@ -87,7 +88,8 @@ export class GroupChatMessage {
       isSystem,
       audio: attachment && attachment.audio,
       images: attachment && attachment.images,
-      files: attachment && attachment.files
+      files: attachment && attachment.files,
+      chatId
     };
   }
 }

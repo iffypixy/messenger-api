@@ -1,9 +1,9 @@
 import {
+  AfterLoad,
   Column,
   CreateDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
+  PrimaryGeneratedColumn
 } from "typeorm";
 
 import {UserPublicData} from "../lib/typings";
@@ -39,8 +39,23 @@ export class User {
   })
   role: UserRole;
 
+  @Column("date", {
+    nullable: false
+  })
+  lastSeen: Date;
+
+  isOnline: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
+
+  @AfterLoad()
+  setIsOnline(): void {
+    const diff = Date.now() - +this.lastSeen;
+
+    if (diff < 60000) this.isOnline = true;
+    else this.isOnline = false;
+  }
 
   get public(): UserPublicData {
     const {id, login, avatar} = this;

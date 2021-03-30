@@ -26,7 +26,11 @@ export class AuthMiddleware implements NestMiddleware {
         secret: this.configService.get<string>("jwt.secret")
       });
 
-      req.user = await this.userService.findOne({id});
+      const user = await this.userService.findOne({id});
+
+      await this.userService.update({id: user.id}, {lastSeen: new Date()});
+
+      req.user = user;
 
       next();
     } catch (e) {

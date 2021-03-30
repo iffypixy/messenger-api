@@ -13,6 +13,7 @@ export interface ChatMessagePublicData {
   files: FilePublicData[] | null;
   images: string[] | null;
   audio: string | null;
+  chatId: ID;
 }
 
 export interface AttachmentPublicData {
