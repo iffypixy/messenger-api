@@ -1,5 +1,5 @@
 import {InjectRepository} from "@nestjs/typeorm";
-import {Injectable} from "@nestjs/common";
+import {forwardRef, Inject, Injectable} from "@nestjs/common";
 import {
   DeepPartial,
   FindConditions,
@@ -11,14 +11,17 @@ import {
 } from "typeorm";
 import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
 
-import {User} from "./entities";
 import {RequestOptions, ID} from "@lib/typings";
+import {WebsocketsService} from "@lib/websockets";
+import {User} from "./entities";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    @Inject(forwardRef(() => WebsocketsService))
+    private readonly websocketsService: WebsocketsService
   ) {}
 
   async create(partial: DeepPartial<User>): Promise<User> {
@@ -62,5 +65,11 @@ export class UserService {
 
   find(options: FindManyOptions<User>): Promise<User[]> {
     return this.userRepository.find(options);
+  }
+
+  getIsOnlineById(id: ID): boolean {
+    const sockets = this.websocketsService.getSocketsByUserId(id);
+
+    return sockets.findIndex(socket => socket.connected) !== -1;
   }
 }

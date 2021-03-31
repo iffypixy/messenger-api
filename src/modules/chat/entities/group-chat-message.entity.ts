@@ -5,7 +5,9 @@ import {
   ManyToOne,
   CreateDateColumn,
   OneToOne,
-  JoinColumn
+  JoinColumn,
+  Tree,
+  TreeChildren
 } from "typeorm";
 
 import {ID} from "@lib/typings";
@@ -27,6 +29,7 @@ class Sender {
   member: GroupChatMember;
 }
 
+@Tree("closure-table")
 @Entity()
 export class GroupChatMessage {
   @PrimaryGeneratedColumn("uuid")
@@ -48,6 +51,7 @@ export class GroupChatMessage {
     isRead: boolean;
   };
 
+  @TreeChildren()
   @ManyToOne(type => GroupChatMessage, {
     eager: true
   })

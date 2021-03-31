@@ -5,7 +5,9 @@ import {
   ManyToOne,
   CreateDateColumn,
   OneToOne,
-  JoinColumn
+  JoinColumn,
+  Tree,
+  TreeChildren
 } from "typeorm";
 
 import {ID} from "@lib/typings";
@@ -25,6 +27,7 @@ class Sender {
   member: OneToOneChatMember;
 }
 
+@Tree("closure-table")
 @Entity()
 export class OneToOneChatMessage {
   @PrimaryGeneratedColumn("uuid")
@@ -45,6 +48,12 @@ export class OneToOneChatMessage {
     isEdited: boolean;
     isRead: boolean;
   };
+
+  @TreeChildren()
+  @ManyToOne(type => OneToOneChatMessage, {
+    eager: true
+  })
+  replyTo: OneToOneChatMessage;
 
   @ManyToOne(type => OneToOneChat, {
     eager: true

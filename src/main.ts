@@ -2,7 +2,7 @@ import {ValidationPipe} from "@nestjs/common";
 import {NestFactory} from "@nestjs/core";
 import * as cookieParser from "cookie-parser";
 
-import {SocketIoAdapter} from "@lib/adapters";
+import {WebsocketsAdapter} from "@lib/websockets";
 import {AppModule} from "./app.module";
 
 async function bootstrap() {
@@ -20,7 +20,7 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.useWebSocketAdapter(
-    new SocketIoAdapter(app, {origin: "http://localhost:3000"})
+    new WebsocketsAdapter(app, {origin: "http://localhost:3000"})
   );
 
   await app.listen(process.env.PORT);

@@ -6,7 +6,7 @@ import {Server, ServerOptions} from "socket.io";
 import {fromEvent, Observable} from "rxjs";
 import {filter, first, map, mergeMap, share, takeUntil} from "rxjs/operators";
 
-export class SocketIoAdapter extends AbstractWsAdapter {
+export class WebsocketsAdapter extends AbstractWsAdapter {
   constructor(app: INestApplicationContext, private origin?: any) {
     super(app);
   }

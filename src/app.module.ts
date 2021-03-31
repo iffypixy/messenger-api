@@ -17,6 +17,7 @@ import {
 } from "@modules/chat";
 import {UploadModule, File} from "@modules/upload";
 import {ProfileModule} from "@modules/profile";
+import {WebsocketsModule} from "@lib/websockets";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import {ProfileModule} from "@modules/profile";
       load: [databaseConfig, jwtConfig, s3Config],
       isGlobal: true
     }),
+    WebsocketsModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

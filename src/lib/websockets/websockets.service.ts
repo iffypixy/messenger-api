@@ -7,11 +7,13 @@ import {HandshakeAuth, ExtendedSocket, ID} from "@lib/typings";
 import {mapToArray} from "@lib/functions";
 
 @Injectable()
-export class ChatGatewayService {
+export class WebsocketsService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService
   ) {}
+
+  wss: Server;
 
   async getUserIdBySocket(client: ExtendedSocket): Promise<string> {
     const {token} = client.handshake.auth as HandshakeAuth;
@@ -27,9 +29,9 @@ export class ChatGatewayService {
     }
   }
 
-  getSocketByUserId(wss: Server, userId: ID): ExtendedSocket | null {
-    const sockets: ExtendedSocket[] = mapToArray(wss.sockets.sockets);
+  getSocketsByUserId(id: ID): ExtendedSocket[] {
+    const sockets: ExtendedSocket[] = mapToArray(this.wss.sockets.sockets);
 
-    return sockets.find(socket => socket.userId === userId) || null;
+    return sockets.filter(socket => socket.userId === id);
   }
 }

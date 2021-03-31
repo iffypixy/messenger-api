@@ -7,9 +7,7 @@ import {UserPublicData} from "./lib/typings";
 
 @Controller("users")
 export class UserController {
-  constructor(
-    private readonly userService: UserService
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Get("search")
   async getUsersByLoginQuery(
@@ -18,14 +16,12 @@ export class UserController {
     const users = await this.userService.findUsersByLoginQuery(q, {limit});
 
     return {
-      users: users.map((user) => user.public)
+      users: users.map(user => user.public)
     };
   }
 
   @Get(":id")
-  async getUserById(
-    @Param("id") id: ID
-  ): Promise<{user: UserPublicData}> {
+  async getUserById(@Param("id") id: ID): Promise<{user: UserPublicData}> {
     const user = await this.userService.findById(id);
 
     if (!user) throw new NotFoundException("User not found");

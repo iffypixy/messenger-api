@@ -10,7 +10,8 @@ import {Not} from "typeorm";
 import {Server} from "socket.io";
 
 import {ExtendedSocket, ID} from "@lib/typings";
-import {OneToOneChatMemberService, ChatGatewayService} from "../services";
+import {WebsocketsService} from "@lib/websockets";
+import {OneToOneChatMemberService} from "../services";
 import {OneToOneChatMember} from "../entities";
 import {ChatMessagePublicData} from "../lib/typings";
 
@@ -41,10 +42,11 @@ interface MessageReadingEventBody {
 }
 
 const error = new BadRequestException("Invalid credentials.");
+
 @WebSocketGateway()
 export class OneToOneChatGateway {
   constructor(
-    private readonly service: ChatGatewayService,
+    private readonly websocketsService: WebsocketsService,
     private readonly memberService: OneToOneChatMemberService
   ) {}
 
@@ -68,15 +70,14 @@ export class OneToOneChatGateway {
 
     if (!member) throw error;
 
-    const partner: ExtendedSocket | null = this.service.getSocketByUserId(
-      this.wss,
-      member.id
-    );
+    const partners = this.websocketsService.getSocketsByUserId(member.user.id);
 
-    if (!partner) throw error;
+    if (!partners.length) throw error;
 
-    client.join(chatId);
-    partner.join(chatId);
+    const clients = this.websocketsService.getSocketsByUserId(client.userId);
+
+    clients.forEach(client => client.join(chatId));
+    partners.forEach(partner => partner.join(chatId));
   }
 
   @SubscribeMessage(events.MESSAGE_SENDING)
