@@ -40,7 +40,7 @@ export class User {
   role: UserRole;
 
   @Column("date", {
-    nullable: false
+    nullable: true
   })
   lastSeen: Date;
 

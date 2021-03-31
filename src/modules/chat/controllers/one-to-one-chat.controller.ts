@@ -48,11 +48,12 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+    let member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
       [user, partner]
     );
 
-    if (!member) throw new BadRequestException("Invalid credentials.");
+    if (!member)
+      member = await this.memberService.createByUsers([user, partner]);
 
     return {
       id: member.chat.id,
