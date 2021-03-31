@@ -5,3 +5,4 @@ export {OneToOneChatMessageService} from "./one-to-one-chat-message.service";
 export {GroupChatService} from "./group-chat.service";
 export {GroupChatMessageService} from "./group-chat-message.service";
 export {GroupChatMemberService} from "./group-chat-member.service";
+export {ChatGatewayService} from "./chat-gateway.service";

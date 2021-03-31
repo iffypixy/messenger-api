@@ -1,11 +1,13 @@
 import {Injectable} from "@nestjs/common";
 import {JwtService} from "@nestjs/jwt";
 import {ConfigService} from "@nestjs/config";
+import {Server} from "socket.io";
 
-import {HandshakeAuth, ExtendedSocket} from "@lib/typings";
+import {HandshakeAuth, ExtendedSocket, ID} from "@lib/typings";
+import {mapToArray} from "@lib/functions";
 
 @Injectable()
-export class GatewayService {
+export class ChatGatewayService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService
@@ -23,5 +25,11 @@ export class GatewayService {
     } catch (error) {
       return null;
     }
+  }
+
+  getSocketByUserId(wss: Server, userId: ID): ExtendedSocket | null {
+    const sockets: ExtendedSocket[] = mapToArray(wss.sockets.sockets);
+
+    return sockets.find(socket => socket.userId === userId) || null;
   }
 }
