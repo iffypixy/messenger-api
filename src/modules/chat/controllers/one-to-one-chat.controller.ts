@@ -85,6 +85,10 @@ export class OneToOneChatController {
       take: 15
     });
 
+    for (let i = 0; i < messages.length; i++) {
+      messages[i].replyTo = await this.messageService.findReplyTo(messages[i]);
+    }
+
     return {
       messages: messages.map(msg => msg.public)
     };
@@ -136,6 +140,10 @@ export class OneToOneChatController {
         })
       : null;
 
+    const replyTo = await this.messageService.findOne({
+      where: {id: dto.replyTo, chat: member.chat}
+    });
+
     const message = await this.messageService.create({
       sender: {
         type: "user",
@@ -143,7 +151,8 @@ export class OneToOneChatController {
       },
       text: dto.text,
       chat: member.chat,
-      attachment
+      attachment,
+      replyTo
     });
 
     return {
@@ -179,6 +188,10 @@ export class OneToOneChatController {
         user: {id: Not(user.id)}
       }
     });
+
+    for (let i = 0; i < messages.length; i++) {
+      messages[i].replyTo = await this.messageService.findReplyTo(messages[i]);
+    }
 
     return {
       chats: partners.map(({chat, user}) => {

@@ -1,4 +1,4 @@
-import {IsOptional, IsString, MaxLength} from "class-validator";
+import {IsOptional, IsString, IsUUID, MaxLength} from "class-validator";
 
 import {ID} from "@lib/typings";
 
@@ -9,23 +9,29 @@ export class CreateMessageDto {
   text: string;
 
   @IsOptional()
-  @IsString({
+  @IsUUID("4", {
     each: true,
-    message: "Audio must be type of string"
+    message: "Audio must be type of uuid"
   })
   audio: ID = null;
 
   @IsOptional()
-  @IsString({
+  @IsUUID("4", {
     each: true,
-    message: "File must be type of string"
+    message: "File must be type of uuid"
   })
   files: ID[] = [];
 
   @IsOptional()
-  @IsString({
+  @IsUUID("4", {
     each: true,
-    message: "Image must be type of string"
+    message: "Image must be type of uuid"
   })
   images: ID[] = [];
+
+  @IsOptional()
+  @IsUUID("4", {
+    message: "Message it replies to must be type of uuid"
+  })
+  replyTo: ID;
 }

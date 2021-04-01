@@ -7,7 +7,8 @@ import {
   OneToOne,
   JoinColumn,
   Tree,
-  TreeChildren
+  TreeChildren,
+  TreeParent
 } from "typeorm";
 
 import {ID} from "@lib/typings";
@@ -49,10 +50,7 @@ export class OneToOneChatMessage {
     isRead: boolean;
   };
 
-  @TreeChildren()
-  @ManyToOne(type => OneToOneChatMessage, {
-    eager: true
-  })
+  @TreeParent()
   replyTo: OneToOneChatMessage;
 
   @ManyToOne(type => OneToOneChat, {
@@ -77,6 +75,7 @@ export class OneToOneChatMessage {
     const isRead = (status && status.isRead) || false;
     const sender = !isSystem ? this.sender.member.user.public : null;
     const chatId = chat.id;
+    const replyTo = this.replyTo && this.replyTo.public;
 
     const attachment = this.attachment && this.attachment.public;
 
@@ -89,6 +88,7 @@ export class OneToOneChatMessage {
       createdAt,
       isSystem,
       chatId,
+      replyTo,
       files: attachment && attachment.files,
       images: attachment && attachment.images,
       audio: attachment && attachment.audio

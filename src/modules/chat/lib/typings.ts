@@ -9,6 +9,7 @@ export interface ChatMessagePublicData {
   isEdited: boolean;
   isRead: boolean;
   isSystem: boolean;
+  replyTo: ChatMessagePublicData | null;
   createdAt: Date;
   files: FilePublicData[] | null;
   images: string[] | null;

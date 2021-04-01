@@ -127,6 +127,10 @@ export class GroupChatController {
       take: 1
     });
 
+    for (let i = 0; i < messages.length; i++) {
+      messages[i].replyTo = await this.messageService.findReplyTo(messages[i]);
+    }
+
     return {
       chats: members.map(({chat}) => {
         const msg = messages.find(msg => msg.chat.id === chat.id) || null;
@@ -183,6 +187,12 @@ export class GroupChatController {
         })
       : null;
 
+    const replyTo = await this.messageService.findOne({
+      where: {id: dto.replyTo, chat: member.chat}
+    });
+
+    console.log(replyTo);
+
     const message = await this.messageService.create({
       chat: member.chat,
       sender: {
@@ -190,7 +200,8 @@ export class GroupChatController {
         member
       },
       text: dto.text,
-      attachment
+      attachment,
+      replyTo
     });
 
     return {
@@ -218,6 +229,10 @@ export class GroupChatController {
       },
       take: 15
     });
+
+    for (let i = 0; i < messages.length; i++) {
+      messages[i].replyTo = await this.messageService.findReplyTo(messages[i]);
+    }
 
     return {
       messages: messages.map(msg => msg.public)

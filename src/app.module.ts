@@ -26,12 +26,12 @@ import {WebsocketsModule} from "@lib/websockets";
     ChatModule,
     UploadModule,
     ProfileModule,
+    WebsocketsModule,
     ConfigModule.forRoot({
       envFilePath: [".env.development"],
       load: [databaseConfig, jwtConfig, s3Config],
       isGlobal: true
     }),
-    WebsocketsModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

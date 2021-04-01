@@ -6,7 +6,8 @@ import {
   DeepPartial,
   FindOneOptions,
   FindConditions,
-  DeleteResult
+  DeleteResult,
+  TreeRepository
 } from "typeorm";
 
 import {ID, RequestOptions} from "@lib/typings";
@@ -17,7 +18,7 @@ import {AttachmentType} from "../lib/typings";
 export class OneToOneChatMessageService {
   constructor(
     @InjectRepository(OneToOneChatMessage)
-    private readonly messageRepository: Repository<OneToOneChatMessage>
+    private readonly messageRepository: TreeRepository<OneToOneChatMessage>
   ) {}
 
   find(
@@ -38,6 +39,20 @@ export class OneToOneChatMessageService {
     const msg = this.messageRepository.create(partial);
 
     return this.messageRepository.save(msg);
+  }
+
+  async findReplyTo(
+    message: OneToOneChatMessage
+  ): Promise<OneToOneChatMessage | null> {
+    const msg = (await this.messageRepository.findAncestors(message))[0];
+
+    if (!msg) return null;
+
+    return msg.id === message.id ? null : this.findOne({where: {id: msg.id}});
+  }
+
+  count(options: FindManyOptions<OneToOneChatMessage>): Promise<number> {
+    return this.messageRepository.count(options);
   }
 
   findManyWithAttachmentByChatId(

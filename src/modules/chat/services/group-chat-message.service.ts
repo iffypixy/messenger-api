@@ -5,7 +5,8 @@ import {
   DeleteResult,
   FindConditions,
   FindManyOptions,
-  Repository
+  FindOneOptions,
+  TreeRepository
 } from "typeorm";
 
 import {ID, RequestOptions} from "@lib/typings";
@@ -16,7 +17,7 @@ import {AttachmentType} from "../lib/typings";
 export class GroupChatMessageService {
   constructor(
     @InjectRepository(GroupChatMessage)
-    private readonly messageRepository: Repository<GroupChatMessage>
+    private readonly messageRepository: TreeRepository<GroupChatMessage>
   ) {}
 
   find(
@@ -29,6 +30,22 @@ export class GroupChatMessageService {
     const message = this.messageRepository.create(partial);
 
     return this.messageRepository.save(message);
+  }
+
+  async findReplyTo(
+    message: GroupChatMessage
+  ): Promise<GroupChatMessage | null> {
+    const msg = (await this.messageRepository.findAncestors(message))[0];
+
+    if (!msg) return null;
+
+    return msg.id === message.id ? null : this.findOne({where: {id: msg.id}});
+  }
+
+  findOne(
+    options: FindOneOptions<GroupChatMessage>
+  ): Promise<GroupChatMessage> {
+    return this.messageRepository.findOne(options);
   }
 
   findManyWithAttachmentByChatId(
