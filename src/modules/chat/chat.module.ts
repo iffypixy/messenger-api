@@ -4,7 +4,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {UploadModule} from "@modules/upload";
 import {UserModule} from "@modules/user";
 import {AuthMiddleware, AuthModule} from "@modules/auth";
-import {WebsocketsModule} from "@lib/websockets";
+import {WebsocketsModule} from "@modules/websockets";
 import {
   AttachmentService,
   OneToOneChatMemberService,

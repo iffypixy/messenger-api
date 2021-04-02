@@ -4,4 +4,5 @@ export interface UserPublicData {
   id: ID;
   login: string;
   avatar: string;
+  isOnline: boolean;
 }

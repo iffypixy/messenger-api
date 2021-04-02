@@ -1,7 +1,6 @@
-import {AuthModule} from "./auth.module";
-import {RefreshSession} from "./entities";
-import {IsAuthorizedGuard} from "./guards";
-import {AuthMiddleware} from "./middlewares";
-import {GetUser} from "./decorators";
-
-export {AuthModule, RefreshSession, GetUser, AuthMiddleware, IsAuthorizedGuard};
+export {AuthModule} from "./auth.module";
+export {RefreshSession} from "./entities";
+export {IsAuthorizedGuard} from "./guards";
+export {AuthMiddleware} from "./middlewares";
+export {GetUser} from "./decorators";
+export {events as authEvents} from "./lib/constants";

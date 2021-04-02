@@ -1,17 +1,24 @@
-import {Module, NestModule, MiddlewareConsumer} from "@nestjs/common";
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  forwardRef
+} from "@nestjs/common";
 import {JwtModule} from "@nestjs/jwt";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
 
+import {WebsocketsModule} from "@modules/websockets";
 import {UserModule} from "@modules/user";
 import {IsAuthorizedGuard} from "./guards";
 import {RefreshSession} from "./entities";
-import {RefreshSessionService} from "./services";
+import {RefreshSessionService, AuthService} from "./services";
 import {AuthMiddleware} from "./middlewares";
 import {AuthController} from "./auth.controller";
 
 @Module({
   imports: [
+    forwardRef(() => WebsocketsModule),
     UserModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -25,9 +32,20 @@ import {AuthController} from "./auth.controller";
     }),
     TypeOrmModule.forFeature([RefreshSession])
   ],
-  providers: [AuthMiddleware, RefreshSessionService, IsAuthorizedGuard],
+  providers: [
+    AuthMiddleware,
+    RefreshSessionService,
+    AuthService,
+    IsAuthorizedGuard
+  ],
   controllers: [AuthController],
-  exports: [IsAuthorizedGuard, AuthMiddleware, JwtModule, UserModule]
+  exports: [
+    IsAuthorizedGuard,
+    AuthMiddleware,
+    JwtModule,
+    UserModule,
+    AuthService
+  ]
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

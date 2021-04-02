@@ -2,7 +2,7 @@ import {ValidationPipe} from "@nestjs/common";
 import {NestFactory} from "@nestjs/core";
 import * as cookieParser from "cookie-parser";
 
-import {WebsocketsAdapter} from "@lib/websockets";
+import {WebsocketsAdapter} from "@modules/websockets";
 import {AppModule} from "./app.module";
 
 async function bootstrap() {

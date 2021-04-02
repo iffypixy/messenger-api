@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn
 } from "typeorm";
 
+import {idleTime} from "@lib/constants";
 import {UserPublicData} from "../lib/typings";
 import {userRoles, isAdmin, UserRole} from "../lib/user-roles";
 
@@ -53,14 +54,14 @@ export class User {
   setIsOnline(): void {
     const diff = Date.now() - +this.lastSeen;
 
-    if (diff < 60000) this.isOnline = true;
+    if (diff <= idleTime) this.isOnline = true;
     else this.isOnline = false;
   }
 
   get public(): UserPublicData {
-    const {id, login, avatar} = this;
+    const {id, login, avatar, isOnline} = this;
 
-    return {id, login, avatar};
+    return {id, login, avatar, isOnline};
   }
 
   get isAdmin(): boolean {

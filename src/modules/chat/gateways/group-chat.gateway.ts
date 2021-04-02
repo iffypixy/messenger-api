@@ -9,7 +9,7 @@ import {BadRequestException} from "@nestjs/common";
 import {Server} from "socket.io";
 
 import {ExtendedSocket, ID} from "@lib/typings";
-import {WebsocketsService} from "@lib/websockets";
+import {WebsocketsService} from "@modules/websockets";
 import {GroupChatMemberService} from "../services";
 import {ChatMessagePublicData} from "../lib/typings";
 
@@ -63,12 +63,12 @@ export class GroupChatGateway {
     @MessageBody() {chatId, users}: CreatingChatEventBody
   ): Promise<void> {
     const hasAccess = !!(await this.memberService.findOne({
-      where: {user: {id: client.userId}, chat: {id: chatId}}
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
     }));
 
     if (!hasAccess) throw error;
 
-    const clients = this.websocketsService.getSocketsByUserId(client.userId);
+    const clients = this.websocketsService.getSocketsByUserId(client.user.id);
 
     clients.forEach(client => client.join(chatId));
 
@@ -93,12 +93,12 @@ export class GroupChatGateway {
     @MessageBody() {chatId}: JoinEventBody
   ): Promise<void> {
     const hasAccess = !!(await this.memberService.findOne({
-      where: {user: {id: client.userId}, chat: {id: chatId}}
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
     }));
 
     if (!hasAccess) throw error;
 
-    const clients = this.websocketsService.getSocketsByUserId(client.userId);
+    const clients = this.websocketsService.getSocketsByUserId(client.user.id);
 
     clients.forEach(client => client.join(chatId));
   }
@@ -109,7 +109,7 @@ export class GroupChatGateway {
     @MessageBody() {message}: MessageSendingEventBody
   ): Promise<void> {
     const hasAccess = !!(await this.memberService.findOne({
-      where: {user: {id: client.userId}, chat: {id: message.chatId}}
+      where: {user: {id: client.user.id}, chat: {id: message.chatId}}
     }));
 
     if (!hasAccess) throw error;
@@ -123,7 +123,7 @@ export class GroupChatGateway {
     @MessageBody() {messages, chatId}: MessageReadingEventBody
   ): Promise<void> {
     const hasAccess = !!(await this.memberService.findOne({
-      where: {user: {id: client.userId}, chat: {id: chatId}}
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
     }));
 
     if (!hasAccess) throw error;

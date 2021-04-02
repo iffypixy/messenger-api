@@ -17,7 +17,7 @@ import {
 } from "@modules/chat";
 import {UploadModule, File} from "@modules/upload";
 import {ProfileModule} from "@modules/profile";
-import {WebsocketsModule} from "@lib/websockets";
+import {WebsocketsModule} from "@modules/websockets";
 
 @Module({
   imports: [

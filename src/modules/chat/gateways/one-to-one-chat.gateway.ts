@@ -9,8 +9,8 @@ import {BadRequestException} from "@nestjs/common";
 import {Not} from "typeorm";
 import {Server} from "socket.io";
 
+import {WebsocketsService} from "@modules/websockets";
 import {ExtendedSocket, ID} from "@lib/typings";
-import {WebsocketsService} from "@lib/websockets";
 import {OneToOneChatMemberService} from "../services";
 import {OneToOneChatMember} from "../entities";
 import {ChatMessagePublicData} from "../lib/typings";
@@ -59,13 +59,13 @@ export class OneToOneChatGateway {
     @MessageBody() {chatId}: JoinEventBody
   ): Promise<void> {
     const hasAccess = !!(await this.memberService.findOne({
-      where: {user: {id: client.userId}, chat: {id: chatId}}
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
     }));
 
     if (!hasAccess) throw error;
 
     const member: OneToOneChatMember | null = await this.memberService.findOne({
-      where: {user: {id: Not(client.userId)}, chat: {id: chatId}}
+      where: {user: {id: Not(client.user.id)}, chat: {id: chatId}}
     });
 
     if (!member) throw error;
@@ -74,7 +74,7 @@ export class OneToOneChatGateway {
 
     if (!partners.length) throw error;
 
-    const clients = this.websocketsService.getSocketsByUserId(client.userId);
+    const clients = this.websocketsService.getSocketsByUserId(client.user.id);
 
     clients.forEach(client => client.join(chatId));
     partners.forEach(partner => partner.join(chatId));
@@ -86,7 +86,7 @@ export class OneToOneChatGateway {
     @MessageBody() {message}: MessageSendingEventBody
   ): Promise<void> {
     const hasAccess = !!(await this.memberService.findOne({
-      where: {user: {id: client.userId}, chat: {id: message.chatId}}
+      where: {user: {id: client.user.id}, chat: {id: message.chatId}}
     }));
 
     if (!hasAccess) throw error;
@@ -100,7 +100,7 @@ export class OneToOneChatGateway {
     @MessageBody() {messages, chatId}: MessageReadingEventBody
   ): Promise<void> {
     const hasAccess = !!(await this.memberService.findOne({
-      where: {user: {id: client.userId}, chat: {id: chatId}}
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
     }));
 
     if (!hasAccess) throw error;
