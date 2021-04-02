@@ -29,7 +29,8 @@ import {OneToOneChatMember} from "../entities";
 import {CreateMessageDto, DeleteMessagesDto} from "../dtos";
 import {
   OneToOneChatMessagePublicData,
-  AttachmentPublicData
+  AttachmentPublicData,
+  OneToOneChatMemberPublicData
 } from "../lib/typings";
 
 @UseGuards(IsAuthorizedGuard)
@@ -47,21 +48,21 @@ export class OneToOneChatController {
   async get(
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID
-  ): Promise<{id: ID; partner: UserPublicData}> {
+  ): Promise<{id: ID; partner: OneToOneChatMemberPublicData}> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
     let member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [user, partner]
+      [partner, user]
     );
 
     if (!member)
-      member = await this.memberService.createByUsers([user, partner]);
+      member = await this.memberService.createByUsers([partner, user]);
 
     return {
       id: member.chat.id,
-      partner: partner.public
+      partner: member.public
     };
   }
 
@@ -170,7 +171,7 @@ export class OneToOneChatController {
   ): Promise<{
     chats: {
       id: ID;
-      partner: UserPublicData;
+      partner: OneToOneChatMemberPublicData;
       lastMessage: OneToOneChatMessagePublicData;
     }[];
   }> {
@@ -198,12 +199,13 @@ export class OneToOneChatController {
     }
 
     return {
-      chats: partners.map(({chat, user}) => {
-        const message = messages.find(({chat}) => chat.id === chat.id) || null;
+      chats: partners.map(partner => {
+        const message =
+          messages.find(({chat}) => chat.id === partner.chat.id) || null;
 
         return {
-          id: chat.id,
-          partner: user.public,
+          id: partner.chat.id,
+          partner: partner.public,
           lastMessage: message && message.public
         };
       })
@@ -332,5 +334,57 @@ export class OneToOneChatController {
       id: In(dto.messages),
       sender: {member}
     });
+  }
+
+  @Post(":partnerId/ban")
+  async banPartner(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID
+  ): Promise<{id: ID; partner: OneToOneChatMemberPublicData}> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+      [partner, user]
+    );
+
+    if (!member) throw new BadRequestException("Invalid credentials");
+
+    const updated = await this.memberService.save({
+      id: member.id,
+      isBanned: true
+    });
+
+    return {
+      id: member.chat.id,
+      partner: updated.public
+    };
+  }
+
+  @Post(":partnerId/unban")
+  async unbanPartner(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID
+  ): Promise<{id: ID; partner: OneToOneChatMemberPublicData}> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+      [partner, user]
+    );
+
+    if (!member) throw new BadRequestException("Invalid credentials");
+
+    const updated = await this.memberService.save({
+      id: member.id,
+      isBanned: false
+    });
+
+    return {
+      id: member.chat.id,
+      partner: updated.public
+    };
   }
 }

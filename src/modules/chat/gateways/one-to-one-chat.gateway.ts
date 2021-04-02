@@ -20,12 +20,16 @@ const prefix = "1O1_CHAT";
 const events = {
   JOIN: `${prefix}:JOIN`,
   MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
-  MESSAGE_READING: `${prefix}:MESSAGE_READING`
+  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
+  BANNING_PARTNER: `${prefix}:BANNING_PARTNER`,
+  UNBANNING_PARTNER: `${prefix}:UNBANNING_PARTNER`
 };
 
 const clientEvents = {
   MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
-  MESSAGE_READING: `${prefix}:MESSAGE_READING`
+  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
+  GETTING_BANNED: `${prefix}:GETTING_BANNED`,
+  GETTING_UNBANNED: `${prefix}:`
 };
 
 interface JoinEventBody {
@@ -38,6 +42,14 @@ interface MessageSendingEventBody {
 
 interface MessageReadingEventBody {
   messages: ID[];
+  chatId: ID;
+}
+
+interface BanningPartnerEventBody {
+  chatId: ID;
+}
+
+interface UnbanningPartnerEventBody {
   chatId: ID;
 }
 
@@ -106,5 +118,33 @@ export class OneToOneChatGateway {
     if (!hasAccess) throw error;
 
     client.to(chatId).emit(clientEvents.MESSAGE_SENDING, {messages, chatId});
+  }
+
+  @SubscribeMessage(events.BANNING_PARTNER)
+  async handleBanningPartnerEvent(
+    @ConnectedSocket() client: ExtendedSocket,
+    @MessageBody() {chatId}: BanningPartnerEventBody
+  ): Promise<void> {
+    const hasAccess = !!(await this.memberService.findOne({
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
+    }));
+
+    if (!hasAccess) throw error;
+
+    client.to(chatId).emit(clientEvents.GETTING_BANNED);
+  }
+
+  @SubscribeMessage(events.UNBANNING_PARTNER)
+  async handleUnbanningPartnerEvent(
+    @ConnectedSocket() client: ExtendedSocket,
+    @MessageBody() {chatId}: UnbanningPartnerEventBody
+  ): Promise<void> {
+    const hasAccess = !!(await this.memberService.findOne({
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
+    }));
+
+    if (!hasAccess) throw error;
+
+    client.to(chatId).emit(clientEvents.GETTING_UNBANNED);
   }
 }

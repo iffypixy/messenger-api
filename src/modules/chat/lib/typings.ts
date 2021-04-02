@@ -56,4 +56,6 @@ export interface OneToOneChatMessagePublicData {
   chatId: ID;
 }
 
-export interface OneToOneChatMemberPublicData extends UserPublicData {}
+export interface OneToOneChatMemberPublicData extends UserPublicData {
+  isBanned: boolean;
+}

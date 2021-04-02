@@ -4,7 +4,8 @@ import {
   DeepPartial,
   FindManyOptions,
   FindOneOptions,
-  Repository
+  Repository,
+  SaveOptions
 } from "typeorm";
 
 import {User} from "@modules/user";
@@ -71,5 +72,12 @@ export class OneToOneChatMemberService {
           seconds.findIndex(second => second.chat.id === chat.id) !== -1
       ) || null
     );
+  }
+
+  save(
+    entity: DeepPartial<OneToOneChatMember>,
+    options?: SaveOptions
+  ): Promise<OneToOneChatMember> {
+    return this.memberRepository.save(entity, options);
   }
 }

@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, ManyToOne, Column} from "typeorm";
 
 import {User} from "@modules/user";
 import {ID} from "@lib/typings";
@@ -16,9 +16,17 @@ export class OneToOneChatMember {
   @ManyToOne(type => User, {eager: true})
   user: User;
 
-  get public(): OneToOneChatMemberPublicData {
-    const {user} = this;
+  @Column("boolean", {
+    nullable: true
+  })
+  isBanned: boolean;
 
-    return user.public;
+  get public(): OneToOneChatMemberPublicData {
+    const {user, isBanned} = this;
+
+    return {
+      ...user.public,
+      isBanned
+    };
   }
 }
