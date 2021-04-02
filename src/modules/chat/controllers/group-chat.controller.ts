@@ -16,16 +16,21 @@ import {
   UseInterceptors,
   Delete
 } from "@nestjs/common";
-import {In} from "typeorm";
+import {In, Not} from "typeorm";
 import {FileInterceptor} from "@nestjs/platform-express";
 import * as mime from "mime";
 
 import {FilePublicData, FileService, UploadService} from "@modules/upload";
-import {maxFileSize} from "@lib/constants";
+import {maxFileSize, queryLimit} from "@lib/constants";
 import {BufferedFile, ID} from "@lib/typings";
 import {cleanObject} from "@lib/functions";
 import {isExtensionValid} from "@lib/extensions";
-import {CreateGroupChatDto, CreateMessageDto, DeleteMessagesDto} from "../dtos";
+import {
+  AddMemberDto,
+  CreateGroupChatDto,
+  CreateMessageDto,
+  DeleteMessagesDto
+} from "../dtos";
 import {
   GroupChatMemberService,
   GroupChatService,
@@ -33,7 +38,11 @@ import {
   AttachmentService
 } from "../services";
 import {minimalNumberOfMembersToCreateGroupChat} from "../lib/constants";
-import {GroupChatPublicData, ChatMessagePublicData} from "../lib/typings";
+import {
+  GroupChatPublicData,
+  GroupChatMessagePublicData,
+  GroupChatMemberPublicData
+} from "../lib/typings";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("group-chats")
@@ -70,7 +79,7 @@ export class GroupChatController {
     @GetUser() user: User,
     @Body() dto: CreateGroupChatDto,
     @UploadedFile() avatar: BufferedFile
-  ): Promise<{chat: GroupChatPublicData}> {
+  ): Promise<{chat: GroupChatPublicData & {numberOfMembers: number}}> {
     const users = await this.userService.find({
       where: {id: In(dto.members)}
     });
@@ -96,14 +105,19 @@ export class GroupChatController {
 
     const chat = await this.chatService.create(partial);
 
-    await this.memberService.create({user, chat});
+    await this.memberService.create({user, chat, role: "owner"});
 
     for (let i = 0; i < users.length; i++) {
-      await this.memberService.create({user: users[i], chat});
+      await this.memberService.create({user: users[i], chat, role: "member"});
     }
 
+    const numberOfMembers = await this.memberService.count({where: {chat}});
+
     return {
-      chat: chat.public
+      chat: {
+        ...chat.public,
+        numberOfMembers
+      }
     };
   }
 
@@ -111,7 +125,7 @@ export class GroupChatController {
   async getMany(
     @GetUser() user: User
   ): Promise<{
-    chats: ({lastMessage: ChatMessagePublicData} & GroupChatPublicData)[];
+    chats: ({lastMessage: GroupChatMessagePublicData} & GroupChatPublicData)[];
   }> {
     const members = await this.memberService.find({where: {user}});
 
@@ -148,7 +162,7 @@ export class GroupChatController {
     @GetUser() user: User,
     @Param("id") id: ID,
     @Body() dto: CreateMessageDto
-  ): Promise<{message: ChatMessagePublicData}> {
+  ): Promise<{message: GroupChatMessagePublicData}> {
     const member = await this.memberService.findOne({
       where: {
         chat: {id},
@@ -156,7 +170,9 @@ export class GroupChatController {
       }
     });
 
-    if (!member) throw new NotFoundException("Invalid credentials.");
+    const hasAccess = !!member;
+
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
     const documents = await this.fileService.find({
       user,
@@ -191,8 +207,6 @@ export class GroupChatController {
       where: {id: dto.replyTo, chat: member.chat}
     });
 
-    console.log(replyTo);
-
     const message = await this.messageService.create({
       chat: member.chat,
       sender: {
@@ -214,20 +228,22 @@ export class GroupChatController {
     @GetUser() user: User,
     @Param("id") id: ID,
     @Query("offset", ParseIntPipe) offset: number
-  ): Promise<{messages: ChatMessagePublicData[]}> {
-    const chat = await this.chatService.findOne({
-      where: {id}
+  ): Promise<{messages: GroupChatMessagePublicData[]}> {
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
     });
 
-    if (!chat) throw new NotFoundException("Chat is not found.");
+    const hasAccess = !!member;
+
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
     const messages = await this.messageService.find({
-      where: {chat},
+      where: {chat: member.chat},
       skip: offset,
       order: {
         createdAt: "DESC"
       },
-      take: 15
+      take: queryLimit
     });
 
     for (let i = 0; i < messages.length; i++) {
@@ -243,7 +259,7 @@ export class GroupChatController {
   async get(
     @GetUser() user: User,
     @Param("id") id: ID
-  ): Promise<{chat: GroupChatPublicData}> {
+  ): Promise<{chat: GroupChatPublicData & {numberOfMembers: number}}> {
     const member = await this.memberService.findOne({
       where: {
         chat: {id},
@@ -251,10 +267,17 @@ export class GroupChatController {
       }
     });
 
-    if (!member) throw new BadRequestException("Invalid credentials.");
+    if (!member) throw new NotFoundException("Chat is not found.");
+
+    const numberOfMembers = await this.memberService.count({
+      where: {chat: member.chat}
+    });
 
     return {
-      chat: member.chat.public
+      chat: {
+        ...member.chat.public,
+        numberOfMembers
+      }
     };
   }
 
@@ -264,16 +287,16 @@ export class GroupChatController {
     @Param("id") id: ID,
     @Query("offset", ParseIntPipe) offset: number
   ): Promise<{files: {id: ID; file: FilePublicData; createdAt: Date}[]}> {
-    const chat = await this.chatService.findOne({
-      where: {id}
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
     });
 
-    const hasAccess = await this.memberService.findOne({where: {chat, user}});
+    const hasAccess = !!member;
 
-    if (!chat || !hasAccess) throw new NotFoundException("Chat is not found.");
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
     const messages = await this.messageService.findManyWithAttachmentByChatId(
-      {id: chat.id, type: "file"},
+      {id: member.chat.id, type: "file"},
       {offset}
     );
 
@@ -292,18 +315,16 @@ export class GroupChatController {
     @Param("id") id: ID,
     @Query("offset", ParseIntPipe) offset: number
   ): Promise<{images: {id: ID; url: string; createdAt: Date}[]}> {
-    const chat = await this.chatService.findOne({
-      where: {id}
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
     });
 
-    if (!chat) throw new NotFoundException("Chat is not found.");
+    const hasAccess = !!member;
 
-    const hasAccess = await this.memberService.findOne({where: {chat, user}});
-
-    if (!chat || !hasAccess) throw new NotFoundException("Chat is not found.");
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
     const messages = await this.messageService.findManyWithAttachmentByChatId(
-      {id: chat.id, type: "image"},
+      {id: member.chat.id, type: "image"},
       {offset}
     );
 
@@ -322,18 +343,16 @@ export class GroupChatController {
     @Param("id") id: ID,
     @Query("offset", ParseIntPipe) offset: number
   ): Promise<{audios: {id: ID; url: string; createdAt: Date}[]}> {
-    const chat = await this.chatService.findOne({
-      where: {id}
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
     });
 
-    if (!chat) throw new NotFoundException("Chat is not found.");
+    const hasAccess = !!member;
 
-    const hasAccess = await this.memberService.findOne({where: {chat, user}});
-
-    if (!chat || !hasAccess) throw new NotFoundException("Chat is not found.");
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
     const messages = await this.messageService.findManyWithAttachmentByChatId(
-      {id: chat.id, type: "audio"},
+      {id: member.chat.id, type: "audio"},
       {offset}
     );
 
@@ -353,20 +372,94 @@ export class GroupChatController {
     @Body() dto: DeleteMessagesDto,
     @Param("id") id: ID
   ): Promise<void> {
-    const chat = await this.chatService.findOne({
-      where: {id}
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
     });
 
-    if (!chat) throw new NotFoundException("Chat is not found.");
+    const hasAccess = !!member;
 
-    const member = await this.memberService.findOne({where: {chat, user}});
-
-    if (!member) throw new NotFoundException("Invalid credentials.");
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
     await this.messageService.delete({
       chat: member.chat,
       id: In(dto.messages),
       sender: {member}
     });
+  }
+
+  @Get(":id/members")
+  async getChatMembers(
+    @GetUser() user: User,
+    @Param("id") id: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{members: GroupChatMemberPublicData[]}> {
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
+    });
+
+    const hasAccess = !!member;
+
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
+
+    const owners = await this.memberService.find({
+      where: {chat: member.chat, user: {id: Not(user.id)}, role: "owner"},
+      take: queryLimit,
+      skip: offset,
+      order: {id: "ASC"}
+    });
+
+    const members = await this.memberService.find({
+      where: {chat: member.chat, user: {id: Not(user.id)}},
+      take: queryLimit - owners.length,
+      skip: offset - owners.length,
+      order: {id: "ASC"}
+    });
+
+    return {
+      members: [
+        ...owners.map(owner => owner.public),
+        ...members.map(member => member.public)
+      ]
+    };
+  }
+
+  @Post(":id/members/add")
+  async addMember(
+    @GetUser() user: User,
+    @Param("id") id: ID,
+    @Body() dto: AddMemberDto
+  ): Promise<{member: GroupChatMemberPublicData}> {
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
+    });
+
+    const hasAccess = !!member;
+
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
+
+    if (!member.isOwner)
+      throw new BadRequestException("You dont have permission to add members");
+
+    const applicant = await this.userService.findById(dto.user);
+
+    if (!applicant)
+      throw new BadRequestException("User credentials is invalid");
+
+    const doesExist = await this.memberService.findOne({
+      where: {chat: member.chat, user: applicant}
+    });
+
+    if (doesExist)
+      throw new BadRequestException("User is already member of group-chat");
+
+    const added = await this.memberService.create({
+      chat: member.chat,
+      role: "member",
+      user: applicant
+    });
+
+    return {
+      member: added.public
+    };
   }
 }

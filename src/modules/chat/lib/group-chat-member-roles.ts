@@ -1,3 +1,3 @@
-import {ChatMemberRole} from "./typings";
+import {GroupChatMemberRole} from "./typings";
 
-export const chatMemberRoles: ChatMemberRole[] = ["member", "owner"];
+export const groupChatMemberRoles: GroupChatMemberRole[] = ["member", "owner"];

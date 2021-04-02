@@ -13,7 +13,7 @@ import {WebsocketsService} from "@modules/websockets";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {OneToOneChatMemberService} from "../services";
 import {OneToOneChatMember} from "../entities";
-import {ChatMessagePublicData} from "../lib/typings";
+import {OneToOneChatMessagePublicData} from "../lib/typings";
 
 const prefix = "1O1_CHAT";
 
@@ -33,7 +33,7 @@ interface JoinEventBody {
 }
 
 interface MessageSendingEventBody {
-  message: ChatMessagePublicData;
+  message: OneToOneChatMessagePublicData;
 }
 
 interface MessageReadingEventBody {

@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 
 import {ID, RequestOptions} from "@lib/typings";
+import {queryLimit} from "@lib/constants";
 import {OneToOneChatMessage} from "../entities";
 import {AttachmentType} from "../lib/typings";
 
@@ -72,7 +73,7 @@ export class OneToOneChatMessageService {
       .andWhere("msg.sender.type = :type", {type: "user"})
       .andWhere(`${type} IS NOT NULL`)
       .orderBy("msg.createdAt", "DESC")
-      .limit(15)
+      .limit(queryLimit)
       .skip(offset)
       .getMany();
   }

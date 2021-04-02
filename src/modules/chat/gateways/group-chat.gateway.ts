@@ -11,7 +11,7 @@ import {Server} from "socket.io";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {WebsocketsService} from "@modules/websockets";
 import {GroupChatMemberService} from "../services";
-import {ChatMessagePublicData} from "../lib/typings";
+import {GroupChatMessagePublicData} from "../lib/typings";
 
 interface JoinEventBody {
   chatId: ID;
@@ -23,7 +23,7 @@ interface CreatingChatEventBody {
 }
 
 interface MessageSendingEventBody {
-  message: ChatMessagePublicData;
+  message: GroupChatMessagePublicData;
 }
 
 interface MessageReadingEventBody {

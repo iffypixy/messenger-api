@@ -29,4 +29,8 @@ export class GroupChatMemberService {
   findOne(options: FindOneOptions<GroupChatMember>): Promise<GroupChatMember> {
     return this.memberRepository.findOne(options);
   }
+
+  count(options: FindManyOptions<GroupChatMember>): Promise<number> {
+    return this.memberRepository.count(options);
+  }
 }

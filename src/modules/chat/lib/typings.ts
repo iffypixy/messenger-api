@@ -2,19 +2,9 @@ import {ID} from "@lib/typings";
 import {UserPublicData} from "@modules/user";
 import {FilePublicData} from "@modules/upload";
 
-export interface ChatMessagePublicData {
-  id: ID;
-  text: string | null;
-  sender: UserPublicData | null;
-  isEdited: boolean;
-  isRead: boolean;
-  isSystem: boolean;
-  replyTo: ChatMessagePublicData | null;
-  createdAt: Date;
-  files: FilePublicData[] | null;
-  images: string[] | null;
-  audio: string | null;
-  chatId: ID;
+export interface GroupChatMemberPublicData extends UserPublicData {
+  isOwner: boolean;
+  isMember: boolean;
 }
 
 export interface AttachmentPublicData {
@@ -34,4 +24,36 @@ export interface GroupChatPublicData {
 
 export type ChatMessageSenderType = "user" | "system";
 
-export type ChatMemberRole = "owner" | "member";
+export type GroupChatMemberRole = "owner" | "member";
+
+export interface GroupChatMessagePublicData {
+  id: ID;
+  text: string | null;
+  sender: GroupChatMemberPublicData | null;
+  isEdited: boolean;
+  isRead: boolean;
+  isSystem: boolean;
+  replyTo: GroupChatMessagePublicData | null;
+  createdAt: Date;
+  files: FilePublicData[] | null;
+  images: string[] | null;
+  audio: string | null;
+  chatId: ID;
+}
+
+export interface OneToOneChatMessagePublicData {
+  id: ID;
+  text: string | null;
+  sender: OneToOneChatMemberPublicData;
+  isEdited: boolean;
+  isRead: boolean;
+  isSystem: boolean;
+  replyTo: OneToOneChatMessagePublicData | null;
+  createdAt: Date;
+  files: FilePublicData[] | null;
+  images: string[] | null;
+  audio: string | null;
+  chatId: ID;
+}
+
+export interface OneToOneChatMemberPublicData extends UserPublicData {}

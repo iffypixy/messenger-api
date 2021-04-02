@@ -19,6 +19,7 @@ import {User, UserPublicData, UserService} from "@modules/user";
 import {FilePublicData, FileService} from "@modules/upload";
 import {ID} from "@lib/typings";
 import {isExtensionValid} from "@lib/extensions";
+import {queryLimit} from "@lib/constants";
 import {
   AttachmentService,
   OneToOneChatMessageService,
@@ -26,7 +27,10 @@ import {
 } from "../services";
 import {OneToOneChatMember} from "../entities";
 import {CreateMessageDto, DeleteMessagesDto} from "../dtos";
-import {ChatMessagePublicData, AttachmentPublicData} from "../lib/typings";
+import {
+  OneToOneChatMessagePublicData,
+  AttachmentPublicData
+} from "../lib/typings";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("chats")
@@ -67,7 +71,7 @@ export class OneToOneChatController {
     @Param("partnerId") partnerId: ID,
     @Query("offset", ParseIntPipe) offset: number
   ): Promise<{
-    messages: ChatMessagePublicData[];
+    messages: OneToOneChatMessagePublicData[];
   }> {
     const partner = await this.userService.findById(partnerId);
 
@@ -82,7 +86,7 @@ export class OneToOneChatController {
     const messages = await this.messageService.find({
       where: {chat: member.chat},
       skip: offset,
-      take: 15
+      take: queryLimit
     });
 
     for (let i = 0; i < messages.length; i++) {
@@ -99,7 +103,7 @@ export class OneToOneChatController {
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID,
     @Body() dto: CreateMessageDto
-  ): Promise<{message: ChatMessagePublicData & AttachmentPublicData}> {
+  ): Promise<{message: OneToOneChatMessagePublicData & AttachmentPublicData}> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
@@ -167,7 +171,7 @@ export class OneToOneChatController {
     chats: {
       id: ID;
       partner: UserPublicData;
-      lastMessage: ChatMessagePublicData;
+      lastMessage: OneToOneChatMessagePublicData;
     }[];
   }> {
     const members = await this.memberService.find({

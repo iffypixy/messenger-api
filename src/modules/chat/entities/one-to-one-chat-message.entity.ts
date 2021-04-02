@@ -7,7 +7,6 @@ import {
   OneToOne,
   JoinColumn,
   Tree,
-  TreeChildren,
   TreeParent
 } from "typeorm";
 
@@ -16,7 +15,10 @@ import {Attachment} from "./attachment.entity";
 import {OneToOneChat} from "./one-to-one-chat.entity";
 import {OneToOneChatMember} from "./one-to-one-chat-member.entity";
 import {chatMessageSenderTypes} from "../lib/chat-message-sender-type";
-import {ChatMessagePublicData, ChatMessageSenderType} from "../lib/typings";
+import {
+  ChatMessageSenderType,
+  OneToOneChatMessagePublicData
+} from "../lib/typings";
 
 class Sender {
   @Column("enum", {
@@ -67,13 +69,13 @@ export class OneToOneChatMessage {
   @CreateDateColumn()
   createdAt: Date;
 
-  get public(): ChatMessagePublicData {
+  get public(): OneToOneChatMessagePublicData {
     const {id, text, status, createdAt, chat} = this;
 
     const isSystem = this.sender.type === "system";
     const isEdited = (status && status.isEdited) || false;
     const isRead = (status && status.isRead) || false;
-    const sender = !isSystem ? this.sender.member.user.public : null;
+    const sender = !isSystem ? this.sender.member.public : null;
     const chatId = chat.id;
     const replyTo = this.replyTo && this.replyTo.public;
 

@@ -6,22 +6,18 @@ import {WebsocketsAdapter} from "@modules/websockets";
 import {AppModule} from "./app.module";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    cors: {
-      credentials: true,
-      origin: "http://localhost:3000",
-      allowedHeaders: "*"
-    }
-  });
+  const cors = {
+    origin: "http://localhost:3000"
+  };
+
+  const app = await NestFactory.create(AppModule, {cors});
 
   app.setGlobalPrefix("/v1/api");
   app.useGlobalPipes(new ValidationPipe({transform: true}));
 
   app.use(cookieParser());
 
-  app.useWebSocketAdapter(
-    new WebsocketsAdapter(app, {origin: "http://localhost:3000"})
-  );
+  app.useWebSocketAdapter(new WebsocketsAdapter(app, cors));
 
   await app.listen(process.env.PORT);
 }

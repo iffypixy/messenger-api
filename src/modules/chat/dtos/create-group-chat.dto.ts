@@ -8,7 +8,8 @@ export class CreateGroupChatDto {
   title?: string;
 
   @IsUUID(4, {
-    each: true
+    each: true,
+    message: "Member must be type of uuid"
   })
   members: ID[];
 }
