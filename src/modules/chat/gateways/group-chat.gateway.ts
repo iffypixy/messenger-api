@@ -12,22 +12,7 @@ import {ExtendedSocket, ID} from "@lib/typings";
 import {WebsocketsService} from "@modules/websockets";
 import {GroupChatMemberService} from "../services";
 import {GroupChatMessagePublicData} from "../lib/typings";
-
-const prefix = "GROUP_CHAT";
-
-const events = {
-  JOIN: `${prefix}:JOIN`,
-  CREATING_CHAT: `${prefix}:CREATING_CHAT`,
-  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
-  MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
-  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
-};
-
-const clientEvents = {
-  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
-  MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
-  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
-};
+import {clientEvents, events} from "../lib/group-chat-events";
 
 interface JoinEventBody {
   chatId: ID;

@@ -22,6 +22,7 @@ import {FileInterceptor} from "@nestjs/platform-express";
 import * as mime from "mime";
 
 import {FilePublicData, FileService, UploadService} from "@modules/upload";
+import {WebsocketsGateway} from "@modules/websockets";
 import {maxFileSize, queryLimit} from "@lib/constants";
 import {BufferedFile, ID} from "@lib/typings";
 import {cleanObject} from "@lib/functions";
@@ -47,6 +48,7 @@ import {
   GroupChatMessagePublicData,
   GroupChatMemberPublicData
 } from "../lib/typings";
+import {events} from "../lib/group-chat-events";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("group-chats")
@@ -58,7 +60,8 @@ export class GroupChatController {
     private readonly memberService: GroupChatMemberService,
     private readonly messageService: GroupChatMessageService,
     private readonly fileService: FileService,
-    private readonly attachmentService: AttachmentService
+    private readonly attachmentService: AttachmentService,
+    private readonly websocketsGateway: WebsocketsGateway
   ) {}
 
   @UseInterceptors(
@@ -462,6 +465,17 @@ export class GroupChatController {
       user: applicant
     });
 
+    const message = await this.messageService.create({
+      chat: member.chat,
+      sender: {type: "system"},
+      text: `${applicant.login} has joined to the group-chat!`
+    });
+
+    this.websocketsGateway.wss.to(member.chat.id).emit(events.SYSTEM_MESSAGE, {
+      message: message.public,
+      chatId: member.chat.id
+    });
+
     return {
       member: added.public
     };
@@ -488,12 +502,23 @@ export class GroupChatController {
     const applicant = await this.userService.findById(dto.user);
 
     if (!applicant)
-      throw new BadRequestException("User credentials is invalid");
+      throw new BadRequestException("User credentials is invalid.");
 
     await this.memberService.delete({
       chat: member.chat,
       role: "member",
       user: applicant
+    });
+
+    const message = await this.messageService.create({
+      chat: member.chat,
+      sender: {type: "system"},
+      text: `${applicant.login} has been kicked out from the group-chat :(`
+    });
+
+    this.websocketsGateway.wss.to(member.chat.id).emit(events.SYSTEM_MESSAGE, {
+      message: message.public,
+      chatId: member.chat.id
     });
   }
 

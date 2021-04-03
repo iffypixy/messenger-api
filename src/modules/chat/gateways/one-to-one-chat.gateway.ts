@@ -13,25 +13,7 @@ import {WebsocketsService} from "@modules/websockets";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {OneToOneChatMemberService} from "../services";
 import {OneToOneChatMessagePublicData} from "../lib/typings";
-
-const prefix = "1O1_CHAT";
-
-const events = {
-  JOIN: `${prefix}:JOIN`,
-  MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
-  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
-  BANNING_PARTNER: `${prefix}:BANNING_PARTNER`,
-  UNBANNING_PARTNER: `${prefix}:UNBANNING_PARTNER`,
-  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
-};
-
-const clientEvents = {
-  MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
-  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
-  GETTING_BANNED: `${prefix}:GETTING_BANNED`,
-  GETTING_UNBANNED: `${prefix}:`,
-  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
-};
+import {clientEvents, events} from "../lib/one-to-one-chat-events";
 
 interface JoinEventBody {
   chatId: ID;
