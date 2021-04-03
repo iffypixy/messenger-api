@@ -6,6 +6,7 @@ import {
   FindConditions,
   FindManyOptions,
   FindOneOptions,
+  SaveOptions,
   TreeRepository,
   UpdateResult
 } from "typeorm";
@@ -82,5 +83,12 @@ export class GroupChatMessageService {
     partial: QueryDeepPartialEntity<GroupChatMessage>
   ): Promise<UpdateResult> {
     return this.messageRepository.update(conditions, partial);
+  }
+
+  save(
+    partial: DeepPartial<GroupChatMessage>,
+    options?: SaveOptions
+  ): Promise<GroupChatMessage> {
+    return this.messageRepository.save(partial, options);
   }
 }

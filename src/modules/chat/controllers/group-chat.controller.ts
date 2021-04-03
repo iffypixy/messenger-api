@@ -31,6 +31,7 @@ import {
   CreateGroupChatDto,
   CreateMessageDto,
   DeleteMessagesDto,
+  EditMessageDto,
   KickMemberDto,
   ReadMessageDto
 } from "../dtos";
@@ -527,7 +528,7 @@ export class GroupChatController {
         chat: member.chat,
         sender: {member: {id: Not(member.id)}},
         isRead: false,
-        createdAt: Raw(alias => `${alias} < 'date`, {
+        createdAt: Raw(alias => `${alias} <= 'date`, {
           date: message.createdAt.toISOString()
         })
       },
@@ -535,5 +536,70 @@ export class GroupChatController {
         isRead: true
       }
     );
+  }
+
+  @Put(":id/messages/edit")
+  async editMessage(
+    @GetUser() user: User,
+    @Param("id") id: ID,
+    @Body() dto: EditMessageDto
+  ): Promise<{message: GroupChatMessagePublicData}> {
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
+    });
+
+    const hasAccess = !!member;
+
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
+
+    const message = await this.messageService.findOne({
+      where: {id: dto.message, chat: member.chat, sender: {member}}
+    });
+
+    if (!message) throw new BadRequestException("Invalid message credentials.");
+
+    const documents = await this.fileService.find({
+      user,
+      id: In([...dto.files, ...dto.images, dto.audio])
+    });
+
+    const files = documents.filter(
+      ({extension}) =>
+        !isExtensionValid(extension, "image") &&
+        !isExtensionValid(extension, "audio")
+    );
+
+    const images = documents.filter(({extension}) =>
+      isExtensionValid(extension, "image")
+    );
+
+    const audio =
+      documents.find(({extension}) => isExtensionValid(extension, "audio")) ||
+      null;
+
+    const doesAttachmentExist = !!files.length || !!images.length || audio;
+
+    const attachment = doesAttachmentExist
+      ? await this.attachmentService.create({
+          audio,
+          files,
+          images
+        })
+      : null;
+
+    const replyTo = await this.messageService.findOne({
+      where: {id: dto.replyTo, chat: member.chat}
+    });
+
+    const updated = await this.messageService.save({
+      id: message.id,
+      text: dto.text,
+      attachment,
+      replyTo
+    });
+
+    return {
+      message: updated.public
+    };
   }
 }

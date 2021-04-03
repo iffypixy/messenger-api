@@ -10,9 +10,10 @@ import {
   Query,
   UseGuards,
   Delete,
-  HttpCode
+  HttpCode,
+  Put
 } from "@nestjs/common";
-import {In, Not} from "typeorm";
+import {In, Not, Raw} from "typeorm";
 
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
 import {User, UserPublicData, UserService} from "@modules/user";
@@ -26,7 +27,12 @@ import {
   OneToOneChatMemberService
 } from "../services";
 import {OneToOneChatMember} from "../entities";
-import {CreateMessageDto, DeleteMessagesDto} from "../dtos";
+import {
+  CreateMessageDto,
+  DeleteMessagesDto,
+  EditMessageDto,
+  ReadMessageDto
+} from "../dtos";
 import {
   OneToOneChatMessagePublicData,
   AttachmentPublicData,
@@ -385,6 +391,116 @@ export class OneToOneChatController {
     return {
       id: member.chat.id,
       partner: updated.public
+    };
+  }
+
+  @HttpCode(204)
+  @Put(":partnerId/messages/read")
+  async readMessage(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID,
+    @Body() dto: ReadMessageDto
+  ) {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+      [user, partner]
+    );
+
+    if (!member) throw new BadRequestException("Invalid credentials");
+
+    const message = await this.messageService.findOne({
+      where: {
+        chat: member.chat,
+        id: dto.message,
+        isRead: false,
+        sender: {member: {id: Not(member.id)}}
+      }
+    });
+
+    if (!message) throw new BadRequestException("Invalid message credentials.");
+
+    await this.messageService.update(
+      {
+        chat: member.chat,
+        sender: {member: {id: Not(member.id)}},
+        isRead: false,
+        createdAt: Raw(alias => `${alias} <= 'date`, {
+          date: message.createdAt.toISOString()
+        })
+      },
+      {
+        isRead: true
+      }
+    );
+  }
+
+  @Put(":partnerId/messages/edit")
+  async editMessage(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID,
+    @Body() dto: EditMessageDto
+  ): Promise<{message: OneToOneChatMessagePublicData}> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
+      [user, partner]
+    );
+
+    if (!member) throw new BadRequestException("Invalid credentials");
+
+    const message = await this.messageService.findOne({
+      where: {id: dto.message, chat: member.chat, sender: {member}}
+    });
+
+    if (!message) throw new BadRequestException("Invalid message credentials.");
+
+    const documents = await this.fileService.find({
+      user,
+      id: In([...dto.files, ...dto.images, dto.audio])
+    });
+
+    const files = documents.filter(
+      ({extension}) =>
+        !isExtensionValid(extension, "image") &&
+        !isExtensionValid(extension, "audio")
+    );
+
+    const images = documents.filter(({extension}) =>
+      isExtensionValid(extension, "image")
+    );
+
+    const audio =
+      documents.find(({extension}) => isExtensionValid(extension, "audio")) ||
+      null;
+
+    const doesAttachmentExist = !!files.length || !!images.length || audio;
+
+    const attachment = doesAttachmentExist
+      ? await this.attachmentService.create({
+          audio,
+          files,
+          images
+        })
+      : null;
+
+    const replyTo = await this.messageService.findOne({
+      where: {id: dto.replyTo, chat: member.chat}
+    });
+
+    const updated = await this.messageService.save({
+      id: message.id,
+      text: dto.text,
+      attachment,
+      replyTo
+    });
+
+    return {
+      message: updated.public
     };
   }
 }

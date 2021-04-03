@@ -7,13 +7,16 @@ import {
   FindOneOptions,
   FindConditions,
   DeleteResult,
-  TreeRepository
+  TreeRepository,
+  UpdateResult,
+  SaveOptions
 } from "typeorm";
 
 import {ID, RequestOptions} from "@lib/typings";
 import {queryLimit} from "@lib/constants";
 import {OneToOneChatMessage} from "../entities";
 import {AttachmentType} from "../lib/typings";
+import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
 
 @Injectable()
 export class OneToOneChatMessageService {
@@ -82,5 +85,19 @@ export class OneToOneChatMessageService {
     conditions: FindConditions<OneToOneChatMessage>
   ): Promise<DeleteResult> {
     return this.messageRepository.delete(conditions);
+  }
+
+  update(
+    conditions: FindConditions<OneToOneChatMessage>,
+    partial: QueryDeepPartialEntity<OneToOneChatMessage>
+  ): Promise<UpdateResult> {
+    return this.messageRepository.update(conditions, partial);
+  }
+
+  save(
+    partial: DeepPartial<OneToOneChatMessage>,
+    options?: SaveOptions
+  ): Promise<OneToOneChatMessage> {
+    return this.messageRepository.save(partial, options);
   }
 }
