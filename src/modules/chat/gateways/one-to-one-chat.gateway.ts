@@ -70,19 +70,21 @@ export class OneToOneChatGateway {
     @ConnectedSocket() client: ExtendedSocket,
     @MessageBody() {chatId}: JoinEventBody
   ): Promise<void> {
-    const hasAccess = !!(await this.memberService.findOne({
+    const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: chatId}}
-    }));
+    });
+
+    const hasAccess = !!member;
 
     if (!hasAccess) throw error;
 
-    const member: OneToOneChatMember | null = await this.memberService.findOne({
+    const partner = await this.memberService.findOne({
       where: {user: {id: Not(client.user.id)}, chat: {id: chatId}}
     });
 
-    if (!member) throw error;
+    if (!partner) throw error;
 
-    const partners = this.websocketsService.getSocketsByUserId(member.user.id);
+    const partners = this.websocketsService.getSocketsByUserId(partner.user.id);
 
     if (!partners.length) throw error;
 
@@ -97,9 +99,11 @@ export class OneToOneChatGateway {
     @ConnectedSocket() client: ExtendedSocket,
     @MessageBody() {message}: MessageSendingEventBody
   ): Promise<void> {
-    const hasAccess = !!(await this.memberService.findOne({
+    const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: message.chatId}}
-    }));
+    });
+
+    const hasAccess = !!member;
 
     if (!hasAccess) throw error;
 
@@ -111,9 +115,11 @@ export class OneToOneChatGateway {
     @ConnectedSocket() client: ExtendedSocket,
     @MessageBody() {messages, chatId}: MessageReadingEventBody
   ): Promise<void> {
-    const hasAccess = !!(await this.memberService.findOne({
+    const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: chatId}}
-    }));
+    });
+
+    const hasAccess = !!member;
 
     if (!hasAccess) throw error;
 
@@ -125,9 +131,11 @@ export class OneToOneChatGateway {
     @ConnectedSocket() client: ExtendedSocket,
     @MessageBody() {chatId}: BanningPartnerEventBody
   ): Promise<void> {
-    const hasAccess = !!(await this.memberService.findOne({
+    const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: chatId}}
-    }));
+    });
+
+    const hasAccess = !!member;
 
     if (!hasAccess) throw error;
 
@@ -139,9 +147,11 @@ export class OneToOneChatGateway {
     @ConnectedSocket() client: ExtendedSocket,
     @MessageBody() {chatId}: UnbanningPartnerEventBody
   ): Promise<void> {
-    const hasAccess = !!(await this.memberService.findOne({
+    const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: chatId}}
-    }));
+    });
+
+    const hasAccess = !!member;
 
     if (!hasAccess) throw error;
 

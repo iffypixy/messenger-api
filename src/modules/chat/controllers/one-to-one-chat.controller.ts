@@ -17,7 +17,7 @@ import {In, Not, Raw} from "typeorm";
 
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
 import {User, UserPublicData, UserService} from "@modules/user";
-import {FilePublicData, FileService} from "@modules/upload";
+import {File, FilePublicData, FileService} from "@modules/upload";
 import {ID} from "@lib/typings";
 import {isExtensionValid} from "@lib/extensions";
 import {queryLimit} from "@lib/constants";
@@ -26,7 +26,7 @@ import {
   OneToOneChatMessageService,
   OneToOneChatMemberService
 } from "../services";
-import {OneToOneChatMember} from "../entities";
+import {Attachment, OneToOneChatMember, OneToOneChatMessage} from "../entities";
 import {
   CreateMessageDto,
   DeleteMessagesDto,
@@ -59,9 +59,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    let member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [partner, user]
-    );
+    let member = await this.memberService.findOneByUsers([partner, user]);
 
     if (!member)
       member = await this.memberService.createByUsers([partner, user]);
@@ -84,9 +82,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [user, partner]
-    );
+    const member = await this.memberService.findOneByUsers([user, partner]);
 
     if (!member) throw new BadRequestException("Invalid credentials.");
 
@@ -115,9 +111,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    let member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [user, partner]
-    );
+    let member = await this.memberService.findOneByUsers([user, partner]);
 
     if (!member)
       member = await this.memberService.createByUsers([user, partner]);
@@ -230,9 +224,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [user, partner]
-    );
+    const member = await this.memberService.findOneByUsers([user, partner]);
 
     if (!member) throw new BadRequestException("Invalid credentials.");
 
@@ -266,9 +258,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [user, partner]
-    );
+    const member = await this.memberService.findOneByUsers([user, partner]);
 
     if (!member) throw new BadRequestException("Invalid credentials.");
 
@@ -298,9 +288,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [user, partner]
-    );
+    const member = await this.memberService.findOneByUsers([user, partner]);
 
     if (!member) throw new BadRequestException("Invalid credentials");
 
@@ -329,9 +317,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [user, partner]
-    );
+    const member = await this.memberService.findOneByUsers([user, partner]);
 
     if (!member) throw new BadRequestException("Invalid credentials");
 
@@ -351,9 +337,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [partner, user]
-    );
+    const member = await this.memberService.findOneByUsers([partner, user]);
 
     if (!member) throw new BadRequestException("Invalid credentials");
 
@@ -377,9 +361,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [partner, user]
-    );
+    const member = await this.memberService.findOneByUsers([partner, user]);
 
     if (!member) throw new BadRequestException("Invalid credentials");
 
@@ -405,9 +387,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [user, partner]
-    );
+    const member = await this.memberService.findOneByUsers([user, partner]);
 
     if (!member) throw new BadRequestException("Invalid credentials");
 
@@ -447,9 +427,7 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member: OneToOneChatMember | null = await this.memberService.findOneByUsers(
-      [user, partner]
-    );
+    const member = await this.memberService.findOneByUsers([user, partner]);
 
     if (!member) throw new BadRequestException("Invalid credentials");
 

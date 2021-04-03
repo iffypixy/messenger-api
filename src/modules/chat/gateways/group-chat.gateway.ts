@@ -12,6 +12,7 @@ import {ExtendedSocket, ID} from "@lib/typings";
 import {WebsocketsService} from "@modules/websockets";
 import {GroupChatMemberService} from "../services";
 import {GroupChatMessagePublicData} from "../lib/typings";
+import {GroupChatMember} from "../entities";
 
 interface JoinEventBody {
   chatId: ID;
@@ -62,9 +63,11 @@ export class GroupChatGateway {
     @ConnectedSocket() client: ExtendedSocket,
     @MessageBody() {chatId, users}: CreatingChatEventBody
   ): Promise<void> {
-    const hasAccess = !!(await this.memberService.findOne({
+    const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: chatId}}
-    }));
+    });
+
+    const hasAccess = !!member;
 
     if (!hasAccess) throw error;
 
@@ -75,9 +78,11 @@ export class GroupChatGateway {
     for (let i = 0; i < users.length; i++) {
       const id = users[i];
 
-      const hasAccess = !!(await this.memberService.findOne({
+      const partner = await this.memberService.findOne({
         where: {user: {id}, chat: {id: chatId}}
-      }));
+      });
+
+      const hasAccess = !!partner;
 
       if (!hasAccess) return;
 
@@ -92,9 +97,11 @@ export class GroupChatGateway {
     @ConnectedSocket() client: ExtendedSocket,
     @MessageBody() {chatId}: JoinEventBody
   ): Promise<void> {
-    const hasAccess = !!(await this.memberService.findOne({
+    const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: chatId}}
-    }));
+    });
+
+    const hasAccess = !!member;
 
     if (!hasAccess) throw error;
 
@@ -108,9 +115,11 @@ export class GroupChatGateway {
     @ConnectedSocket() client: ExtendedSocket,
     @MessageBody() {message}: MessageSendingEventBody
   ): Promise<void> {
-    const hasAccess = !!(await this.memberService.findOne({
+    const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: message.chatId}}
-    }));
+    });
+
+    const hasAccess = !!member;
 
     if (!hasAccess) throw error;
 
@@ -122,9 +131,11 @@ export class GroupChatGateway {
     @ConnectedSocket() client: ExtendedSocket,
     @MessageBody() {messages, chatId}: MessageReadingEventBody
   ): Promise<void> {
-    const hasAccess = !!(await this.memberService.findOne({
+    const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: chatId}}
-    }));
+    });
+
+    const hasAccess = !!member;
 
     if (!hasAccess) throw error;
 
