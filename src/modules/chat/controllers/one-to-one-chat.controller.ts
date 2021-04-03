@@ -474,7 +474,8 @@ export class OneToOneChatController {
       id: message.id,
       text: dto.text,
       attachment,
-      replyTo
+      replyTo,
+      isEdited: true
     });
 
     return {
