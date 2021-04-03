@@ -2,6 +2,8 @@ import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {
   DeepPartial,
+  DeleteResult,
+  FindConditions,
   FindManyOptions,
   FindOneOptions,
   Repository
@@ -32,5 +34,9 @@ export class GroupChatMemberService {
 
   count(options: FindManyOptions<GroupChatMember>): Promise<number> {
     return this.memberRepository.count(options);
+  }
+
+  delete(conditions: FindConditions<GroupChatMember>): Promise<DeleteResult> {
+    return this.memberRepository.delete(conditions);
   }
 }

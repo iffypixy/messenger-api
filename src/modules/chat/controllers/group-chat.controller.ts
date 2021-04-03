@@ -29,7 +29,8 @@ import {
   AddMemberDto,
   CreateGroupChatDto,
   CreateMessageDto,
-  DeleteMessagesDto
+  DeleteMessagesDto,
+  KickMemberDto
 } from "../dtos";
 import {
   GroupChatMemberService,
@@ -461,5 +462,35 @@ export class GroupChatController {
     return {
       member: added.public
     };
+  }
+
+  @HttpCode(204)
+  @Delete(":id/members/kick")
+  async kickMember(
+    @GetUser() user: User,
+    @Param("id") id: ID,
+    @Body() dto: KickMemberDto
+  ): Promise<void> {
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
+    });
+
+    const hasAccess = !!member;
+
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
+
+    if (!member.isOwner)
+      throw new BadRequestException("You dont have permission to add members");
+
+    const applicant = await this.userService.findById(dto.user);
+
+    if (!applicant)
+      throw new BadRequestException("User credentials is invalid");
+
+    await this.memberService.delete({
+      chat: member.chat,
+      role: "member",
+      user: applicant
+    });
   }
 }
