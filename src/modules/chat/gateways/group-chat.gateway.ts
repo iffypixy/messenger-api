@@ -12,7 +12,22 @@ import {ExtendedSocket, ID} from "@lib/typings";
 import {WebsocketsService} from "@modules/websockets";
 import {GroupChatMemberService} from "../services";
 import {GroupChatMessagePublicData} from "../lib/typings";
-import {GroupChatMember} from "../entities";
+
+const prefix = "GROUP_CHAT";
+
+const events = {
+  JOIN: `${prefix}:JOIN`,
+  CREATING_CHAT: `${prefix}:CREATING_CHAT`,
+  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
+  MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
+  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
+};
+
+const clientEvents = {
+  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
+  MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
+  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
+};
 
 interface JoinEventBody {
   chatId: ID;
@@ -25,26 +40,18 @@ interface CreatingChatEventBody {
 
 interface MessageSendingEventBody {
   message: GroupChatMessagePublicData;
-}
-
-interface MessageReadingEventBody {
-  messages: ID[];
   chatId: ID;
 }
 
-const prefix = "GROUP_CHAT";
+interface MessageReadingEventBody {
+  message: ID[];
+  chatId: ID;
+}
 
-const events = {
-  JOIN: `${prefix}:JOIN`,
-  CREATING_CHAT: `${prefix}:CREATING_CHAT`,
-  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
-  MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`
-};
-
-const clientEvents = {
-  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
-  MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`
-};
+interface MessageEditingEventBody {
+  message: GroupChatMessagePublicData;
+  chatId: ID;
+}
 
 const error = new BadRequestException("Invalid credentials.");
 
@@ -113,23 +120,7 @@ export class GroupChatGateway {
   @SubscribeMessage(events.MESSAGE_SENDING)
   async handleMessageSendingEvent(
     @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {message}: MessageSendingEventBody
-  ): Promise<void> {
-    const member = await this.memberService.findOne({
-      where: {user: {id: client.user.id}, chat: {id: message.chatId}}
-    });
-
-    const hasAccess = !!member;
-
-    if (!hasAccess) throw error;
-
-    client.to(message.chatId).emit(clientEvents.MESSAGE_SENDING, {message});
-  }
-
-  @SubscribeMessage(events.MESSAGE_READING)
-  async handleMessageReadingEvent(
-    @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {messages, chatId}: MessageReadingEventBody
+    @MessageBody() {message, chatId}: MessageSendingEventBody
   ): Promise<void> {
     const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: chatId}}
@@ -139,6 +130,38 @@ export class GroupChatGateway {
 
     if (!hasAccess) throw error;
 
-    client.to(chatId).emit(clientEvents.MESSAGE_SENDING, {messages, chatId});
+    client.to(chatId).emit(clientEvents.MESSAGE_SENDING, {message, chatId});
+  }
+
+  @SubscribeMessage(events.MESSAGE_READING)
+  async handleMessageReadingEvent(
+    @ConnectedSocket() client: ExtendedSocket,
+    @MessageBody() {message, chatId}: MessageReadingEventBody
+  ): Promise<void> {
+    const member = await this.memberService.findOne({
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
+    });
+
+    const hasAccess = !!member;
+
+    if (!hasAccess) throw error;
+
+    client.to(chatId).emit(clientEvents.MESSAGE_SENDING, {message, chatId});
+  }
+
+  @SubscribeMessage(events.MESSAGE_EDITING)
+  async handleMessageEditingEvent(
+    @ConnectedSocket() client: ExtendedSocket,
+    @MessageBody() {message, chatId}: MessageEditingEventBody
+  ): Promise<void> {
+    const member = await this.memberService.findOne({
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
+    });
+
+    const hasAccess = !!member;
+
+    if (!hasAccess) throw error;
+
+    client.to(chatId).emit(clientEvents.MESSAGE_EDITING, {message, chatId});
   }
 }

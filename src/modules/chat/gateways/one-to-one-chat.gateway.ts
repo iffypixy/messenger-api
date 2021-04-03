@@ -12,7 +12,6 @@ import {Server} from "socket.io";
 import {WebsocketsService} from "@modules/websockets";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {OneToOneChatMemberService} from "../services";
-import {OneToOneChatMember} from "../entities";
 import {OneToOneChatMessagePublicData} from "../lib/typings";
 
 const prefix = "1O1_CHAT";
@@ -22,14 +21,16 @@ const events = {
   MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
   MESSAGE_READING: `${prefix}:MESSAGE_READING`,
   BANNING_PARTNER: `${prefix}:BANNING_PARTNER`,
-  UNBANNING_PARTNER: `${prefix}:UNBANNING_PARTNER`
+  UNBANNING_PARTNER: `${prefix}:UNBANNING_PARTNER`,
+  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
 };
 
 const clientEvents = {
   MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
   MESSAGE_READING: `${prefix}:MESSAGE_READING`,
   GETTING_BANNED: `${prefix}:GETTING_BANNED`,
-  GETTING_UNBANNED: `${prefix}:`
+  GETTING_UNBANNED: `${prefix}:`,
+  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
 };
 
 interface JoinEventBody {
@@ -38,10 +39,11 @@ interface JoinEventBody {
 
 interface MessageSendingEventBody {
   message: OneToOneChatMessagePublicData;
+  chatId: ID;
 }
 
 interface MessageReadingEventBody {
-  messages: ID[];
+  message: ID[];
   chatId: ID;
 }
 
@@ -50,6 +52,11 @@ interface BanningPartnerEventBody {
 }
 
 interface UnbanningPartnerEventBody {
+  chatId: ID;
+}
+
+interface MessageEditingEventBody {
+  message: OneToOneChatMessagePublicData;
   chatId: ID;
 }
 
@@ -97,23 +104,23 @@ export class OneToOneChatGateway {
   @SubscribeMessage(events.MESSAGE_SENDING)
   async handleMessageSendingEvent(
     @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {message}: MessageSendingEventBody
+    @MessageBody() {message, chatId}: MessageSendingEventBody
   ): Promise<void> {
     const member = await this.memberService.findOne({
-      where: {user: {id: client.user.id}, chat: {id: message.chatId}}
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
     });
 
-    const hasAccess = !!member;
+    const hasAccess = !!member && !member.isBanned;
 
     if (!hasAccess) throw error;
 
-    client.to(message.chatId).emit(clientEvents.MESSAGE_SENDING, {message});
+    client.to(chatId).emit(clientEvents.MESSAGE_SENDING, {message, chatId});
   }
 
   @SubscribeMessage(events.MESSAGE_READING)
   async handleMessageReadingEvent(
     @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {messages, chatId}: MessageReadingEventBody
+    @MessageBody() {message, chatId}: MessageReadingEventBody
   ): Promise<void> {
     const member = await this.memberService.findOne({
       where: {user: {id: client.user.id}, chat: {id: chatId}}
@@ -123,7 +130,7 @@ export class OneToOneChatGateway {
 
     if (!hasAccess) throw error;
 
-    client.to(chatId).emit(clientEvents.MESSAGE_SENDING, {messages, chatId});
+    client.to(chatId).emit(clientEvents.MESSAGE_SENDING, {message, chatId});
   }
 
   @SubscribeMessage(events.BANNING_PARTNER)
@@ -135,11 +142,11 @@ export class OneToOneChatGateway {
       where: {user: {id: client.user.id}, chat: {id: chatId}}
     });
 
-    const hasAccess = !!member;
+    const hasAccess = !!member && !member.isBanned;
 
     if (!hasAccess) throw error;
 
-    client.to(chatId).emit(clientEvents.GETTING_BANNED);
+    client.to(chatId).emit(clientEvents.GETTING_BANNED, {chatId});
   }
 
   @SubscribeMessage(events.UNBANNING_PARTNER)
@@ -151,10 +158,26 @@ export class OneToOneChatGateway {
       where: {user: {id: client.user.id}, chat: {id: chatId}}
     });
 
-    const hasAccess = !!member;
+    const hasAccess = !!member && !member.isBanned;
 
     if (!hasAccess) throw error;
 
-    client.to(chatId).emit(clientEvents.GETTING_UNBANNED);
+    client.to(chatId).emit(clientEvents.GETTING_UNBANNED, {chatId});
+  }
+
+  @SubscribeMessage(events.MESSAGE_EDITING)
+  async handleMessageEditingEvent(
+    @ConnectedSocket() client: ExtendedSocket,
+    @MessageBody() {message, chatId}: MessageEditingEventBody
+  ): Promise<void> {
+    const member = await this.memberService.findOne({
+      where: {user: {id: client.user.id}, chat: {id: chatId}}
+    });
+
+    const hasAccess = !!member && !member.isBanned;
+
+    if (!hasAccess) throw error;
+
+    client.to(chatId).emit(clientEvents.MESSAGE_EDITING, {message, chatId});
   }
 }
