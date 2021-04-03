@@ -6,13 +6,15 @@ import {
   FindConditions,
   FindManyOptions,
   FindOneOptions,
-  TreeRepository
+  TreeRepository,
+  UpdateResult
 } from "typeorm";
 
 import {ID, RequestOptions} from "@lib/typings";
 import {queryLimit} from "@lib/constants";
 import {GroupChatMessage} from "../entities";
 import {AttachmentType} from "../lib/typings";
+import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
 
 @Injectable()
 export class GroupChatMessageService {
@@ -73,5 +75,12 @@ export class GroupChatMessageService {
 
   delete(conditions: FindConditions<GroupChatMessage>): Promise<DeleteResult> {
     return this.messageRepository.delete(conditions);
+  }
+
+  update(
+    conditions: FindConditions<GroupChatMessage>,
+    partial: QueryDeepPartialEntity<GroupChatMessage>
+  ): Promise<UpdateResult> {
+    return this.messageRepository.update(conditions, partial);
   }
 }

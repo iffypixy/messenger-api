@@ -14,9 +14,10 @@ import {
   UseGuards,
   HttpCode,
   UseInterceptors,
-  Delete
+  Delete,
+  Put
 } from "@nestjs/common";
-import {In, Not} from "typeorm";
+import {In, Not, Raw} from "typeorm";
 import {FileInterceptor} from "@nestjs/platform-express";
 import * as mime from "mime";
 
@@ -30,7 +31,8 @@ import {
   CreateGroupChatDto,
   CreateMessageDto,
   DeleteMessagesDto,
-  KickMemberDto
+  KickMemberDto,
+  ReadMessageDto
 } from "../dtos";
 import {
   GroupChatMemberService,
@@ -492,5 +494,46 @@ export class GroupChatController {
       role: "member",
       user: applicant
     });
+  }
+
+  @HttpCode(204)
+  @Put(":id/messages/read")
+  async readMessage(
+    @GetUser() user: User,
+    @Param("id") id: ID,
+    @Body() dto: ReadMessageDto
+  ) {
+    const member = await this.memberService.findOne({
+      where: {chat: {id}, user}
+    });
+
+    const hasAccess = !!member;
+
+    if (!hasAccess) throw new NotFoundException("Chat is not found.");
+
+    const message = await this.messageService.findOne({
+      where: {
+        chat: member.chat,
+        id: dto.message,
+        isRead: false,
+        sender: {member: {id: Not(member.id)}}
+      }
+    });
+
+    if (!message) throw new BadRequestException("Invalid message credentials.");
+
+    await this.messageService.update(
+      {
+        chat: member.chat,
+        sender: {member: {id: Not(member.id)}},
+        isRead: false,
+        createdAt: Raw(alias => `${alias} < 'date`, {
+          date: message.createdAt.toISOString()
+        })
+      },
+      {
+        isRead: true
+      }
+    );
   }
 }

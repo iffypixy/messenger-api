@@ -46,13 +46,17 @@ export class GroupChatMessage {
   })
   text: string;
 
-  @Column("json", {
-    nullable: true
+  @Column("boolean", {
+    nullable: true,
+    default: false
   })
-  status: {
-    isEdited: boolean;
-    isRead: boolean;
-  };
+  isEdited: boolean;
+
+  @Column("boolean", {
+    nullable: true,
+    default: false
+  })
+  isRead: boolean;
 
   @TreeParent()
   replyTo: GroupChatMessage;
@@ -72,11 +76,9 @@ export class GroupChatMessage {
   createdAt: Date;
 
   get public(): GroupChatMessagePublicData {
-    const {id, text, status, chat, createdAt} = this;
+    const {id, text, isRead, isEdited, chat, createdAt} = this;
 
     const isSystem = this.sender.type === "system";
-    const isEdited = (status && status.isEdited) || false;
-    const isRead = (status && status.isRead) || false;
     const sender = !isSystem ? this.sender.member.public : null;
     const chatId = chat.id;
     const replyTo = (this.replyTo && this.replyTo.public) || null;
