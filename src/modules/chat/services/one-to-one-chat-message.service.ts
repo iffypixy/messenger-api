@@ -9,7 +9,8 @@ import {
   DeleteResult,
   TreeRepository,
   UpdateResult,
-  SaveOptions
+  SaveOptions,
+  RemoveOptions
 } from "typeorm";
 
 import {ID, RequestOptions} from "@lib/typings";
@@ -81,10 +82,11 @@ export class OneToOneChatMessageService {
       .getMany();
   }
 
-  delete(
-    conditions: FindConditions<OneToOneChatMessage>
-  ): Promise<DeleteResult> {
-    return this.messageRepository.delete(conditions);
+  remove(
+    entities: OneToOneChatMessage[],
+    options?: RemoveOptions
+  ): Promise<OneToOneChatMessage[]> {
+    return this.messageRepository.remove(entities, options);
   }
 
   update(

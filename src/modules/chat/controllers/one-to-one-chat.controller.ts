@@ -101,6 +101,7 @@ export class OneToOneChatController {
     };
   }
 
+  @HttpCode(201)
   @Post(":partnerId/messages")
   async createMessage(
     @GetUser() user: User,
@@ -306,13 +307,12 @@ export class OneToOneChatController {
     };
   }
 
-  @HttpCode(204)
   @Delete(":partnerId/messages")
   async deleteMessages(
     @GetUser() user: User,
     @Body() dto: DeleteMessagesDto,
     @Param("partnerId") partnerId: ID
-  ): Promise<void> {
+  ): Promise<{messages: OneToOneChatMessagePublicData[]}> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
@@ -321,11 +321,19 @@ export class OneToOneChatController {
 
     if (!member) throw new BadRequestException("Invalid credentials");
 
-    await this.messageService.delete({
-      chat: member.chat,
-      id: In(dto.messages),
-      sender: {member}
+    const messages = await this.messageService.find({
+      where: {
+        chat: member.chat,
+        id: In(dto.messages),
+        sender: {member}
+      }
     });
+
+    const deleted = await this.messageService.remove(messages);
+
+    return {
+      messages: deleted.map(msg => msg.public)
+    };
   }
 
   @Post(":partnerId/ban")

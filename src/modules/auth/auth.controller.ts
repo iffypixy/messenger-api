@@ -62,7 +62,6 @@ export class AuthController {
     };
   }
 
-  @HttpCode(200)
   @Post("login")
   async login(
     @Body() {login, password, fingerprint}: LoginDto,
@@ -130,7 +129,6 @@ export class AuthController {
   }
 
   @UseGuards(IsAuthorizedGuard)
-  @HttpCode(200)
   @Get("credentials")
   getCredentials(@GetUser() user: User): {user: UserPublicData} {
     return {

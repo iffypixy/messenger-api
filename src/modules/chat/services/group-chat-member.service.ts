@@ -6,6 +6,7 @@ import {
   FindConditions,
   FindManyOptions,
   FindOneOptions,
+  RemoveOptions,
   Repository
 } from "typeorm";
 
@@ -36,7 +37,10 @@ export class GroupChatMemberService {
     return this.memberRepository.count(options);
   }
 
-  delete(conditions: FindConditions<GroupChatMember>): Promise<DeleteResult> {
-    return this.memberRepository.delete(conditions);
+  remove(
+    entity: GroupChatMember,
+    options?: RemoveOptions
+  ): Promise<GroupChatMember> {
+    return this.memberRepository.remove(entity, options);
   }
 }

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Controller,
+  HttpCode,
   Post,
   UploadedFile,
   UseGuards,
@@ -25,6 +26,7 @@ export class UploadController {
     private readonly fileService: FileService
   ) {}
 
+  @HttpCode(201)
   @UseInterceptors(
     FileInterceptor("file", {
       limits: {fileSize: maxFileSize},

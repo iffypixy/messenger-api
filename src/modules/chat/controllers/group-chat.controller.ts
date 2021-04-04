@@ -64,6 +64,7 @@ export class GroupChatController {
     private readonly websocketsGateway: WebsocketsGateway
   ) {}
 
+  @HttpCode(201)
   @UseInterceptors(
     FileInterceptor("avatar", {
       limits: {fileSize: maxFileSize},
@@ -164,6 +165,7 @@ export class GroupChatController {
     };
   }
 
+  @HttpCode(201)
   @Post(":id/messages")
   async createMessage(
     @GetUser() user: User,
@@ -378,7 +380,7 @@ export class GroupChatController {
     @GetUser() user: User,
     @Body() dto: DeleteMessagesDto,
     @Param("id") id: ID
-  ): Promise<void> {
+  ): Promise<{messages: GroupChatMessagePublicData[]}> {
     const member = await this.memberService.findOne({
       where: {chat: {id}, user}
     });
@@ -387,11 +389,19 @@ export class GroupChatController {
 
     if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
-    await this.messageService.delete({
-      chat: member.chat,
-      id: In(dto.messages),
-      sender: {member}
+    const messages = await this.messageService.find({
+      where: {
+        chat: member.chat,
+        id: In(dto.messages),
+        sender: {member}
+      }
     });
+
+    const deleted = await this.messageService.remove(messages);
+
+    return {
+      messages: deleted.map(msg => msg.public)
+    };
   }
 
   @Get(":id/members")
@@ -430,6 +440,7 @@ export class GroupChatController {
     };
   }
 
+  @HttpCode(201)
   @Post(":id/members/add")
   async addMember(
     @GetUser() user: User,
@@ -481,13 +492,12 @@ export class GroupChatController {
     };
   }
 
-  @HttpCode(204)
   @Delete(":id/members/kick")
   async kickMember(
     @GetUser() user: User,
     @Param("id") id: ID,
     @Body() dto: KickMemberDto
-  ): Promise<void> {
+  ): Promise<{member: GroupChatMemberPublicData}> {
     const member = await this.memberService.findOne({
       where: {chat: {id}, user}
     });
@@ -499,27 +509,38 @@ export class GroupChatController {
     if (!member.isOwner)
       throw new BadRequestException("You dont have permission to add members");
 
-    const applicant = await this.userService.findById(dto.user);
+    const participator = await this.userService.findById(dto.user);
 
-    if (!applicant)
-      throw new BadRequestException("User credentials is invalid.");
+    if (!participator)
+      throw new BadRequestException("Invalid user credentials.");
 
-    await this.memberService.delete({
-      chat: member.chat,
-      role: "member",
-      user: applicant
+    const participant = await this.memberService.findOne({
+      where: {
+        chat: member.chat,
+        role: "member",
+        user: participator
+      }
     });
+
+    if (!participant)
+      throw new BadRequestException("Invalid user credentials.");
+
+    const deleted = await this.memberService.remove(participant);
 
     const message = await this.messageService.create({
       chat: member.chat,
       sender: {type: "system"},
-      text: `${applicant.login} has been kicked out from the group-chat :(`
+      text: `${deleted.user.login} has been kicked out from the group-chat :(`
     });
 
     this.websocketsGateway.wss.to(member.chat.id).emit(events.SYSTEM_MESSAGE, {
       message: message.public,
       chatId: member.chat.id
     });
+
+    return {
+      member: deleted.public
+    };
   }
 
   @HttpCode(204)

@@ -6,6 +6,7 @@ import {
   FindConditions,
   FindManyOptions,
   FindOneOptions,
+  RemoveOptions,
   SaveOptions,
   TreeRepository,
   UpdateResult
@@ -74,8 +75,11 @@ export class GroupChatMessageService {
       .getMany();
   }
 
-  delete(conditions: FindConditions<GroupChatMessage>): Promise<DeleteResult> {
-    return this.messageRepository.delete(conditions);
+  remove(
+    entities: GroupChatMessage[],
+    options?: RemoveOptions
+  ): Promise<GroupChatMessage[]> {
+    return this.messageRepository.remove(entities, options);
   }
 
   update(
