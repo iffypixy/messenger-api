@@ -86,7 +86,7 @@ export class OneToOneChatController {
 
     const member = await this.memberService.findOneByUsers([user, partner]);
 
-    if (!member) throw new BadRequestException("Invalid credentials.");
+    if (!member) throw new BadRequestException("Chat is not found.");
 
     const messages = await this.messageService.find({
       where: {chat: member.chat},
@@ -172,7 +172,7 @@ export class OneToOneChatController {
 
     this.websocketsGateway.wss
       .in(chatId)
-      .emit(clientEvents.MESSAGE_SENDING, {message, chatId});
+      .emit(clientEvents.MESSAGE_SENDING, {message: message.public, chatId});
 
     return {
       message: message.public
@@ -332,7 +332,7 @@ export class OneToOneChatController {
 
     const member = await this.memberService.findOneByUsers([user, partner]);
 
-    if (!member) throw new BadRequestException("Invalid credentials");
+    if (!member) throw new BadRequestException("Chat is not found.");
 
     const chatId = member.chat.id;
 
@@ -348,7 +348,7 @@ export class OneToOneChatController {
 
     this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_DELETING, {
       chatId,
-      messagesIds: deleted.map(({id}) => id)
+      messagesIds: deleted.map(msg => msg.public.id)
     });
 
     return {
@@ -367,7 +367,7 @@ export class OneToOneChatController {
 
     const member = await this.memberService.findOneByUsers([partner, user]);
 
-    if (!member) throw new BadRequestException("Invalid credentials");
+    if (!member) throw new BadRequestException("Chat is not found.");
 
     const updated = await this.memberService.save({
       id: member.id,
@@ -397,7 +397,7 @@ export class OneToOneChatController {
 
     const member = await this.memberService.findOneByUsers([partner, user]);
 
-    if (!member) throw new BadRequestException("Invalid credentials");
+    if (!member) throw new BadRequestException("Chat is not found.");
 
     const updated = await this.memberService.save({
       id: member.id,
@@ -429,7 +429,7 @@ export class OneToOneChatController {
 
     const member = await this.memberService.findOneByUsers([user, partner]);
 
-    if (!member) throw new BadRequestException("Invalid credentials");
+    if (!member) throw new BadRequestException("Chat is not found.");
 
     const chatId = member.chat.id;
 
@@ -476,7 +476,7 @@ export class OneToOneChatController {
 
     const member = await this.memberService.findOneByUsers([user, partner]);
 
-    if (!member) throw new BadRequestException("Invalid credentials");
+    if (!member) throw new BadRequestException("Chat is not found.");
 
     const chatId = member.chat.id;
 

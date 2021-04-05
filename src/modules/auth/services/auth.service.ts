@@ -30,9 +30,9 @@ export class AuthService {
         sockets.forEach(socket => {
           socket.user = user;
 
-          socket.emit(events.USER_ONLINE, {id: user.id});
-
           clearTimeout(socket.idleTimeout);
+
+          socket.emit(events.USER_ONLINE, {id: user.id});
 
           socket.idleTimeout = setTimeout(() => {
             socket.emit(events.USER_OFFLINE, {id: user.id});

@@ -289,9 +289,7 @@ export class GroupChatController {
       where: {chat: {id}, user}
     });
 
-    const hasAccess = !!member;
-
-    if (!hasAccess) throw new NotFoundException("Chat is not found.");
+    if (!member) throw new NotFoundException("Chat is not found.");
 
     const messages = await this.messageService.find({
       where: {chat: member.chat},
@@ -449,7 +447,7 @@ export class GroupChatController {
     const deleted = await this.messageService.remove(messages);
 
     this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_DELETING, {
-      messagesIds: deleted.map(msg => msg.id),
+      messagesIds: deleted.map(msg => msg.public.id),
       chatId
     });
 
@@ -468,9 +466,7 @@ export class GroupChatController {
       where: {chat: {id}, user}
     });
 
-    const hasAccess = !!member;
-
-    if (!hasAccess) throw new NotFoundException("Chat is not found.");
+    if (!member) throw new NotFoundException("Chat is not found.");
 
     const owners = await this.memberService.find({
       where: {chat: member.chat, user: {id: Not(user.id)}, role: "owner"},
@@ -505,17 +501,14 @@ export class GroupChatController {
       where: {chat: {id}, user}
     });
 
-    const hasAccess = !!member;
-
-    if (!hasAccess) throw new NotFoundException("Chat is not found.");
+    if (!member) throw new NotFoundException("Chat is not found.");
 
     if (!member.isOwner)
-      throw new BadRequestException("You dont have permission to add members");
+      throw new BadRequestException("You dont have permission to add members.");
 
     const applicant = await this.userService.findById(dto.user);
 
-    if (!applicant)
-      throw new BadRequestException("User credentials is invalid");
+    if (!applicant) throw new BadRequestException("Invalid user credentials.");
 
     const chatId = member.chat.id;
 
@@ -523,8 +516,7 @@ export class GroupChatController {
       where: {chat: {id: chatId}, user: applicant}
     });
 
-    if (doesExist)
-      throw new BadRequestException("User is already member of group-chat");
+    if (doesExist) throw new BadRequestException("Invalid user credentials.");
 
     const added = await this.memberService.create({
       chat: {id: chatId},
@@ -548,8 +540,7 @@ export class GroupChatController {
       socket.join(chatId);
 
       socket.emit(clientEvents.JOINING, {
-        chat: added.chat.public,
-        numberOfMembers
+        chat: {...added.chat.public, numberOfMembers}
       });
     });
 
@@ -573,12 +564,10 @@ export class GroupChatController {
       where: {chat: {id}, user}
     });
 
-    const hasAccess = !!member;
-
-    if (!hasAccess) throw new NotFoundException("Chat is not found.");
+    if (!member) throw new NotFoundException("Chat is not found.");
 
     if (!member.isOwner)
-      throw new BadRequestException("You dont have permission to add members");
+      throw new BadRequestException("You dont have permission to add members.");
 
     const participator = await this.userService.findById(dto.user);
 
@@ -735,7 +724,7 @@ export class GroupChatController {
 
     this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_EDITING, {
       messageId: message.id,
-      message: updated,
+      message: updated.public,
       chatId: chatId
     });
 
