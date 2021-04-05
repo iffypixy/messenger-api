@@ -6,12 +6,12 @@ import {
   WebSocketServer
 } from "@nestjs/websockets";
 import {Server} from "socket.io";
+import {In} from "typeorm";
 
 import {WebsocketsService} from "@modules/websockets";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {OneToOneChatMemberService} from "../services";
 import {events} from "../lib/one-to-one-chat-events";
-import {In} from "typeorm";
 
 interface JoiningEventBody {
   chatsIds: ID[];

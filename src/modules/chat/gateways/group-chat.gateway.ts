@@ -6,12 +6,12 @@ import {
   MessageBody
 } from "@nestjs/websockets";
 import {Server} from "socket.io";
+import {In} from "typeorm";
 
 import {ExtendedSocket, ID} from "@lib/typings";
 import {WebsocketsService} from "@modules/websockets";
 import {GroupChatMemberService} from "../services";
 import {events} from "../lib/group-chat-events";
-import {In} from "typeorm";
 
 interface JoiningEventBody {
   chatsIds: ID[];
