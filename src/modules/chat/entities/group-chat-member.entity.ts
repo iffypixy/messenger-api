@@ -29,7 +29,7 @@ export class GroupChatMember {
   chat: GroupChat;
 
   @Column("enum", {
-    nullable: true,
+    nullable: false,
     enum: groupChatMemberRoles
   })
   role: GroupChatMemberRole;

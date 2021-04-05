@@ -47,13 +47,13 @@ export class GroupChatMessage {
   text: string;
 
   @Column("boolean", {
-    nullable: true,
+    nullable: false,
     default: false
   })
   isEdited: boolean;
 
   @Column("boolean", {
-    nullable: true,
+    nullable: false,
     default: false
   })
   isRead: boolean;

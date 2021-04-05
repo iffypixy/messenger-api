@@ -17,7 +17,8 @@ export class OneToOneChatMember {
   user: User;
 
   @Column("boolean", {
-    nullable: true
+    nullable: false,
+    default: false
   })
   isBanned: boolean;
 

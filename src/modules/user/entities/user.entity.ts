@@ -40,8 +40,8 @@ export class User {
   })
   role: UserRole;
 
-  @Column("date", {
-    nullable: true
+  @Column("timestamp", {
+    nullable: false
   })
   lastSeen: Date;
 
@@ -53,6 +53,8 @@ export class User {
   @AfterLoad()
   setIsOnline(): void {
     const diff = Date.now() - +this.lastSeen;
+
+    console.dir(this.lastSeen);
 
     if (diff <= idleTime) this.isOnline = true;
     else this.isOnline = false;
