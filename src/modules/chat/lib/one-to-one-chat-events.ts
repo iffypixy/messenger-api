@@ -1,18 +1,14 @@
 const prefix = "1O1_CHAT";
 
 export const events = {
-  JOIN: `${prefix}:JOIN`,
-  MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
-  MESSAGE_READING: `${prefix}:MESSAGE_READING`,
-  BANNING_PARTNER: `${prefix}:BANNING_PARTNER`,
-  UNBANNING_PARTNER: `${prefix}:UNBANNING_PARTNER`,
-  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
+  JOINING: `${prefix}:JOINING`
 };
 
 export const clientEvents = {
   MESSAGE_SENDING: `${prefix}:MESSAGE_SENDING`,
   MESSAGE_READING: `${prefix}:MESSAGE_READING`,
+  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`,
+  MESSAGE_DELETING: `${prefix}:MESSAGE_DELETING`,
   GETTING_BANNED: `${prefix}:GETTING_BANNED`,
-  GETTING_UNBANNED: `${prefix}:`,
-  MESSAGE_EDITING: `${prefix}:MESSAGE_EDITING`
+  GETTING_UNBANNED: `${prefix}:GETTING_UNBANNED`
 };

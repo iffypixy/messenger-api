@@ -22,7 +22,7 @@ import {FileInterceptor} from "@nestjs/platform-express";
 import * as mime from "mime";
 
 import {FilePublicData, FileService, UploadService} from "@modules/upload";
-import {WebsocketsGateway} from "@modules/websockets";
+import {WebsocketsGateway, WebsocketsService} from "@modules/websockets";
 import {maxFileSize, queryLimit} from "@lib/constants";
 import {BufferedFile, ID} from "@lib/typings";
 import {cleanObject} from "@lib/functions";
@@ -48,7 +48,8 @@ import {
   GroupChatMessagePublicData,
   GroupChatMemberPublicData
 } from "../lib/typings";
-import {events} from "../lib/group-chat-events";
+import {clientEvents} from "../lib/group-chat-events";
+import {GroupChatMember} from "../entities";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("group-chats")
@@ -61,7 +62,8 @@ export class GroupChatController {
     private readonly messageService: GroupChatMessageService,
     private readonly fileService: FileService,
     private readonly attachmentService: AttachmentService,
-    private readonly websocketsGateway: WebsocketsGateway
+    private readonly websocketsGateway: WebsocketsGateway,
+    private readonly websocketsService: WebsocketsService
   ) {}
 
   @HttpCode(201)
@@ -113,13 +115,52 @@ export class GroupChatController {
 
     const chat = await this.chatService.create(partial);
 
-    await this.memberService.create({user, chat, role: "owner"});
+    const chatId = chat.id;
+
+    const members: GroupChatMember[] = [];
+
+    const member = await this.memberService.create({
+      user,
+      chat: {id: chatId},
+      role: "owner"
+    });
+
+    members.push(member);
 
     for (let i = 0; i < users.length; i++) {
-      await this.memberService.create({user: users[i], chat, role: "member"});
+      const member = await this.memberService.create({
+        user: users[i],
+        chat: {id: chatId},
+        role: "member"
+      });
+
+      members.push(member);
     }
 
-    const numberOfMembers = await this.memberService.count({where: {chat}});
+    const message = await this.messageService.create({
+      chat: {id: chatId},
+      sender: {type: "system"},
+      text: `${member.user.login} created a group-chat!`
+    });
+
+    const numberOfMembers = members.filter(Boolean).length;
+
+    members.forEach(member => {
+      const sockets = this.websocketsService.getSocketsByUserId(member.user.id);
+
+      sockets.forEach(socket => {
+        socket.join(chat.id);
+
+        socket.emit(clientEvents.JOINING, {
+          chat: {...chat.public, numberOfMembers}
+        });
+      });
+    });
+
+    this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_SENDING, {
+      chatId,
+      message: message.public
+    });
 
     return {
       chat: {
@@ -183,6 +224,8 @@ export class GroupChatController {
 
     if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
+    const chatId = member.chat.id;
+
     const documents = await this.fileService.find({
       user,
       id: In([...dto.files, ...dto.images, dto.audio])
@@ -213,11 +256,11 @@ export class GroupChatController {
       : null;
 
     const replyTo = await this.messageService.findOne({
-      where: {id: dto.replyTo, chat: member.chat}
+      where: {id: dto.replyTo, chat: {id: chatId}}
     });
 
     const message = await this.messageService.create({
-      chat: member.chat,
+      chat: {id: chatId},
       sender: {
         type: "user",
         member
@@ -226,6 +269,10 @@ export class GroupChatController {
       attachment,
       replyTo
     });
+
+    this.websocketsGateway.wss
+      .in(chatId)
+      .emit(clientEvents.MESSAGE_SENDING, {chatId, message: message.public});
 
     return {
       message: message.public
@@ -389,15 +436,22 @@ export class GroupChatController {
 
     if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
+    const chatId = member.chat.id;
+
     const messages = await this.messageService.find({
       where: {
-        chat: member.chat,
+        chat: {id: chatId},
         id: In(dto.messages),
         sender: {member}
       }
     });
 
     const deleted = await this.messageService.remove(messages);
+
+    this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_DELETING, {
+      messagesIds: deleted.map(msg => msg.id),
+      chatId
+    });
 
     return {
       messages: deleted.map(msg => msg.public)
@@ -463,28 +517,45 @@ export class GroupChatController {
     if (!applicant)
       throw new BadRequestException("User credentials is invalid");
 
+    const chatId = member.chat.id;
+
     const doesExist = await this.memberService.findOne({
-      where: {chat: member.chat, user: applicant}
+      where: {chat: {id: chatId}, user: applicant}
     });
 
     if (doesExist)
       throw new BadRequestException("User is already member of group-chat");
 
     const added = await this.memberService.create({
-      chat: member.chat,
+      chat: {id: chatId},
       role: "member",
       user: applicant
     });
 
     const message = await this.messageService.create({
-      chat: member.chat,
+      chat: {id: chatId},
       sender: {type: "system"},
-      text: `${applicant.login} has joined to the group-chat!`
+      text: `${added.user.login} has joined to the group-chat!`
     });
 
-    this.websocketsGateway.wss.to(member.chat.id).emit(events.SYSTEM_MESSAGE, {
+    const numberOfMembers = await this.memberService.count({
+      where: {chat: {id: chatId}}
+    });
+
+    const sockets = this.websocketsService.getSocketsByUserId(added.user.id);
+
+    sockets.forEach(socket => {
+      socket.join(chatId);
+
+      socket.emit(clientEvents.JOINING, {
+        chat: added.chat.public,
+        numberOfMembers
+      });
+    });
+
+    this.websocketsGateway.wss.to(chatId).emit(clientEvents.MESSAGE_SENDING, {
       message: message.public,
-      chatId: member.chat.id
+      chatId
     });
 
     return {
@@ -514,9 +585,11 @@ export class GroupChatController {
     if (!participator)
       throw new BadRequestException("Invalid user credentials.");
 
+    const chatId = member.chat.id;
+
     const participant = await this.memberService.findOne({
       where: {
-        chat: member.chat,
+        chat: {id: chatId},
         role: "member",
         user: participator
       }
@@ -528,15 +601,22 @@ export class GroupChatController {
     const deleted = await this.memberService.remove(participant);
 
     const message = await this.messageService.create({
-      chat: member.chat,
+      chat: {id: chatId},
       sender: {type: "system"},
       text: `${deleted.user.login} has been kicked out from the group-chat :(`
     });
 
-    this.websocketsGateway.wss.to(member.chat.id).emit(events.SYSTEM_MESSAGE, {
-      message: message.public,
-      chatId: member.chat.id
-    });
+    this.websocketsGateway.wss
+      .in(chatId)
+      .emit(clientEvents.MESSAGE_SENDING, {message: message.public, chatId});
+
+    const sockets = this.websocketsService.getSocketsByUserId(deleted.user.id);
+
+    sockets.forEach(socket => socket.leave(chatId));
+
+    this.websocketsGateway.wss
+      .to(deleted.user.id)
+      .emit(clientEvents.KICK, {chatId});
 
     return {
       member: deleted.public
@@ -558,9 +638,11 @@ export class GroupChatController {
 
     if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
+    const chatId = member.chat.id;
+
     const message = await this.messageService.findOne({
       where: {
-        chat: member.chat,
+        chat: {id: chatId},
         id: dto.message,
         isRead: false,
         sender: {member: {id: Not(member.id)}}
@@ -571,7 +653,7 @@ export class GroupChatController {
 
     await this.messageService.update(
       {
-        chat: member.chat,
+        chat: {id: chatId},
         sender: {member: {id: Not(member.id)}},
         isRead: false,
         createdAt: Raw(alias => `${alias} <= 'date`, {
@@ -582,6 +664,10 @@ export class GroupChatController {
         isRead: true
       }
     );
+
+    this.websocketsGateway.wss
+      .in(chatId)
+      .emit(clientEvents.MESSAGE_READING, {messageId: message.id, chatId});
   }
 
   @Put(":id/messages/edit")
@@ -598,8 +684,10 @@ export class GroupChatController {
 
     if (!hasAccess) throw new NotFoundException("Chat is not found.");
 
+    const chatId = member.chat.id;
+
     const message = await this.messageService.findOne({
-      where: {id: dto.message, chat: member.chat, sender: {member}}
+      where: {id: dto.message, chat: {id: chatId}, sender: {member}}
     });
 
     if (!message) throw new BadRequestException("Invalid message credentials.");
@@ -634,7 +722,7 @@ export class GroupChatController {
       : null;
 
     const replyTo = await this.messageService.findOne({
-      where: {id: dto.replyTo, chat: member.chat}
+      where: {id: dto.replyTo, chat: {id: chatId}}
     });
 
     const updated = await this.messageService.save({
@@ -643,6 +731,12 @@ export class GroupChatController {
       attachment,
       replyTo,
       isEdited: true
+    });
+
+    this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_EDITING, {
+      messageId: message.id,
+      message: updated,
+      chatId: chatId
     });
 
     return {

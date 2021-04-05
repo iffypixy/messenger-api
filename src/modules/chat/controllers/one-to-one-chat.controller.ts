@@ -16,8 +16,9 @@ import {
 import {In, Not, Raw} from "typeorm";
 
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
-import {User, UserPublicData, UserService} from "@modules/user";
-import {File, FilePublicData, FileService} from "@modules/upload";
+import {User, UserService} from "@modules/user";
+import {WebsocketsGateway, WebsocketsService} from "@modules/websockets";
+import {FilePublicData, FileService} from "@modules/upload";
 import {ID} from "@lib/typings";
 import {isExtensionValid} from "@lib/extensions";
 import {queryLimit} from "@lib/constants";
@@ -26,7 +27,6 @@ import {
   OneToOneChatMessageService,
   OneToOneChatMemberService
 } from "../services";
-import {Attachment, OneToOneChatMember, OneToOneChatMessage} from "../entities";
 import {
   CreateMessageDto,
   DeleteMessagesDto,
@@ -38,6 +38,7 @@ import {
   AttachmentPublicData,
   OneToOneChatMemberPublicData
 } from "../lib/typings";
+import {clientEvents} from "../lib/one-to-one-chat-events";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("chats")
@@ -47,7 +48,9 @@ export class OneToOneChatController {
     private readonly memberService: OneToOneChatMemberService,
     private readonly attachmentService: AttachmentService,
     private readonly fileService: FileService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly websocketsGateway: WebsocketsGateway,
+    private readonly websocketsService: WebsocketsService
   ) {}
 
   @Get(":partnerId")
@@ -59,10 +62,9 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    let member = await this.memberService.findOneByUsers([partner, user]);
+    const member = await this.memberService.findOneByUsers([partner, user]);
 
-    if (!member)
-      member = await this.memberService.createByUsers([partner, user]);
+    if (!member) throw new NotFoundException("Chat is not found.");
 
     return {
       id: member.chat.id,
@@ -114,8 +116,13 @@ export class OneToOneChatController {
 
     let member = await this.memberService.findOneByUsers([user, partner]);
 
-    if (!member)
+    if (!member) {
       member = await this.memberService.createByUsers([user, partner]);
+
+      const sockets = this.websocketsService.getSocketsByUserId(member.user.id);
+
+      sockets.forEach(socket => socket.join(member.chat.id));
+    }
 
     const documents = await this.fileService.find({
       user,
@@ -146,8 +153,10 @@ export class OneToOneChatController {
         })
       : null;
 
+    const chatId = member.chat.id;
+
     const replyTo = await this.messageService.findOne({
-      where: {id: dto.replyTo, chat: member.chat}
+      where: {id: dto.replyTo, chat: {id: chatId}}
     });
 
     const message = await this.messageService.create({
@@ -156,10 +165,14 @@ export class OneToOneChatController {
         member
       },
       text: dto.text,
-      chat: member.chat,
+      chat: {id: chatId},
       attachment,
       replyTo
     });
+
+    this.websocketsGateway.wss
+      .in(chatId)
+      .emit(clientEvents.MESSAGE_SENDING, {message, chatId});
 
     return {
       message: message.public
@@ -321,15 +334,22 @@ export class OneToOneChatController {
 
     if (!member) throw new BadRequestException("Invalid credentials");
 
+    const chatId = member.chat.id;
+
     const messages = await this.messageService.find({
       where: {
-        chat: member.chat,
+        chat: {id: chatId},
         id: In(dto.messages),
         sender: {member}
       }
     });
 
     const deleted = await this.messageService.remove(messages);
+
+    this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_DELETING, {
+      chatId,
+      messagesIds: deleted.map(({id}) => id)
+    });
 
     return {
       messages: deleted.map(msg => msg.public)
@@ -354,8 +374,14 @@ export class OneToOneChatController {
       isBanned: true
     });
 
+    const chatId = member.chat.id;
+
+    this.websocketsGateway.wss
+      .to(updated.user.id)
+      .emit(clientEvents.GETTING_BANNED, {chatId});
+
     return {
-      id: member.chat.id,
+      id: chatId,
       partner: updated.public
     };
   }
@@ -378,8 +404,14 @@ export class OneToOneChatController {
       isBanned: false
     });
 
+    const chatId = member.chat.id;
+
+    this.websocketsGateway.wss
+      .to(updated.user.id)
+      .emit(clientEvents.GETTING_UNBANNED, {chatId});
+
     return {
-      id: member.chat.id,
+      id: chatId,
       partner: updated.public
     };
   }
@@ -399,9 +431,11 @@ export class OneToOneChatController {
 
     if (!member) throw new BadRequestException("Invalid credentials");
 
+    const chatId = member.chat.id;
+
     const message = await this.messageService.findOne({
       where: {
-        chat: member.chat,
+        chat: {id: chatId},
         id: dto.message,
         isRead: false,
         sender: {member: {id: Not(member.id)}}
@@ -412,7 +446,7 @@ export class OneToOneChatController {
 
     await this.messageService.update(
       {
-        chat: member.chat,
+        chat: {id: chatId},
         sender: {member: {id: Not(member.id)}},
         isRead: false,
         createdAt: Raw(alias => `${alias} <= 'date`, {
@@ -423,6 +457,11 @@ export class OneToOneChatController {
         isRead: true
       }
     );
+
+    this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_READING, {
+      messageId: message.id,
+      chatId
+    });
   }
 
   @Put(":partnerId/messages/edit")
@@ -439,8 +478,10 @@ export class OneToOneChatController {
 
     if (!member) throw new BadRequestException("Invalid credentials");
 
+    const chatId = member.chat.id;
+
     const message = await this.messageService.findOne({
-      where: {id: dto.message, chat: member.chat, sender: {member}}
+      where: {id: dto.message, chat: {id: chatId}, sender: {member}}
     });
 
     if (!message) throw new BadRequestException("Invalid message credentials.");
@@ -475,7 +516,7 @@ export class OneToOneChatController {
       : null;
 
     const replyTo = await this.messageService.findOne({
-      where: {id: dto.replyTo, chat: member.chat}
+      where: {id: dto.replyTo, chat: {id: chatId}}
     });
 
     const updated = await this.messageService.save({
@@ -484,6 +525,12 @@ export class OneToOneChatController {
       attachment,
       replyTo,
       isEdited: true
+    });
+
+    this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_EDITING, {
+      messageId: message.id,
+      message: updated.public,
+      chatId
     });
 
     return {

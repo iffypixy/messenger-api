@@ -5,44 +5,17 @@ import {
   MessageBody,
   WebSocketServer
 } from "@nestjs/websockets";
-import {BadRequestException} from "@nestjs/common";
-import {Not} from "typeorm";
 import {Server} from "socket.io";
 
 import {WebsocketsService} from "@modules/websockets";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {OneToOneChatMemberService} from "../services";
-import {OneToOneChatMessagePublicData} from "../lib/typings";
-import {clientEvents, events} from "../lib/one-to-one-chat-events";
+import {events} from "../lib/one-to-one-chat-events";
+import {In} from "typeorm";
 
-interface JoinEventBody {
-  chatId: ID;
+interface JoiningEventBody {
+  chatsIds: ID[];
 }
-
-interface MessageSendingEventBody {
-  message: OneToOneChatMessagePublicData;
-  chatId: ID;
-}
-
-interface MessageReadingEventBody {
-  message: ID[];
-  chatId: ID;
-}
-
-interface BanningPartnerEventBody {
-  chatId: ID;
-}
-
-interface UnbanningPartnerEventBody {
-  chatId: ID;
-}
-
-interface MessageEditingEventBody {
-  message: OneToOneChatMessagePublicData;
-  chatId: ID;
-}
-
-const error = new BadRequestException("Invalid credentials.");
 
 @WebSocketGateway()
 export class OneToOneChatGateway {
@@ -54,112 +27,19 @@ export class OneToOneChatGateway {
   @WebSocketServer()
   wss: Server;
 
-  @SubscribeMessage(events.JOIN)
+  @SubscribeMessage(events.JOINING)
   async handleJoinEvent(
     @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {chatId}: JoinEventBody
+    @MessageBody() {chatsIds}: JoiningEventBody
   ): Promise<void> {
-    const member = await this.memberService.findOne({
-      where: {user: {id: client.user.id}, chat: {id: chatId}}
+    const members = await this.memberService.find({
+      where: {user: {id: client.user.id}, chat: {id: In(chatsIds)}}
     });
-
-    const hasAccess = !!member;
-
-    if (!hasAccess) throw error;
-
-    const partner = await this.memberService.findOne({
-      where: {user: {id: Not(client.user.id)}, chat: {id: chatId}}
-    });
-
-    if (!partner) throw error;
-
-    const partners = this.websocketsService.getSocketsByUserId(partner.user.id);
-
-    if (!partners.length) throw error;
 
     const clients = this.websocketsService.getSocketsByUserId(client.user.id);
 
-    clients.forEach(client => client.join(chatId));
-    partners.forEach(partner => partner.join(chatId));
-  }
-
-  @SubscribeMessage(events.MESSAGE_SENDING)
-  async handleMessageSendingEvent(
-    @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {message, chatId}: MessageSendingEventBody
-  ): Promise<void> {
-    const member = await this.memberService.findOne({
-      where: {user: {id: client.user.id}, chat: {id: chatId}}
-    });
-
-    const hasAccess = !!member && !member.isBanned;
-
-    if (!hasAccess) throw error;
-
-    client.to(chatId).emit(clientEvents.MESSAGE_SENDING, {message, chatId});
-  }
-
-  @SubscribeMessage(events.MESSAGE_READING)
-  async handleMessageReadingEvent(
-    @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {message, chatId}: MessageReadingEventBody
-  ): Promise<void> {
-    const member = await this.memberService.findOne({
-      where: {user: {id: client.user.id}, chat: {id: chatId}}
-    });
-
-    const hasAccess = !!member;
-
-    if (!hasAccess) throw error;
-
-    client.to(chatId).emit(clientEvents.MESSAGE_SENDING, {message, chatId});
-  }
-
-  @SubscribeMessage(events.BANNING_PARTNER)
-  async handleBanningPartnerEvent(
-    @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {chatId}: BanningPartnerEventBody
-  ): Promise<void> {
-    const member = await this.memberService.findOne({
-      where: {user: {id: client.user.id}, chat: {id: chatId}}
-    });
-
-    const hasAccess = !!member && !member.isBanned;
-
-    if (!hasAccess) throw error;
-
-    client.to(chatId).emit(clientEvents.GETTING_BANNED, {chatId});
-  }
-
-  @SubscribeMessage(events.UNBANNING_PARTNER)
-  async handleUnbanningPartnerEvent(
-    @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {chatId}: UnbanningPartnerEventBody
-  ): Promise<void> {
-    const member = await this.memberService.findOne({
-      where: {user: {id: client.user.id}, chat: {id: chatId}}
-    });
-
-    const hasAccess = !!member && !member.isBanned;
-
-    if (!hasAccess) throw error;
-
-    client.to(chatId).emit(clientEvents.GETTING_UNBANNED, {chatId});
-  }
-
-  @SubscribeMessage(events.MESSAGE_EDITING)
-  async handleMessageEditingEvent(
-    @ConnectedSocket() client: ExtendedSocket,
-    @MessageBody() {message, chatId}: MessageEditingEventBody
-  ): Promise<void> {
-    const member = await this.memberService.findOne({
-      where: {user: {id: client.user.id}, chat: {id: chatId}}
-    });
-
-    const hasAccess = !!member && !member.isBanned;
-
-    if (!hasAccess) throw error;
-
-    client.to(chatId).emit(clientEvents.MESSAGE_EDITING, {message, chatId});
+    clients.forEach(client =>
+      client.join(members.map(member => member.chat.id))
+    );
   }
 }
