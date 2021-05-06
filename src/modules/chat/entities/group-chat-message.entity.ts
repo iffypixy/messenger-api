@@ -1,92 +1,69 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  CreateDateColumn,
-  OneToOne,
-  JoinColumn,
-  Tree,
-  TreeParent
-} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn} from "typeorm";
 
 import {ID} from "@lib/typings";
-import {Attachment} from "./attachment.entity";
 import {GroupChat} from "./group-chat.entity";
 import {GroupChatMember} from "./group-chat-member.entity";
-import {chatMessageSenderTypes} from "../lib/chat-message-sender-type";
-import {
-  ChatMessageSenderType,
-  GroupChatMessagePublicData
-} from "../lib/typings";
+import {GroupChatMessagePublicData} from "../lib/typings";
 
-class Sender {
-  @Column("enum", {
-    enum: chatMessageSenderTypes
-  })
-  type: ChatMessageSenderType;
-
-  @ManyToOne(type => GroupChatMember, {
-    eager: true
-  })
-  member: GroupChatMember;
-}
-
-@Tree("closure-table")
 @Entity()
 export class GroupChatMessage {
   @PrimaryGeneratedColumn("uuid")
   id: ID;
 
-  @Column(type => Sender)
-  sender: Sender;
+  @ManyToOne(() => GroupChatMember, {
+    cascade: true,
+    nullable: true,
+    eager: true
+  })
+  sender: GroupChatMember;
 
-  @Column("varchar", {
+  @Column({
+    type: "text",
     nullable: true
   })
   text: string;
 
-  @Column("boolean", {
+  @Column({
+    type: "boolean",
     nullable: false,
     default: false
   })
   isEdited: boolean;
 
-  @Column("boolean", {
+  @Column({
+    type: "boolean",
     nullable: false,
     default: false
   })
   isRead: boolean;
 
-  @TreeParent()
-  replyTo: GroupChatMessage;
+  @Column({
+    type: "boolean",
+    nullable: false,
+    default: false
+  })
+  isSystem: boolean;
 
-  @ManyToOne(type => GroupChat, {
+  @ManyToOne(() => GroupChatMessage, {
+    nullable: true,
+    cascade: true
+  })
+  parent: GroupChatMessage
+
+  @ManyToOne(() => GroupChat, {
+    cascade: true,
+    nullable: true,
     eager: true
   })
   chat: GroupChat;
-
-  @JoinColumn()
-  @OneToOne(type => Attachment, {
-    eager: true
-  })
-  attachment: Attachment;
 
   @CreateDateColumn()
   createdAt: Date;
 
   get public(): GroupChatMessagePublicData {
-    const {id, text, isRead, isEdited, chat, createdAt} = this;
+    const {id, text, isRead, isEdited, chat, createdAt, isSystem, parent} = this;
 
-    const isSystem = this.sender.type === "system";
-    const sender = !isSystem ? this.sender.member.public : null;
-    const chatId = chat.id;
-    const replyTo = (this.replyTo && this.replyTo.public) || null;
-
-    const attachment = this.attachment && this.attachment.public;
-    const audio = attachment && attachment.audio;
-    const images = attachment && attachment.images;
-    const files = attachment && attachment.files;
+    const sender = !isSystem ? this.sender.public : null;
 
     return {
       id,
@@ -96,11 +73,8 @@ export class GroupChatMessage {
       isRead,
       createdAt,
       isSystem,
-      replyTo,
-      audio,
-      images,
-      files,
-      chatId
+      parent: parent && parent.public,
+      chat: chat.public
     };
   }
 }

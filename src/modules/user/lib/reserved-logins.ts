@@ -1,4 +1,4 @@
-const reservedLogins: string[] = [
+const reservedLogins = [
   "administrator",
   "user",
   "admin",

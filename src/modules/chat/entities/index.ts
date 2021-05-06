@@ -1,4 +1,3 @@
-export {Attachment} from "./attachment.entity";
 export {GroupChat} from "./group-chat.entity";
 export {GroupChatMember} from "./group-chat-member.entity";
 export {GroupChatMessage} from "./group-chat-message.entity";

@@ -1,7 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {DeepPartial, FindConditions, FindOneOptions, Repository} from "typeorm";
-import {DeleteResult} from "typeorm/query-builder/result/DeleteResult";
+import {DeepPartial, DeleteResult, FindConditions, FindOneOptions, Repository} from "typeorm";
 
 import {RefreshSession} from "../entities";
 
@@ -9,27 +8,20 @@ import {RefreshSession} from "../entities";
 export class RefreshSessionService {
   constructor(
     @InjectRepository(RefreshSession)
-    private refreshSessionRepository: Repository<RefreshSession>
+    private repository: Repository<RefreshSession>
   ) {}
 
   create(options: DeepPartial<RefreshSession>): Promise<RefreshSession> {
-    const session = this.refreshSessionRepository.create(options);
+    const session = this.repository.create(options);
 
-    return this.refreshSessionRepository.save(session);
-  }
-
-  remove(entity: RefreshSession): Promise<RefreshSession> {
-    return this.refreshSessionRepository.remove(entity);
+    return this.repository.save(session);
   }
 
   delete(criteria: FindConditions<RefreshSession>): Promise<DeleteResult> {
-    return this.refreshSessionRepository.delete(criteria);
+    return this.repository.delete(criteria);
   }
 
-  findOne(
-    conditions?: FindConditions<RefreshSession>,
-    options?: FindOneOptions<RefreshSession>
-  ): Promise<RefreshSession> {
-    return this.refreshSessionRepository.findOne(conditions, options);
+  findOne(options: FindOneOptions<RefreshSession>): Promise<RefreshSession> {
+    return this.repository.findOne(options);
   }
 }

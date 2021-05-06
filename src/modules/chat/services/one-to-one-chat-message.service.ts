@@ -1,105 +1,51 @@
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {
-  Repository,
-  FindManyOptions,
   DeepPartial,
-  FindOneOptions,
-  FindConditions,
   DeleteResult,
-  TreeRepository,
-  UpdateResult,
-  SaveOptions,
-  RemoveOptions
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository, SaveOptions,
+  UpdateResult
 } from "typeorm";
 
-import {ID, RequestOptions} from "@lib/typings";
-import {queryLimit} from "@lib/constants";
 import {OneToOneChatMessage} from "../entities";
-import {AttachmentType} from "../lib/typings";
-import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
 
 @Injectable()
 export class OneToOneChatMessageService {
   constructor(
     @InjectRepository(OneToOneChatMessage)
-    private readonly messageRepository: TreeRepository<OneToOneChatMessage>
+    private readonly repository: Repository<OneToOneChatMessage>
   ) {}
 
-  find(
-    options: FindManyOptions<OneToOneChatMessage>
-  ): Promise<OneToOneChatMessage[]> {
-    return this.messageRepository.find(options);
+  find(options: FindManyOptions): Promise<OneToOneChatMessage[]> {
+    return this.repository.find(options);
   }
 
-  findOne(
-    options: FindOneOptions<OneToOneChatMessage>
-  ): Promise<OneToOneChatMessage> {
-    return this.messageRepository.findOne(options);
+  findOne(options: FindOneOptions<OneToOneChatMessage>): Promise<OneToOneChatMessage> {
+    return this.repository.findOne(options);
   }
 
-  create(
-    partial: DeepPartial<OneToOneChatMessage>
-  ): Promise<OneToOneChatMessage> {
-    const msg = this.messageRepository.create(partial);
+  create(partial: DeepPartial<OneToOneChatMessage>): Promise<OneToOneChatMessage> {
+    const message = this.repository.create(partial);
 
-    return this.messageRepository.save(msg);
-  }
-
-  async findReplyTo(
-    message: OneToOneChatMessage
-  ): Promise<OneToOneChatMessage | null> {
-    const msg = (await this.messageRepository.findAncestors(message))[0];
-
-    if (!msg) return null;
-
-    return msg.id === message.id ? null : this.findOne({where: {id: msg.id}});
+    return this.repository.save(message);
   }
 
   count(options: FindManyOptions<OneToOneChatMessage>): Promise<number> {
-    return this.messageRepository.count(options);
+    return this.repository.count(options);
   }
 
-  findManyWithAttachmentByChatId(
-    {id, type}: {id: ID; type: AttachmentType},
-    {offset}: RequestOptions
-  ): Promise<OneToOneChatMessage[]> {
-    return this.messageRepository
-      .createQueryBuilder("msg")
-      .leftJoinAndSelect("msg.attachment", "attachment")
-      .leftJoinAndSelect("msg.chat", "chat")
-      .leftJoinAndSelect("msg.sender.member", "member")
-      .leftJoinAndSelect("member.user", "user")
-      .leftJoinAndSelect("attachment.files", "file")
-      .leftJoinAndSelect("attachment.images", "image")
-      .leftJoinAndSelect("attachment.audio", "audio")
-      .where("chat.id = :id", {id})
-      .andWhere("msg.sender.type = :type", {type: "user"})
-      .andWhere(`${type} IS NOT NULL`)
-      .orderBy("msg.createdAt", "DESC")
-      .limit(queryLimit)
-      .skip(offset)
-      .getMany();
+  delete(criteria: FindConditions<OneToOneChatMessage>): Promise<DeleteResult> {
+    return this.repository.delete(criteria);
   }
 
-  remove(
-    entities: OneToOneChatMessage[],
-    options?: RemoveOptions
-  ): Promise<OneToOneChatMessage[]> {
-    return this.messageRepository.remove(entities, options);
+  update(criteria: FindConditions<OneToOneChatMessage>, partial: DeepPartial<OneToOneChatMessage>): Promise<UpdateResult> {
+    return this.repository.update(criteria, partial);
   }
 
-  update(
-    conditions: FindConditions<OneToOneChatMessage>,
-    partial: QueryDeepPartialEntity<OneToOneChatMessage>
-  ): Promise<UpdateResult> {
-    return this.messageRepository.update(conditions, partial);
-  }
-
-  save(
-    partial: DeepPartial<OneToOneChatMessage>,
-    options?: SaveOptions
-  ): Promise<OneToOneChatMessage> {
-    return this.messageRepository.save(partial, options);
+  save(partial: DeepPartial<OneToOneChatMessage>, options?: SaveOptions): Promise<OneToOneChatMessage> {
+    return this.repository.save(partial, options);
   }
 }

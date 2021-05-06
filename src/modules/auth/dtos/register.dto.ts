@@ -2,16 +2,16 @@ import {IsAlphanumeric, IsString, Length} from "class-validator";
 
 export class RegisterDto {
   @IsAlphanumeric("en-US", {
-    message: "Login must have only letters and numbers"
+    message: "Username must have only letters and numbers"
   })
-  @Length(4, 25)
-  login: string;
+  @Length(3, 24)
+  username: string;
 
-  @IsString({message: "Password must be a string"})
-  @Length(8, 100)
+  @IsString({message: "Password must be type of string"})
+  @Length(8, 50)
   password: string;
 
-  @IsString({message: "Fingerprint must be a string"})
+  @IsString({message: "Fingerprint must be type of string"})
   @Length(5, 150)
   fingerprint: string;
 }

@@ -31,7 +31,7 @@ export class CreateMessageDto {
 
   @IsOptional()
   @IsUUID("4", {
-    message: "Message it replies to must be type of uuid"
+    message: "Parent must be type of uuid"
   })
-  replyTo: ID;
+  parent: ID;
 }

@@ -1,3 +1,1 @@
-import {RefreshSession} from "./refresh-session.entity";
-
-export {RefreshSession};
+export {RefreshSession} from "./refresh-session.entity";

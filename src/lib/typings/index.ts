@@ -1,5 +1,4 @@
 import {Request} from "express";
-import {Socket} from "socket.io";
 
 import {User} from "@modules/user";
 
@@ -22,12 +21,3 @@ export interface RequestOptions {
 }
 
 export type ID = string;
-
-export interface HandshakeAuth {
-  token: string;
-}
-
-export interface ExtendedSocket extends Socket {
-  user: User;
-  idleTimeout: NodeJS.Timeout;
-}

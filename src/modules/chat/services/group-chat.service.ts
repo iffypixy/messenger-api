@@ -8,16 +8,16 @@ import {GroupChat} from "../entities";
 export class GroupChatService {
   constructor(
     @InjectRepository(GroupChat)
-    private readonly chatRepository: Repository<GroupChat>
+    private readonly repository: Repository<GroupChat>
   ) {}
 
   create(partial: DeepPartial<GroupChat>): Promise<GroupChat> {
-    const chat = this.chatRepository.create(partial);
+    const chat = this.repository.create(partial);
 
-    return this.chatRepository.save(chat);
+    return this.repository.save(chat);
   }
 
   findOne(options: FindOneOptions<GroupChat>): Promise<GroupChat> {
-    return this.chatRepository.findOne(options);
+    return this.repository.findOne(options);
   }
 }

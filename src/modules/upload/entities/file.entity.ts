@@ -1,36 +1,43 @@
-import {Entity, Column, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
 import {User} from "@modules/user";
-import {extensions} from "@lib/extensions";
+import {ID} from "@lib/typings";
 import {FilePublicData} from "../lib/typings";
 
 @Entity()
 export class File {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id: ID;
 
-  @Column("varchar", {
-    length: 128,
-    nullable: false
+  @Column( {
+    type: "varchar",
+    nullable: false,
+    length: 256
   })
   name: string;
 
-  @Column("int")
+  @Column({
+    type: "integer",
+    nullable: false
+  })
   size: number;
 
-  @Column("enum", {
-    enum: extensions.all,
-    nullable: false
+  @Column( {
+    type: "varchar",
+    nullable: false,
+    length: 8
   })
   extension: string;
 
-  @Column("varchar", {
-    length: 1024,
+  @Column( {
+    type: "text",
     nullable: false
   })
   url: string;
 
-  @ManyToOne(type => User, {
+  @ManyToOne(() => User, {
+    cascade: true,
+    eager: true,
     nullable: false
   })
   user: User;

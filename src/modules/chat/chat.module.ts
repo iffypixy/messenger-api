@@ -4,42 +4,22 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {UploadModule} from "@modules/upload";
 import {UserModule} from "@modules/user";
 import {AuthMiddleware, AuthModule} from "@modules/auth";
-import {WebsocketsModule} from "@modules/websockets";
-import {
-  AttachmentService,
-  OneToOneChatMemberService,
-  OneToOneChatMessageService,
-  OneToOneChatService,
-  GroupChatService,
-  GroupChatMessageService,
-  GroupChatMemberService
-} from "./services";
-import {
-  Attachment,
-  GroupChat,
-  GroupChatMember,
-  GroupChatMessage,
-  OneToOneChat,
-  OneToOneChatMember,
-  OneToOneChatMessage
-} from "./entities";
-import {GroupChatController, OneToOneChatController} from "./controllers";
-import {GroupChatGateway, OneToOneChatGateway} from "./gateways";
+import {OneToOneChatMemberService, OneToOneChatMessageService, OneToOneChatService, GroupChatService, GroupChatMessageService, GroupChatMemberService} from "./services";
+import {GroupChat, GroupChatMember, GroupChatMessage, OneToOneChat, OneToOneChatMember, OneToOneChatMessage} from "./entities";
+import {OneToOneChatController, GroupChatController} from "./controllers";
 
 @Module({
   imports: [
     AuthModule,
     UploadModule,
     UserModule,
-    WebsocketsModule,
     TypeOrmModule.forFeature([
       OneToOneChat,
-      GroupChat,
       OneToOneChatMember,
       OneToOneChatMessage,
+      GroupChat,
       GroupChatMessage,
-      GroupChatMember,
-      Attachment
+      GroupChatMember
     ])
   ],
   providers: [
@@ -48,17 +28,12 @@ import {GroupChatGateway, OneToOneChatGateway} from "./gateways";
     OneToOneChatMemberService,
     GroupChatService,
     GroupChatMemberService,
-    GroupChatMessageService,
-    AttachmentService,
-    GroupChatGateway,
-    OneToOneChatGateway
+    GroupChatMessageService
   ],
   controllers: [OneToOneChatController, GroupChatController]
 })
 export class ChatModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes(OneToOneChatController, GroupChatController);
+    consumer.apply(AuthMiddleware).forRoutes(OneToOneChatController);
   }
 }

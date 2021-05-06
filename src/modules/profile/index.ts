@@ -1,3 +1,2 @@
-import {ProfileModule} from "./profile.module";
+export {ProfileModule} from "./profile.module";
 
-export {ProfileModule};

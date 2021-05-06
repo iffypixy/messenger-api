@@ -1,21 +1,12 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Put,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Put, UploadedFile, UseGuards, UseInterceptors} from "@nestjs/common";
 import {FileInterceptor} from "@nestjs/platform-express";
 import mime from "mime";
 
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
-import {UserService, User, UserPublicData} from "@modules/user";
+import {User, UserService, UserPublicData} from "@modules/user";
 import {UploadService} from "@modules/upload";
 import {BufferedFile} from "@lib/typings";
-import {isExtensionValid} from "@lib/extensions";
-import {maxFileSize} from "@lib/constants";
+import {isExtensionValid, maxFileSize} from "@lib/files";
 import {cleanObject} from "@lib/functions";
 import {UpdateProfileDto} from "./dtos";
 
@@ -47,19 +38,18 @@ export class ProfileController {
   @Put("update")
   async updateProfile(
     @GetUser() user: User,
-    @Body() {login}: UpdateProfileDto,
+    @Body() {username}: UpdateProfileDto,
     @UploadedFile() file: BufferedFile
   ): Promise<{credentials: UserPublicData}> {
-    const avatar =
-      file &&
+    const avatar = file &&
       (await this.uploadService.upload(file.buffer, file.mimetype)).Location;
 
-    const partial = {login, avatar};
+    const partial = {username, avatar};
 
     cleanObject(partial);
 
     const updated = await this.userService.save({
-      id: user.id,
+      ...user,
       ...partial
     });
 

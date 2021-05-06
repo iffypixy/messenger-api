@@ -1,72 +1,55 @@
-import {
-  AfterLoad,
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn
-} from "typeorm";
+import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm";
 
-import {idleTime} from "@lib/constants";
+import {ID} from "@lib/typings";
 import {UserPublicData} from "../lib/typings";
-import {userRoles, isAdmin, UserRole} from "../lib/user-roles";
+import {UserRole, userRoles} from "../lib/user-roles";
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id: ID;
 
-  @Column("varchar", {
-    length: 25,
+  @Column({
+    type: "varchar",
+    nullable: false,
     unique: true,
-    nullable: false
+    length: 24
   })
-  login: string;
+  username: string;
 
-  @Column("varchar", {
-    length: 256,
-    nullable: false
+  @Column({
+    type: "varchar",
+    nullable: false,
+    length: 50
   })
   password: string;
 
-  @Column("varchar", {
-    length: 1024,
+  @Column({
+    type: "text",
     nullable: false
   })
   avatar: string;
 
-  @Column("enum", {
-    enum: userRoles,
-    nullable: false
+  @Column({
+    type: "enum",
+    nullable: false,
+    default: "user",
+    enum: userRoles
   })
   role: UserRole;
 
-  @Column("timestamp", {
+  @Column({
+    type: "timestamp",
     nullable: false
   })
   lastSeen: Date;
 
-  isOnline: boolean;
-
   @CreateDateColumn()
   createdAt: Date;
 
-  @AfterLoad()
-  setIsOnline(): void {
-    const diff = Date.now() - +this.lastSeen;
-
-    console.dir(this.lastSeen);
-
-    if (diff <= idleTime) this.isOnline = true;
-    else this.isOnline = false;
-  }
-
   get public(): UserPublicData {
-    const {id, login, avatar, isOnline} = this;
+    const {id, username, lastSeen, avatar} = this;
 
-    return {id, login, avatar, isOnline};
-  }
-
-  get isAdmin(): boolean {
-    return isAdmin(this.role);
+    return {id, username, lastSeen, avatar};
   }
 }

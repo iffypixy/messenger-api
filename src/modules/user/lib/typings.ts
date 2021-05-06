@@ -2,7 +2,7 @@ import {ID} from "@lib/typings";
 
 export interface UserPublicData {
   id: ID;
-  login: string;
+  username: string;
   avatar: string;
-  isOnline: boolean;
+  lastSeen: Date;
 }

@@ -10,11 +10,21 @@ export interface GroupChatMemberPublicData extends UserPublicData {
 export interface AttachmentPublicData {
   id: ID;
   files: FilePublicData[] | null;
-  images: string[] | null;
-  audio: string | null;
+  images: {
+    id: ID;
+    url: string;
+  }[] | null;
+  audio: {
+    id: ID;
+    url: string;
+  } | null;
 }
 
 export type AttachmentType = "audio" | "image" | "file";
+
+export interface OneToOneChatPublicData {
+  id: ID;
+}
 
 export interface GroupChatPublicData {
   id: ID;
@@ -33,27 +43,21 @@ export interface GroupChatMessagePublicData {
   isEdited: boolean;
   isRead: boolean;
   isSystem: boolean;
-  replyTo: GroupChatMessagePublicData | null;
+  parent: GroupChatMessagePublicData | null;
   createdAt: Date;
-  files: FilePublicData[] | null;
-  images: string[] | null;
-  audio: string | null;
-  chatId: ID;
+  chat: GroupChatPublicData;
 }
 
 export interface OneToOneChatMessagePublicData {
   id: ID;
-  text: string | null;
-  sender: OneToOneChatMemberPublicData;
+  text: string;
+  sender: OneToOneChatMemberPublicData | null;
   isEdited: boolean;
   isRead: boolean;
   isSystem: boolean;
-  replyTo: OneToOneChatMessagePublicData | null;
+  parent: OneToOneChatMessagePublicData | null;
   createdAt: Date;
-  files: FilePublicData[] | null;
-  images: string[] | null;
-  audio: string | null;
-  chatId: ID;
+  chat: OneToOneChatPublicData;
 }
 
 export interface OneToOneChatMemberPublicData extends UserPublicData {

@@ -1,11 +1,11 @@
-import {IsString, IsOptional, IsAlpha, Length} from "class-validator";
+import {IsString, IsOptional, Length, IsAlphanumeric} from "class-validator";
 
 export class UpdateProfileDto {
   @IsOptional()
-  @IsString({message: "Login must have type of string"})
-  @IsAlpha("en-US", {message: "Login must have only letters"})
-  @Length(3, 25, {
-    message: "Login length must be from 3 to 25"
+  @IsString({message: "Username must have type of string"})
+  @IsAlphanumeric("en-US", {message: "Username must have only letters and numbers"})
+  @Length(3, 24, {
+    message: "Username length must be from 3 to 25"
   })
-  login?: string;
+  username?: string;
 }

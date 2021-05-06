@@ -5,28 +5,17 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import {databaseConfig, jwtConfig, s3Config} from "@config/index";
 import {UserModule, User} from "@modules/user";
 import {RefreshSession, AuthModule} from "@modules/auth";
-import {
-  ChatModule,
-  OneToOneChat,
-  GroupChat,
-  OneToOneChatMember,
-  OneToOneChatMessage,
-  GroupChatMessage,
-  GroupChatMember,
-  Attachment
-} from "@modules/chat";
 import {UploadModule, File} from "@modules/upload";
 import {ProfileModule} from "@modules/profile";
-import {WebsocketsModule} from "@modules/websockets";
+import {ChatModule, GroupChat, GroupChatMember, GroupChatMessage, OneToOneChat, OneToOneChatMember, OneToOneChatMessage} from "@modules/chat";
 
 @Module({
   imports: [
     UserModule,
     AuthModule,
-    ChatModule,
     UploadModule,
     ProfileModule,
-    WebsocketsModule,
+    ChatModule,
     ConfigModule.forRoot({
       envFilePath: [".env.development"],
       load: [databaseConfig, jwtConfig, s3Config],
@@ -35,26 +24,24 @@ import {WebsocketsModule} from "@modules/websockets";
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: (service: ConfigService) => ({
         type: "postgres",
-        username: configService.get("database.username"),
-        password: configService.get("database.password"),
-        host: configService.get("database.host"),
-        port: configService.get("database.port"),
-        database: configService.get("database.name"),
-        synchronize: configService.get("database.synchronize"),
+        username: service.get<string>("database.username"),
+        password: service.get<string>("database.password"),
+        host: service.get<string>("database.host"),
+        port: service.get<number>("database.port"),
+        database: service.get<string>("database.name"),
+        synchronize: service.get<boolean>("database.synchronize"),
         entities: [
           User,
           RefreshSession,
           File,
-          ChatModule,
           OneToOneChat,
-          GroupChat,
-          OneToOneChatMember,
           OneToOneChatMessage,
-          GroupChatMessage,
+          OneToOneChatMember,
+          GroupChat,
           GroupChatMember,
-          Attachment
+          GroupChatMessage
         ]
       })
     })

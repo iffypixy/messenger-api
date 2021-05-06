@@ -1,22 +1,32 @@
-import {Entity, PrimaryGeneratedColumn, ManyToOne, Column} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 
 import {User} from "@modules/user";
 import {ID} from "@lib/typings";
-import {OneToOneChat} from "./one-to-one-chat.entity";
 import {OneToOneChatMemberPublicData} from "../lib/typings";
+import {OneToOneChat} from "./one-to-one-chat.entity";
 
 @Entity()
 export class OneToOneChatMember {
   @PrimaryGeneratedColumn("uuid")
   id: ID;
 
-  @ManyToOne(type => OneToOneChat, {eager: true})
+  @JoinColumn()
+  @OneToOne(() => OneToOneChat, {
+    cascade: true,
+    eager: true,
+    nullable: false
+  })
   chat: OneToOneChat;
 
-  @ManyToOne(type => User, {eager: true})
+  @ManyToOne(() => User, {
+    nullable: false,
+    eager: true,
+    cascade: true
+  })
   user: User;
 
-  @Column("boolean", {
+  @Column({
+    type: "boolean",
     nullable: false,
     default: false
   })

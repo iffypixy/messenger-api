@@ -1,25 +1,13 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  Post,
-  Req,
-  Res,
-  UseGuards
-} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards} from "@nestjs/common";
 import {JwtService} from "@nestjs/jwt";
-import {ConfigService} from "@nestjs/config";
-import {Response, Request, CookieOptions} from "express";
+import {Response, Request} from "express";
 import * as bcrypt from "bcryptjs";
-import {v4} from "uuid";
 
 import {User, UserService, UserPublicData} from "@modules/user";
 import {GetUser} from "./decorators";
 import {IsAuthorizedGuard} from "./guards";
 import {LoginDto, RegisterDto, RefreshTokensDto} from "./dtos";
-import {RefreshSessionService} from "./services";
+import {AuthService, RefreshSessionService} from "./services";
 
 @Controller("auth")
 export class AuthController {
@@ -27,35 +15,37 @@ export class AuthController {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly refreshSessionService: RefreshSessionService,
-    private readonly configService: ConfigService
+    private readonly authService: AuthService
   ) {}
 
   @HttpCode(201)
   @Post("register")
   async register(
-    @Body() {login, password, fingerprint}: RegisterDto,
+    @Body() {username, password, fingerprint}: RegisterDto,
     @Res({passthrough: true}) res: Response
   ): Promise<{credentials: UserPublicData}> {
-    const existedUser = await this.userService.findOne({login});
+    const existed = await this.userService.findOne({
+      where: {username}
+    });
 
-    if (existedUser)
+    if (existed)
       throw new BadRequestException("This login has been already used.");
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const user = await this.userService.create({
-      login,
+      username,
       password: hashedPassword,
       avatar: "sdfgsdgsfgdsfdsf",
       role: "user",
       lastSeen: new Date()
     });
 
-    const {accessToken, refreshToken} = await this.getJWTs(user, fingerprint);
+    const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);
 
-    res.cookie("access-token", accessToken, this.accessTokenCookieOptions);
-    res.cookie("refresh-token", refreshToken, this.refreshTokenCookieOptions);
+    res.cookie("access-token", accessToken, this.authService.accessTokenCookieOptions);
+    res.cookie("refresh-token", refreshToken, this.authService.refreshTokenCookieOptions);
 
     return {
       credentials: user.public
@@ -64,10 +54,12 @@ export class AuthController {
 
   @Post("login")
   async login(
-    @Body() {login, password, fingerprint}: LoginDto,
+    @Body() {username, password, fingerprint}: LoginDto,
     @Res({passthrough: true}) res: Response
   ): Promise<{user: UserPublicData}> {
-    const user = await this.userService.findOne({login});
+    const user = await this.userService.findOne({
+      where: {username}
+    });
 
     const error = new BadRequestException("Invalid credentials.");
 
@@ -77,12 +69,14 @@ export class AuthController {
 
     if (!doPasswordsMatch) throw error;
 
-    await this.refreshSessionService.delete({fingerprint});
+    await this.refreshSessionService.delete({
+      fingerprint
+    });
 
-    const {accessToken, refreshToken} = await this.getJWTs(user, fingerprint);
+    const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);
 
-    res.cookie("access-token", accessToken, this.accessTokenCookieOptions);
-    res.cookie("refresh-token", refreshToken, this.refreshTokenCookieOptions);
+    res.cookie("access-token", accessToken, this.authService.accessTokenCookieOptions);
+    res.cookie("refresh-token", refreshToken, this.authService.refreshTokenCookieOptions);
 
     return {
       user: user.public
@@ -103,8 +97,9 @@ export class AuthController {
     if (!token) throw error;
 
     const session = await this.refreshSessionService.findOne({
-      fingerprint,
-      token
+      where: {
+        fingerprint, token
+      }
     });
 
     if (!session) throw error;
@@ -113,19 +108,15 @@ export class AuthController {
 
     if (isExpired) throw error;
 
-    await this.refreshSessionService.remove(session);
+    await this.refreshSessionService.delete({
+      id: session.id
+    });
 
-    const {accessToken, refreshToken: newRefreshToken} = await this.getJWTs(
-      session.user,
-      fingerprint
-    );
+    const {accessToken, refreshToken: newRefreshToken} = await this.authService
+      .getJWTs(session.user, fingerprint);
 
-    res.cookie("access-token", accessToken, this.accessTokenCookieOptions);
-    res.cookie(
-      "refresh-token",
-      newRefreshToken,
-      this.refreshTokenCookieOptions
-    );
+    res.cookie("access-token", accessToken, this.authService.accessTokenCookieOptions);
+    res.cookie("refresh-token", newRefreshToken, this.authService.refreshTokenCookieOptions);
   }
 
   @UseGuards(IsAuthorizedGuard)
@@ -146,44 +137,5 @@ export class AuthController {
     res.cookie("refresh-token", null);
 
     await this.refreshSessionService.delete({token});
-  }
-
-  get accessTokenCookieOptions(): CookieOptions {
-    return {
-      httpOnly: true,
-      path: "/",
-      maxAge: this.configService.get<number>("jwt.accessToken.expiresIn")
-    };
-  }
-
-  get refreshTokenCookieOptions(): CookieOptions {
-    return {
-      httpOnly: true,
-      path: "/v1/api/auth",
-      maxAge: this.configService.get<number>("jwt.refreshToken.expiresIn")
-    };
-  }
-
-  async getJWTs(
-    user: User,
-    fingerprint: string
-  ): Promise<{accessToken: string; refreshToken: string}> {
-    const refreshTokenExpiresIn = this.configService.get<number>(
-      "jwt.refreshToken.expiresIn"
-    );
-
-    const accessToken = await this.jwtService.signAsync({userId: user.id});
-
-    const refreshToken = await this.refreshSessionService.create({
-      user,
-      fingerprint,
-      expiresAt: new Date(Date.now() + refreshTokenExpiresIn),
-      token: v4()
-    });
-
-    return {
-      accessToken,
-      refreshToken: refreshToken.token
-    };
   }
 }

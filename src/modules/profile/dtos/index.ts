@@ -1,3 +1,1 @@
-import {UpdateProfileDto} from "./update-profile.dto";
-
-export {UpdateProfileDto};
+export {UpdateProfileDto} from "./update-profile.dto";

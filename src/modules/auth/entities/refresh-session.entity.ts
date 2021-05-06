@@ -1,22 +1,24 @@
-import {Entity, PrimaryGeneratedColumn, ManyToOne, Column} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
 import {User} from "@modules/user";
+import {ID} from "@lib/typings";
 
 @Entity()
 export class RefreshSession {
   @PrimaryGeneratedColumn("uuid")
-  id: string;
+  id: ID;
 
   @ManyToOne(() => User, {
     nullable: false,
-    eager: true
+    eager: true,
+    cascade: true
   })
   user: User;
 
   @Column({
     type: "varchar",
     nullable: false,
-    length: 100
+    length: 256
   })
   fingerprint: string;
 
@@ -32,3 +34,4 @@ export class RefreshSession {
   })
   expiresAt: Date;
 }
+

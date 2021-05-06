@@ -1,74 +1,43 @@
-import {
-  Body,
-  Controller,
-  Get,
-  BadRequestException,
-  NotFoundException,
-  Param,
-  ParseIntPipe,
-  Post,
-  Query,
-  UseGuards,
-  Delete,
-  HttpCode,
-  Put
-} from "@nestjs/common";
-import {In, Not, Raw} from "typeorm";
+import {Body, Controller, Get, BadRequestException, NotFoundException, Param, ParseIntPipe, Post, Query, UseGuards, Delete, HttpCode, Put} from "@nestjs/common";
 
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
 import {User, UserService} from "@modules/user";
-import {WebsocketsGateway, WebsocketsService} from "@modules/websockets";
-import {FilePublicData, FileService} from "@modules/upload";
+import {FileService} from "@modules/upload";
 import {ID} from "@lib/typings";
-import {isExtensionValid} from "@lib/extensions";
-import {queryLimit} from "@lib/constants";
-import {
-  AttachmentService,
-  OneToOneChatMessageService,
-  OneToOneChatMemberService
-} from "../services";
-import {
-  CreateMessageDto,
-  DeleteMessagesDto,
-  EditMessageDto,
-  ReadMessageDto
-} from "../dtos";
-import {
-  OneToOneChatMessagePublicData,
-  AttachmentPublicData,
-  OneToOneChatMemberPublicData
-} from "../lib/typings";
-import {clientEvents} from "../lib/one-to-one-chat-events";
+import {queryLimit} from "@lib/requests";
+import {OneToOneChatMessage} from "../entities";
+import {OneToOneChatMessageService, OneToOneChatMemberService, OneToOneChatService} from "../services";
+import {CreateMessageDto, DeleteMessagesDto, EditMessageDto, ReadMessageDto} from "../dtos";
+import {OneToOneChatMessagePublicData, OneToOneChatMemberPublicData, OneToOneChatPublicData} from "../lib/typings";
+import {In, Not} from "typeorm";
 
 @UseGuards(IsAuthorizedGuard)
-@Controller("chats")
+@Controller("1o1-chats")
 export class OneToOneChatController {
   constructor(
     private readonly messageService: OneToOneChatMessageService,
     private readonly memberService: OneToOneChatMemberService,
-    private readonly attachmentService: AttachmentService,
+    private readonly chatService: OneToOneChatService,
     private readonly fileService: FileService,
-    private readonly userService: UserService,
-    private readonly websocketsGateway: WebsocketsGateway,
-    private readonly websocketsService: WebsocketsService
+    private readonly userService: UserService
   ) {}
 
   @Get(":partnerId")
   async get(
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID
-  ): Promise<{id: ID; partner: OneToOneChatMemberPublicData}> {
+  ): Promise<OneToOneChatPublicData & {partner: OneToOneChatMemberPublicData}> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([partner, user]);
+    const {chat, first} = await this.chatService.findOneByUsersIds([partner.id, user.id]);
 
-    if (!member) throw new NotFoundException("Chat is not found.");
+    if (!chat) throw new NotFoundException("Chat is not found.");
 
     return {
-      id: member.chat.id,
-      partner: member.public
+      ...chat.public,
+      partner: first.public
     };
   }
 
@@ -84,19 +53,17 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([user, partner]);
+    const {chat} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
 
-    if (!member) throw new BadRequestException("Chat is not found.");
+    if (!chat) throw new BadRequestException("Chat is not found.");
 
     const messages = await this.messageService.find({
-      where: {chat: member.chat},
+      where: {
+        chat
+      },
       skip: offset,
       take: queryLimit
     });
-
-    for (let i = 0; i < messages.length; i++) {
-      messages[i].replyTo = await this.messageService.findReplyTo(messages[i]);
-    }
 
     return {
       messages: messages.map(msg => msg.public)
@@ -109,70 +76,32 @@ export class OneToOneChatController {
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID,
     @Body() dto: CreateMessageDto
-  ): Promise<{message: OneToOneChatMessagePublicData & AttachmentPublicData}> {
+  ): Promise<{message: OneToOneChatMessagePublicData}> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    let member = await this.memberService.findOneByUsers([user, partner]);
+    let {chat, first} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
 
-    if (!member) {
-      member = await this.memberService.createByUsers([user, partner]);
+    if (!chat) {
+      chat = await this.chatService.create({});
 
-      const sockets = this.websocketsService.getSocketsByUserId(member.user.id);
-
-      sockets.forEach(socket => socket.join(member.chat.id));
+      first = await this.memberService.create({user, chat});
+      await this.memberService.create({user: partner, chat});
     }
 
-    const documents = await this.fileService.find({
-      user,
-      id: In([...dto.files, ...dto.images, dto.audio])
-    });
-
-    const files = documents.filter(
-      ({extension}) =>
-        !isExtensionValid(extension, "image") &&
-        !isExtensionValid(extension, "audio")
-    );
-
-    const images = documents.filter(({extension}) =>
-      isExtensionValid(extension, "image")
-    );
-
-    const audio =
-      documents.find(({extension}) => isExtensionValid(extension, "audio")) ||
-      null;
-
-    const doesAttachmentExist = !!files.length || !!images.length || audio;
-
-    const attachment = doesAttachmentExist
-      ? await this.attachmentService.create({
-          audio,
-          files,
-          images
-        })
-      : null;
-
-    const chatId = member.chat.id;
-
-    const replyTo = await this.messageService.findOne({
-      where: {id: dto.replyTo, chat: {id: chatId}}
+    const parent = await this.messageService.findOne({
+      where: {
+        id: dto.parent,
+        chat: chat
+      }
     });
 
     const message = await this.messageService.create({
-      sender: {
-        type: "user",
-        member
-      },
+      sender: first,
       text: dto.text,
-      chat: {id: chatId},
-      attachment,
-      replyTo
+      chat: chat, parent
     });
-
-    this.websocketsGateway.wss
-      .in(chatId)
-      .emit(clientEvents.MESSAGE_SENDING, {message: message.public, chatId});
 
     return {
       message: message.public
@@ -181,207 +110,195 @@ export class OneToOneChatController {
 
   @Get()
   async getMany(
-    @GetUser() user: User
+    @GetUser() user: User,
+    @Query("offset", ParseIntPipe) offset: number
   ): Promise<{
-    chats: {
-      id: ID;
+    chats: (OneToOneChatPublicData & {
       partner: OneToOneChatMemberPublicData;
       lastMessage: OneToOneChatMessagePublicData;
-    }[];
+    })[];
   }> {
     const members = await this.memberService.find({
-      where: {user}
+      where: {
+        user
+      },
+      skip: offset,
+      take: queryLimit
     });
 
-    const chatsIds = members.map(({chat}) => chat.id);
+    const chats = members.map(({chat}) => chat);
 
     const messages = await this.messageService.find({
-      where: {chat: {id: In(chatsIds)}},
-      order: {createdAt: "DESC"},
+      where: {
+        chat: In(chats)
+        },
+      order: {
+        createdAt: "DESC"
+      },
       take: 1
     });
 
     const partners = await this.memberService.find({
       where: {
-        chat: {id: In(chatsIds)},
-        user: {id: Not(user.id)}
+        chat: In(chats),
+        user: {
+          id: Not(user.id)
+        }
       }
     });
 
-    for (let i = 0; i < messages.length; i++) {
-      messages[i].replyTo = await this.messageService.findReplyTo(messages[i]);
-    }
-
     return {
-      chats: partners.map(partner => {
-        const message =
-          messages.find(({chat}) => chat.id === partner.chat.id) || null;
+      chats: chats.map((chat) => {
+        const partner = partners.find((partner) => partner.chat.id === chat.id);
+
+        if (!partner) return;
+
+        const message = messages.find(({chat}) => chat.id === partner.chat.id) || null;
 
         return {
-          id: partner.chat.id,
+          ...chat.public,
           partner: partner.public,
           lastMessage: message && message.public
         };
-      })
+      }).filter(Boolean)
     };
   }
 
-  @Get(":partnerId/audio")
-  async getAudio(
-    @GetUser() user: User,
-    @Param("partnerId") partnerId: ID,
-    @Query("offset", ParseIntPipe) offset: number
-  ): Promise<{
-    audios: {id: ID; url: string; createdAt: Date}[];
-  }> {
-    const partner = await this.userService.findById(partnerId);
-
-    if (!partner) throw new NotFoundException("Partner is not found.");
-
-    const member = await this.memberService.findOneByUsers([user, partner]);
-
-    if (!member) throw new BadRequestException("Invalid credentials.");
-
-    const messages = await this.messageService.findManyWithAttachmentByChatId(
-      {id: member.chat.id, type: "audio"},
-      {offset}
-    );
-
-    return {
-      audios: messages.map(msg => {
-        const {id, audio, createdAt} = msg.public;
-
-        return {
-          id,
-          url: audio,
-          createdAt
-        };
-      })
-    };
-  }
-
-  @Get(":partnerId/images")
-  async getImages(
-    @GetUser() user: User,
-    @Param("partnerId") partnerId: ID,
-    @Query("offset", ParseIntPipe) offset: number
-  ): Promise<{
-    images: {id: ID; url: string; createdAt: Date}[];
-  }> {
-    const partner = await this.userService.findById(partnerId);
-
-    if (!partner) throw new NotFoundException("Partner is not found.");
-
-    const member = await this.memberService.findOneByUsers([user, partner]);
-
-    if (!member) throw new BadRequestException("Invalid credentials.");
-
-    const messages = await this.messageService.findManyWithAttachmentByChatId(
-      {id: member.chat.id, type: "image"},
-      {offset}
-    );
-
-    return {
-      images: messages.reduce((prev, current) => {
-        const {id, images, createdAt} = current.public;
-
-        return [...prev, ...images.map(url => ({id, url, createdAt}))];
-      }, [])
-    };
-  }
-
-  @Get(":partnerId/files")
-  async getFiles(
-    @GetUser() user: User,
-    @Param("partnerId") partnerId: ID,
-    @Query("offset", ParseIntPipe) offset: number
-  ): Promise<{
-    files: {id: ID; files: FilePublicData[]; createdAt: Date}[];
-  }> {
-    const partner = await this.userService.findById(partnerId);
-
-    if (!partner) throw new NotFoundException("Partner is not found.");
-
-    const member = await this.memberService.findOneByUsers([user, partner]);
-
-    if (!member) throw new BadRequestException("Invalid credentials");
-
-    const messages = await this.messageService.findManyWithAttachmentByChatId(
-      {id: member.chat.id, type: "file"},
-      {offset}
-    );
-
-    return {
-      files: messages.reduce((prev, current) => {
-        const {id, files, createdAt} = current.public;
-
-        return [...prev, ...files.map(file => ({...file, id, createdAt}))];
-      }, [])
-    };
-  }
+  // @TODO: implement getting attachments
+  //
+  // @Get(":partnerId/audio")
+  // async getAudio(
+  //   @GetUser() user: User,
+  //   @Param("partnerId") partnerId: ID,
+  //   @Query("offset", ParseIntPipe) offset: number
+  // ): Promise<{
+  //   audios: {id: ID; url: string; createdAt: Date}[];
+  // }> {
+  //   const partner = await this.userService.findById(partnerId);
+  //
+  //   if (!partner) throw new NotFoundException("Partner is not found.");
+  //
+  //   const {chat, first} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
+  //
+  //   if (!first) throw new BadRequestException("Invalid credentials.");
+  //
+  //   const messages = await this.messageService.findManyWithAttachmentByChatId(
+  //     {id: member.chat.id, type: "audio"},
+  //     {offset}
+  //   );
+  //
+  //   return {
+  //     audios: messages.map(msg => {
+  //       const {audio, createdAt} = msg.public;
+  //
+  //       return {
+  //        ...audio,
+  //         createdAt
+  //       };
+  //     })
+  //   };
+  // }
+  //
+  // @Get(":partnerId/images")
+  // async getImages(
+  //   @GetUser() user: User,
+  //   @Param("partnerId") partnerId: ID,
+  //   @Query("offset", ParseIntPipe) offset: number
+  // ): Promise<{
+  //   images: {id: ID; url: string; createdAt: Date}[];
+  // }> {
+  //   const partner = await this.userService.findById(partnerId);
+  //
+  //   if (!partner) throw new NotFoundException("Partner is not found.");
+  //
+  //   const member = await this.memberService.findOneByUsers([user, partner]);
+  //
+  //   if (!member) throw new BadRequestException("Invalid credentials.");
+  //
+  //   const messages = await this.messageService.findManyWithAttachmentByChatId(
+  //     {id: member.chat.id, type: "image"},
+  //     {offset}
+  //   );
+  //
+  //   return {
+  //     images: messages.reduce((prev, current) => {
+  //       const {id, images, createdAt} = current.public;
+  //
+  //       return [...prev, ...images.map(url => ({id, url, createdAt}))];
+  //     }, [])
+  //   };
+  // }
+  //
+  // @Get(":partnerId/files")
+  // async getFiles(
+  //   @GetUser() user: User,
+  //   @Param("partnerId") partnerId: ID,
+  //   @Query("offset", ParseIntPipe) offset: number
+  // ): Promise<{
+  //   files: {id: ID; files: FilePublicData[]; createdAt: Date}[];
+  // }> {
+  //   const partner = await this.userService.findById(partnerId);
+  //
+  //   if (!partner) throw new NotFoundException("Partner is not found.");
+  //
+  //   const member = await this.memberService.findOneByUsers([user, partner]);
+  //
+  //   if (!member) throw new BadRequestException("Invalid credentials");
+  //
+  //   const messages = await this.messageService.findManyWithAttachmentByChatId(
+  //     {id: member.chat.id, type: "file"},
+  //     {offset}
+  //   );
+  //
+  //   return {
+  //     files: messages.reduce((prev, current) => {
+  //       const {id, files, createdAt} = current.public;
+  //
+  //       return [...prev, ...files.map(file => ({...file, id, createdAt}))];
+  //     }, [])
+  //   };
+  // }
 
   @Delete(":partnerId/messages")
   async deleteMessages(
     @GetUser() user: User,
     @Body() dto: DeleteMessagesDto,
     @Param("partnerId") partnerId: ID
-  ): Promise<{messages: OneToOneChatMessagePublicData[]}> {
+  ): Promise<void> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([user, partner]);
+    const {chat, first} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
 
-    if (!member) throw new BadRequestException("Chat is not found.");
+    if (!chat) throw new BadRequestException("Chat is not found.");
 
-    const chatId = member.chat.id;
-
-    const messages = await this.messageService.find({
-      where: {
-        chat: {id: chatId},
-        id: In(dto.messages),
-        sender: {member}
-      }
+    await this.messageService.delete({
+      id: In(dto.messages),
+      chat, sender: first
     });
-
-    const deleted = await this.messageService.remove(messages);
-
-    this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_DELETING, {
-      chatId,
-      messagesIds: deleted.map(msg => msg.public.id)
-    });
-
-    return {
-      messages: deleted.map(msg => msg.public)
-    };
   }
 
   @Post(":partnerId/ban")
   async banPartner(
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID
-  ): Promise<{id: ID; partner: OneToOneChatMemberPublicData}> {
+  ): Promise<OneToOneChatPublicData & {partner: OneToOneChatMemberPublicData}> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([partner, user]);
+    const {chat, second} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
 
-    if (!member) throw new BadRequestException("Chat is not found.");
+    if (!chat) throw new BadRequestException("Chat is not found.");
 
     const updated = await this.memberService.save({
-      id: member.id,
+      ...second,
       isBanned: true
     });
 
-    const chatId = member.chat.id;
-
-    this.websocketsGateway.wss
-      .to(updated.user.id)
-      .emit(clientEvents.GETTING_BANNED, {chatId});
-
     return {
-      id: chatId,
+      ...chat.public,
       partner: updated.public
     };
   }
@@ -390,28 +307,22 @@ export class OneToOneChatController {
   async unbanPartner(
     @GetUser() user: User,
     @Param("partnerId") partnerId: ID
-  ): Promise<{id: ID; partner: OneToOneChatMemberPublicData}> {
+  ): Promise<OneToOneChatPublicData & {partner: OneToOneChatMemberPublicData}> {
     const partner = await this.userService.findById(partnerId);
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([partner, user]);
+    const {chat, second} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
 
-    if (!member) throw new BadRequestException("Chat is not found.");
+    if (!chat) throw new BadRequestException("Chat is not found.");
 
     const updated = await this.memberService.save({
-      id: member.id,
+      ...second,
       isBanned: false
     });
 
-    const chatId = member.chat.id;
-
-    this.websocketsGateway.wss
-      .to(updated.user.id)
-      .emit(clientEvents.GETTING_UNBANNED, {chatId});
-
     return {
-      id: chatId,
+      ...chat.public,
       partner: updated.public
     };
   }
@@ -427,41 +338,32 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([user, partner]);
+    const {chat, second} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
 
-    if (!member) throw new BadRequestException("Chat is not found.");
-
-    const chatId = member.chat.id;
+    if (!chat) throw new BadRequestException("Chat is not found.");
 
     const message = await this.messageService.findOne({
       where: {
-        chat: {id: chatId},
         id: dto.message,
+        chat,
         isRead: false,
-        sender: {member: {id: Not(member.id)}}
+        sender: second
       }
     });
 
     if (!message) throw new BadRequestException("Invalid message credentials.");
 
+    // @TODO: improve implementation
     await this.messageService.update(
       {
-        chat: {id: chatId},
-        sender: {member: {id: Not(member.id)}},
-        isRead: false,
-        createdAt: Raw(alias => `${alias} <= 'date`, {
-          date: message.createdAt.toISOString()
-        })
+        chat,
+        sender: second,
+        isRead: false
       },
       {
-        isRead: true
+       isRead: true
       }
     );
-
-    this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_READING, {
-      messageId: message.id,
-      chatId
-    });
   }
 
   @Put(":partnerId/messages/edit")
@@ -474,63 +376,38 @@ export class OneToOneChatController {
 
     if (!partner) throw new NotFoundException("Partner is not found.");
 
-    const member = await this.memberService.findOneByUsers([user, partner]);
+    const {chat, first} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
 
-    if (!member) throw new BadRequestException("Chat is not found.");
-
-    const chatId = member.chat.id;
+    if (!chat) throw new BadRequestException("Chat is not found.");
 
     const message = await this.messageService.findOne({
-      where: {id: dto.message, chat: {id: chatId}, sender: {member}}
+      where: {
+        id: dto.message,
+        chat: chat,
+        sender: first
+      }
     });
 
     if (!message) throw new BadRequestException("Invalid message credentials.");
 
-    const documents = await this.fileService.find({
-      user,
-      id: In([...dto.files, ...dto.images, dto.audio])
-    });
+    let parent: OneToOneChatMessage | null = null;
 
-    const files = documents.filter(
-      ({extension}) =>
-        !isExtensionValid(extension, "image") &&
-        !isExtensionValid(extension, "audio")
-    );
+    if (dto.parent) {
+      parent = await this.messageService.findOne({
+        where: {
+          id: dto.parent,
+          chat
+        }
+      });
 
-    const images = documents.filter(({extension}) =>
-      isExtensionValid(extension, "image")
-    );
-
-    const audio =
-      documents.find(({extension}) => isExtensionValid(extension, "audio")) ||
-      null;
-
-    const doesAttachmentExist = !!files.length || !!images.length || audio;
-
-    const attachment = doesAttachmentExist
-      ? await this.attachmentService.create({
-          audio,
-          files,
-          images
-        })
-      : null;
-
-    const replyTo = await this.messageService.findOne({
-      where: {id: dto.replyTo, chat: {id: chatId}}
-    });
+      if (!parent) throw new NotFoundException("Parent message is not found.");
+    }
 
     const updated = await this.messageService.save({
-      id: message.id,
+      ...message,
       text: dto.text,
-      attachment,
-      replyTo,
-      isEdited: true
-    });
-
-    this.websocketsGateway.wss.in(chatId).emit(clientEvents.MESSAGE_EDITING, {
-      messageId: message.id,
-      message: updated.public,
-      chatId
+      isEdited: true,
+      parent
     });
 
     return {

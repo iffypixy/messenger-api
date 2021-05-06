@@ -1,10 +1,7 @@
-import {IsNumberString, IsString, MinLength} from "class-validator";
+import {IsString, MinLength} from "class-validator";
 
 export class GetUsersByLoginQueryDto {
-  @IsString({message: "Query type must be a string"})
-  @MinLength(1, {message: "Query length must be at least 1 character"})
-  q: string;
-
-  @IsNumberString(null, {message: "Limit type must be a number"})
-  limit: number;
+  @IsString({message: "Query must be type of string"})
+  @MinLength(1, {message: "Query must have at least 1 character"})
+  query: string;
 }

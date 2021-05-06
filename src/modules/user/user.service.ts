@@ -1,5 +1,5 @@
-import {InjectRepository} from "@nestjs/typeorm";
 import {Injectable} from "@nestjs/common";
+import {InjectRepository} from "@nestjs/typeorm";
 import {
   DeepPartial,
   FindConditions,
@@ -9,58 +9,42 @@ import {
   SaveOptions,
   UpdateResult
 } from "typeorm";
-import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
 
-import {RequestOptions, ID} from "@lib/typings";
+import {ID} from "@lib/typings";
 import {User} from "./entities";
+import {FindOptions} from "@nestjs/schematics/dist";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
-  ) {}
-
-  async create(partial: DeepPartial<User>): Promise<User> {
-    const user = this.userRepository.create(partial);
-
-    return this.userRepository.save(user);
+    private readonly repository: Repository<User>
+  ) {
   }
 
-  findById(id: ID): Promise<User | null> {
-    return this.userRepository.findOne({id}, {cache: true});
+  create(partial: DeepPartial<User>): Promise<User> {
+    const user = this.repository.create(partial);
+
+    return this.repository.save(user);
   }
 
-  update(
-    criteria: FindConditions<User>,
-    partial: QueryDeepPartialEntity<User>
-  ): Promise<UpdateResult> {
-    return this.userRepository.update(criteria, partial);
+  findById(id: ID): Promise<User> {
+    return this.repository.findOne({id});
   }
 
-  findOne(
-    conditions?: FindConditions<User>,
-    options?: FindOneOptions
-  ): Promise<User> {
-    return this.userRepository.findOne(conditions, options);
+  update(criteria: FindConditions<User>, partial: DeepPartial<User>): Promise<UpdateResult> {
+    return this.repository.update(criteria, partial);
   }
 
-  findUsersByLoginQuery(
-    query: string,
-    {limit}: RequestOptions
-  ): Promise<User[]> {
-    return this.userRepository
-      .createQueryBuilder("user")
-      .where("user.login ilike :login", {login: `%${query}%`})
-      .limit(limit)
-      .getMany();
-  }
-
-  save(entity: DeepPartial<User>, options?: SaveOptions): Promise<User> {
-    return this.userRepository.save(entity, options);
+  findOne(options: FindOneOptions<User>): Promise<User> {
+    return this.repository.findOne(options);
   }
 
   find(options: FindManyOptions<User>): Promise<User[]> {
-    return this.userRepository.find(options);
+    return this.repository.find(options);
+  }
+
+  save(partial: DeepPartial<User>, options?: SaveOptions): Promise<User> {
+    return this.repository.save(partial, options);
   }
 }

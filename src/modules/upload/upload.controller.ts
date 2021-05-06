@@ -1,21 +1,12 @@
-import {
-  BadRequestException,
-  Controller,
-  HttpCode,
-  Post,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors
-} from "@nestjs/common";
+import {BadRequestException, Controller, HttpCode, Post, UploadedFile, UseGuards, UseInterceptors} from "@nestjs/common";
 import {FileInterceptor} from "@nestjs/platform-express";
 import * as mime from "mime";
 
 import {User} from "@modules/user";
 import {GetUser, IsAuthorizedGuard} from "modules/auth";
 import {FilePublicData} from "@modules/upload";
-import {isExtensionValid} from "@lib/extensions";
+import {isExtensionValid, maxFileSize} from "@lib/files";
 import {BufferedFile} from "@lib/typings";
-import {maxFileSize} from "@lib/constants";
 import {FileService, UploadService} from "./services";
 
 @UseGuards(IsAuthorizedGuard)
@@ -26,7 +17,7 @@ export class UploadController {
     private readonly fileService: FileService
   ) {}
 
-  @HttpCode(201)
+  // @TODO: check file-type library for this task
   @UseInterceptors(
     FileInterceptor("file", {
       limits: {fileSize: maxFileSize},
@@ -44,6 +35,7 @@ export class UploadController {
       }
     })
   )
+  @HttpCode(201)
   @Post()
   async upload(
     @UploadedFile() bufferedFile: BufferedFile,
@@ -58,11 +50,8 @@ export class UploadController {
     const {Location: url} = await this.uploadService.upload(buffer, mimetype);
 
     const file = await this.fileService.create({
-      name: originalname,
-      user,
-      size,
-      extension,
-      url
+      name: originalname, user,
+      size, extension, url
     });
 
     return {
