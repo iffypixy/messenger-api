@@ -1,5 +1,6 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, ManyToMany} from "typeorm";
 
+import {File} from "@modules/upload";
 import {ID} from "@lib/typings";
 import {GroupChat} from "./group-chat.entity";
 import {GroupChatMember} from "./group-chat-member.entity";
@@ -48,7 +49,25 @@ export class GroupChatMessage {
     nullable: true,
     cascade: true
   })
-  parent: GroupChatMessage
+  parent: GroupChatMessage;
+
+  @ManyToMany(() => File, {
+    eager: true,
+    nullable: true
+  })
+  files: File[];
+
+  @ManyToMany(() => File, {
+    eager: true,
+    nullable: true
+  })
+  images: File[];
+
+  @ManyToOne(() => File, {
+    eager: true,
+    nullable: true
+  })
+  audio: File;
 
   @ManyToOne(() => GroupChat, {
     cascade: true,
