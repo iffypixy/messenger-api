@@ -79,6 +79,9 @@ export class OneToOneChatMessage {
     const {id, text, isRead, isEdited, createdAt, chat, isSystem, parent} = this;
 
     const sender = !isSystem ? this.sender.public : null;
+    const audio = this.audio && this.audio.url;
+    const images = !!this.images.length ? this.images.map(({url}) => url) : null;
+    const files = !!this.files.length ? this.files.map((file) => file.public) : null;
 
     return {
       id,
@@ -88,6 +91,7 @@ export class OneToOneChatMessage {
       isRead,
       createdAt,
       isSystem,
+      audio, images, files,
       chat: chat.public,
       parent: parent && parent.public
     };

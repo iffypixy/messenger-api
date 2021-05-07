@@ -43,9 +43,12 @@ export interface GroupChatMessagePublicData {
   isEdited: boolean;
   isRead: boolean;
   isSystem: boolean;
+  chat: GroupChatPublicData;
+  audio: string;
+  images: string[];
+  files: FilePublicData[];
   parent: GroupChatMessagePublicData | null;
   createdAt: Date;
-  chat: GroupChatPublicData;
 }
 
 export interface OneToOneChatMessagePublicData {
@@ -55,9 +58,12 @@ export interface OneToOneChatMessagePublicData {
   isEdited: boolean;
   isRead: boolean;
   isSystem: boolean;
+  chat: OneToOneChatPublicData;
+  audio: string;
+  images: string[];
+  files: FilePublicData[];
   parent: OneToOneChatMessagePublicData | null;
   createdAt: Date;
-  chat: OneToOneChatPublicData;
 }
 
 export interface OneToOneChatMemberPublicData extends UserPublicData {

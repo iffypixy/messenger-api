@@ -1,6 +1,6 @@
 import {BadRequestException, Body, Controller, Put, UploadedFile, UseGuards, UseInterceptors} from "@nestjs/common";
 import {FileInterceptor} from "@nestjs/platform-express";
-import mime from "mime";
+import * as FileType from "file-type";
 
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
 import {User, UserService, UserPublicData} from "@modules/user";
@@ -22,16 +22,15 @@ export class ProfileController {
     FileInterceptor("avatar", {
       limits: {fileSize: maxFileSize},
       fileFilter: (_, file, callback) => {
-        const ext = `.${mime.getExtension(file.mimetype)}`;
+        const error = new BadRequestException("Invalid file extension");
 
-        if (!isExtensionValid(ext, "image")) {
-          return callback(
-            new BadRequestException("Invalid file extension"),
-            false
-          );
-        }
+        FileType.fromBuffer(file.buffer)
+          .then(({ext}) => {
+            if (!isExtensionValid(ext, "image")) callback(error, false);
 
-        return callback(null, true);
+            return callback(null, true);
+          })
+          .catch(() => callback(error, false));
       }
     })
   )

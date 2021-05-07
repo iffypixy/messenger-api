@@ -2,14 +2,14 @@ import {Body, Controller, Get, BadRequestException, NotFoundException, Param, Pa
 
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
 import {User, UserService} from "@modules/user";
-import {FileService} from "@modules/upload";
+import {FilePublicData, FileService} from "@modules/upload";
 import {ID} from "@lib/typings";
 import {queryLimit} from "@lib/requests";
 import {OneToOneChatMessage} from "../entities";
 import {OneToOneChatMessageService, OneToOneChatMemberService, OneToOneChatService} from "../services";
 import {CreateMessageDto, DeleteMessagesDto, EditMessageDto, ReadMessageDto} from "../dtos";
 import {OneToOneChatMessagePublicData, OneToOneChatMemberPublicData, OneToOneChatPublicData} from "../lib/typings";
-import {In, Not} from "typeorm";
+import {In, LessThan, MoreThan, Not} from "typeorm";
 
 @UseGuards(IsAuthorizedGuard)
 @Controller("1o1-chats")
@@ -164,100 +164,98 @@ export class OneToOneChatController {
     };
   }
 
-  // @TODO: implement getting attachments
-  //
-  // @Get(":partnerId/audio")
-  // async getAudio(
-  //   @GetUser() user: User,
-  //   @Param("partnerId") partnerId: ID,
-  //   @Query("offset", ParseIntPipe) offset: number
-  // ): Promise<{
-  //   audios: {id: ID; url: string; createdAt: Date}[];
-  // }> {
-  //   const partner = await this.userService.findById(partnerId);
-  //
-  //   if (!partner) throw new NotFoundException("Partner is not found.");
-  //
-  //   const {chat, first} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
-  //
-  //   if (!first) throw new BadRequestException("Invalid credentials.");
-  //
-  //   const messages = await this.messageService.findManyWithAttachmentByChatId(
-  //     {id: member.chat.id, type: "audio"},
-  //     {offset}
-  //   );
-  //
-  //   return {
-  //     audios: messages.map(msg => {
-  //       const {audio, createdAt} = msg.public;
-  //
-  //       return {
-  //        ...audio,
-  //         createdAt
-  //       };
-  //     })
-  //   };
-  // }
-  //
-  // @Get(":partnerId/images")
-  // async getImages(
-  //   @GetUser() user: User,
-  //   @Param("partnerId") partnerId: ID,
-  //   @Query("offset", ParseIntPipe) offset: number
-  // ): Promise<{
-  //   images: {id: ID; url: string; createdAt: Date}[];
-  // }> {
-  //   const partner = await this.userService.findById(partnerId);
-  //
-  //   if (!partner) throw new NotFoundException("Partner is not found.");
-  //
-  //   const member = await this.memberService.findOneByUsers([user, partner]);
-  //
-  //   if (!member) throw new BadRequestException("Invalid credentials.");
-  //
-  //   const messages = await this.messageService.findManyWithAttachmentByChatId(
-  //     {id: member.chat.id, type: "image"},
-  //     {offset}
-  //   );
-  //
-  //   return {
-  //     images: messages.reduce((prev, current) => {
-  //       const {id, images, createdAt} = current.public;
-  //
-  //       return [...prev, ...images.map(url => ({id, url, createdAt}))];
-  //     }, [])
-  //   };
-  // }
-  //
-  // @Get(":partnerId/files")
-  // async getFiles(
-  //   @GetUser() user: User,
-  //   @Param("partnerId") partnerId: ID,
-  //   @Query("offset", ParseIntPipe) offset: number
-  // ): Promise<{
-  //   files: {id: ID; files: FilePublicData[]; createdAt: Date}[];
-  // }> {
-  //   const partner = await this.userService.findById(partnerId);
-  //
-  //   if (!partner) throw new NotFoundException("Partner is not found.");
-  //
-  //   const member = await this.memberService.findOneByUsers([user, partner]);
-  //
-  //   if (!member) throw new BadRequestException("Invalid credentials");
-  //
-  //   const messages = await this.messageService.findManyWithAttachmentByChatId(
-  //     {id: member.chat.id, type: "file"},
-  //     {offset}
-  //   );
-  //
-  //   return {
-  //     files: messages.reduce((prev, current) => {
-  //       const {id, files, createdAt} = current.public;
-  //
-  //       return [...prev, ...files.map(file => ({...file, id, createdAt}))];
-  //     }, [])
-  //   };
-  // }
+  @Get(":partnerId/audio")
+  async getAudio(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{
+    audios: {id: ID; audio: string; createdAt: Date}[];
+  }> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const {chat} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
+
+    if (!chat) throw new BadRequestException("Invalid credentials.");
+
+    const messages = await this.messageService.find({
+      where: {
+         chat, audio: Not(null)
+      }
+    });
+
+    return {
+      audios: messages.map((message) => {
+        const {id, audio, createdAt} = message.public;
+
+        return {id, audio, createdAt};
+      })
+    };
+  }
+
+  @Get(":partnerId/images")
+  async getImages(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{
+    images: {id: ID; image: string; createdAt: Date}[];
+  }> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const {chat} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
+
+    if (!chat) throw new BadRequestException("Invalid credentials.");
+
+    const messages = await this.messageService.find({
+      where: {
+        chat, images: Not(null)
+      }
+    });
+
+    return {
+      images: messages.reduce((prev, current) => {
+        const {id, images, createdAt} = current.public;
+
+        return [...prev, ...images.map((image) => ({id, image, createdAt}))];
+      }, [])
+    };
+  }
+
+  @Get(":partnerId/files")
+  async getFiles(
+    @GetUser() user: User,
+    @Param("partnerId") partnerId: ID,
+    @Query("offset", ParseIntPipe) offset: number
+  ): Promise<{
+    files: {id: ID; file: FilePublicData; createdAt: Date}[];
+  }> {
+    const partner = await this.userService.findById(partnerId);
+
+    if (!partner) throw new NotFoundException("Partner is not found.");
+
+    const {chat} = await this.chatService.findOneByUsersIds([user.id, partner.id]);
+
+    if (!chat) throw new BadRequestException("Invalid credentials");
+
+    const messages = await this.messageService.find({
+      where: {
+        chat, files: Not(null)
+      }
+    });
+
+    return {
+      files: messages.reduce((prev, current) => {
+        const {id, files, createdAt} = current.public;
+
+        return [...prev, ...files.map((file) => ({id, file, createdAt}))];
+      }, [])
+    };
+  }
 
   @Delete(":partnerId/messages")
   async deleteMessages(
@@ -353,12 +351,12 @@ export class OneToOneChatController {
 
     if (!message) throw new BadRequestException("Invalid message credentials.");
 
-    // @TODO: improve implementation
     await this.messageService.update(
       {
         chat,
         sender: second,
-        isRead: false
+        isRead: false,
+        createdAt: LessThan(message.createdAt)
       },
       {
        isRead: true

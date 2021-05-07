@@ -19,7 +19,7 @@ export class OneToOneChatMessageService {
     private readonly repository: Repository<OneToOneChatMessage>
   ) {}
 
-  find(options: FindManyOptions): Promise<OneToOneChatMessage[]> {
+  find(options: FindManyOptions<OneToOneChatMessage>): Promise<OneToOneChatMessage[]> {
     return this.repository.find(options);
   }
 
