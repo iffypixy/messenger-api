@@ -13,6 +13,8 @@ import {queryLimit} from "@lib/requests";
 import {FilePublicData, FileService} from "@modules/upload";
 import {UserService} from "@modules/user";
 import {ExtendedSocket, ID} from "@lib/typings";
+import {extensions} from "@lib/files";
+import {WebsocketsService} from "@lib/websockets";
 import {
   DirectChatPublicData,
   GroupChatMemberPublicData,
@@ -20,8 +22,15 @@ import {
   GroupChatPublicData
 } from "../lib/typings";
 import {GroupChatMemberService, GroupChatMessageService, GroupChatService} from "../services";
-import {GetGroupChatMessagesDto, CreateGroupChatMessageDto, GetGroupChatDto, GetGroupChatAttachmentsDto, CreateGroupChatDto, AddGroupChatMemberDto, RemoveGroupChatMemberDto} from "./dtos";
-import {extensions} from "@lib/files";
+import {
+  GetGroupChatMessagesDto,
+  CreateGroupChatMessageDto,
+  GetGroupChatDto,
+  GetGroupChatAttachmentsDto,
+  CreateGroupChatDto,
+  AddGroupChatMemberDto,
+  RemoveGroupChatMemberDto
+} from "./dtos";
 
 @WebSocketGateway()
 export class GroupChatGateway {
@@ -30,7 +39,8 @@ export class GroupChatGateway {
     private readonly messageService: GroupChatMessageService,
     private readonly chatService: GroupChatService,
     private readonly fileService: FileService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly websocketService: WebsocketsService
   ) {
   }
 
@@ -321,11 +331,21 @@ export class GroupChatGateway {
     });
 
     for (let i = 0; i < users.length; i++) {
+      const user = users[0];
+
       await this.memberService.create({
-        user: users[0],
-        chat, role: "member"
+        user, chat, role: "member"
       });
+
+      const sockets = await this.websocketService.getSocketsByUserId(this.wss, user.id);
+
+      sockets.forEach((socket) => socket.join(chat.id));
     }
+
+    this.wss.to(chat.id).emit("GROUP_CHAT:CHAT_CREATED", {
+      chat: chat.public,
+      member: member.public
+    });
 
     return {
       chat: chat.public,
@@ -365,6 +385,32 @@ export class GroupChatGateway {
 
     const added = await this.memberService.create({
       role: "member", chat, user
+    });
+
+    const message = await this.messageService.create({
+      isSystem: true, chat,
+      text: `${added.user.username} has joined!`
+    });
+
+    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_ADDED", {
+      chat: chat.public,
+      member: member.public
+    });
+
+    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+      chat: chat.public,
+      message: message.public
+    });
+
+    const sockets = this.websocketService.getSocketsByUserId(this.wss, added.user.id);
+
+    sockets.forEach((socket) => {
+      socket.join(chat.id);
+
+      socket.emit("GROUP_CHAT:ADDED", {
+        chat: chat.public,
+        member: added.public
+      });
     });
 
     return {
@@ -409,6 +455,31 @@ export class GroupChatGateway {
     });
 
     await this.memberService.delete(member);
+
+    const message = await this.messageService.create({
+      isSystem: true, chat,
+      text: `${member.user.username} has left!`
+    });
+
+    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_LEFT",  {
+      member: member.public,
+      chat: chat.public
+    });
+
+    const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
+
+    sockets.forEach((socket) => {
+      socket.leave(chat.id);
+
+      socket.emit("GROUP_CHAT:REMOVED", {
+        chat: chat.public
+      });
+    });
+
+    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE",  {
+      message: message.public,
+      chat: chat.public
+    });
 
     return {
       member: member.public

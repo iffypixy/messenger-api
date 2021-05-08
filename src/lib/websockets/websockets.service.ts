@@ -2,13 +2,13 @@ import {Injectable} from "@nestjs/common";
 import {Server} from "socket.io";
 
 import {mapToArray} from "@lib/functions";
-import {ExtendedSocket} from "@lib/typings";
+import {ExtendedSocket, ID} from "@lib/typings";
 
 @Injectable()
 export class WebsocketsService {
-  getSocketById(wss: Server, id: string): ExtendedSocket | null {
+  getSocketsByUserId(wss: Server, id: ID): ExtendedSocket[] {
     const sockets: ExtendedSocket[] = mapToArray(wss.sockets.sockets);
 
-    return sockets.find((socket) => socket.id === id) || null;
+    return sockets.filter((socket) => socket.user.id === id);
   }
 }
