@@ -1,22 +1,21 @@
-import {Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
 import {User} from "@modules/user";
 import {ID} from "@lib/typings";
-import {OneToOneChatMemberPublicData} from "../lib/typings";
-import {OneToOneChat} from "./one-to-one-chat.entity";
+import {DirectChatMemberPublicData} from "../lib/typings";
+import {DirectChat} from "./direct-chat.entity";
 
 @Entity()
-export class OneToOneChatMember {
+export class DirectChatMember {
   @PrimaryGeneratedColumn("uuid")
   id: ID;
 
-  @JoinColumn()
-  @OneToOne(() => OneToOneChat, {
+  @ManyToOne(() => DirectChat, {
     cascade: true,
     eager: true,
     nullable: false
   })
-  chat: OneToOneChat;
+  chat: DirectChat;
 
   @ManyToOne(() => User, {
     nullable: false,
@@ -32,7 +31,7 @@ export class OneToOneChatMember {
   })
   isBanned: boolean;
 
-  get public(): OneToOneChatMemberPublicData {
+  get public(): DirectChatMemberPublicData {
     const {user, isBanned} = this;
 
     return {

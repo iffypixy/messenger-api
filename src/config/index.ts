@@ -1,5 +1,3 @@
-import {databaseConfig} from "./database.config";
-import {jwtConfig} from "./jwt.config";
-import {s3Config} from "./s3.config";
-
-export {databaseConfig, jwtConfig, s3Config};
+export {databaseConfig} from "./database.config";
+export {jwtConfig} from "./jwt.config";
+export {s3Config} from "./s3.config";

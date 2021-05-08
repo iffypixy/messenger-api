@@ -22,7 +22,7 @@ export interface AttachmentPublicData {
 
 export type AttachmentType = "audio" | "image" | "file";
 
-export interface OneToOneChatPublicData {
+export interface DirectChatPublicData {
   id: ID;
 }
 
@@ -51,21 +51,21 @@ export interface GroupChatMessagePublicData {
   createdAt: Date;
 }
 
-export interface OneToOneChatMessagePublicData {
+export interface DirectChatMessagePublicData {
   id: ID;
   text: string;
-  sender: OneToOneChatMemberPublicData | null;
+  sender: DirectChatMemberPublicData | null;
   isEdited: boolean;
   isRead: boolean;
   isSystem: boolean;
-  chat: OneToOneChatPublicData;
+  chat: DirectChatPublicData;
   audio: string;
   images: string[];
   files: FilePublicData[];
-  parent: OneToOneChatMessagePublicData | null;
+  parent: DirectChatMessagePublicData | null;
   createdAt: Date;
 }
 
-export interface OneToOneChatMemberPublicData extends UserPublicData {
+export interface DirectChatMemberPublicData extends UserPublicData {
   isBanned: boolean;
 }

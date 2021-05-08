@@ -1,4 +1,4 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, ManyToMany} from "typeorm";
+import {Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, ManyToMany, JoinTable} from "typeorm";
 
 import {File} from "@modules/upload";
 import {ID} from "@lib/typings";
@@ -51,12 +51,14 @@ export class GroupChatMessage {
   })
   parent: GroupChatMessage;
 
+  @JoinTable()
   @ManyToMany(() => File, {
     eager: true,
     nullable: true
   })
   files: File[];
 
+  @JoinTable()
   @ManyToMany(() => File, {
     eager: true,
     nullable: true

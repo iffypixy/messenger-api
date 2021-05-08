@@ -4,6 +4,7 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
 
 import {UserModule} from "@modules/user";
+import {AuthGateway} from "./gateways";
 import {IsAuthorizedGuard} from "./guards";
 import {RefreshSession} from "./entities";
 import {RefreshSessionService, AuthService} from "./services";
@@ -29,7 +30,8 @@ import {AuthController} from "./auth.controller";
     AuthMiddleware,
     RefreshSessionService,
     AuthService,
-    IsAuthorizedGuard
+    IsAuthorizedGuard,
+    AuthGateway
   ],
   controllers: [AuthController],
   exports: [

@@ -7,7 +7,8 @@ import {UserModule, User} from "@modules/user";
 import {RefreshSession, AuthModule} from "@modules/auth";
 import {UploadModule, File} from "@modules/upload";
 import {ProfileModule} from "@modules/profile";
-import {ChatModule, GroupChat, GroupChatMember, GroupChatMessage, OneToOneChat, OneToOneChatMember, OneToOneChatMessage} from "@modules/chat";
+import {ChatModule, GroupChat, GroupChatMember, GroupChatMessage, DirectChat, DirectChatMember, DirectChatMessage} from "@modules/chat";
+import {WebsocketsModule} from "@lib/websockets";
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import {ChatModule, GroupChat, GroupChatMember, GroupChatMessage, OneToOneChat, 
     UploadModule,
     ProfileModule,
     ChatModule,
+    WebsocketsModule,
     ConfigModule.forRoot({
       envFilePath: [".env.development"],
       load: [databaseConfig, jwtConfig, s3Config],
@@ -36,9 +38,9 @@ import {ChatModule, GroupChat, GroupChatMember, GroupChatMessage, OneToOneChat, 
           User,
           RefreshSession,
           File,
-          OneToOneChat,
-          OneToOneChatMessage,
-          OneToOneChatMember,
+          DirectChat,
+          DirectChatMessage,
+          DirectChatMember,
           GroupChat,
           GroupChatMember,
           GroupChatMessage

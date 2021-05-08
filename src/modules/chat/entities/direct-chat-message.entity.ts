@@ -1,22 +1,30 @@
-import {Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from "typeorm";
 
 import {ID} from "@lib/typings";
 import {File} from "@modules/upload";
-import {OneToOneChatMessagePublicData} from "../lib/typings";
-import {OneToOneChat} from "./one-to-one-chat.entity";
-import {OneToOneChatMember} from "./one-to-one-chat-member.entity";
+import {DirectChatMessagePublicData} from "../lib/typings";
+import {DirectChat} from "./direct-chat.entity";
+import {DirectChatMember} from "./direct-chat-member.entity";
 
 @Entity()
-export class OneToOneChatMessage {
+export class DirectChatMessage {
   @PrimaryGeneratedColumn("uuid")
   id: ID;
 
-  @ManyToOne(() => OneToOneChatMember, {
+  @ManyToOne(() => DirectChatMember, {
     eager: true,
     nullable: true,
     cascade: true
   })
-  sender: OneToOneChatMember;
+  sender: DirectChatMember;
 
   @Column({
     type: "text",
@@ -45,18 +53,20 @@ export class OneToOneChatMessage {
   })
   isSystem: boolean;
 
-  @ManyToOne(() => OneToOneChatMessage, {
+  @ManyToOne(() => DirectChatMessage, {
     nullable: true,
     cascade: true
   })
-  parent: OneToOneChatMessage;
+  parent: DirectChatMessage;
 
+  @JoinTable()
   @ManyToMany(() => File, {
     eager: true,
     nullable: true
   })
   files: File[];
 
+  @JoinTable()
   @ManyToMany(() => File, {
     eager: true,
     nullable: true
@@ -69,19 +79,22 @@ export class OneToOneChatMessage {
   })
   audio: File;
 
-  @ManyToOne(() => OneToOneChat)
-  chat: OneToOneChat;
+  @ManyToOne(() => DirectChat, {
+    eager: true,
+    nullable: false
+  })
+  chat: DirectChat;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  get public(): OneToOneChatMessagePublicData {
+  get public(): DirectChatMessagePublicData {
     const {id, text, isRead, isEdited, createdAt, chat, isSystem, parent} = this;
 
     const sender = !isSystem ? this.sender.public : null;
-    const audio = this.audio && this.audio.url;
-    const images = !!this.images.length ? this.images.map(({url}) => url) : null;
-    const files = !!this.files.length ? this.files.map((file) => file.public) : null;
+    const audio = this.audio ? this.audio.url : null;
+    const images = (this.images && !!this.images.length) ? this.images.map(({url}) => url) : null;
+    const files = (this.files && !!this.files.length) ? this.files.map((file) => file.public) : null;
 
     return {
       id,

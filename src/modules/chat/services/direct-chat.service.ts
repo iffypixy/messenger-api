@@ -3,28 +3,28 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {DeepPartial, FindManyOptions, Repository} from "typeorm";
 
 import {ID} from "@lib/typings";
-import {OneToOneChat, OneToOneChatMember} from "../entities";
-import {OneToOneChatMemberService} from "./one-to-one-chat-member.service";
+import {DirectChat, DirectChatMember} from "../entities";
+import {DirectChatMemberService} from "./direct-chat-member.service";
 
 @Injectable()
-export class OneToOneChatService {
+export class DirectChatService {
   constructor(
-    @InjectRepository(OneToOneChat)
-    private readonly repository: Repository<OneToOneChat>,
-    private readonly memberService: OneToOneChatMemberService
+    @InjectRepository(DirectChat)
+    private readonly repository: Repository<DirectChat>,
+    private readonly memberService: DirectChatMemberService
   ) {}
 
-  create(partial: DeepPartial<OneToOneChat>): Promise<OneToOneChat> {
+  create(partial: DeepPartial<DirectChat>): Promise<DirectChat> {
     const chat = this.repository.create(partial);
 
     return this.repository.save(chat);
   }
 
-  find(options: FindManyOptions<OneToOneChat>): Promise<OneToOneChat[]> {
+  find(options: FindManyOptions<DirectChat>): Promise<DirectChat[]> {
     return this.repository.find(options);
   }
 
-  async findOneByUsersIds(ids: ID[]): Promise<{first: OneToOneChatMember | null; second: OneToOneChatMember | null; chat: OneToOneChat | null}> {
+  async findOneByUsersIds(ids: ID[]): Promise<{first: DirectChatMember | null; second: DirectChatMember | null; chat: DirectChat | null}> {
     const firsts = await this.memberService.find({
       where: {
         user: {

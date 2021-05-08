@@ -4,9 +4,9 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {UploadModule} from "@modules/upload";
 import {UserModule} from "@modules/user";
 import {AuthMiddleware, AuthModule} from "@modules/auth";
-import {OneToOneChatMemberService, OneToOneChatMessageService, OneToOneChatService, GroupChatService, GroupChatMessageService, GroupChatMemberService} from "./services";
-import {GroupChat, GroupChatMember, GroupChatMessage, OneToOneChat, OneToOneChatMember, OneToOneChatMessage} from "./entities";
-import {OneToOneChatController, GroupChatController} from "./controllers";
+import {GroupChatGateway, DirectChatGateway} from "./gateways";
+import {DirectChatMemberService, DirectChatMessageService, DirectChatService, GroupChatService, GroupChatMessageService, GroupChatMemberService} from "./services";
+import {GroupChat, GroupChatMember, GroupChatMessage, DirectChat, DirectChatMember, DirectChatMessage} from "./entities";
 
 @Module({
   imports: [
@@ -14,26 +14,24 @@ import {OneToOneChatController, GroupChatController} from "./controllers";
     UploadModule,
     UserModule,
     TypeOrmModule.forFeature([
-      OneToOneChat,
-      OneToOneChatMember,
-      OneToOneChatMessage,
+      DirectChat,
+      DirectChatMember,
+      DirectChatMessage,
       GroupChat,
       GroupChatMessage,
       GroupChatMember
     ])
   ],
   providers: [
-    OneToOneChatService,
-    OneToOneChatMessageService,
-    OneToOneChatMemberService,
+    DirectChatService,
+    DirectChatMessageService,
+    DirectChatMemberService,
     GroupChatService,
     GroupChatMemberService,
-    GroupChatMessageService
-  ],
-  controllers: [OneToOneChatController, GroupChatController]
+    GroupChatMessageService,
+    DirectChatGateway,
+    GroupChatGateway
+  ]
 })
-export class ChatModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(AuthMiddleware).forRoutes(OneToOneChatController);
-  }
+export class ChatModule {
 }

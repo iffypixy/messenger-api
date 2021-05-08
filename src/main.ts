@@ -2,6 +2,7 @@ import {ValidationPipe} from "@nestjs/common";
 import {NestFactory} from "@nestjs/core";
 import * as cookieParser from "cookie-parser";
 
+import {WebsocketsAdapter} from "@lib/websockets";
 import {AppModule} from "./app.module";
 
 async function bootstrap() {
@@ -9,9 +10,11 @@ async function bootstrap() {
     origin: "http://localhost:3000"
   };
 
-  const app = await NestFactory.create(AppModule, {
-    cors
-  });
+  const app = await NestFactory.create(AppModule, {cors});
+
+  app.useWebSocketAdapter(new WebsocketsAdapter(app, {
+    origin: "http://localhost:3000"
+  }));
 
   app.setGlobalPrefix("/v1/api");
   app.useGlobalPipes(new ValidationPipe({
