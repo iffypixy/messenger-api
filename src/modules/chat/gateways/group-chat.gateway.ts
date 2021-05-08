@@ -10,11 +10,11 @@ import {Server} from "socket.io";
 import {In} from "typeorm";
 
 import {queryLimit} from "@lib/requests";
-import {FilePublicData, FileService} from "@modules/upload";
-import {UserService} from "@modules/user";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {extensions} from "@lib/files";
 import {WebsocketsService} from "@lib/websockets";
+import {FilePublicData, FileService} from "@modules/upload";
+import {UserService} from "@modules/user";
 import {
   DirectChatPublicData,
   GroupChatMemberPublicData,
@@ -133,21 +133,24 @@ export class GroupChatGateway {
     const files = dto.files && await this.fileService.find({
       where: {
         id: In(dto.files),
-        user: socket.user
+        user: socket.user,
+        extension: In(extensions.all)
       }
     });
 
     const images = dto.images && await this.fileService.find({
       where: {
         id: In(dto.images),
-        user: socket.user
+        user: socket.user,
+        extension: In(extensions.images)
       }
     });
 
     const audio = dto.audio && await this.fileService.findOne({
       where: {
         id: dto.audio,
-        user: socket.user
+        user: socket.user,
+        extension: In(extensions.audios)
       }
     });
 

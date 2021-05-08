@@ -11,11 +11,19 @@ import {In, Not} from "typeorm";
 
 import {ExtendedSocket, ID} from "@lib/typings";
 import {queryLimit} from "@lib/requests";
+import {extensions} from "@lib/files";
 import {FilePublicData, FileService} from "@modules/upload";
 import {UserService} from "@modules/user";
 import {DirectChatMemberPublicData, DirectChatMessagePublicData, DirectChatPublicData} from "../lib/typings";
 import {DirectChatMemberService, DirectChatMessageService, DirectChatService} from "../services";
-import {GetDirectChatMessagesDto, CreateDirectChatMessageDto, GetDirectChatDto, GetDirectChatAttachmentsDto, BanDirectChatPartnerDto, UnbanDirectChatPartnerDto} from "./dtos";
+import {
+  GetDirectChatMessagesDto,
+  CreateDirectChatMessageDto,
+  GetDirectChatDto,
+  GetDirectChatAttachmentsDto,
+  BanDirectChatPartnerDto,
+  UnbanDirectChatPartnerDto
+} from "./dtos";
 
 @WebSocketGateway()
 export class DirectChatGateway {
@@ -141,21 +149,24 @@ export class DirectChatGateway {
     const files = dto.files && await this.fileService.find({
       where: {
         id: In(dto.files),
-        user: socket.user
+        user: socket.user,
+        extension: In(extensions.all)
       }
     });
 
     const images = dto.images && await this.fileService.find({
       where: {
         id: In(dto.images),
-        user: socket.user
+        user: socket.user,
+        extension: In(extensions.images)
       }
     });
 
     const audio = dto.audio && await this.fileService.findOne({
       where: {
         id: dto.audio,
-        user: socket.user
+        user: socket.user,
+        extension: In(extensions.audios)
       }
     });
 
