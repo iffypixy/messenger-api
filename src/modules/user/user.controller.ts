@@ -14,7 +14,7 @@ export class UserController {
   ) {}
 
   @Get("search")
-  async getUsersByLoginQuery(
+  async getByLoginQuery(
     @Query() {query}: GetUsersByLoginQueryDto
   ): Promise<{users: UserPublicData[]}> {
     const users = await this.userService.find({
@@ -30,7 +30,7 @@ export class UserController {
   }
 
   @Get(":id")
-  async getUserById(@Param("id") id: ID): Promise<{user: UserPublicData}> {
+  async getById(@Param("id") id: ID): Promise<{user: UserPublicData}> {
     const user = await this.userService.findById(id);
 
     if (!user) throw new NotFoundException("User is not found");
