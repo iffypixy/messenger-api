@@ -395,7 +395,7 @@ export class GroupChatGateway {
       text: `${member.user.username} has created the chat!`
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:CHAT_CREATED", {
+    this.wss.to(chat.id).emit("GROUP_CHAT:CREATED", {
       chat: chat.public,
       member: member.public
     });
@@ -448,7 +448,8 @@ export class GroupChatGateway {
       }
     });
 
-    if (existed) throw new WsException("User has already been a member of this chat.");
+    if (existed)
+      throw new WsException("User has already been a member of this chat.");
 
     const added = await this.memberService.create({
       role: "member", chat, user
@@ -465,7 +466,8 @@ export class GroupChatGateway {
 
     this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_ADDED", {
       chat: chat.public,
-      member: member.public
+      member: member.public,
+      numberOfMembers
     });
 
     this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
@@ -491,7 +493,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:REMOVE_MEMBER")
+  @SubscribeMessage("GROUP_CHAT:KICK_MEMBER")
   async handleRemovingMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: RemoveGroupChatMemberDto
@@ -547,14 +549,15 @@ export class GroupChatGateway {
     sockets.forEach((socket) => {
       socket.leave(chat.id);
 
-      socket.emit("GROUP_CHAT:REMOVED", {
+      socket.emit("GROUP_CHAT:KICKED", {
         chat: chat.public
       });
     });
 
     this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_KICKED", {
       member: member.public,
-      chat: chat.public
+      chat: chat.public,
+      numberOfMembers
     });
 
     this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
@@ -599,7 +602,6 @@ export class GroupChatGateway {
     sockets.forEach((socket) => socket.leave(chat.id));
 
     let replacement: GroupChatMember | null = null;
-    let replacementMessage: GroupChatMessage | null = null;
 
     if (member.isOwner) {
       const candidate = await this.memberService.findOne({
@@ -617,11 +619,6 @@ export class GroupChatGateway {
         replacement = await this.memberService.save({
           ...candidate,
           role: "owner"
-        });
-
-        replacementMessage = await this.messageService.create({
-          chat, isSystem: true,
-          text: `${replacement.user.username} is chat owner now!`
         });
       }
     }
@@ -647,9 +644,14 @@ export class GroupChatGateway {
     });
 
     if (replacement) {
+      const message = await this.messageService.create({
+        chat, isSystem: true,
+        text: `${replacement.user.username} is chat owner now!`
+      });
+
       this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
         chat: chat.public,
-        message: replacementMessage!.public
+        message: message.public
       });
 
       const sockets = this.websocketService.getSocketsByUserId(this.wss, replacement.user.id);
