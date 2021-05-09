@@ -86,8 +86,8 @@ export class GroupChatMessage {
 
     const sender = !isSystem ? this.sender.public : null;
     const audio = this.audio && this.audio.url;
-    const images = !!this.images.length ? this.images.map(({url}) => url) : null;
-    const files = !!this.files.length ? this.files.map((file) => file.public) : null;
+    const images = (this.images && !!this.images.length) ? this.images.map(({url}) => url) : null;
+    const files = (this.files && !!this.files.length) ? this.files.map((file) => file.public) : null;
 
     return {
       id,

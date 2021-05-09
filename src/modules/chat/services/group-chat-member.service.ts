@@ -1,5 +1,13 @@
 import {Injectable} from "@nestjs/common";
-import {DeepPartial, DeleteResult, FindConditions, FindManyOptions, FindOneOptions, Repository} from "typeorm";
+import {
+  DeepPartial,
+  DeleteResult,
+  FindConditions,
+  FindManyOptions,
+  FindOneOptions,
+  Repository, SaveOptions,
+  UpdateResult
+} from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
 
 import {GroupChatMember} from "../entities";
@@ -31,5 +39,13 @@ export class GroupChatMemberService {
 
   delete(criteria: FindConditions<GroupChatMember>): Promise<DeleteResult> {
     return this.repository.delete(criteria);
+  }
+
+  update(criteria: FindConditions<GroupChatMember>, partial: DeepPartial<GroupChatMember>): Promise<UpdateResult> {
+    return this.repository.update(criteria, partial);
+  }
+
+  save(partial: DeepPartial<GroupChatMember>, options?: SaveOptions): Promise<GroupChatMember> {
+    return this.repository.save(partial, options);
   }
 }

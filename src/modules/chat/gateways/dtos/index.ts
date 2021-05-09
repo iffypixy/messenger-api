@@ -11,3 +11,4 @@ export {UnbanDirectChatPartnerDto} from "./unban-direct-chat-partner.dto";
 export {CreateGroupChatDto} from "./create-group-chat.dto";
 export {AddGroupChatMemberDto} from "./add-group-chat-member.dto";
 export {RemoveGroupChatMemberDto} from "./remove-group-chat-member.dto";
+export {LeaveGroupChatDto} from "./leave-group-chat.dto";

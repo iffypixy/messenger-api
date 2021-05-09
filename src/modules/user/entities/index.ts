@@ -1,1 +1,1 @@
-export {User} from "./user.entity";
+export {User, publicise as publiciseUser} from "./user.entity";

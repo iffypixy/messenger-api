@@ -3,7 +3,7 @@ import {FileInterceptor} from "@nestjs/platform-express";
 import * as FileType from "file-type";
 
 import {GetUser, IsAuthorizedGuard} from "@modules/auth";
-import {User, UserService, UserPublicData} from "@modules/user";
+import {User, UserService, UserPublicData, publiciseUser} from "@modules/user";
 import {UploadService} from "@modules/upload";
 import {BufferedFile} from "@lib/typings";
 import {isExtensionValid, maxFileSize} from "@lib/files";
@@ -48,12 +48,11 @@ export class ProfileController {
     cleanObject(partial);
 
     const updated = await this.userService.save({
-      ...user, ...partial,
-      public: user.public
+      ...user, ...partial
     });
 
     return {
-      credentials: updated.public
+      credentials: publiciseUser(updated)
     };
   }
 }

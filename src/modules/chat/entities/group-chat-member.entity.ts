@@ -1,9 +1,9 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
 import {User} from "@modules/user";
 import {ID} from "@lib/typings";
 import {GroupChat} from "./group-chat.entity";
-import {GroupChatMemberRole} from "../lib/typings";
+import {GroupChatMemberPublicData, GroupChatMemberRole} from "../lib/typings";
 import {groupChatMemberRoles} from "../lib/group-chat-member-roles";
 
 @Entity()
@@ -33,6 +33,9 @@ export class GroupChatMember {
   })
   role: GroupChatMemberRole;
 
+  @CreateDateColumn()
+  createdAt: Date;
+
   get isOwner(): boolean {
     return this.role === "owner";
   }
@@ -41,13 +44,13 @@ export class GroupChatMember {
     return this.role === "member";
   }
 
-  get public() {
-    const {user, isOwner, isMember} = this;
-
-    return {
-      ...user.public,
-      isOwner,
-      isMember
-    };
+  get public(): GroupChatMemberPublicData {
+    return publicise(this);
   }
 }
+
+export const publicise = (member: GroupChatMember): GroupChatMemberPublicData => ({
+  ...member.user.public,
+  isOwner: member.isOwner,
+  isMember: member.isMember
+});

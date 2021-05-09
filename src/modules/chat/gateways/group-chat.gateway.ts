@@ -8,7 +8,7 @@ import {
 } from "@nestjs/websockets";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {Server} from "socket.io";
-import {In} from "typeorm";
+import {In, Not} from "typeorm";
 
 import {queryLimit} from "@lib/requests";
 import {ExtendedSocket, ID} from "@lib/typings";
@@ -30,9 +30,9 @@ import {
   GetGroupChatAttachmentsDto,
   CreateGroupChatDto,
   AddGroupChatMemberDto,
-  RemoveGroupChatMemberDto
+  RemoveGroupChatMemberDto, LeaveGroupChatDto
 } from "./dtos";
-import {GroupChatMember} from "@modules/chat";
+import {GroupChatMember, GroupChatMessage} from "@modules/chat";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
@@ -117,11 +117,16 @@ export class GroupChatGateway {
         }
       },
       skip: +dto.skip,
-      take: queryLimit
+      take: queryLimit,
+      order: {
+        createdAt: "DESC"
+      }
     });
 
     return {
-      messages: messages.map((message) => message.public)
+      messages: messages
+        .sort((a, b) => +a.createdAt - +b.createdAt)
+        .map((message) => message.public)
     };
   }
 
@@ -364,6 +369,10 @@ export class GroupChatGateway {
 
     members.push(member);
 
+    const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
+
+    sockets.forEach((socket) => socket.join(chat.id));
+
     for (let i = 0; i < users.length; i++) {
       const user = users[0];
 
@@ -378,9 +387,19 @@ export class GroupChatGateway {
       sockets.forEach((socket) => socket.join(chat.id));
     }
 
+    const message = await this.messageService.create({
+      chat, isSystem: true,
+      text: `${member.user.username} has created the chat!`
+    });
+
     this.wss.to(chat.id).emit("GROUP_CHAT:CHAT_CREATED", {
       chat: chat.public,
       member: member.public
+    });
+
+    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+      chat: chat.public,
+      message: message.public
     });
 
     return {
@@ -394,7 +413,7 @@ export class GroupChatGateway {
   async handleAddingMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: AddGroupChatMemberDto
-  ): Promise<{member: GroupChatMemberPublicData}> {
+  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData}> {
     const chat = await this.chatService.findOne({
       where: {
         id: dto.chat
@@ -459,6 +478,7 @@ export class GroupChatGateway {
     });
 
     return {
+      chat: chat.public,
       member: added.public
     };
   }
@@ -467,7 +487,7 @@ export class GroupChatGateway {
   async handleRemovingMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: RemoveGroupChatMemberDto
-  ): Promise<{member: GroupChatMemberPublicData}> {
+  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData}> {
     const chat = await this.chatService.findOne({
       where: {
         id: dto.chat
@@ -505,7 +525,7 @@ export class GroupChatGateway {
 
     const message = await this.messageService.create({
       isSystem: true, chat,
-      text: `${member.user.username} has left!`
+      text: `${member.user.username} has been kicked!`
     });
 
     const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
@@ -518,7 +538,7 @@ export class GroupChatGateway {
       });
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_LEFT", {
+    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_KICKED", {
       member: member.public,
       chat: chat.public
     });
@@ -529,7 +549,97 @@ export class GroupChatGateway {
     });
 
     return {
+      chat: chat.public,
       member: member.public
+    };
+  }
+
+  @SubscribeMessage("GROUP_CHAT:LEAVE")
+  async handleLeavingChat(
+    @ConnectedSocket() socket: ExtendedSocket,
+    @MessageBody() dto: LeaveGroupChatDto
+  ): Promise<{chat: GroupChatPublicData}> {
+    const chat = await this.chatService.findOne({
+      where: {
+        id: dto.chat
+      }
+    });
+
+    if (!chat) throw new WsException("Chat is not found.");
+
+    const member = await this.memberService.findOne({
+      where: {
+        chat, user: socket.user
+      }
+    });
+
+    if (!member) throw new WsException("You are not a member of this chat.");
+
+    await this.memberService.delete(member);
+
+    const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
+
+    sockets.forEach((socket) => socket.leave(chat.id));
+
+    let replacement: GroupChatMember | null = null;
+    let replacementMessage: GroupChatMessage | null = null;
+
+    if (member.isOwner) {
+      const candidate = await this.memberService.findOne({
+        where: {
+          chat, user: {
+            id: Not(member.user.id)
+          }
+        },
+        order: {
+          createdAt: "DESC"
+        }
+      });
+
+      if (candidate) {
+        replacement = await this.memberService.save({
+          ...candidate,
+          role: "owner"
+        });
+
+        replacementMessage = await this.messageService.create({
+          chat, isSystem: true,
+          text: `${replacement.user.username} is chat owner now!`
+        });
+      }
+    }
+
+    const message = await this.messageService.create({
+      chat, isSystem: true,
+      text: `${member.user.username} left the chat!`
+    });
+
+    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_LEFT", {
+      chat: chat.public,
+      member: member.public
+    });
+
+    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+      chat: chat.public,
+      message: message.public
+    });
+
+    if (replacement) {
+      this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+        chat: chat.public,
+        message: replacementMessage!.public
+      });
+
+      const sockets = this.websocketService.getSocketsByUserId(this.wss, replacement.user.id);
+
+      sockets.forEach((socket) => socket.emit("GROUP_CHAT:OWNER_REPLACEMENT", {
+        chat: chat.public,
+        member: replacement.public
+      }));
+    }
+
+    return {
+      chat: chat.public
     };
   }
 }

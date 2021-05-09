@@ -48,8 +48,13 @@ export class User {
   createdAt: Date;
 
   get public(): UserPublicData {
-    const {id, username, lastSeen, avatar} = this;
-
-    return {id, username, lastSeen, avatar};
+    return publicise(this);
   }
 }
+
+export const publicise = (user: User): UserPublicData => ({
+  id: user.id,
+  username: user.username,
+  lastSeen: user.lastSeen,
+  avatar: user.avatar
+});

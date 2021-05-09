@@ -1,4 +1,4 @@
-export {User} from "./entities";
+export {User, publiciseUser} from "./entities";
 export {UserModule} from "./user.module";
 export {UserPublicData} from "./lib/typings";
 export {isReserved} from "./lib/reserved-logins";

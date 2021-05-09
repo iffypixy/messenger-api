@@ -13,11 +13,12 @@ import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {queryLimit} from "@lib/requests";
 import {extensions} from "@lib/files";
-import {BadRequestTransformationFilter} from "@lib/websockets";
+import {BadRequestTransformationFilter, WebsocketsService} from "@lib/websockets";
 import {FilePublicData, FileService} from "@modules/upload";
 import {UserService} from "@modules/user";
 import {DirectChatMemberPublicData, DirectChatMessagePublicData, DirectChatPublicData} from "../lib/typings";
 import {DirectChatMemberService, DirectChatMessageService, DirectChatService} from "../services";
+import {publiciseDirectChatMember} from "../entities";
 import {
   GetDirectChatMessagesDto,
   CreateDirectChatMessageDto,
@@ -36,7 +37,8 @@ export class DirectChatGateway {
     private readonly messageService: DirectChatMessageService,
     private readonly chatService: DirectChatService,
     private readonly fileService: FileService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly websocketsService: WebsocketsService
   ) {
   }
 
@@ -46,7 +48,7 @@ export class DirectChatGateway {
   @SubscribeMessage("DIRECT_CHAT:GET_CHATS")
   async handleGettingChats(
     @ConnectedSocket() socket: ExtendedSocket
-  ): Promise<{chats: {partner: DirectChatMemberPublicData; chat: DirectChatPublicData; lastMessage: DirectChatMessagePublicData}[]}> {
+  ): Promise<{chats: {partner: DirectChatMemberPublicData; chat: DirectChatPublicData; lastMessage: DirectChatMessagePublicData; isBanned: boolean}[]}> {
     const members = await this.memberService.find({
       where: {
         user: socket.user
@@ -87,7 +89,8 @@ export class DirectChatGateway {
         return {
           partner: partner.public,
           chat: member.chat.public,
-          lastMessage: lastMessage && lastMessage.public
+          lastMessage: lastMessage && lastMessage.public,
+          isBanned: member.isBanned
         };
       }).filter(Boolean)
     };
@@ -105,11 +108,16 @@ export class DirectChatGateway {
     const messages = await this.messageService.find({
       where: {chat},
       skip: +dto.skip,
-      take: queryLimit
+      take: queryLimit,
+      order: {
+        createdAt: "DESC"
+      }
     });
 
     return {
-      messages: messages.map((message) => message.public)
+      messages: messages
+        .sort((a, b) => +a.createdAt - +b.createdAt)
+        .map((message) => message.public)
     };
   }
 
@@ -119,6 +127,8 @@ export class DirectChatGateway {
     @MessageBody() dto: CreateDirectChatMessageDto
   ): Promise<{message: DirectChatPublicData}> {
     const error = new WsException("Invalid credentials.");
+
+    if (dto.partner === socket.user.id) throw error;
 
     const partner = await this.userService.findOne({
       where: {
@@ -130,7 +140,8 @@ export class DirectChatGateway {
 
     let {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
-    if (chat && first.isBanned) throw new WsException("No permission to send message to this partner");
+    if (chat && (first.isBanned || second.isBanned))
+      throw new WsException("No permission to send message to this partner.");
 
     if (!chat) {
       chat = await this.chatService.create({});
@@ -139,7 +150,7 @@ export class DirectChatGateway {
         user: socket.user, chat
       });
 
-      await this.memberService.create({
+      second = await this.memberService.create({
         user: partner, chat
       });
     }
@@ -180,10 +191,14 @@ export class DirectChatGateway {
       text: dto.text
     });
 
-    socket.to(second.user.id).emit("DIRECT_CHAT:MESSAGE", {
-      message: message.public,
-      chat: chat.public,
-      partner: first.public
+    const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
+
+    sockets.forEach((client) => {
+      socket.to(client.id).emit("DIRECT_CHAT:MESSAGE", {
+        message: message.public,
+        chat: chat.public,
+        partner: first.public
+      });
     });
 
     return {
@@ -195,14 +210,15 @@ export class DirectChatGateway {
   async handleGettingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetDirectChatDto
-  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData}> {
-    const {chat, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
+  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData; isBanned: boolean}> {
+    const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
 
     return {
       chat: chat.public,
-      partner: second.public
+      partner: second.public,
+      isBanned: first.isBanned
     };
   }
 
@@ -289,25 +305,31 @@ export class DirectChatGateway {
   async handleBanningPartner(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: BanDirectChatPartnerDto
-  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData}> {
+  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData; isBanned: boolean}> {
     const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
 
+    if (second.isBanned) throw new WsException("Partner has been already banned.");
+
     const member = await this.memberService.save({
       ...second,
-      isBanned: true,
-      public: second.public
+      isBanned: true
     });
 
-    socket.to(second.user.id).emit("DIRECT_CHAT:BAN", {
-      chat: chat.public,
-      partner: first.public
+    const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
+
+    sockets.forEach((client) => {
+      socket.to(client.id).emit("DIRECT_CHAT:BAN", {
+        chat: chat.public,
+        partner: first.public
+      });
     });
 
     return {
       chat: chat.public,
-      partner: member.public
+      partner: publiciseDirectChatMember(member),
+      isBanned: first.isBanned
     };
   }
 
@@ -315,25 +337,31 @@ export class DirectChatGateway {
   async handleUnbanningPartner(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: UnbanDirectChatPartnerDto
-  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData}> {
+  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData; isBanned: boolean}> {
     const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
 
+    if (!second.isBanned) throw new WsException("Partner has been already unbanned.");
+
     const member = await this.memberService.save({
       ...second,
-      isBanned: false,
-      public: second.public
+      isBanned: false
     });
 
-    socket.to(second.user.id).emit("DIRECT_CHAT:UNBAN", {
-      chat: chat.public,
-      partner: first.public
+    const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
+
+    sockets.forEach((client) => {
+      socket.to(client.id).emit("DIRECT_CHAT:UNBAN", {
+        chat: chat.public,
+        partner: first.public
+      });
     });
 
     return {
       chat: chat.public,
-      partner: member.public
+      partner: publiciseDirectChatMember(member),
+      isBanned: first.isBanned
     };
   }
 }

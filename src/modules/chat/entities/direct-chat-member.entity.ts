@@ -32,11 +32,11 @@ export class DirectChatMember {
   isBanned: boolean;
 
   get public(): DirectChatMemberPublicData {
-    const {user, isBanned} = this;
-
-    return {
-      ...user.public,
-      isBanned
-    };
+    return publicise(this);
   }
 }
+
+export const publicise = (member: DirectChatMember): DirectChatMemberPublicData => ({
+  ...member.user.public,
+  isBanned: member.isBanned
+});
