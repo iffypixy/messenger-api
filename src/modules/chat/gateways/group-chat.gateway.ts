@@ -248,9 +248,10 @@ export class GroupChatGateway {
 
     if (!member) throw new WsException("You are not a member of this chat.");
 
-    const messages = await this.messageService.findWithAttachments("images", {
-      where: {chat}
-    });
+    const messages = await this.messageService
+      .findWithAttachments("images", {
+        where: {chat}
+      });
 
     return {
       images: messages.reduce((prev, current) => {
@@ -282,9 +283,10 @@ export class GroupChatGateway {
 
     if (!member) throw new WsException("You are not a member of this chat.");
 
-    const messages = await this.messageService.findWithAttachments("audio", {
-      where: {chat}
-    });
+    const messages = await this.messageService
+      .findWithAttachments("audio", {
+        where: {chat}
+      });
 
     return {
       audios: messages.map((message) => {
@@ -320,9 +322,10 @@ export class GroupChatGateway {
 
     if (!member) throw new WsException("You are not a member of this chat.");
 
-    const messages = await this.messageService.findWithAttachments("files", {
-      where: {chat}
-    });
+    const messages = await this.messageService
+      .findWithAttachments("files", {
+        where: {chat}
+      });
 
     return {
       files: messages.reduce((prev, current) => {
@@ -413,7 +416,7 @@ export class GroupChatGateway {
   async handleAddingMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: AddGroupChatMemberDto
-  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData}> {
+  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData; numberOfMembers: number}> {
     const chat = await this.chatService.findOne({
       where: {
         id: dto.chat
@@ -451,6 +454,10 @@ export class GroupChatGateway {
       role: "member", chat, user
     });
 
+    const numberOfMembers = await this.memberService.count({
+      where: {chat}
+    });
+
     const message = await this.messageService.create({
       isSystem: true, chat,
       text: `${added.user.username} has joined!`
@@ -479,7 +486,8 @@ export class GroupChatGateway {
 
     return {
       chat: chat.public,
-      member: added.public
+      member: added.public,
+      numberOfMembers
     };
   }
 
@@ -487,7 +495,7 @@ export class GroupChatGateway {
   async handleRemovingMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: RemoveGroupChatMemberDto
-  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData}> {
+  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData; numberOfMembers: number}> {
     const chat = await this.chatService.findOne({
       where: {
         id: dto.chat
@@ -521,7 +529,13 @@ export class GroupChatGateway {
 
     if (!member) throw new WsException("User is not a member of this chat.");
 
-    await this.memberService.delete(member);
+    await this.memberService.delete({
+      id: member.id
+    });
+
+    const numberOfMembers = await this.memberService.count({
+      where: {chat}
+    });
 
     const message = await this.messageService.create({
       isSystem: true, chat,
@@ -550,7 +564,8 @@ export class GroupChatGateway {
 
     return {
       chat: chat.public,
-      member: member.public
+      member: member.public,
+      numberOfMembers
     };
   }
 
@@ -575,7 +590,9 @@ export class GroupChatGateway {
 
     if (!member) throw new WsException("You are not a member of this chat.");
 
-    await this.memberService.delete(member);
+    await this.memberService.delete({
+      id: member.id
+    });
 
     const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
 
@@ -609,6 +626,10 @@ export class GroupChatGateway {
       }
     }
 
+    const numberOfMembers = await this.memberService.count({
+      where: {chat}
+    });
+
     const message = await this.messageService.create({
       chat, isSystem: true,
       text: `${member.user.username} left the chat!`
@@ -616,7 +637,8 @@ export class GroupChatGateway {
 
     this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_LEFT", {
       chat: chat.public,
-      member: member.public
+      member: member.public,
+      numberOfMembers
     });
 
     this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {

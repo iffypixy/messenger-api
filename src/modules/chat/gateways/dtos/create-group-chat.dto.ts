@@ -1,4 +1,4 @@
-import {IsNumberString, IsOptional, IsUUID} from "class-validator";
+import {IsOptional, IsString, IsUUID} from "class-validator";
 import {ID} from "@lib/typings";
 
 export class CreateGroupChatDto {
@@ -8,7 +8,7 @@ export class CreateGroupChatDto {
   members: ID[];
 
   @IsOptional()
-  @IsNumberString({}, {
+  @IsString({
     message: "Title must be type of string"
   })
   title?: string;
