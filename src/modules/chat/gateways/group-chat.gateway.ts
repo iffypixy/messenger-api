@@ -6,13 +6,14 @@ import {
   WebSocketServer,
   WsException
 } from "@nestjs/websockets";
+import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {Server} from "socket.io";
 import {In} from "typeorm";
 
 import {queryLimit} from "@lib/requests";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {extensions} from "@lib/files";
-import {WebsocketsService} from "@lib/websockets";
+import {BadRequestTransformationFilter, WebsocketsService} from "@lib/websockets";
 import {FilePublicData, FileService} from "@modules/upload";
 import {UserService} from "@modules/user";
 import {
@@ -32,6 +33,8 @@ import {
   RemoveGroupChatMemberDto
 } from "./dtos";
 
+@UsePipes(ValidationPipe)
+@UseFilters(BadRequestTransformationFilter)
 @WebSocketGateway()
 export class GroupChatGateway {
   constructor(
@@ -464,11 +467,6 @@ export class GroupChatGateway {
       text: `${member.user.username} has left!`
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_LEFT",  {
-      member: member.public,
-      chat: chat.public
-    });
-
     const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
 
     sockets.forEach((socket) => {
@@ -479,7 +477,12 @@ export class GroupChatGateway {
       });
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE",  {
+    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_LEFT", {
+      member: member.public,
+      chat: chat.public
+    });
+
+    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
       message: message.public,
       chat: chat.public
     });

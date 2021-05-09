@@ -1,12 +1,15 @@
 import {OnGatewayInit, WebSocketGateway, WebSocketServer, WsException} from "@nestjs/websockets";
 import {Server} from "socket.io";
-import {BadRequestException, UnauthorizedException} from "@nestjs/common";
+import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {NextFunction} from "express";
 import * as bcrypt from "bcryptjs";
 
+import {BadRequestTransformationFilter} from "@lib/websockets";
 import {ExtendedSocket, SocketHandshakeAuth} from "@lib/typings";
 import {UserService} from "@modules/user";
 
+@UsePipes(ValidationPipe)
+@UseFilters(BadRequestTransformationFilter)
 @WebSocketGateway()
 export class AuthGateway implements OnGatewayInit {
   constructor(
@@ -23,15 +26,15 @@ export class AuthGateway implements OnGatewayInit {
 
       const payload: SocketHandshakeAuth = socket.handshake.auth as SocketHandshakeAuth;
 
-      if (!payload) return next(new UnauthorizedException("Invalid credentials."));
+      const error = new WsException("Invalid credentials.");
+
+      if (!payload) return next(error);
 
       const user = await this.userService.findOne({
         where: {
           username: payload.username
         }
       });
-
-      const error = new WsException("Invalid credentials.");
 
       if (!user) throw error;
 

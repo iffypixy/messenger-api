@@ -8,10 +8,12 @@ import {
 } from "@nestjs/websockets";
 import {Server} from "socket.io";
 import {In, Not} from "typeorm";
+import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 
 import {ExtendedSocket, ID} from "@lib/typings";
 import {queryLimit} from "@lib/requests";
 import {extensions} from "@lib/files";
+import {BadRequestTransformationFilter} from "@lib/websockets";
 import {FilePublicData, FileService} from "@modules/upload";
 import {UserService} from "@modules/user";
 import {DirectChatMemberPublicData, DirectChatMessagePublicData, DirectChatPublicData} from "../lib/typings";
@@ -25,6 +27,8 @@ import {
   UnbanDirectChatPartnerDto
 } from "./dtos";
 
+@UsePipes(ValidationPipe)
+@UseFilters(BadRequestTransformationFilter)
 @WebSocketGateway()
 export class DirectChatGateway {
   constructor(
@@ -124,7 +128,7 @@ export class DirectChatGateway {
 
     if (!partner) throw error;
 
-    let {chat, first} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
+    let {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (chat && first.isBanned) throw new WsException("No permission to send message to this partner");
 
@@ -176,7 +180,7 @@ export class DirectChatGateway {
       text: dto.text
     });
 
-    this.wss.to(dto.partner).emit("DIRECT_CHAT:MESSAGE", {
+    socket.to(second.user.id).emit("DIRECT_CHAT:MESSAGE", {
       message: message.public,
       chat: chat.public,
       partner: first.public
@@ -286,13 +290,18 @@ export class DirectChatGateway {
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: BanDirectChatPartnerDto
   ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData}> {
-    const {chat, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
+    const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
 
     const member = await this.memberService.save({
       ...second,
       isBanned: true
+    });
+
+    socket.to(second.user.id).emit("DIRECT_CHAT:BAN", {
+      chat: chat.public,
+      partner: first.public
     });
 
     return {
@@ -305,14 +314,19 @@ export class DirectChatGateway {
   async handleUnbanningPartner(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: UnbanDirectChatPartnerDto
-  ) {
-    const {chat, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
+  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData}> {
+    const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
 
     const member = await this.memberService.save({
       ...second,
       isBanned: false
+    });
+
+    socket.to(second.user.id).emit("DIRECT_CHAT:UNBAN", {
+      chat: chat.public,
+      partner: first.public
     });
 
     return {
