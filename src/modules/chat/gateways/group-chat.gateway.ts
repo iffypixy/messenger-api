@@ -33,6 +33,7 @@ import {
   RemoveGroupChatMemberDto, LeaveGroupChatDto
 } from "./dtos";
 import {GroupChatMember} from "../entities";
+import {groupChatServerEvents as serverEvents, groupChatClientEvents as clientEvents} from "./events";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
@@ -51,7 +52,7 @@ export class GroupChatGateway {
   @WebSocketServer()
   wss: Server;
 
-  @SubscribeMessage("GROUP_CHAT:GET_CHATS")
+  @SubscribeMessage(serverEvents.GET_CHATS)
   async handleGettingChats(
     @ConnectedSocket() socket: ExtendedSocket
   ): Promise<{chats: {chat: GroupChatPublicData; lastMessage: GroupChatMessagePublicData; numberOfMembers: number}[]}> {
@@ -105,7 +106,7 @@ export class GroupChatGateway {
   }
 
 
-  @SubscribeMessage("GROUP_CHAT:GET_MESSAGES")
+  @SubscribeMessage(serverEvents.GET_MESSAGES)
   async handleGettingMessages(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetGroupChatMessagesDto
@@ -130,7 +131,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:CREATE_MESSAGE")
+  @SubscribeMessage(serverEvents.CREATE_MESSAGE)
   async handleCreatingMessage(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: CreateGroupChatMessageDto
@@ -187,7 +188,7 @@ export class GroupChatGateway {
       text: dto.text
     });
 
-    socket.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+    socket.to(chat.id).emit(clientEvents.MESSAGE, {
       message: message.public,
       chat: chat.public
     });
@@ -197,7 +198,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:GET_CHAT")
+  @SubscribeMessage(serverEvents.GET_CHAT)
   async handleGettingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetGroupChatDto
@@ -227,7 +228,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:GET_IMAGES")
+  @SubscribeMessage(serverEvents.GET_IMAGES)
   async handleGettingImages(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetGroupChatAttachmentsDto
@@ -262,7 +263,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:GET_AUDIOS")
+  @SubscribeMessage(serverEvents.GET_AUDIOS)
   async handleGettingAudios(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetGroupChatAttachmentsDto
@@ -301,7 +302,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:GET_FILES")
+  @SubscribeMessage(serverEvents.GET_FILES)
   async handleGettingFiles(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetGroupChatAttachmentsDto
@@ -336,7 +337,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:CREATE_CHAT")
+  @SubscribeMessage(serverEvents.CREATE_CHAT)
   async handleCreatingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: CreateGroupChatDto
@@ -395,12 +396,12 @@ export class GroupChatGateway {
       text: `${member.user.username} has created the chat!`
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:CREATED", {
+    this.wss.to(chat.id).emit(clientEvents.CHAT_CREATED, {
       chat: chat.public,
       member: member.public
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
       chat: chat.public,
       message: message.public
     });
@@ -412,7 +413,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:ADD_MEMBER")
+  @SubscribeMessage(serverEvents.ADD_MEMBER)
   async handleAddingMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: AddGroupChatMemberDto
@@ -464,13 +465,13 @@ export class GroupChatGateway {
       text: `${added.user.username} has joined!`
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_ADDED", {
+    this.wss.to(chat.id).emit(clientEvents.MEMBER_ADDED, {
       chat: chat.public,
       member: member.public,
       numberOfMembers
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
       chat: chat.public,
       message: message.public
     });
@@ -480,7 +481,7 @@ export class GroupChatGateway {
     sockets.forEach((socket) => {
       socket.join(chat.id);
 
-      socket.emit("GROUP_CHAT:ADDED", {
+      socket.emit(clientEvents.ADDED, {
         chat: chat.public,
         member: added.public
       });
@@ -493,7 +494,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:KICK_MEMBER")
+  @SubscribeMessage(serverEvents.KICK_MEMBER)
   async handleRemovingMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: RemoveGroupChatMemberDto
@@ -549,18 +550,18 @@ export class GroupChatGateway {
     sockets.forEach((socket) => {
       socket.leave(chat.id);
 
-      socket.emit("GROUP_CHAT:KICKED", {
+      socket.emit(clientEvents.KICKED, {
         chat: chat.public
       });
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_KICKED", {
+    this.wss.to(chat.id).emit(clientEvents.MEMBER_KICKED, {
       member: member.public,
       chat: chat.public,
       numberOfMembers
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
       message: message.public,
       chat: chat.public
     });
@@ -572,7 +573,7 @@ export class GroupChatGateway {
     };
   }
 
-  @SubscribeMessage("GROUP_CHAT:LEAVE")
+  @SubscribeMessage(serverEvents.LEAVE)
   async handleLeavingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: LeaveGroupChatDto
@@ -632,13 +633,13 @@ export class GroupChatGateway {
       text: `${member.user.username} left the chat!`
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MEMBER_LEFT", {
+    this.wss.to(chat.id).emit(clientEvents.MEMBER_LEFT, {
       chat: chat.public,
       member: member.public,
       numberOfMembers
     });
 
-    this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
       chat: chat.public,
       message: message.public
     });
@@ -649,14 +650,14 @@ export class GroupChatGateway {
         text: `${replacement.user.username} is chat owner now!`
       });
 
-      this.wss.to(chat.id).emit("GROUP_CHAT:MESSAGE", {
+      this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
         chat: chat.public,
         message: message.public
       });
 
       const sockets = this.websocketService.getSocketsByUserId(this.wss, replacement.user.id);
 
-      sockets.forEach((socket) => socket.emit("GROUP_CHAT:OWNER_REPLACEMENT", {
+      sockets.forEach((socket) => socket.emit(clientEvents.OWNER_REPLACEMENT, {
         chat: chat.public,
         member: replacement.public
       }));

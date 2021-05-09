@@ -27,6 +27,7 @@ import {
   BanDirectChatPartnerDto,
   UnbanDirectChatPartnerDto
 } from "./dtos";
+import {directChatServerEvents as serverEvents, directChatClientEvents as clientEvents} from "./events";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
@@ -45,7 +46,7 @@ export class DirectChatGateway {
   @WebSocketServer()
   wss: Server;
 
-  @SubscribeMessage("DIRECT_CHAT:GET_CHATS")
+  @SubscribeMessage(serverEvents.GET_CHATS)
   async handleGettingChats(
     @ConnectedSocket() socket: ExtendedSocket
   ): Promise<{chats: {partner: DirectChatMemberPublicData; chat: DirectChatPublicData; lastMessage: DirectChatMessagePublicData; isBanned: boolean}[]}> {
@@ -96,7 +97,7 @@ export class DirectChatGateway {
     };
   }
 
-  @SubscribeMessage("DIRECT_CHAT:GET_MESSAGES")
+  @SubscribeMessage(serverEvents.GET_MESSAGES)
   async handleGettingMessages(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetDirectChatMessagesDto
@@ -121,7 +122,7 @@ export class DirectChatGateway {
     };
   }
 
-  @SubscribeMessage("DIRECT_CHAT:CREATE_MESSAGE")
+  @SubscribeMessage(serverEvents.CREATE_MESSAGE)
   async handleCreatingMessage(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: CreateDirectChatMessageDto
@@ -194,7 +195,7 @@ export class DirectChatGateway {
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
 
     sockets.forEach((client) => {
-      socket.to(client.id).emit("DIRECT_CHAT:MESSAGE", {
+      socket.to(client.id).emit(clientEvents.MESSAGE, {
         message: message.public,
         chat: chat.public,
         partner: first.public
@@ -206,7 +207,7 @@ export class DirectChatGateway {
     };
   }
 
-  @SubscribeMessage("DIRECT_CHAT:GET_CHAT")
+  @SubscribeMessage(serverEvents.GET_CHAT)
   async handleGettingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetDirectChatDto
@@ -222,7 +223,7 @@ export class DirectChatGateway {
     };
   }
 
-  @SubscribeMessage("DIRECT_CHAT:GET_IMAGES")
+  @SubscribeMessage(serverEvents.GET_IMAGES)
   async handleGettingImages(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetDirectChatAttachmentsDto
@@ -247,7 +248,7 @@ export class DirectChatGateway {
     };
   }
 
-  @SubscribeMessage("DIRECT_CHAT:GET_AUDIOS")
+  @SubscribeMessage(serverEvents.GET_AUDIOS)
   async handleGettingAudios(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetDirectChatAttachmentsDto
@@ -276,7 +277,7 @@ export class DirectChatGateway {
     };
   }
 
-  @SubscribeMessage("DIRECT_CHAT:GET_FILES")
+  @SubscribeMessage(serverEvents.GET_FILES)
   async handleGettingFiles(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetDirectChatAttachmentsDto
@@ -301,7 +302,7 @@ export class DirectChatGateway {
     };
   }
 
-  @SubscribeMessage("DIRECT_CHAT:BAN_PARTNER")
+  @SubscribeMessage(serverEvents.BAN_PARTNER)
   async handleBanningPartner(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: BanDirectChatPartnerDto
@@ -320,7 +321,7 @@ export class DirectChatGateway {
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
 
     sockets.forEach((client) => {
-      socket.to(client.id).emit("DIRECT_CHAT:BAN", {
+      socket.to(client.id).emit(clientEvents.BANNED, {
         chat: chat.public,
         partner: first.public
       });
@@ -333,7 +334,7 @@ export class DirectChatGateway {
     };
   }
 
-  @SubscribeMessage("DIRECT_CHAT:UNBAN_PARTNER")
+  @SubscribeMessage(serverEvents.UNBAN_PARTNER)
   async handleUnbanningPartner(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: UnbanDirectChatPartnerDto
@@ -352,7 +353,7 @@ export class DirectChatGateway {
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
 
     sockets.forEach((client) => {
-      socket.to(client.id).emit("DIRECT_CHAT:UNBAN", {
+      socket.to(client.id).emit(clientEvents.UNBANNED, {
         chat: chat.public,
         partner: first.public
       });
