@@ -296,7 +296,8 @@ export class DirectChatGateway {
 
     const member = await this.memberService.save({
       ...second,
-      isBanned: true
+      isBanned: true,
+      public: second.public
     });
 
     socket.to(second.user.id).emit("DIRECT_CHAT:BAN", {
@@ -321,7 +322,8 @@ export class DirectChatGateway {
 
     const member = await this.memberService.save({
       ...second,
-      isBanned: false
+      isBanned: false,
+      public: second.public
     });
 
     socket.to(second.user.id).emit("DIRECT_CHAT:UNBAN", {

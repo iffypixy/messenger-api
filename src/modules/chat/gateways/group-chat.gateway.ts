@@ -32,6 +32,7 @@ import {
   AddGroupChatMemberDto,
   RemoveGroupChatMemberDto
 } from "./dtos";
+import {GroupChatMember} from "@modules/chat";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
@@ -53,7 +54,7 @@ export class GroupChatGateway {
   @SubscribeMessage("GROUP_CHAT:GET_CHATS")
   async handleGettingChats(
     @ConnectedSocket() socket: ExtendedSocket
-  ): Promise<{chats: {chat: GroupChatPublicData; lastMessage: GroupChatMessagePublicData}[]}> {
+  ): Promise<{chats: {chat: GroupChatPublicData; lastMessage: GroupChatMessagePublicData; numberOfMembers: number}[]}> {
     const members = await this.memberService.find({
       where: {
         user: socket.user
@@ -72,14 +73,32 @@ export class GroupChatGateway {
       }
     });
 
+    const numbersOfMembers: {chatId: ID; number: number}[] = [];
+
+    for (let i = 0; i < members.length; i++) {
+      const chatId = members[i].chat.id;
+
+      const number = await this.memberService.count({
+        where: {
+          chat: {
+            id: chatId
+          }
+        }
+      });
+
+      numbersOfMembers.push({chatId, number});
+    }
+
     return {
       chats: members.map((member) => {
         const lastMessage = messages.find((message) => message.chat.id === member.chat.id) || null;
+        const {number} = numbersOfMembers.find(({chatId}) => chatId === member.chat.id);
 
         return {
           chat: member.chat.public,
           lastMessage: lastMessage && lastMessage.public,
-          member: member.public
+          member: member.public,
+          numberOfMembers: number
         };
       })
     };
@@ -177,7 +196,7 @@ export class GroupChatGateway {
   async handleGettingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetGroupChatDto
-  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData}> {
+  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData; numberOfMembers: number}> {
     const chat = await this.chatService.findOne({
       where: {
         id: dto.chat
@@ -192,9 +211,14 @@ export class GroupChatGateway {
 
     if (!member) throw new WsException("You are not a member of this chat.");
 
+    const numberOfMembers = await this.memberService.count({
+      where: {chat}
+    });
+
     return {
       chat: chat.public,
-      member: member.public
+      member: member.public,
+      numberOfMembers
     };
   }
 
@@ -308,7 +332,7 @@ export class GroupChatGateway {
   async handleCreatingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: CreateGroupChatDto
-  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData}> {
+  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData; numberOfMembers: number}> {
     const users = (await this.userService.find({
       where: {
         id: In(dto.members)
@@ -331,17 +355,23 @@ export class GroupChatGateway {
       title, avatar: avatar && avatar.url
     });
 
+    const members: GroupChatMember[] = [];
+
     const member = await this.memberService.create({
       user: socket.user,
       chat, role: "owner"
     });
 
+    members.push(member);
+
     for (let i = 0; i < users.length; i++) {
       const user = users[0];
 
-      await this.memberService.create({
+      const member = await this.memberService.create({
         user, chat, role: "member"
       });
+
+      members.push(member);
 
       const sockets = await this.websocketService.getSocketsByUserId(this.wss, user.id);
 
@@ -355,7 +385,8 @@ export class GroupChatGateway {
 
     return {
       chat: chat.public,
-      member: member.public
+      member: member.public,
+      numberOfMembers: members.length
     };
   }
 
@@ -388,6 +419,14 @@ export class GroupChatGateway {
     });
 
     if (!user) throw new WsException("User not found.");
+
+    const existed = await this.memberService.findOne({
+      where: {
+        chat, user
+      }
+    });
+
+    if (existed) throw new WsException("User has already been a member of this chat.");
 
     const added = await this.memberService.create({
       role: "member", chat, user
@@ -459,6 +498,8 @@ export class GroupChatGateway {
         user, chat
       }
     });
+
+    if (!member) throw new WsException("User is not a member of this chat.");
 
     await this.memberService.delete(member);
 

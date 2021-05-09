@@ -27,8 +27,7 @@ export class AuthService {
       const lastSeen = new Date();
 
       return this.userService.save({
-        ...user,
-        lastSeen
+        ...user, lastSeen
       });
     } catch (error) {
       return null;

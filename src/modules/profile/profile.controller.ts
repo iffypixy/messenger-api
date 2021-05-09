@@ -48,8 +48,8 @@ export class ProfileController {
     cleanObject(partial);
 
     const updated = await this.userService.save({
-      ...user,
-      ...partial
+      ...user, ...partial,
+      public: user.public
     });
 
     return {
