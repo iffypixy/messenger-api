@@ -1,6 +1,14 @@
-import {BadRequestException, Controller, HttpCode, Post, UploadedFile, UseGuards, UseInterceptors} from "@nestjs/common";
+import {
+  BadRequestException,
+  Controller,
+  HttpCode,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors
+} from "@nestjs/common";
 import {FileInterceptor} from "@nestjs/platform-express";
-import * as FileType from "file-type";
+import * as mime from "mime";
 
 import {User} from "@modules/user";
 import {GetUser, IsAuthorizedGuard} from "modules/auth";
@@ -15,7 +23,8 @@ export class UploadController {
   constructor(
     private readonly uploadService: UploadService,
     private readonly fileService: FileService
-  ) {}
+  ) {
+  }
 
   @UseInterceptors(
     FileInterceptor("file", {
@@ -23,13 +32,11 @@ export class UploadController {
       fileFilter: (_, file: BufferedFile, callback) => {
         const error = new BadRequestException("Invalid file extension");
 
-        FileType.fromBuffer(file.buffer)
-          .then(({ext}) => {
-            if (!isExtensionValid(ext)) callback(error, false);
+        const ext = `.${mime.getExtension(file.mimetype)}`;
 
-            return callback(null, true);
-          })
-          .catch(() => callback(error, false));
+        if (!isExtensionValid(ext)) return callback(error, false);
+
+        callback(null, true);
       }
     })
   )
@@ -43,7 +50,9 @@ export class UploadController {
 
     const {mimetype, size, originalname, buffer} = bufferedFile;
 
-    const {ext} = await FileType.fromBuffer(bufferedFile.buffer);
+    const ext = `.${mime.getExtension(mimetype)}`;
+
+    if (!isExtensionValid(ext)) throw new BadRequestException("Invalid file extension");
 
     const {Location: url} = await this.uploadService.upload(buffer, mimetype);
 

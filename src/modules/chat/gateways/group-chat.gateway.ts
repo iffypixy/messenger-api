@@ -32,7 +32,7 @@ import {
   AddGroupChatMemberDto,
   RemoveGroupChatMemberDto, LeaveGroupChatDto
 } from "./dtos";
-import {GroupChatMember, GroupChatMessage} from "@modules/chat";
+import {GroupChatMember} from "../entities";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
