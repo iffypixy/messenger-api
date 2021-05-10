@@ -20,11 +20,6 @@ export interface BufferedFile {
   size: number;
 }
 
-export interface RequestOptions {
-  limit?: number;
-  offset?: number;
-}
-
 export type ID = string;
 
 export interface SocketHandshakeAuth {

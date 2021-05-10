@@ -11,7 +11,7 @@ import {In, Not} from "typeorm";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 
 import {ExtendedSocket, ID} from "@lib/typings";
-import {queryLimit} from "@lib/requests";
+import {queryLimit} from "@lib/queries";
 import {extensions} from "@lib/files";
 import {BadRequestTransformationFilter, WebsocketsService} from "@lib/websockets";
 import {FilePublicData, FileService} from "@modules/upload";

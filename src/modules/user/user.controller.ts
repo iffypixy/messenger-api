@@ -2,7 +2,7 @@ import {Controller, Get, NotFoundException, Param, Query} from "@nestjs/common";
 import {ILike} from "typeorm";
 
 import {ID} from "@lib/typings";
-import {queryLimit} from "@lib/requests";
+import {queryLimit} from "@lib/queries";
 import {UserService} from "./user.service";
 import {GetUsersByLoginQueryDto} from "./dtos";
 import {UserPublicData} from "./lib/typings";
