@@ -3,6 +3,7 @@ import {JwtModule} from "@nestjs/jwt";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
 
+import {UploadModule} from "@modules/upload";
 import {UserModule} from "@modules/user";
 import {AuthGateway} from "./gateways";
 import {IsAuthorizedGuard} from "./guards";
@@ -14,6 +15,7 @@ import {AuthController} from "./auth.controller";
 @Module({
   imports: [
     UserModule,
+    UploadModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

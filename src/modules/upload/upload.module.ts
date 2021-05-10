@@ -1,4 +1,4 @@
-import {MiddlewareConsumer, Module, NestModule} from "@nestjs/common";
+import {forwardRef, MiddlewareConsumer, Module, NestModule} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 
 import {AuthMiddleware, AuthModule} from "@modules/auth";
@@ -8,7 +8,7 @@ import {File} from "./entities";
 
 @Module({
   imports: [
-    AuthModule,
+    forwardRef(() => AuthModule),
     TypeOrmModule.forFeature(
       [File]
     )

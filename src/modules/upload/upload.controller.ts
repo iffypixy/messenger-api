@@ -11,7 +11,8 @@ import {FileInterceptor} from "@nestjs/platform-express";
 import * as mime from "mime";
 
 import {User} from "@modules/user";
-import {GetUser, IsAuthorizedGuard} from "modules/auth";
+import {GetUser} from "@modules/auth/decorators";
+import {IsAuthorizedGuard} from "@modules/auth/guards";
 import {FilePublicData} from "@modules/upload";
 import {isExtensionValid, maxFileSize} from "@lib/files";
 import {BufferedFile} from "@lib/typings";

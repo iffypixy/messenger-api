@@ -1,8 +1,11 @@
 import {BadRequestException, Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards} from "@nestjs/common";
 import {JwtService} from "@nestjs/jwt";
 import {Response, Request} from "express";
+import * as jdenticon from "jdenticon";
+import {v4} from "uuid";
 import * as bcrypt from "bcryptjs";
 
+import {UploadService} from "@modules/upload";
 import {User, UserService, UserPublicData} from "@modules/user";
 import {GetUser} from "./decorators";
 import {IsAuthorizedGuard} from "./guards";
@@ -15,7 +18,8 @@ export class AuthController {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly refreshSessionService: RefreshSessionService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly uploadService: UploadService
   ) {}
 
   @HttpCode(201)
@@ -34,12 +38,14 @@ export class AuthController {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    const png = jdenticon.toPng(v4(), 300);
+
+    const avatar = (await this.uploadService.upload(png, "image/png")).Location;
+
     const user = await this.userService.create({
-      username,
+      username, avatar,
       password: hashedPassword,
-      avatar: "sdfgsdgsfgdsfdsf",
-      role: "user",
-      lastSeen: new Date()
+      role: "user", lastSeen: new Date()
     });
 
     const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);

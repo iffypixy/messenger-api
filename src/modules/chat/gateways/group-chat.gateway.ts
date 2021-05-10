@@ -8,7 +8,7 @@ import {
 } from "@nestjs/websockets";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {Server} from "socket.io";
-import {In, Not} from "typeorm";
+import {ILike, In, Not} from "typeorm";
 
 import {queryLimit} from "@lib/queries";
 import {ExtendedSocket, ID} from "@lib/typings";
@@ -30,7 +30,7 @@ import {
   GetGroupChatAttachmentsDto,
   CreateGroupChatDto,
   AddGroupChatMemberDto,
-  RemoveGroupChatMemberDto, LeaveGroupChatDto
+  RemoveGroupChatMemberDto, LeaveGroupChatDto, GetGroupChatMessageByQueryDto
 } from "./dtos";
 import {GroupChatMember} from "../entities";
 import {groupChatServerEvents as serverEvents, groupChatClientEvents as clientEvents} from "./events";
