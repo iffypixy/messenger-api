@@ -30,7 +30,7 @@ import {
   GetGroupChatAttachmentsDto,
   CreateGroupChatDto,
   AddGroupChatMemberDto,
-  RemoveGroupChatMemberDto, LeaveGroupChatDto, GetGroupChatMessageByQueryDto
+  RemoveGroupChatMemberDto, LeaveGroupChatDto
 } from "./dtos";
 import {GroupChatMember} from "../entities";
 import {groupChatServerEvents as serverEvents, groupChatClientEvents as clientEvents} from "./events";
