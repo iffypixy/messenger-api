@@ -1,6 +1,7 @@
 import {ValidationPipe} from "@nestjs/common";
 import {NestFactory} from "@nestjs/core";
 import * as cookieParser from "cookie-parser";
+import {CorsOptions} from "@nestjs/common/interfaces/external/cors-options.interface";
 
 import {WebsocketsAdapter} from "@lib/websockets";
 import {AppModule} from "./app.module";
@@ -8,7 +9,9 @@ import {AppModule} from "./app.module";
 const origin = "http://localhost:3000";
 
 async function bootstrap() {
-  const cors = {origin};
+  const cors: CorsOptions = {
+    origin, credentials: true
+  };
 
   const app = await NestFactory.create(AppModule, {cors});
 

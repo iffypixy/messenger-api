@@ -2,18 +2,18 @@ import {OnGatewayInit, WebSocketGateway, WebSocketServer, WsException} from "@ne
 import {Server} from "socket.io";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {NextFunction} from "express";
-import * as bcrypt from "bcryptjs";
+import * as cookie from "cookie";
 
 import {BadRequestTransformationFilter} from "@lib/websockets";
-import {ExtendedSocket, SocketHandshakeAuth} from "@lib/typings";
-import {UserService} from "@modules/user";
+import {ExtendedSocket} from "@lib/typings";
+import {RefreshSessionService} from "../services";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
 @WebSocketGateway()
 export class AuthGateway implements OnGatewayInit {
   constructor(
-    private readonly userService: UserService
+    private readonly refreshSessionService: RefreshSessionService
   ) {
   }
 
@@ -24,25 +24,21 @@ export class AuthGateway implements OnGatewayInit {
     this.wss.use(async (socket: ExtendedSocket, next: NextFunction) => {
       if (!!socket.user) return next(null);
 
-      const payload: SocketHandshakeAuth = socket.handshake.auth as SocketHandshakeAuth;
+      const cookies = cookie.parse(socket.request.headers.cookie);
+
+      const token = cookies["refresh-token"];
 
       const error = new WsException("Invalid credentials.");
 
-      if (!payload) return next(error);
+      if (!token) return next(error);
 
-      const user = await this.userService.findOne({
-        where: {
-          username: payload.username
-        }
+      const session = await this.refreshSessionService.findOne({
+        where: {token}
       });
 
-      if (!user) throw error;
+      if (!session) throw error;
 
-      const doPasswordsMatch = await bcrypt.compare(payload.password, user.password);
-
-      if (!doPasswordsMatch) throw error;
-
-      socket.user = user;
+      socket.user = session.user;
 
       next(null);
     });

@@ -66,7 +66,7 @@ export class AuthService {
   get refreshTokenCookieOptions(): CookieOptions {
     return {
       httpOnly: true,
-      path: "/v1/api/auth",
+      path: "/",
       maxAge: this.configService.get<number>("jwt.refreshToken.expiresIn")
     };
   }
