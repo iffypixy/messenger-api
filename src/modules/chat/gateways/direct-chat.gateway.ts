@@ -18,7 +18,7 @@ import {FilePublicData, FileService} from "@modules/upload";
 import {UserService} from "@modules/user";
 import {DirectChatMemberPublicData, DirectChatMessagePublicData, DirectChatPublicData} from "../lib/typings";
 import {DirectChatMemberService, DirectChatMessageService, DirectChatService} from "../services";
-import {publiciseDirectChatMember} from "../entities";
+import {DirectChat, DirectChatMember, publiciseDirectChatMember} from "../entities";
 import {
   GetDirectChatMessagesDto,
   CreateDirectChatMessageDto,
@@ -49,7 +49,15 @@ export class DirectChatGateway {
   @SubscribeMessage(serverEvents.GET_CHATS)
   async handleGettingChats(
     @ConnectedSocket() socket: ExtendedSocket
-  ): Promise<{chats: {partner: DirectChatMemberPublicData; chat: DirectChatPublicData; lastMessage: DirectChatMessagePublicData; isBanned: boolean}[]}> {
+  ): Promise<{
+    chats: {
+      partner: DirectChatMemberPublicData;
+      chat: DirectChatPublicData;
+      lastMessage: DirectChatMessagePublicData;
+      isBanned: boolean;
+      numberOfUnreadMessages: number
+    }[]
+  }> {
     const members = await this.memberService.find({
       where: {
         user: socket.user
@@ -80,10 +88,31 @@ export class DirectChatGateway {
       }
     });
 
+    const numbersOfUnreadMessages: {chatId: ID; number: number}[] = [];
+
+    for (let i = 0; i < members.length; i++) {
+      const member = members[i];
+
+      const number = await this.messageService.count({
+        where: {
+          chat: member.chat,
+          isRead: false,
+          sender: {
+            id: Not(member.id)
+          }
+        }
+      });
+
+      numbersOfUnreadMessages.push({
+        chatId: member.chat.id, number
+      });
+    }
+
     return {
       chats: members.map((member) => {
         const partner = partners.find((partner) => partner.chat.id === member.chat.id);
         const lastMessage = messages.find((msg) => msg.chat.id === member.chat.id) || null;
+        const {number} = numbersOfUnreadMessages.find(({chatId}) => chatId === member.chat.id);
 
         if (!partner) return;
 
@@ -91,7 +120,8 @@ export class DirectChatGateway {
           partner: partner.public,
           chat: member.chat.public,
           lastMessage: lastMessage && lastMessage.public,
-          isBanned: member.isBanned
+          isBanned: member.isBanned,
+          numberOfUnreadMessages: number
         };
       }).filter(Boolean)
     };

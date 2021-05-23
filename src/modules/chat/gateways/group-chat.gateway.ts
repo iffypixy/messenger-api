@@ -8,7 +8,7 @@ import {
 } from "@nestjs/websockets";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {Server} from "socket.io";
-import {ILike, In, Not} from "typeorm";
+import {ILike, In, IsNull, Not} from "typeorm";
 
 import {queryLimit} from "@lib/queries";
 import {ExtendedSocket, ID} from "@lib/typings";
@@ -55,7 +55,14 @@ export class GroupChatGateway {
   @SubscribeMessage(serverEvents.GET_CHATS)
   async handleGettingChats(
     @ConnectedSocket() socket: ExtendedSocket
-  ): Promise<{chats: {chat: GroupChatPublicData; lastMessage: GroupChatMessagePublicData; numberOfMembers: number}[]}> {
+  ): Promise<{
+    chats: {
+      chat: GroupChatPublicData;
+      lastMessage: GroupChatMessagePublicData;
+      numberOfMembers: number;
+      numberOfUnreadMessages: number
+    }[]
+  }> {
     const members = await this.memberService.find({
       where: {
         user: socket.user
@@ -75,31 +82,48 @@ export class GroupChatGateway {
     });
 
     const numbersOfMembers: {chatId: ID; number: number}[] = [];
+    const numbersOfUnreadMessages: {chatId: ID; number: number}[] = [];
 
     for (let i = 0; i < members.length; i++) {
-      const chatId = members[i].chat.id;
+      const member = members[i];
 
-      const number = await this.memberService.count({
+      const numberOfMembers = await this.memberService.count({
         where: {
-          chat: {
-            id: chatId
-          }
+          chat: member.chat
         }
       });
 
-      numbersOfMembers.push({chatId, number});
+      const numberOfUnreadMessages = await this.messageService.count({
+        where: [{
+          chat: member.chat,
+          isRead: false,
+          sender: {
+            id: Not(member.id)
+          }
+        }, {
+          chat: member.chat,
+          isRead: false,
+          sender: IsNull()
+        }]
+      });
+
+      const chatId = member.chat.id;
+
+      numbersOfMembers.push({chatId, number: numberOfMembers});
+      numbersOfUnreadMessages.push({chatId, number: numberOfUnreadMessages});
     }
 
     return {
       chats: members.map((member) => {
         const lastMessage = messages.find((message) => message.chat.id === member.chat.id) || null;
-        const {number} = numbersOfMembers.find(({chatId}) => chatId === member.chat.id);
+        const {number: numberOfMembers} = numbersOfMembers.find(({chatId}) => chatId === member.chat.id);
+        const {number: numberOfUnreadMessages} = numbersOfUnreadMessages.find(({chatId}) => chatId === member.chat.id);
 
         return {
           chat: member.chat.public,
           lastMessage: lastMessage && lastMessage.public,
           member: member.public,
-          numberOfMembers: number
+          numberOfMembers, numberOfUnreadMessages
         };
       })
     };

@@ -45,6 +45,10 @@ export class DirectChatMessageService {
     return this.repository.update(criteria, partial);
   }
 
+  findAndCount(options: FindManyOptions<DirectChatMessage>): Promise<[DirectChatMessage[], number]> {
+    return this.repository.findAndCount(options);
+  }
+
   save(partial: DeepPartial<DirectChatMessage>, options?: SaveOptions): Promise<DirectChatMessage> {
     return this.repository.save(partial, options);
   }

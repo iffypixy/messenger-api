@@ -33,6 +33,10 @@ export class GroupChatMessageService {
     return this.repository.findOne(options);
   }
 
+  count(options: FindManyOptions<GroupChatMessage>): Promise<number> {
+    return this.repository.count(options);
+  }
+
   update(criteria: FindConditions<GroupChatMessage>, partial: DeepPartial<GroupChatMessage>): Promise<UpdateResult> {
     return this.repository.update(criteria, partial);
   }
