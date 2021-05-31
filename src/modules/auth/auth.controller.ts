@@ -6,7 +6,7 @@ import {v4} from "uuid";
 import * as bcrypt from "bcryptjs";
 
 import {UploadService} from "@modules/upload";
-import {User, UserService, UserPublicData} from "@modules/user";
+import {User, UserService, UserPublicData, publiciseUser} from "@modules/user";
 import {GetUser} from "./decorators";
 import {IsAuthorizedGuard} from "./guards";
 import {LoginDto, RegisterDto, RefreshTokensDto} from "./dtos";
@@ -62,7 +62,7 @@ export class AuthController {
   async login(
     @Body() {username, password, fingerprint}: LoginDto,
     @Res({passthrough: true}) res: Response
-  ): Promise<{user: UserPublicData}> {
+  ): Promise<{credentials: UserPublicData}> {
     const user = await this.userService.findOne({
       where: {username}
     });
@@ -85,7 +85,7 @@ export class AuthController {
     res.cookie("refresh-token", refreshToken, this.authService.refreshTokenCookieOptions);
 
     return {
-      user: user.public
+      credentials: user.public
     };
   }
 
@@ -127,9 +127,9 @@ export class AuthController {
 
   @UseGuards(IsAuthorizedGuard)
   @Get("credentials")
-  getCredentials(@GetUser() user: User): {user: UserPublicData} {
+  getCredentials(@GetUser() user: User): {credentials: UserPublicData} {
     return {
-      user: user.public
+      credentials: publiciseUser(user)
     };
   }
 

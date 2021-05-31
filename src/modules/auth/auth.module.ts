@@ -47,6 +47,6 @@ import {AuthController} from "./auth.controller";
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
     consumer.apply(AuthMiddleware)
-      .forRoutes(AuthController);
+      .forRoutes(AuthController)
   }
 }
