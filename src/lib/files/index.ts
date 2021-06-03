@@ -22,7 +22,8 @@ export const extensions = {
     ".ogx",
     ".ogm",
     ".spx",
-    ".opus"
+    ".opus",
+    ".mpga"
   ],
   text: [
     ".txt",

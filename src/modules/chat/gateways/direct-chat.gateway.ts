@@ -217,9 +217,11 @@ export class DirectChatGateway {
     });
 
     const message = await this.messageService.create({
-      chat, parent, audio, files,
-      images, sender: first,
-      text: dto.text
+      chat, parent, audio,
+      files: !audio ? files : null,
+      images: !audio ? files : null,
+      text: !audio ? dto.text : null,
+      sender: first
     });
 
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
@@ -241,15 +243,22 @@ export class DirectChatGateway {
   async handleGettingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetDirectChatDto
-  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData; isBanned: boolean}> {
+  ): Promise<{
+    chat: {
+      partner: DirectChatMemberPublicData;
+      isBanned: boolean;
+    } & DirectChatPublicData
+  }> {
     const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
 
     return {
-      chat: chat.public,
-      partner: second.public,
-      isBanned: first.isBanned
+      chat: {
+        ...chat,
+        partner: second.public,
+        isBanned: first.isBanned
+      }
     };
   }
 

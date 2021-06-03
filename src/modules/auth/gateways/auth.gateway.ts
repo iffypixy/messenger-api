@@ -39,7 +39,7 @@ export class AuthGateway implements OnGatewayInit {
       if (!session) throw error;
 
       socket.user = session.user;
-c
+
       next(null);
     });
   }

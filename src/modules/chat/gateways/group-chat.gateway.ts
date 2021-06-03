@@ -207,9 +207,11 @@ export class GroupChatGateway {
     });
 
     const message = await this.messageService.create({
-      chat, parent, audio, files,
-      images, sender: member,
-      text: dto.text
+      chat, parent, audio,
+      files: !audio ? files : null,
+      images: !audio ? images : null,
+      text: !audio ? dto.text : null,
+      sender: member
     });
 
     socket.to(chat.id).emit(clientEvents.MESSAGE, {
