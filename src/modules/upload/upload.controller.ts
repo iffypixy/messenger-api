@@ -35,8 +35,6 @@ export class UploadController {
 
         const ext = `.${mime.getExtension(file.mimetype)}`;
 
-        console.log(ext);
-
         if (!isExtensionValid(ext)) return callback(error, false);
 
         callback(null, true);

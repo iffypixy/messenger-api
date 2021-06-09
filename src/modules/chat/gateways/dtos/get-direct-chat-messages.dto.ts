@@ -1,4 +1,4 @@
-import {IsNumberString, IsOptional, IsUUID} from "class-validator";
+import {IsNumber, IsOptional, IsUUID} from "class-validator";
 
 import {ID} from "@lib/typings";
 
@@ -7,8 +7,8 @@ export class GetDirectChatMessagesDto {
   partner: ID;
 
   @IsOptional()
-  @IsNumberString({}, {
-    message: "Skip must be type of number-string"
+  @IsNumber({}, {
+    message: "Skip must be type of number"
   })
   skip?: string;
 }

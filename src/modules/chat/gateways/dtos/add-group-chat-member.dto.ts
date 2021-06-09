@@ -7,5 +7,5 @@ export class AddGroupChatMemberDto {
   member: ID;
 
   @IsUUID(4)
-  chat: ID;
+  group: ID;
 }

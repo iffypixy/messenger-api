@@ -8,7 +8,7 @@ import {
 } from "@nestjs/websockets";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {Server} from "socket.io";
-import {ILike, In, IsNull, Not} from "typeorm";
+import {In, IsNull, Not} from "typeorm";
 
 import {queryLimit} from "@lib/queries";
 import {ExtendedSocket, ID} from "@lib/typings";
@@ -56,12 +56,11 @@ export class GroupChatGateway {
   async handleGettingChats(
     @ConnectedSocket() socket: ExtendedSocket
   ): Promise<{
-    chats: {
-      chat: GroupChatPublicData;
+    chats: ({
       lastMessage: GroupChatMessagePublicData;
       numberOfMembers: number;
       numberOfUnreadMessages: number
-    }[]
+    } & GroupChatPublicData)[]
   }> {
     const members = await this.memberService.find({
       where: {
@@ -120,7 +119,7 @@ export class GroupChatGateway {
         const {number: numberOfUnreadMessages} = numbersOfUnreadMessages.find(({chatId}) => chatId === member.chat.id);
 
         return {
-          chat: member.chat.public,
+          ...member.chat.public,
           lastMessage: lastMessage && lastMessage.public,
           member: member.public,
           numberOfMembers, numberOfUnreadMessages
@@ -138,7 +137,7 @@ export class GroupChatGateway {
     const messages = await this.messageService.find({
       where: {
         chat: {
-          id: dto.chat
+          id: dto.group
         }
       },
       skip: +dto.skip,
@@ -162,7 +161,7 @@ export class GroupChatGateway {
   ): Promise<{message: DirectChatPublicData}> {
     const chat = await this.chatService.findOne({
       where: {
-        id: dto.chat
+        id: dto.group
       }
     });
 
@@ -228,10 +227,10 @@ export class GroupChatGateway {
   async handleGettingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetGroupChatDto
-  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData; numberOfMembers: number}> {
+  ): Promise<{chat: {member: GroupChatMemberPublicData; numberOfMembers: number} & GroupChatPublicData}> {
     const chat = await this.chatService.findOne({
       where: {
-        id: dto.chat
+        id: dto.group
       }
     });
 
@@ -248,9 +247,11 @@ export class GroupChatGateway {
     });
 
     return {
-      chat: chat.public,
-      member: member.public,
-      numberOfMembers
+      chat: {
+        ...chat.public,
+        member: member.public,
+        numberOfMembers
+      }
     };
   }
 
@@ -261,7 +262,7 @@ export class GroupChatGateway {
   ): Promise<{images: {id: ID; image: string; createdAt: Date}[]}> {
     const chat = await this.chatService.findOne({
       where: {
-        id: dto.chat
+        id: dto.group
       }
     });
 
@@ -296,7 +297,7 @@ export class GroupChatGateway {
   ): Promise<{audios: {id: ID; audio: string; createdAt: Date}[]}> {
     const chat = await this.chatService.findOne({
       where: {
-        id: dto.chat
+        id: dto.group
       }
     });
 
@@ -335,7 +336,7 @@ export class GroupChatGateway {
   ): Promise<{files: {id: ID; file: FilePublicData; createdAt: Date}[]}> {
     const chat = await this.chatService.findOne({
       where: {
-        id: dto.chat
+        id: dto.group
       }
     });
 
@@ -367,7 +368,7 @@ export class GroupChatGateway {
   async handleCreatingChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: CreateGroupChatDto
-  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData; numberOfMembers: number}> {
+  ): Promise<{chat: {member: GroupChatMemberPublicData; numberOfMembers: number} & GroupChatPublicData}> {
     const users = (await this.userService.find({
       where: {
         id: In(dto.members)
@@ -433,9 +434,11 @@ export class GroupChatGateway {
     });
 
     return {
-      chat: chat.public,
-      member: member.public,
-      numberOfMembers: members.length
+      chat: {
+        ...chat.public,
+        member: member.public,
+        numberOfMembers: members.length
+      }
     };
   }
 
@@ -443,10 +446,10 @@ export class GroupChatGateway {
   async handleAddingMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: AddGroupChatMemberDto
-  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData; numberOfMembers: number}> {
+  ): Promise<{chat: {member: GroupChatMemberPublicData; numberOfMembers: number} & GroupChatPublicData}> {
     const chat = await this.chatService.findOne({
       where: {
-        id: dto.chat
+        id: dto.group
       }
     });
 
@@ -514,9 +517,11 @@ export class GroupChatGateway {
     });
 
     return {
-      chat: chat.public,
-      member: added.public,
-      numberOfMembers
+      chat: {
+        ...chat.public,
+        member: added.public,
+        numberOfMembers
+      }
     };
   }
 
@@ -524,7 +529,7 @@ export class GroupChatGateway {
   async handleRemovingMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: RemoveGroupChatMemberDto
-  ): Promise<{chat: GroupChatPublicData; member: GroupChatMemberPublicData; numberOfMembers: number}> {
+  ): Promise<{chat: {member: GroupChatMemberPublicData; numberOfMembers: number} & GroupChatPublicData}> {
     const chat = await this.chatService.findOne({
       where: {
         id: dto.chat
@@ -593,9 +598,11 @@ export class GroupChatGateway {
     });
 
     return {
-      chat: chat.public,
-      member: member.public,
-      numberOfMembers
+      chat: {
+        ...chat.public,
+        member: member.public,
+        numberOfMembers
+      }
     };
   }
 

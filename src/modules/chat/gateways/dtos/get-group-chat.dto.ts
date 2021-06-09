@@ -4,5 +4,5 @@ import {ID} from "@lib/typings";
 
 export class GetGroupChatDto {
   @IsUUID(4)
-  chat: ID;
+  group: ID;
 }

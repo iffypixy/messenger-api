@@ -36,5 +36,5 @@ export class CreateGroupChatMessageDto {
   parent?: ID;
 
   @IsUUID(4)
-  chat: ID;
+  group: ID;
 }

@@ -1,14 +1,14 @@
-import {IsNumberString, IsOptional, IsUUID} from "class-validator";
+import {IsNumber, IsOptional, IsUUID} from "class-validator";
 
 import {ID} from "@lib/typings";
 
 export class GetGroupChatMessagesDto {
   @IsUUID(4)
-  chat: ID;
+  group: ID;
 
   @IsOptional()
-  @IsNumberString({}, {
-    message: "Skip must be type of number-string"
+  @IsNumber({}, {
+    message: "Skip must be type of number"
   })
   skip?: string;
 }

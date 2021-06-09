@@ -50,13 +50,12 @@ export class DirectChatGateway {
   async handleGettingChats(
     @ConnectedSocket() socket: ExtendedSocket
   ): Promise<{
-    chats: {
+    chats: ({
       partner: DirectChatMemberPublicData;
-      chat: DirectChatPublicData;
       lastMessage: DirectChatMessagePublicData;
       isBanned: boolean;
       numberOfUnreadMessages: number
-    }[]
+    } & DirectChatPublicData)[]
   }> {
     const members = await this.memberService.find({
       where: {
@@ -117,8 +116,8 @@ export class DirectChatGateway {
         if (!partner) return;
 
         return {
+          ...member.chat.public,
           partner: partner.public,
-          chat: member.chat.public,
           lastMessage: lastMessage && lastMessage.public,
           isBanned: member.isBanned,
           numberOfUnreadMessages: number
@@ -156,7 +155,7 @@ export class DirectChatGateway {
   async handleCreatingMessage(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: CreateDirectChatMessageDto
-  ): Promise<{message: DirectChatPublicData}> {
+  ): Promise<{message: DirectChatMessagePublicData}> {
     const error = new WsException("Invalid credentials.");
 
     if (dto.partner === socket.user.id) throw error;
@@ -219,7 +218,7 @@ export class DirectChatGateway {
     const message = await this.messageService.create({
       chat, parent, audio,
       files: !audio ? files : null,
-      images: !audio ? files : null,
+      images: !audio ? images : null,
       text: !audio ? dto.text : null,
       sender: first
     });
@@ -345,7 +344,7 @@ export class DirectChatGateway {
   async handleBanningPartner(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: BanDirectChatPartnerDto
-  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData; isBanned: boolean}> {
+  ): Promise<{chat: {partner: DirectChatMemberPublicData; isBanned: boolean} & DirectChatPublicData}> {
     const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
@@ -367,9 +366,11 @@ export class DirectChatGateway {
     });
 
     return {
-      chat: chat.public,
-      partner: publiciseDirectChatMember(member),
-      isBanned: first.isBanned
+      chat: {
+        ...chat.public,
+        partner: publiciseDirectChatMember(member),
+        isBanned: first.isBanned
+      }
     };
   }
 
@@ -377,7 +378,7 @@ export class DirectChatGateway {
   async handleUnbanningPartner(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: UnbanDirectChatPartnerDto
-  ): Promise<{chat: DirectChatPublicData; partner: DirectChatMemberPublicData; isBanned: boolean}> {
+  ): Promise<{chat: {partner: DirectChatMemberPublicData; isBanned: boolean} & DirectChatPublicData}> {
     const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
@@ -399,9 +400,11 @@ export class DirectChatGateway {
     });
 
     return {
-      chat: chat.public,
-      partner: publiciseDirectChatMember(member),
-      isBanned: first.isBanned
+      chat: {
+        ...chat.public,
+        partner: publiciseDirectChatMember(member),
+        isBanned: first.isBanned
+      }
     };
   }
 }
