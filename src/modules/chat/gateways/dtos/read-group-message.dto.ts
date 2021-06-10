@@ -2,10 +2,10 @@ import {IsUUID} from "class-validator";
 
 import {ID} from "@lib/typings";
 
-export class RemoveGroupChatMemberDto {
-  @IsUUID(4)
-  member: ID;
-
+export class ReadGroupMessageDto {
   @IsUUID(4)
   group: ID;
+
+  @IsUUID(4)
+  message: ID;
 }

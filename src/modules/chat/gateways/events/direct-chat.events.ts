@@ -8,6 +8,7 @@ export const serverEvents = {
   GET_AUDIOS: `${prefix}:GET_AUDIOS`,
   GET_FILES: `${prefix}:GET_FILES`,
   CREATE_MESSAGE: `${prefix}:CREATE_MESSAGE`,
+  READ_MESSAGE: `${prefix}:READ_MESSAGE`,
   BAN_PARTNER: `${prefix}:BAN_PARTNER`,
   UNBAN_PARTNER: `${prefix}:UNBAN_PARTNER`
 };
@@ -15,5 +16,6 @@ export const serverEvents = {
 export const clientEvents = {
   MESSAGE: `${prefix}:MESSAGE`,
   BANNED: `${prefix}:BANNED`,
-  UNBANNED: `${prefix}:UNBANNED`
+  UNBANNED: `${prefix}:UNBANNED`,
+  MESSAGE_READ: `${prefix}:MESSAGE_READ`
 };

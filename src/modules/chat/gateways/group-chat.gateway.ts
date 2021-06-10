@@ -10,12 +10,13 @@ import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {Server} from "socket.io";
 import {In, IsNull, Not} from "typeorm";
 
+import {FilePublicData, FileService} from "@modules/upload";
+import {UserService} from "@modules/user";
 import {queryLimit} from "@lib/queries";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {extensions} from "@lib/files";
+import {DateLessThanOrEqual} from "@lib/dates";
 import {BadRequestTransformationFilter, WebsocketsService} from "@lib/websockets";
-import {FilePublicData, FileService} from "@modules/upload";
-import {UserService} from "@modules/user";
 import {
   DirectChatPublicData,
   GroupChatMemberPublicData,
@@ -30,7 +31,7 @@ import {
   GetGroupChatAttachmentsDto,
   CreateGroupChatDto,
   AddGroupChatMemberDto,
-  RemoveGroupChatMemberDto, LeaveGroupChatDto
+  RemoveGroupChatMemberDto, LeaveGroupChatDto, ReadGroupMessageDto
 } from "./dtos";
 import {GroupChatMember} from "../entities";
 import {groupChatServerEvents as serverEvents, groupChatClientEvents as clientEvents} from "./events";
@@ -532,7 +533,7 @@ export class GroupChatGateway {
   ): Promise<{chat: {member: GroupChatMemberPublicData; numberOfMembers: number} & GroupChatPublicData}> {
     const chat = await this.chatService.findOne({
       where: {
-        id: dto.chat
+        id: dto.group
       }
     });
 
@@ -613,7 +614,7 @@ export class GroupChatGateway {
   ): Promise<{chat: GroupChatPublicData}> {
     const chat = await this.chatService.findOne({
       where: {
-        id: dto.chat
+        id: dto.group
       }
     });
 
@@ -697,6 +698,60 @@ export class GroupChatGateway {
     }
 
     return {
+      chat: chat.public
+    };
+  }
+
+  @SubscribeMessage(serverEvents.READ_MESSAGE)
+  async handleReadingMessage(
+    @ConnectedSocket() socket: ExtendedSocket,
+    @MessageBody() dto: ReadGroupMessageDto
+  ): Promise<{message: GroupChatMessagePublicData; chat: GroupChatPublicData}> {
+    const chat = await this.chatService.findOne({
+      where: {
+        id: dto.group
+      }
+    });
+
+    if (!chat) throw new WsException("Chat is not found.");
+
+    const member = await this.memberService.findOne({
+      where: {
+        chat, user: socket.user
+      }
+    });
+
+    if (!member) throw new WsException("You are not a member of this chat.");
+
+    const message = await this.messageService.findOne({
+      where: {
+        chat, id: dto.message,
+        isRead: false,
+        sender: {
+          id: Not(member.id)
+        }
+      }
+    });
+
+    if (!message) throw new WsException("Message is not found.");
+
+    await this.messageService.update({
+      chat,
+      createdAt: DateLessThanOrEqual(message.createdAt),
+      sender: {
+        id: Not(member.id)
+      }
+    }, {
+      isRead: true
+    });
+
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE_READ, {
+      message: message.public,
+      chat: chat.public
+    });
+
+    return {
+      message: message.public,
       chat: chat.public
     };
   }

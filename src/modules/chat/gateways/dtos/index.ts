@@ -12,3 +12,5 @@ export {CreateGroupChatDto} from "./create-group-chat.dto";
 export {AddGroupChatMemberDto} from "./add-group-chat-member.dto";
 export {RemoveGroupChatMemberDto} from "./remove-group-chat-member.dto";
 export {LeaveGroupChatDto} from "./leave-group-chat.dto";
+export {ReadDirectMessageDto} from "./read-direct-message.dto";
+export {ReadGroupMessageDto} from "./read-group-message.dto";

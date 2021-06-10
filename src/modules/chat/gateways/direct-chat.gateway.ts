@@ -10,22 +10,23 @@ import {Server} from "socket.io";
 import {In, Not} from "typeorm";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 
+import {FilePublicData, FileService} from "@modules/upload";
+import {UserService} from "@modules/user";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {queryLimit} from "@lib/queries";
 import {extensions} from "@lib/files";
 import {BadRequestTransformationFilter, WebsocketsService} from "@lib/websockets";
-import {FilePublicData, FileService} from "@modules/upload";
-import {UserService} from "@modules/user";
+import {DateLessThanOrEqual} from "@lib/dates";
 import {DirectChatMemberPublicData, DirectChatMessagePublicData, DirectChatPublicData} from "../lib/typings";
 import {DirectChatMemberService, DirectChatMessageService, DirectChatService} from "../services";
-import {DirectChat, DirectChatMember, publiciseDirectChatMember} from "../entities";
+import {publiciseDirectChatMember} from "../entities";
 import {
   GetDirectChatMessagesDto,
   CreateDirectChatMessageDto,
   GetDirectChatDto,
   GetDirectChatAttachmentsDto,
   BanDirectChatPartnerDto,
-  UnbanDirectChatPartnerDto
+  UnbanDirectChatPartnerDto, ReadDirectMessageDto
 } from "./dtos";
 import {directChatServerEvents as serverEvents, directChatClientEvents as clientEvents} from "./events";
 
@@ -405,6 +406,52 @@ export class DirectChatGateway {
         partner: publiciseDirectChatMember(member),
         isBanned: first.isBanned
       }
+    };
+  }
+
+  @SubscribeMessage(serverEvents.READ_MESSAGE)
+  async handleReadingMessage(
+    @ConnectedSocket() socket: ExtendedSocket,
+    @MessageBody() dto: ReadDirectMessageDto
+  ): Promise<{chat: DirectChatPublicData; message: DirectChatMessagePublicData}> {
+    const {chat, first} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
+
+    if (!chat) throw new WsException("Chat is not found.");
+
+    const message = await this.messageService.findOne({
+      where: {
+        chat, id: dto.message,
+        isRead: false,
+        sender: {
+          id: Not(first.id)
+        }
+      }
+    });
+
+    if (!message) throw new WsException("Message is not found.");
+
+    await this.messageService.update({
+      chat,
+      createdAt: DateLessThanOrEqual(message.createdAt),
+      sender: {
+        id: Not(first.id)
+      }
+    }, {
+      isRead: true
+    });
+
+    const sockets = this.websocketsService.getSocketsByUserId(this.wss, dto.partner);
+
+    sockets.forEach((client) => {
+      socket.to(client.id).emit(clientEvents.MESSAGE_READ, {
+        message: message.public,
+        chat: chat.public
+      });
+    });
+
+    return {
+      message: message.public,
+      chat: chat.public
     };
   }
 }

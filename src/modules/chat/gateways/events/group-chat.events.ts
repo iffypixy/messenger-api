@@ -8,6 +8,7 @@ export const serverEvents = {
   GET_AUDIOS: `${prefix}:GET_AUDIOS`,
   GET_FILES: `${prefix}:GET_FILES`,
   CREATE_MESSAGE: `${prefix}:CREATE_MESSAGE`,
+  READ_MESSAGE: `${prefix}:READ_MESSAGE`,
   ADD_MEMBER: `${prefix}:ADD_MEMBER`,
   KICK_MEMBER: `${prefix}:KICK_MEMBER`,
   LEAVE: `${prefix}:LEAVE`,
@@ -22,5 +23,6 @@ export const clientEvents = {
   ADDED: `${prefix}:ADDED`,
   KICKED: `${prefix}:KICKED`,
   MEMBER_LEFT: `${prefix}:MEMBER_LEFT`,
-  OWNER_REPLACEMENT: `${prefix}:OWNER_REPLACEMENT`
+  OWNER_REPLACEMENT: `${prefix}:OWNER_REPLACEMENT`,
+  MESSAGE_READ: `${prefix}:MESSAGE_READ`
 };
