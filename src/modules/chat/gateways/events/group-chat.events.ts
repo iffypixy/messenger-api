@@ -1,6 +1,7 @@
 const prefix = "GROUP_CHAT";
 
 export const serverEvents = {
+  SUBSCRIBE: `${prefix}:SUBSCRIBE`,
   GET_MESSAGES: `${prefix}:GET_MESSAGES`,
   GET_CHATS: `${prefix}:GET_CHATS`,
   GET_CHAT: `${prefix}:GET_CHAT`,

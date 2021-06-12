@@ -36,6 +36,7 @@
     "cookie": "^0.4.1",
     "cookie-parser": "^1.4.5",
     "date-fns": "^2.22.1",
+    "dateformat": "^4.5.1",
     "helmet": "^4.6.0",
     "jdenticon": "^3.1.0",
     "pg": "^8.6.0",

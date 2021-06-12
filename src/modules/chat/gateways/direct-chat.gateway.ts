@@ -7,7 +7,7 @@ import {
   WsException
 } from "@nestjs/websockets";
 import {Server} from "socket.io";
-import {In, Not} from "typeorm";
+import {In, LessThan, MoreThan, Not} from "typeorm";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 
 import {FilePublicData, FileService} from "@modules/upload";
@@ -16,7 +16,6 @@ import {ExtendedSocket, ID} from "@lib/typings";
 import {queryLimit} from "@lib/queries";
 import {extensions} from "@lib/files";
 import {BadRequestTransformationFilter, WebsocketsService} from "@lib/websockets";
-import {DateLessThanOrEqual} from "@lib/dates";
 import {DirectChatMemberPublicData, DirectChatMessagePublicData, DirectChatPublicData} from "../lib/typings";
 import {DirectChatMemberService, DirectChatMessageService, DirectChatService} from "../services";
 import {publiciseDirectChatMember} from "../entities";
@@ -29,6 +28,7 @@ import {
   UnbanDirectChatPartnerDto, ReadDirectMessageDto
 } from "./dtos";
 import {directChatServerEvents as serverEvents, directChatClientEvents as clientEvents} from "./events";
+import {LessThanDate} from "@lib/operators";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
@@ -431,8 +431,15 @@ export class DirectChatGateway {
     if (!message) throw new WsException("Message is not found.");
 
     await this.messageService.update({
+      id: message.id
+    }, {
+      isRead: true
+    });
+
+    await this.messageService.update({
       chat,
-      createdAt: DateLessThanOrEqual(message.createdAt),
+      createdAt: LessThanDate(message.createdAt),
+      isRead: false,
       sender: {
         id: Not(first.id)
       }
@@ -445,7 +452,8 @@ export class DirectChatGateway {
     sockets.forEach((client) => {
       socket.to(client.id).emit(clientEvents.MESSAGE_READ, {
         message: message.public,
-        chat: chat.public
+        chat: chat.public,
+        partner: first.public
       });
     });
 

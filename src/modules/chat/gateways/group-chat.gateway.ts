@@ -15,7 +15,6 @@ import {UserService} from "@modules/user";
 import {queryLimit} from "@lib/queries";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {extensions} from "@lib/files";
-import {DateLessThanOrEqual} from "@lib/dates";
 import {BadRequestTransformationFilter, WebsocketsService} from "@lib/websockets";
 import {
   DirectChatPublicData,
@@ -31,10 +30,11 @@ import {
   GetGroupChatAttachmentsDto,
   CreateGroupChatDto,
   AddGroupChatMemberDto,
-  RemoveGroupChatMemberDto, LeaveGroupChatDto, ReadGroupMessageDto
+  RemoveGroupChatMemberDto, LeaveGroupChatDto, ReadGroupMessageDto, SubscribeGroupChatsDto
 } from "./dtos";
 import {GroupChatMember} from "../entities";
 import {groupChatServerEvents as serverEvents, groupChatClientEvents as clientEvents} from "./events";
+import {LessThanDate} from "@lib/operators";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
@@ -52,6 +52,25 @@ export class GroupChatGateway {
 
   @WebSocketServer()
   wss: Server;
+
+  @SubscribeMessage(serverEvents.SUBSCRIBE)
+  async handleSubscribingChat(
+    @ConnectedSocket() socket: ExtendedSocket,
+    @MessageBody() dto: SubscribeGroupChatsDto
+  ): Promise<void> {
+    const members = await this.memberService.find({
+      where: {
+        chat: {
+          id: In(dto.groups)
+        },
+        user: socket.user
+      }
+    });
+
+    members.forEach(({chat}) => {
+      socket.join(chat.id);
+    });
+  }
 
   @SubscribeMessage(serverEvents.GET_CHATS)
   async handleGettingChats(
@@ -214,7 +233,7 @@ export class GroupChatGateway {
       sender: member
     });
 
-    socket.to(chat.id).emit(clientEvents.MESSAGE, {
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
       message: message.public,
       chat: chat.public
     });
@@ -736,8 +755,15 @@ export class GroupChatGateway {
     if (!message) throw new WsException("Message is not found.");
 
     await this.messageService.update({
+      id: message.id
+    }, {
+      isRead: true
+    });
+
+    await this.messageService.update({
       chat,
-      createdAt: DateLessThanOrEqual(message.createdAt),
+      createdAt: LessThanDate(message.createdAt),
+      isRead: false,
       sender: {
         id: Not(member.id)
       }
