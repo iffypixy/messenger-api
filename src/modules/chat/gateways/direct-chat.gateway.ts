@@ -266,7 +266,7 @@ export class DirectChatGateway {
   async handleGettingImages(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetDirectChatAttachmentsDto
-  ): Promise<{images: {id: ID; image: string; createdAt: Date}[]}> {
+  ): Promise<{images: {id: ID; url: string; createdAt: Date}[]}> {
     const {chat} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
@@ -282,7 +282,7 @@ export class DirectChatGateway {
       images: messages.reduce((prev, current) => {
         const {id, images, createdAt} = current.public;
 
-        return [...prev, ...images.map((image) => ({id, image, createdAt}))];
+        return [...prev, ...images.map((url) => ({id, url, createdAt}))];
       }, [])
     };
   }
@@ -291,7 +291,7 @@ export class DirectChatGateway {
   async handleGettingAudios(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetDirectChatAttachmentsDto
-  ): Promise<{audios: {id: ID; audio: string; createdAt: Date}[]}> {
+  ): Promise<{audios: {id: ID; url: string; createdAt: Date}[]}> {
     const {chat} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
 
     if (!chat) throw new WsException("Chat is not found.");
@@ -309,7 +309,7 @@ export class DirectChatGateway {
 
         return {
           id: msg.id,
-          audio: msg.audio,
+          url: msg.audio,
           createdAt: msg.createdAt
         };
       })
