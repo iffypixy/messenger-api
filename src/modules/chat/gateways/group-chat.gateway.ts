@@ -279,7 +279,7 @@ export class GroupChatGateway {
   async handleGettingImages(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetGroupChatAttachmentsDto
-  ): Promise<{images: {id: ID; image: string; createdAt: Date}[]}> {
+  ): Promise<{images: {id: ID; url: string; createdAt: Date}[]}> {
     const chat = await this.chatService.findOne({
       where: {
         id: dto.group
@@ -298,14 +298,18 @@ export class GroupChatGateway {
 
     const messages = await this.messageService
       .findWithAttachments("images", {
-        where: {chat}
+        skip: dto.skip,
+        where: {chat},
+        order: {
+          createdAt: "DESC"
+        }
       });
 
     return {
       images: messages.reduce((prev, current) => {
         const {id, images, createdAt} = current.public;
 
-        return [...prev, ...images.map((image) => ({id, image, createdAt}))];
+        return [...prev, ...images.map((url) => ({id, url, createdAt}))];
       }, [])
     };
   }
@@ -314,7 +318,7 @@ export class GroupChatGateway {
   async handleGettingAudios(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: GetGroupChatAttachmentsDto
-  ): Promise<{audios: {id: ID; audio: string; createdAt: Date}[]}> {
+  ): Promise<{audios: {id: ID; url: string; createdAt: Date}[]}> {
     const chat = await this.chatService.findOne({
       where: {
         id: dto.group
@@ -333,7 +337,11 @@ export class GroupChatGateway {
 
     const messages = await this.messageService
       .findWithAttachments("audio", {
-        where: {chat}
+        skip: dto.skip,
+        where: {chat},
+        order: {
+          createdAt: "DESC"
+        }
       });
 
     return {
@@ -342,7 +350,7 @@ export class GroupChatGateway {
 
         return {
           id: msg.id,
-          audio: msg.audio,
+          url: msg.audio,
           createdAt: msg.createdAt
         };
       })
@@ -372,7 +380,11 @@ export class GroupChatGateway {
 
     const messages = await this.messageService
       .findWithAttachments("files", {
-        where: {chat}
+        skip: dto.skip,
+        where: {chat},
+        order: {
+          createdAt: "DESC"
+        }
       });
 
     return {

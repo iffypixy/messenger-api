@@ -272,6 +272,7 @@ export class DirectChatGateway {
     if (!chat) throw new WsException("Chat is not found.");
 
     const messages = await this.messageService.findWithAttachments("images", {
+      skip: dto.skip,
       where: {chat},
       order: {
         createdAt: "DESC"
@@ -297,6 +298,7 @@ export class DirectChatGateway {
     if (!chat) throw new WsException("Chat is not found.");
 
     const messages = await this.messageService.findWithAttachments("audio", {
+      skip: dto.skip,
       where: {chat},
       order: {
         createdAt: "DESC"
@@ -326,6 +328,7 @@ export class DirectChatGateway {
     if (!chat) throw new WsException("Chat is not found.");
 
     const messages = await this.messageService.findWithAttachments("files", {
+      skip: dto.skip,
       where: {chat},
       order: {
         createdAt: "DESC"

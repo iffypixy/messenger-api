@@ -9,5 +9,5 @@ export class GetGroupChatAttachmentsDto {
   @IsNumber({}, {
     message: "Skip must be type of number"
   })
-  skip?: string;
+  skip?: number;
 }
