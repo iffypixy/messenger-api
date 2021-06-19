@@ -1,6 +1,8 @@
 import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {ConfigModule, ConfigService} from "@nestjs/config";
+import {ServeStaticModule} from "@nestjs/serve-static";
+import * as path from "path";
 
 import {databaseConfig, jwtConfig, s3Config} from "@config/index";
 import {UserModule, User} from "@modules/user";
@@ -18,6 +20,9 @@ import {WebsocketsModule} from "@lib/websockets";
     ProfileModule,
     ChatModule,
     WebsocketsModule,
+    ServeStaticModule.forRoot({
+      rootPath: path.join(__dirname, "..", "client")
+    }),
     ConfigModule.forRoot({
       envFilePath: [".env.development"],
       load: [databaseConfig, jwtConfig, s3Config],
