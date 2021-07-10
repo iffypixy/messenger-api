@@ -1,2 +1,2 @@
 export {maxFileSize} from "./constants";
-export {extensions, isExtValid, isImageExt, isAudioExt} from "./extensions";
+export {extensions, isImageExt, isAudioExt} from "./extensions";

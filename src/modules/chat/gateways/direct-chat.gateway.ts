@@ -7,7 +7,7 @@ import {
   WsException
 } from "@nestjs/websockets";
 import {Server} from "socket.io";
-import {In, LessThan, MoreThan, Not} from "typeorm";
+import {In, Not} from "typeorm";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 
 import {FilePublicData, FileService} from "@modules/upload";
@@ -16,6 +16,7 @@ import {ExtendedSocket, ID} from "@lib/typings";
 import {queryLimit} from "@lib/queries";
 import {extensions} from "@lib/files";
 import {BadRequestTransformationFilter, WebsocketService} from "@lib/websocket";
+import {LessThanDate} from "@lib/operators";
 import {DirectChatMemberPublicData, DirectChatMessagePublicData, DirectChatPublicData} from "../lib/typings";
 import {DirectChatMemberService, DirectChatMessageService, DirectChatService} from "../services";
 import {publiciseDirectChatMember} from "../entities";
@@ -28,7 +29,6 @@ import {
   UnbanDirectChatPartnerDto, ReadDirectMessageDto
 } from "./dtos";
 import {directChatServerEvents as serverEvents, directChatClientEvents as clientEvents} from "./events";
-import {LessThanDate} from "@lib/operators";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
@@ -195,8 +195,7 @@ export class DirectChatGateway {
     const files = dto.files && await this.fileService.find({
       where: {
         id: In(dto.files),
-        user: socket.user,
-        extension: In(extensions.all)
+        user: socket.user
       }
     });
 

@@ -15,6 +15,7 @@ import {UserService} from "@modules/user";
 import {queryLimit} from "@lib/queries";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {extensions} from "@lib/files";
+import {LessThanDate} from "@lib/operators";
 import {BadRequestTransformationFilter, WebsocketService} from "@lib/websocket";
 import {
   DirectChatPublicData,
@@ -34,7 +35,6 @@ import {
 } from "./dtos";
 import {GroupChatMember} from "../entities";
 import {groupChatServerEvents as serverEvents, groupChatClientEvents as clientEvents} from "./events";
-import {LessThanDate} from "@lib/operators";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
@@ -204,8 +204,7 @@ export class GroupChatGateway {
     const files = dto.files && await this.fileService.find({
       where: {
         id: In(dto.files),
-        user: socket.user,
-        extension: In(extensions.all)
+        user: socket.user
       }
     });
 

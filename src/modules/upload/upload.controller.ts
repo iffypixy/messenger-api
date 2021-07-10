@@ -14,7 +14,7 @@ import {User} from "@modules/user";
 import {GetUser} from "@modules/auth/decorators";
 import {IsAuthorizedGuard} from "@modules/auth/guards";
 import {FilePublicData} from "@modules/upload";
-import {isExtValid, maxFileSize} from "@lib/files";
+import {maxFileSize} from "@lib/files";
 import {BufferedFile} from "@lib/typings";
 import {FileService, UploadService} from "./services";
 
@@ -29,15 +29,8 @@ export class UploadController {
 
   @UseInterceptors(
     FileInterceptor("file", {
-      limits: {fileSize: maxFileSize},
-      fileFilter: (_, file: BufferedFile, callback) => {
-        const error = new BadRequestException("Invalid file extension");
-
-        const ext = `.${mime.getExtension(file.mimetype)}`;
-
-        if (!isExtValid(ext)) return callback(error, false);
-
-        callback(null, true);
+      limits: {
+        fileSize: maxFileSize
       }
     })
   )
