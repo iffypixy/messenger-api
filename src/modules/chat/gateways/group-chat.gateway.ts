@@ -15,7 +15,7 @@ import {UserService} from "@modules/user";
 import {queryLimit} from "@lib/queries";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {extensions} from "@lib/files";
-import {BadRequestTransformationFilter, WebsocketsService} from "@lib/websockets";
+import {BadRequestTransformationFilter, WebsocketService} from "@lib/websocket";
 import {
   DirectChatPublicData,
   GroupChatMemberPublicData,
@@ -46,7 +46,7 @@ export class GroupChatGateway {
     private readonly chatService: GroupChatService,
     private readonly fileService: FileService,
     private readonly userService: UserService,
-    private readonly websocketService: WebsocketsService
+    private readonly websocketService: WebsocketService
   ) {
   }
 

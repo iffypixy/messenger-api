@@ -1,1 +1,1 @@
-export const queryLimit = 15;
+export {queryLimit} from "./constants";

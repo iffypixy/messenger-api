@@ -14,7 +14,7 @@ import {User} from "@modules/user";
 import {GetUser} from "@modules/auth/decorators";
 import {IsAuthorizedGuard} from "@modules/auth/guards";
 import {FilePublicData} from "@modules/upload";
-import {isExtensionValid, maxFileSize} from "@lib/files";
+import {isExtValid, maxFileSize} from "@lib/files";
 import {BufferedFile} from "@lib/typings";
 import {FileService, UploadService} from "./services";
 
@@ -35,7 +35,7 @@ export class UploadController {
 
         const ext = `.${mime.getExtension(file.mimetype)}`;
 
-        if (!isExtensionValid(ext)) return callback(error, false);
+        if (!isExtValid(ext)) return callback(error, false);
 
         callback(null, true);
       }
@@ -52,8 +52,6 @@ export class UploadController {
     const {mimetype, size, originalname, buffer} = bufferedFile;
 
     const ext = `.${mime.getExtension(mimetype)}`;
-
-    if (!isExtensionValid(ext)) throw new BadRequestException("Invalid file extension");
 
     const {Location: url} = await this.uploadService.upload(buffer, mimetype);
 

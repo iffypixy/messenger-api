@@ -8,7 +8,7 @@ import {filter, first, map, mergeMap, share, takeUntil} from "rxjs/operators";
 import {Server} from "socket.io";
 
 // TODO: Using this until socket.io v3 is part of Nest.js, see: https://github.com/nestjs/nest/issues/5676
-export class WebsocketsAdapter extends AbstractWsAdapter {
+export class WebsocketAdapter extends AbstractWsAdapter {
   constructor(
     private readonly app: INestApplicationContext,
     private readonly cors: CorsOptions

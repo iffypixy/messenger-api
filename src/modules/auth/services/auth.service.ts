@@ -16,7 +16,7 @@ export class AuthService {
     private readonly configService: ConfigService
   ) {}
 
-  async findUserByToken(token: string): Promise<User | null> {
+  async findUserByAccessToken(token: string): Promise<User | null> {
     try {
       const {userId} = await this.jwtService.verifyAsync(token);
 
@@ -24,10 +24,8 @@ export class AuthService {
 
       if (!user) return null;
 
-      const lastSeen = new Date();
-
       return this.userService.save({
-        ...user, lastSeen
+        ...user, lastSeen: new Date()
       });
     } catch (error) {
       return null;
@@ -35,18 +33,15 @@ export class AuthService {
   }
 
   async getJWTs(user: User, fingerprint: string): Promise<{accessToken: string; refreshToken: string}> {
-    const refreshTokenExpiresIn = this.configService.get<number>(
-      "jwt.refreshToken.expiresIn"
-    );
+    const refreshTokenExpiresIn = this.configService.get<number>("jwt.refreshToken.expiresIn");
 
     const accessToken = await this.jwtService.signAsync({
       userId: user.id
     });
 
     const refreshToken = await this.refreshSessionService.create({
-      user: user, fingerprint,
+      user, fingerprint, token: v4(),
       expiresAt: new Date(Date.now() + refreshTokenExpiresIn),
-      token: v4()
     });
 
     return {

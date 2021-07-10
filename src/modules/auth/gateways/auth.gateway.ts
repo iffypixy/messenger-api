@@ -4,7 +4,7 @@ import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {NextFunction} from "express";
 import * as cookie from "cookie";
 
-import {BadRequestTransformationFilter} from "@lib/websockets";
+import {BadRequestTransformationFilter} from "@lib/websocket";
 import {ExtendedSocket} from "@lib/typings";
 import {RefreshSessionService} from "../services";
 

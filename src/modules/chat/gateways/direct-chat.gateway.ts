@@ -15,7 +15,7 @@ import {UserService} from "@modules/user";
 import {ExtendedSocket, ID} from "@lib/typings";
 import {queryLimit} from "@lib/queries";
 import {extensions} from "@lib/files";
-import {BadRequestTransformationFilter, WebsocketsService} from "@lib/websockets";
+import {BadRequestTransformationFilter, WebsocketService} from "@lib/websocket";
 import {DirectChatMemberPublicData, DirectChatMessagePublicData, DirectChatPublicData} from "../lib/typings";
 import {DirectChatMemberService, DirectChatMessageService, DirectChatService} from "../services";
 import {publiciseDirectChatMember} from "../entities";
@@ -40,7 +40,7 @@ export class DirectChatGateway {
     private readonly chatService: DirectChatService,
     private readonly fileService: FileService,
     private readonly userService: UserService,
-    private readonly websocketsService: WebsocketsService
+    private readonly websocketsService: WebsocketService
   ) {
   }
 

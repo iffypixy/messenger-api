@@ -12,7 +12,6 @@ import {
 
 import {ID} from "@lib/typings";
 import {User} from "./entities";
-import {FindOptions} from "@nestjs/schematics/dist";
 
 @Injectable()
 export class UserService {

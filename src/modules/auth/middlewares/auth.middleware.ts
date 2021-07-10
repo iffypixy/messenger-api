@@ -15,9 +15,7 @@ export class AuthMiddleware implements NestMiddleware {
   ): Promise<void> {
     const token: string = req.cookies["access-token"];
 
-    if (token) {
-      req.user = await this.authService.findUserByToken(token);
-    }
+    if (token) req.user = await this.authService.findUserByAccessToken(token);
 
     next();
   }

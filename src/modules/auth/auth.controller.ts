@@ -20,7 +20,8 @@ export class AuthController {
     private readonly refreshSessionService: RefreshSessionService,
     private readonly authService: AuthService,
     private readonly uploadService: UploadService
-  ) {}
+  ) {
+  }
 
   @HttpCode(201)
   @Post("register")
@@ -32,8 +33,7 @@ export class AuthController {
       where: {username}
     });
 
-    if (existed)
-      throw new BadRequestException("This login has been already used.");
+    if (existed) throw new BadRequestException("This login has been already used.");
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -75,9 +75,7 @@ export class AuthController {
 
     if (!doPasswordsMatch) throw error;
 
-    await this.refreshSessionService.delete({
-      fingerprint
-    });
+    await this.refreshSessionService.delete({fingerprint});
 
     const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);
 
@@ -103,9 +101,7 @@ export class AuthController {
     if (!token) throw error;
 
     const session = await this.refreshSessionService.findOne({
-      where: {
-        fingerprint, token
-      }
+      where: {fingerprint, token}
     });
 
     if (!session) throw error;
@@ -118,8 +114,7 @@ export class AuthController {
       id: session.id
     });
 
-    const {accessToken, refreshToken: newRefreshToken} = await this.authService
-      .getJWTs(session.user, fingerprint);
+    const {accessToken, refreshToken: newRefreshToken} = await this.authService.getJWTs(session.user, fingerprint);
 
     res.cookie("access-token", accessToken, this.authService.accessTokenCookieOptions);
     res.cookie("refresh-token", newRefreshToken, this.authService.refreshTokenCookieOptions);

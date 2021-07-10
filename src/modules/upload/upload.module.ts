@@ -9,9 +9,7 @@ import {File} from "./entities";
 @Module({
   imports: [
     forwardRef(() => AuthModule),
-    TypeOrmModule.forFeature(
-      [File]
-    )
+    TypeOrmModule.forFeature([File])
   ],
   controllers: [UploadController],
   providers: [UploadService, FileService],

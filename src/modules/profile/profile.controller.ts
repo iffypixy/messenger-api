@@ -6,8 +6,8 @@ import {GetUser, IsAuthorizedGuard} from "@modules/auth";
 import {User, UserService, UserPublicData, publiciseUser} from "@modules/user";
 import {UploadService} from "@modules/upload";
 import {BufferedFile} from "@lib/typings";
-import {isExtensionValid, maxFileSize} from "@lib/files";
-import {cleanObject} from "@lib/functions";
+import {isImageExt, maxFileSize} from "@lib/files";
+import {clearObject} from "@lib/utils";
 import {UpdateProfileDto} from "./dtos";
 
 @UseGuards(IsAuthorizedGuard)
@@ -21,12 +21,12 @@ export class ProfileController {
   @UseInterceptors(
     FileInterceptor("avatar", {
       limits: {fileSize: maxFileSize},
-      fileFilter: (_, file, callback) => {
+      fileFilter: (_, file: BufferedFile, callback) => {
         const error = new BadRequestException("Invalid file extension");
 
         const ext = `.${mime.getExtension(file.mimetype)}`;
 
-        if (!isExtensionValid(ext)) return callback(error, false);
+        if (!isImageExt(ext)) return callback(error, false);
 
         callback(null, true);
       }
@@ -36,14 +36,15 @@ export class ProfileController {
   async updateProfile(
     @GetUser() user: User,
     @Body() {username}: UpdateProfileDto,
-    @UploadedFile() file: BufferedFile
+    @UploadedFile() bufferedFile: BufferedFile
   ): Promise<{credentials: UserPublicData}> {
-    const avatar = file &&
-      (await this.uploadService.upload(file.buffer, file.mimetype)).Location;
+    if (!bufferedFile) throw new BadRequestException("File is required");
+
+    const avatar = (await this.uploadService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
 
     const partial = {username, avatar};
 
-    cleanObject(partial);
+    clearObject(partial);
 
     const updated = await this.userService.save({
       ...user, ...partial

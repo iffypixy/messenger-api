@@ -23,7 +23,7 @@ export class UserController {
     });
 
     return {
-      users: users.map(user => user.public)
+      users: users.map((user) => user.public)
     };
   }
 

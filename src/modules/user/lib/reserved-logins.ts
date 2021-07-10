@@ -7,5 +7,4 @@ const reservedLogins = [
   "moderator"
 ];
 
-export const isReserved = (login: string): boolean =>
-  reservedLogins.includes(login);
+export const isReserved = (login: string): boolean => reservedLogins.includes(login);
