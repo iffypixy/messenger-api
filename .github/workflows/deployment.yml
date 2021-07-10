@@ -21,9 +21,13 @@ jobs:
             sudo rm -r ~/backend
             sudo mkdir ~/backend
             cd ~/backend
+            
             sudo git clone https://github.com/ansatjrt/messenger-backend .
             sudo npm ci
+            
             sudo cp ~/.env.production ~/backend
+            
+            sudo killall -9 node
             sudo NODE_ENV=production node dist/main.js
 
 
