@@ -27,7 +27,7 @@ jobs:
             
             sudo cp ~/.env.production ~/backend
             
-            sudo killall -9 node
-            sudo NODE_ENV=production node dist/main.js
+            sudo forever stopall
+            sudo NODE_ENV=production forever start dist/main.js
 
 
