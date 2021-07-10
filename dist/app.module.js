@@ -18,6 +18,7 @@ const profile_1 = require("./modules/profile");
 const chat_1 = require("./modules/chat");
 const websocket_1 = require("./lib/websocket");
 const env = process.env.NODE_ENV;
+console.log(env, process.env);
 let AppModule = class AppModule {
 };
 AppModule = __decorate([

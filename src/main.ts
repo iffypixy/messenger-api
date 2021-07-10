@@ -6,11 +6,10 @@ import {CorsOptions} from "@nestjs/common/interfaces/external/cors-options.inter
 import {WebsocketAdapter} from "@lib/websocket";
 import {AppModule} from "./app.module";
 
-const origin = "http://localhost:3000";
-
 async function bootstrap() {
   const cors: CorsOptions = {
-    origin, credentials: true
+    origin: process.env.ORIGIN,
+    credentials: true
   };
 
   const app = await NestFactory.create(AppModule, {cors});

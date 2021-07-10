@@ -14,6 +14,8 @@ import {WebsocketModule} from "@lib/websocket";
 
 const env = process.env.NODE_ENV;
 
+console.log(env, process.env);
+
 @Module({
   imports: [
     UserModule,
