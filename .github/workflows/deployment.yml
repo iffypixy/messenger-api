@@ -18,10 +18,13 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            sudo rm -r ~/backend
+            sudo mkdir ~/backend
             cd ~/backend
             sudo git clone https://github.com/ansatjrt/messenger-backend .
             sudo npm install
             sudo npm run build
+            sudo cp ~/.env.production ~/backend
             sudo pm2 start dist/main.js -- --ENV=production
 
 
