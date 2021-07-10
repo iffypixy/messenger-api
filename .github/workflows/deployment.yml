@@ -24,6 +24,6 @@ jobs:
             sudo git clone https://github.com/ansatjrt/messenger-backend .
             sudo npm install
             sudo cp ~/.env.production ~/backend
-            sudo ENV=production forever start dist/main.js
+            sudo NODE_ENV=production forever start dist/main.js
 
 
