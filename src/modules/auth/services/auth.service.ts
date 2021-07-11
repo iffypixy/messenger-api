@@ -20,13 +20,7 @@ export class AuthService {
     try {
       const {userId} = await this.jwtService.verifyAsync(token);
 
-      const user = await this.userService.findById(userId);
-
-      if (!user) return null;
-
-      return this.userService.save({
-        ...user, lastSeen: new Date()
-      });
+      return this.userService.findById(userId);
     } catch (error) {
       return null;
     }
