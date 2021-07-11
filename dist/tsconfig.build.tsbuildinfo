@@ -1307,8 +1307,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/query-builder/queryexpressionmap.d.ts": {
-        "version": "3060b9e9c9c3220f04a6422162b9faefd2ff2a79da4ba3ea1da780c6e2ba8559",
-        "signature": "3060b9e9c9c3220f04a6422162b9faefd2ff2a79da4ba3ea1da780c6e2ba8559",
+        "version": "acfb4ffe871c6fa06d1dc0412cc8fa808fcd8a05140941ed9e5346004470b6e6",
+        "signature": "acfb4ffe871c6fa06d1dc0412cc8fa808fcd8a05140941ed9e5346004470b6e6",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/query-builder/brackets.d.ts": {
@@ -1397,8 +1397,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/query-builder/selectquerybuilder.d.ts": {
-        "version": "4e645eac1ff815d9bb27a22523ff4584b1f70a3d7d7a464fd9bf190e71a8739f",
-        "signature": "4e645eac1ff815d9bb27a22523ff4584b1f70a3d7d7a464fd9bf190e71a8739f",
+        "version": "eba381266cc05466c11fd964a22cde9258aa38c5dfa03cdc5964b3913e33b38a",
+        "signature": "eba381266cc05466c11fd964a22cde9258aa38c5dfa03cdc5964b3913e33b38a",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/metadata-args/relationidmetadataargs.d.ts": {
@@ -1627,8 +1627,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/driver/mongodb/typings.d.ts": {
-        "version": "7a37aff73aa8cae7bbf546c5302da12a89189548cd7b77df66250ff9e23f86d6",
-        "signature": "7a37aff73aa8cae7bbf546c5302da12a89189548cd7b77df66250ff9e23f86d6",
+        "version": "113a6b4ff18eef30defc70772d63cb27f54a1b42aee75a7d22987d2bd040b073",
+        "signature": "113a6b4ff18eef30defc70772d63cb27f54a1b42aee75a7d22987d2bd040b073",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/repository/repository.d.ts": {
@@ -1707,8 +1707,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/driver/mongodb/mongoqueryrunner.d.ts": {
-        "version": "122e9f53a8b33e20d77f9ac008e74717f9ae4c9e591dd71ccf5c3e62b5e4f60a",
-        "signature": "122e9f53a8b33e20d77f9ac008e74717f9ae4c9e591dd71ccf5c3e62b5e4f60a",
+        "version": "73c552edf6829902c0c8ac9ddc658e9180e28ad1f97e45c576b9e2d2f5c0098c",
+        "signature": "73c552edf6829902c0c8ac9ddc658e9180e28ad1f97e45c576b9e2d2f5c0098c",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/entity-manager/mongoentitymanager.d.ts": {
@@ -1742,8 +1742,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/query-runner/queryrunner.d.ts": {
-        "version": "0ca3378f33be464877c4c93df0ecadbefa1302bc2bd5cd9f56c19d6efa962913",
-        "signature": "0ca3378f33be464877c4c93df0ecadbefa1302bc2bd5cd9f56c19d6efa962913",
+        "version": "4a27d7d364f9674aaf07e6275cd1a2061b1c3ebccfe1e7b143233948160d9ea7",
+        "signature": "4a27d7d364f9674aaf07e6275cd1a2061b1c3ebccfe1e7b143233948160d9ea7",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/driver/types/mappedcolumntypes.d.ts": {
@@ -1787,8 +1787,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/entity-schema/entityschemarelationoptions.d.ts": {
-        "version": "40ec6f4d834bd65728739d332cbf9fef3b517971eca426f1d8a846693be171bf",
-        "signature": "40ec6f4d834bd65728739d332cbf9fef3b517971eca426f1d8a846693be171bf",
+        "version": "2ace4de1fab34cf97be8a9e6416b58e931d163d26dee881deadbe2571e40a401",
+        "signature": "2ace4de1fab34cf97be8a9e6416b58e931d163d26dee881deadbe2571e40a401",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/entity-schema/entityschemauniqueoptions.d.ts": {
@@ -1822,8 +1822,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/driver/types/databasetype.d.ts": {
-        "version": "e734a1a38f9d0d044926d3e9cc7c399097df6498fc0a379656c9955545786027",
-        "signature": "e734a1a38f9d0d044926d3e9cc7c399097df6498fc0a379656c9955545786027",
+        "version": "b94900f0dd2fdbe8f59ea6cccb6a5c851f4abff9e77fbb3c48a5a92056c32069",
+        "signature": "b94900f0dd2fdbe8f59ea6cccb6a5c851f4abff9e77fbb3c48a5a92056c32069",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/logger/logger.d.ts": {
@@ -1842,8 +1842,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/connection/baseconnectionoptions.d.ts": {
-        "version": "2ccd6e2511abe69058e02186314e80ed85c39c8d69be7e655b44ca552d9e586b",
-        "signature": "2ccd6e2511abe69058e02186314e80ed85c39c8d69be7e655b44ca552d9e586b",
+        "version": "dfc6bb11e082c55d793f64c4b35d25c81663a36a1442e1f4e46db25af695d034",
+        "signature": "dfc6bb11e082c55d793f64c4b35d25c81663a36a1442e1f4e46db25af695d034",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/driver/types/replicationmode.d.ts": {
@@ -2016,9 +2016,14 @@
         "signature": "e78aaddd9e825e66ee7e7a1cb1553a7ff0cfb4c23dab6cdf11af3a6823c9cbc0",
         "affectsGlobalScope": false
       },
+      "../node_modules/typeorm/driver/capacitor/capacitorconnectionoptions.d.ts": {
+        "version": "05e02584e052f30a263a141de067b59328b021a1814a74c3529d7e434949da54",
+        "signature": "05e02584e052f30a263a141de067b59328b021a1814a74c3529d7e434949da54",
+        "affectsGlobalScope": false
+      },
       "../node_modules/typeorm/connection/connectionoptions.d.ts": {
-        "version": "44a8f8a5e0d2be8722f3bfcc1a800a9af3a0dd3289ea2237f726dcb8c4905b33",
-        "signature": "44a8f8a5e0d2be8722f3bfcc1a800a9af3a0dd3289ea2237f726dcb8c4905b33",
+        "version": "908186650911cbfe9a5aa005ad1ee610d13d02cb2e4a27a9e1d442dfc21909bc",
+        "signature": "908186650911cbfe9a5aa005ad1ee610d13d02cb2e4a27a9e1d442dfc21909bc",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/entity-manager/sqljsentitymanager.d.ts": {
@@ -2097,8 +2102,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/metadata-args/metadataargsstorage.d.ts": {
-        "version": "3cc8a65d7666320f6c22fe1a455c78eb3364156efed4fdc42590c4062b3b274c",
-        "signature": "3cc8a65d7666320f6c22fe1a455c78eb3364156efed4fdc42590c4062b3b274c",
+        "version": "be32c0a0576265a4dee467f328c5945805a832e6268d312ed768cae1f2666fa6",
+        "signature": "be32c0a0576265a4dee467f328c5945805a832e6268d312ed768cae1f2666fa6",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/container.d.ts": {
@@ -2362,8 +2367,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/error/queryfailederror.d.ts": {
-        "version": "b77df0ec30499a24b7f5146ca8a4423fd1cf10051b8a40649fd2b3454828034c",
-        "signature": "b77df0ec30499a24b7f5146ca8a4423fd1cf10051b8a40649fd2b3454828034c",
+        "version": "3757d24cea62dd3cd4c51e483d4a512363466850e3d0f1babe3c94d8666b027d",
+        "signature": "3757d24cea62dd3cd4c51e483d4a512363466850e3d0f1babe3c94d8666b027d",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/error/noneedtoreleaseentitymanagererror.d.ts": {
@@ -2662,8 +2667,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/decorator/tree/treeparent.d.ts": {
-        "version": "b34c09021af6fad85065ba08d15dc07b28d96508687f40801afc70aee5572fd5",
-        "signature": "b34c09021af6fad85065ba08d15dc07b28d96508687f40801afc70aee5572fd5",
+        "version": "253f79802f33f405c1807f33efa7d78e0a26143ee694297d4f8e1477c7ed5e28",
+        "signature": "253f79802f33f405c1807f33efa7d78e0a26143ee694297d4f8e1477c7ed5e28",
         "affectsGlobalScope": false
       },
       "../node_modules/typeorm/decorator/tree/treechildren.d.ts": {
@@ -3192,8 +3197,8 @@
         "affectsGlobalScope": true
       },
       "../node_modules/@types/node/async_hooks.d.ts": {
-        "version": "a6bc4034cb5096a8a1a855a188e15d1d4d5d2f3e997f83b8ba2c23076b2c8e36",
-        "signature": "a6bc4034cb5096a8a1a855a188e15d1d4d5d2f3e997f83b8ba2c23076b2c8e36",
+        "version": "726b22a7926e82a6013c11f8de5dfd6ddfb4b830693fa43ac391d2d69a3ad814",
+        "signature": "726b22a7926e82a6013c11f8de5dfd6ddfb4b830693fa43ac391d2d69a3ad814",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/node/buffer.d.ts": {
@@ -3317,8 +3322,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@types/node/repl.d.ts": {
-        "version": "cc242657e01acd67c9bc01dc152c3c7ba3a546bf5fa046b0a06c9f46b6481c9b",
-        "signature": "cc242657e01acd67c9bc01dc152c3c7ba3a546bf5fa046b0a06c9f46b6481c9b",
+        "version": "a7b1725842348a2dece056c2183c668da763e1ce693bd32351ee3e21c99903b9",
+        "signature": "a7b1725842348a2dece056c2183c668da763e1ce693bd32351ee3e21c99903b9",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/node/stream.d.ts": {
@@ -3367,8 +3372,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@types/node/vm.d.ts": {
-        "version": "1597b665f821e10d8fbcfac026124ce7c54ad4be4dc9ea15f4ae8fecbf601603",
-        "signature": "1597b665f821e10d8fbcfac026124ce7c54ad4be4dc9ea15f4ae8fecbf601603",
+        "version": "cb18c8bcbfdc551de1258885770cca8c87741fc7a9cfacb53f728b2ceee0a5d5",
+        "signature": "cb18c8bcbfdc551de1258885770cca8c87741fc7a9cfacb53f728b2ceee0a5d5",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/node/worker_threads.d.ts": {
@@ -3412,18 +3417,18 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@types/range-parser/index.d.ts": {
-        "version": "4e88b833be14c7f384e0dcd57bb30acd799e8e34d212635d693e41a75a71164b",
-        "signature": "4e88b833be14c7f384e0dcd57bb30acd799e8e34d212635d693e41a75a71164b",
+        "version": "16d51f964ec125ad2024cf03f0af444b3bc3ec3614d9345cc54d09bab45c9a4c",
+        "signature": "16d51f964ec125ad2024cf03f0af444b3bc3ec3614d9345cc54d09bab45c9a4c",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/qs/index.d.ts": {
-        "version": "98437d5a640b67c41534f0de2dcb64c75433dcdff54ff8f8432e613663619a2e",
-        "signature": "98437d5a640b67c41534f0de2dcb64c75433dcdff54ff8f8432e613663619a2e",
+        "version": "ba601641fac98c229ccd4a303f747de376d761babb33229bb7153bed9356c9cc",
+        "signature": "ba601641fac98c229ccd4a303f747de376d761babb33229bb7153bed9356c9cc",
         "affectsGlobalScope": false
       },
-      "../node_modules/@types/express-serve-static-core/index.d.ts": {
-        "version": "e41a1ce538d71d5a3389b7fc2e39c15a4972f0d4cb14bf2fe8cda8c361150028",
-        "signature": "e41a1ce538d71d5a3389b7fc2e39c15a4972f0d4cb14bf2fe8cda8c361150028",
+      "../node_modules/@types/express-serve-static-core/ts4.0/index.d.ts": {
+        "version": "410a1d58cf676b65cc64d4349736cabf375f6ef58a7dd4ff07c222fc5e40bfbc",
+        "signature": "410a1d58cf676b65cc64d4349736cabf375f6ef58a7dd4ff07c222fc5e40bfbc",
         "affectsGlobalScope": true
       },
       "../node_modules/@types/serve-static/node_modules/@types/mime/index.d.ts": {
@@ -3432,23 +3437,23 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@types/serve-static/index.d.ts": {
-        "version": "3b02517f9be71f255eadab9892406055d069167891f1e1ea16c96c4ff1ddda01",
-        "signature": "3b02517f9be71f255eadab9892406055d069167891f1e1ea16c96c4ff1ddda01",
+        "version": "0b85cb069d0e427ba946e5eb2d86ef65ffd19867042810516d16919f6c1a5aec",
+        "signature": "0b85cb069d0e427ba946e5eb2d86ef65ffd19867042810516d16919f6c1a5aec",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/connect/index.d.ts": {
-        "version": "81c14b89fa607b86dd726e2e3e91360cf8155ce97468404324d404a5bd65b2eb",
-        "signature": "81c14b89fa607b86dd726e2e3e91360cf8155ce97468404324d404a5bd65b2eb",
+        "version": "6d829824ead8999f87b6df21200df3c6150391b894b4e80662caa462bd48d073",
+        "signature": "6d829824ead8999f87b6df21200df3c6150391b894b4e80662caa462bd48d073",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/body-parser/index.d.ts": {
-        "version": "ebddbd167c2fabd0151f50e5df94ca6d845149c47521280d8867afe3429dd078",
-        "signature": "ebddbd167c2fabd0151f50e5df94ca6d845149c47521280d8867afe3429dd078",
+        "version": "65cfd1c0bc729fbc2b49fe66bc5ebddba5aa3a978c748e1d2e0d07f502238ce2",
+        "signature": "65cfd1c0bc729fbc2b49fe66bc5ebddba5aa3a978c748e1d2e0d07f502238ce2",
         "affectsGlobalScope": false
       },
-      "../node_modules/@types/express/index.d.ts": {
-        "version": "3b05c396564e51753e921e1cc4aae1cf7cd9be53c891cf2e81fa29f11c0bd373",
-        "signature": "3b05c396564e51753e921e1cc4aae1cf7cd9be53c891cf2e81fa29f11c0bd373",
+      "../node_modules/@types/express/ts4.0/index.d.ts": {
+        "version": "587b9ba944f50038226049381e9c44389c3f720eb2ca6774e7d58dbc43109826",
+        "signature": "587b9ba944f50038226049381e9c44389c3f720eb2ca6774e7d58dbc43109826",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/component-emitter/index.d.ts": {
@@ -3482,8 +3487,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@types/cookie/index.d.ts": {
-        "version": "405ad6db8aa3d5618c3be21cde8125de28a3e40690eb05136c123f420c05c082",
-        "signature": "405ad6db8aa3d5618c3be21cde8125de28a3e40690eb05136c123f420c05c082",
+        "version": "117ffeecf6c55e25b6446f449ad079029b5e7317399b0a693858faaaea5ca73e",
+        "signature": "117ffeecf6c55e25b6446f449ad079029b5e7317399b0a693858faaaea5ca73e",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/cors/index.d.ts": {
@@ -4262,8 +4267,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@nestjs/platform-express/multer/interfaces/files-upload-module.interface.d.ts": {
-        "version": "7bb8a371f7790a421606678b50a943955bfc182beca2c42f8d1473cc2973fa12",
-        "signature": "7bb8a371f7790a421606678b50a943955bfc182beca2c42f8d1473cc2973fa12",
+        "version": "5c684a0ecb10ed176fa8a6862f6290aad4818e88852b55ff7c27ead189315195",
+        "signature": "5c684a0ecb10ed176fa8a6862f6290aad4818e88852b55ff7c27ead189315195",
         "affectsGlobalScope": false
       },
       "../node_modules/@nestjs/platform-express/multer/interfaces/index.d.ts": {
@@ -4352,8 +4357,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/lib/credentials.d.ts": {
-        "version": "0ada350a456f9f750c609c3f13a47c22a07dadf69510c164d13d152e681eb03a",
-        "signature": "0ada350a456f9f750c609c3f13a47c22a07dadf69510c164d13d152e681eb03a",
+        "version": "cc02a7cda1aa5d3f8367d1c3731a4a0f8a8543d1288ebc728c12a31d91310d31",
+        "signature": "cc02a7cda1aa5d3f8367d1c3731a4a0f8a8543d1288ebc728c12a31d91310d31",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/lib/credentials/credential_provider_chain.d.ts": {
@@ -4417,8 +4422,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/autoscaling.d.ts": {
-        "version": "e75b5a6a9653091fb9dc6664313eabdb482b71f66b928ce3a7df832a499a2612",
-        "signature": "e75b5a6a9653091fb9dc6664313eabdb482b71f66b928ce3a7df832a499a2612",
+        "version": "5a6c08f835b01ecb62ad7b1cb051b6c7e6969e24811acb20269ca72040f576cf",
+        "signature": "5a6c08f835b01ecb62ad7b1cb051b6c7e6969e24811acb20269ca72040f576cf",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/batch.d.ts": {
@@ -4437,8 +4442,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloudformation.d.ts": {
-        "version": "d24dacff8ce26a95f38e030356cb28ad2fadb3999678068c190fe9f2309413f9",
-        "signature": "d24dacff8ce26a95f38e030356cb28ad2fadb3999678068c190fe9f2309413f9",
+        "version": "2f3e0fa968e54e382b75f2311b5a47ae7390fb79db81effca64ce91cf034a195",
+        "signature": "2f3e0fa968e54e382b75f2311b5a47ae7390fb79db81effca64ce91cf034a195",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/lib/cloudfront/signer.d.ts": {
@@ -4452,8 +4457,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloudfront.d.ts": {
-        "version": "2a0d3ab2065dc736297bd6915e02382e6cab340ffecf06ad89a8642561139265",
-        "signature": "2a0d3ab2065dc736297bd6915e02382e6cab340ffecf06ad89a8642561139265",
+        "version": "8000bab24486923f8e14c94b9b0ee833ad6a9543ca766cd79025123cd6b339c2",
+        "signature": "8000bab24486923f8e14c94b9b0ee833ad6a9543ca766cd79025123cd6b339c2",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloudhsm.d.ts": {
@@ -4462,8 +4467,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloudsearch.d.ts": {
-        "version": "e2924438d75faca4299c159b96ece3d8d122035b652071e021bb8147d74c97fd",
-        "signature": "e2924438d75faca4299c159b96ece3d8d122035b652071e021bb8147d74c97fd",
+        "version": "5acf5f38bd77f748c3e47de146e970cd5d468f5029f5f9c029bed07281907e1f",
+        "signature": "5acf5f38bd77f748c3e47de146e970cd5d468f5029f5f9c029bed07281907e1f",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloudsearchdomain.d.ts": {
@@ -4472,8 +4477,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloudtrail.d.ts": {
-        "version": "e1051075fe4d43d5262863f3725703de0325163bb55b5635e01b11fb9c190d42",
-        "signature": "e1051075fe4d43d5262863f3725703de0325163bb55b5635e01b11fb9c190d42",
+        "version": "568e8b493944fe0bba53e601ca8eaa3199bcb0227f9b1398c1ca17b58b81b57e",
+        "signature": "568e8b493944fe0bba53e601ca8eaa3199bcb0227f9b1398c1ca17b58b81b57e",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloudwatch.d.ts": {
@@ -4482,18 +4487,18 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloudwatchevents.d.ts": {
-        "version": "58943d665af0f26b1972a57ca5d1f81ea00209622897ee879c5c484435dc550b",
-        "signature": "58943d665af0f26b1972a57ca5d1f81ea00209622897ee879c5c484435dc550b",
+        "version": "ab7d5d91879af9e5e940ab16fa0b4adb234497425886a7e8f30b58a5f7ad778b",
+        "signature": "ab7d5d91879af9e5e940ab16fa0b4adb234497425886a7e8f30b58a5f7ad778b",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloudwatchlogs.d.ts": {
-        "version": "90e267e6df43aae7b600a7fc534a4941708b4fd55b6eaac7c948b99b5b204bf9",
-        "signature": "90e267e6df43aae7b600a7fc534a4941708b4fd55b6eaac7c948b99b5b204bf9",
+        "version": "c18cf7665e657a3418811faf1d03cf8bc606b673ba42ae68c7542b5512bf63ea",
+        "signature": "c18cf7665e657a3418811faf1d03cf8bc606b673ba42ae68c7542b5512bf63ea",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/codebuild.d.ts": {
-        "version": "61245ad61ba31403d59b87d571945b440b23c55ff715feeb43a7724d4a22632a",
-        "signature": "61245ad61ba31403d59b87d571945b440b23c55ff715feeb43a7724d4a22632a",
+        "version": "1b9cc46945ce67696e8ba8dfe3c1e861d2a7f4da24f36f903a8da5532c9050ad",
+        "signature": "1b9cc46945ce67696e8ba8dfe3c1e861d2a7f4da24f36f903a8da5532c9050ad",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/codecommit.d.ts": {
@@ -4517,8 +4522,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cognitoidentityserviceprovider.d.ts": {
-        "version": "c467059b26555e35915a0c33386ae48ed59dd600375fc072c77acb189935ff14",
-        "signature": "c467059b26555e35915a0c33386ae48ed59dd600375fc072c77acb189935ff14",
+        "version": "a8500f797fffb8cd58b1785c8eae6a8b925dc51dbeadc1a1e05ebf2572789f15",
+        "signature": "a8500f797fffb8cd58b1785c8eae6a8b925dc51dbeadc1a1e05ebf2572789f15",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cognitosync.d.ts": {
@@ -4542,8 +4547,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/devicefarm.d.ts": {
-        "version": "ab1e6bcc05b708796c08d816d6f5f34cc0826df56d53144ef82615ae2c31a23b",
-        "signature": "ab1e6bcc05b708796c08d816d6f5f34cc0826df56d53144ef82615ae2c31a23b",
+        "version": "82bb6f56bfdf01ca320fd9f793f66e64fdfa7c8f3ed770f85b4bf5f8bbc6572e",
+        "signature": "82bb6f56bfdf01ca320fd9f793f66e64fdfa7c8f3ed770f85b4bf5f8bbc6572e",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/directconnect.d.ts": {
@@ -4567,8 +4572,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/lib/dynamodb/document_client.d.ts": {
-        "version": "3692331e271c67a24db0ab19f5913be9c4b62e9b4e0cbdf58013e63aa465a78b",
-        "signature": "3692331e271c67a24db0ab19f5913be9c4b62e9b4e0cbdf58013e63aa465a78b",
+        "version": "54e8a0d8a292d5d66ac53046d651f9327186d0ce71fb18a6a67a83a26e5e5c47",
+        "signature": "54e8a0d8a292d5d66ac53046d651f9327186d0ce71fb18a6a67a83a26e5e5c47",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/lib/services/dynamodb.d.ts": {
@@ -4592,8 +4597,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ec2.d.ts": {
-        "version": "b56fe85b7807c00c4a8b48bd930f750a15eb1ad2b7a841456ae88e4e9f7f7b20",
-        "signature": "b56fe85b7807c00c4a8b48bd930f750a15eb1ad2b7a841456ae88e4e9f7f7b20",
+        "version": "0aec793c2168e7d878f34bf380409b812dd58606d5df8bf7a7189e56d42323f6",
+        "signature": "0aec793c2168e7d878f34bf380409b812dd58606d5df8bf7a7189e56d42323f6",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ecr.d.ts": {
@@ -4602,18 +4607,18 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ecs.d.ts": {
-        "version": "4a5933708bd7b6725cdb1e4aa5879c9a0c852641f01f62537f5fd36aa9709ab9",
-        "signature": "4a5933708bd7b6725cdb1e4aa5879c9a0c852641f01f62537f5fd36aa9709ab9",
+        "version": "61bda41bca10a7207302f97b4ea37b749e90fd8eb0dd3334546d5a1477255dbe",
+        "signature": "61bda41bca10a7207302f97b4ea37b749e90fd8eb0dd3334546d5a1477255dbe",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/efs.d.ts": {
-        "version": "10dbf0fa1d558474b39f3e660b30389cb6643f934e749f9a846017d53f0e2caf",
-        "signature": "10dbf0fa1d558474b39f3e660b30389cb6643f934e749f9a846017d53f0e2caf",
+        "version": "21305c19ab3fec96d67e64f4857db83e92acf2bc5e0668143b1988d1597bcade",
+        "signature": "21305c19ab3fec96d67e64f4857db83e92acf2bc5e0668143b1988d1597bcade",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/elasticache.d.ts": {
-        "version": "2dfd71cc8f34ae101a4db812caf9964a8ba43867e0ed3257d1e0162ab9ccbe4e",
-        "signature": "2dfd71cc8f34ae101a4db812caf9964a8ba43867e0ed3257d1e0162ab9ccbe4e",
+        "version": "2e07706e9f0c21f47eac290eb0b994a139838a17c2b18f2b27a6d20eb302ddae",
+        "signature": "2e07706e9f0c21f47eac290eb0b994a139838a17c2b18f2b27a6d20eb302ddae",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/elasticbeanstalk.d.ts": {
@@ -4627,8 +4632,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/elbv2.d.ts": {
-        "version": "626da7ce087bedf51cfa7eb41522265ce5da9c29f64b876a665b752b293aa031",
-        "signature": "626da7ce087bedf51cfa7eb41522265ce5da9c29f64b876a665b752b293aa031",
+        "version": "8e63773f746057571022c91a7faf631c58272c16148b7d411be4c313fc3592e4",
+        "signature": "8e63773f746057571022c91a7faf631c58272c16148b7d411be4c313fc3592e4",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/emr.d.ts": {
@@ -4637,8 +4642,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/es.d.ts": {
-        "version": "1ede536b8973e710cf534693ca51e29482908b3aa202b45a735a367faf8c0379",
-        "signature": "1ede536b8973e710cf534693ca51e29482908b3aa202b45a735a367faf8c0379",
+        "version": "d7182d1e8b554e197fe1becdbf790a437323818658ca93dca559ec26966d524f",
+        "signature": "d7182d1e8b554e197fe1becdbf790a437323818658ca93dca559ec26966d524f",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/elastictranscoder.d.ts": {
@@ -4672,8 +4677,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iam.d.ts": {
-        "version": "8b468d0cdeb6ef3e07e623ea00af05930261486c58ea2543bf25062996dc80eb",
-        "signature": "8b468d0cdeb6ef3e07e623ea00af05930261486c58ea2543bf25062996dc80eb",
+        "version": "ab109d60db493c46347803bb0d91fa73dfcc83ed7f69b1b410cbc73e9a63d787",
+        "signature": "ab109d60db493c46347803bb0d91fa73dfcc83ed7f69b1b410cbc73e9a63d787",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/importexport.d.ts": {
@@ -4687,8 +4692,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iot.d.ts": {
-        "version": "112b1ca7edcad37af82406f0c5a3ce74c3cd871df9e59819ee5857d33c1cf70d",
-        "signature": "112b1ca7edcad37af82406f0c5a3ce74c3cd871df9e59819ee5857d33c1cf70d",
+        "version": "a03197367e6b966342dc1a3987a137138ce11c5049753c81b937a8e9d51495a2",
+        "signature": "a03197367e6b966342dc1a3987a137138ce11c5049753c81b937a8e9d51495a2",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iotdata.d.ts": {
@@ -4707,13 +4712,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/kms.d.ts": {
-        "version": "f9e550453b835761511939a2c1ff2bf4aa9d8d965abe71b42175eb1403407bd7",
-        "signature": "f9e550453b835761511939a2c1ff2bf4aa9d8d965abe71b42175eb1403407bd7",
+        "version": "26b9f20c0b0a363efadf8954f4c1d48d8a59b7cb14bb62c74822e3dbcc836fdb",
+        "signature": "26b9f20c0b0a363efadf8954f4c1d48d8a59b7cb14bb62c74822e3dbcc836fdb",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/lambda.d.ts": {
-        "version": "4d52d5cbd8e5db4b13c7e384f691048d6a2ed6101fe785d945cc947b95a4dcbc",
-        "signature": "4d52d5cbd8e5db4b13c7e384f691048d6a2ed6101fe785d945cc947b95a4dcbc",
+        "version": "ba43f1c1cd06844de727939aa7fca5f2d9d147e85b1cef8d31d69917c5527680",
+        "signature": "ba43f1c1cd06844de727939aa7fca5f2d9d147e85b1cef8d31d69917c5527680",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/lexruntime.d.ts": {
@@ -4722,8 +4727,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/lightsail.d.ts": {
-        "version": "4c68f254429a0c65d69b5aa6f60ce4be44a90fcda4c1016b02aa4e16522c63ab",
-        "signature": "4c68f254429a0c65d69b5aa6f60ce4be44a90fcda4c1016b02aa4e16522c63ab",
+        "version": "b31cf0d350222b66de87836407d8ae0078b66bb508df27e10e4ee562e40961a3",
+        "signature": "b31cf0d350222b66de87836407d8ae0078b66bb508df27e10e4ee562e40961a3",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/machinelearning.d.ts": {
@@ -4757,8 +4762,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/opsworkscm.d.ts": {
-        "version": "4d056f6ed308749009c19831b27fb72c7a3069cd2978ecf321eedbfa3b901cef",
-        "signature": "4d056f6ed308749009c19831b27fb72c7a3069cd2978ecf321eedbfa3b901cef",
+        "version": "d1531c12a09ea37a8159d33b7f4f34ea189aa33ac398f3e2bd1f790c1a985ed2",
+        "signature": "d1531c12a09ea37a8159d33b7f4f34ea189aa33ac398f3e2bd1f790c1a985ed2",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/organizations.d.ts": {
@@ -4782,8 +4787,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/polly.d.ts": {
-        "version": "8fa5a0bae35fed15325c18fdad1468cb4c436bd3fb52eb8dadad6bc80ae0159c",
-        "signature": "8fa5a0bae35fed15325c18fdad1468cb4c436bd3fb52eb8dadad6bc80ae0159c",
+        "version": "d40b0550440a384c8e8ea69c9460d6b645b52718c3042edd8e4fcead7a325284",
+        "signature": "d40b0550440a384c8e8ea69c9460d6b645b52718c3042edd8e4fcead7a325284",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/lib/rds/signer.d.ts": {
@@ -4792,8 +4797,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/rds.d.ts": {
-        "version": "8f5b0fe19239d66e698ca78bc1f6856f5aed6c6a32c1ddd546e89c453a67ff1c",
-        "signature": "8f5b0fe19239d66e698ca78bc1f6856f5aed6c6a32c1ddd546e89c453a67ff1c",
+        "version": "1d9f6510eb6f55fb78e4fd5db1d6cbfbf8608f82f7a2ea96f1c723e4feab68e1",
+        "signature": "1d9f6510eb6f55fb78e4fd5db1d6cbfbf8608f82f7a2ea96f1c723e4feab68e1",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/redshift.d.ts": {
@@ -4802,8 +4807,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/rekognition.d.ts": {
-        "version": "523d71519ef47e67a47027eeb4f6d13503c9ecd313242f94c9c753bafc9d4342",
-        "signature": "523d71519ef47e67a47027eeb4f6d13503c9ecd313242f94c9c753bafc9d4342",
+        "version": "ba34afdf0abfc37c9ec7a7e497d2ae3c5cf0d2a5005429843c5381497776bcac",
+        "signature": "ba34afdf0abfc37c9ec7a7e497d2ae3c5cf0d2a5005429843c5381497776bcac",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/resourcegroupstaggingapi.d.ts": {
@@ -4847,18 +4852,18 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/s3.d.ts": {
-        "version": "aa214c96afef1e7faef70755dadb542a269316feb625fe4c7d83bebf55d5722c",
-        "signature": "aa214c96afef1e7faef70755dadb542a269316feb625fe4c7d83bebf55d5722c",
+        "version": "349184a41c0ed48035056471250a3c1b5c48eed32da2c5da9c6986769438f13a",
+        "signature": "349184a41c0ed48035056471250a3c1b5c48eed32da2c5da9c6986769438f13a",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/s3control.d.ts": {
-        "version": "9c6e12e77a2f326b5b6d50fab88faaaa484ee2087de691ff6c5442a705a20fd5",
-        "signature": "9c6e12e77a2f326b5b6d50fab88faaaa484ee2087de691ff6c5442a705a20fd5",
+        "version": "df83cdc41cb9e21cb3a90ccb0b9633ad62b09e13f8de2386e0d07eaa52e392d7",
+        "signature": "df83cdc41cb9e21cb3a90ccb0b9633ad62b09e13f8de2386e0d07eaa52e392d7",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/servicecatalog.d.ts": {
-        "version": "1a306e1ee4663225ad74ffaf97f6625e556a87c6986f9a73a175f5017dc26cec",
-        "signature": "1a306e1ee4663225ad74ffaf97f6625e556a87c6986f9a73a175f5017dc26cec",
+        "version": "c95ae1fb0bc18ec00453946a84079d4802431f8b55c9e2c5556d702660b20697",
+        "signature": "c95ae1fb0bc18ec00453946a84079d4802431f8b55c9e2c5556d702660b20697",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ses.d.ts": {
@@ -4882,28 +4887,28 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/snowball.d.ts": {
-        "version": "69e970ac4e34f4da91cb2941ae849de7c4055123e695322d269350821b93a024",
-        "signature": "69e970ac4e34f4da91cb2941ae849de7c4055123e695322d269350821b93a024",
+        "version": "ff28d5f09607e5215676b03c88eff09f32322a346fe0684f5f1a8382aa8128a1",
+        "signature": "ff28d5f09607e5215676b03c88eff09f32322a346fe0684f5f1a8382aa8128a1",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/sns.d.ts": {
-        "version": "cdc467f1d33fa7dcc91b9e2ae2677912f4ba4efde6813d145c5dd8e38d22448d",
-        "signature": "cdc467f1d33fa7dcc91b9e2ae2677912f4ba4efde6813d145c5dd8e38d22448d",
+        "version": "1fc1bd9e6c58a7188ee728a515740d69974ad9754c2e7a673f6ac0d2de6bcb9b",
+        "signature": "1fc1bd9e6c58a7188ee728a515740d69974ad9754c2e7a673f6ac0d2de6bcb9b",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/sqs.d.ts": {
-        "version": "3fcb8fe677f48e95f6e0765dc1fb9d8859b10c46dee1f7482fc22120927aa847",
-        "signature": "3fcb8fe677f48e95f6e0765dc1fb9d8859b10c46dee1f7482fc22120927aa847",
+        "version": "98361a7b2d57ca400513530628bb84f3320182d178b66af24cca8135364e6c10",
+        "signature": "98361a7b2d57ca400513530628bb84f3320182d178b66af24cca8135364e6c10",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ssm.d.ts": {
-        "version": "4dcc1e9308b12f3ba52ce896f7e1d51a5d3c225b91ce00a8e4eafb5917984403",
-        "signature": "4dcc1e9308b12f3ba52ce896f7e1d51a5d3c225b91ce00a8e4eafb5917984403",
+        "version": "f6a442986c98a2ed755870dbdcaa885270fe3732a017db16eb32c00f7cd145f5",
+        "signature": "f6a442986c98a2ed755870dbdcaa885270fe3732a017db16eb32c00f7cd145f5",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/storagegateway.d.ts": {
-        "version": "7e69c24e11f729a7f8dff64f21e3beff4fec705387f970324e4f5c3493ec25f9",
-        "signature": "7e69c24e11f729a7f8dff64f21e3beff4fec705387f970324e4f5c3493ec25f9",
+        "version": "e8e9b528b7ba7958fa8d268976b56b22a52fbe26c92a3a27669d207a47d2148c",
+        "signature": "e8e9b528b7ba7958fa8d268976b56b22a52fbe26c92a3a27669d207a47d2148c",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/stepfunctions.d.ts": {
@@ -4912,13 +4917,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/sts.d.ts": {
-        "version": "aff153575251a303b9d56eefefe8464bf29a2f643b1dce0978a9b737ebe00ca3",
-        "signature": "aff153575251a303b9d56eefefe8464bf29a2f643b1dce0978a9b737ebe00ca3",
+        "version": "264d3fc747def4063b4c32b0874309cc90ff99111eb8010eaf96c7cccd289b6b",
+        "signature": "264d3fc747def4063b4c32b0874309cc90ff99111eb8010eaf96c7cccd289b6b",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/support.d.ts": {
-        "version": "7da528a34adddb7385d09ed0cc53f9b21ad2ee807a747d0379c18065e12dd9e3",
-        "signature": "7da528a34adddb7385d09ed0cc53f9b21ad2ee807a747d0379c18065e12dd9e3",
+        "version": "3784403b752ac90861e9b9f0bee9f4942108d0d8d9380e3c4fd79e70d8128d74",
+        "signature": "3784403b752ac90861e9b9f0bee9f4942108d0d8d9380e3c4fd79e70d8128d74",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/swf.d.ts": {
@@ -4947,8 +4952,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/workspaces.d.ts": {
-        "version": "4a5c748d785ff56626c0f05b520250b627113d655f8e0bf3a7aa54b53d5680ab",
-        "signature": "4a5c748d785ff56626c0f05b520250b627113d655f8e0bf3a7aa54b53d5680ab",
+        "version": "3dce0b99ed799c1a35d75ae9c62cdd85de4629540356ca3a9962318200b20b42",
+        "signature": "3dce0b99ed799c1a35d75ae9c62cdd85de4629540356ca3a9962318200b20b42",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/codestar.d.ts": {
@@ -4977,8 +4982,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/dax.d.ts": {
-        "version": "d96e26f7ac66e251dd84f918883840a63401b970bbdd9a5611f53e9e472dfa1e",
-        "signature": "d96e26f7ac66e251dd84f918883840a63401b970bbdd9a5611f53e9e472dfa1e",
+        "version": "a61937aaba98580e640b004e871eca152d0bdc6301f3521c390176ad32a5890c",
+        "signature": "a61937aaba98580e640b004e871eca152d0bdc6301f3521c390176ad32a5890c",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/migrationhub.d.ts": {
@@ -4992,8 +4997,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/glue.d.ts": {
-        "version": "4b823b88425cd48a975c29de9034fe307da2ad2ce6dc20faae5cc412a9d1f5ab",
-        "signature": "4b823b88425cd48a975c29de9034fe307da2ad2ce6dc20faae5cc412a9d1f5ab",
+        "version": "b4a471e0e1fcefa561c808488f27293de8c052327dbb59a848720f9de2630c51",
+        "signature": "b4a471e0e1fcefa561c808488f27293de8c052327dbb59a848720f9de2630c51",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/mobile.d.ts": {
@@ -5007,18 +5012,18 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/costexplorer.d.ts": {
-        "version": "24c25e0ce3bc44993f34afecd9f9c22ca22abb2d396b997f03129c9926771ff1",
-        "signature": "24c25e0ce3bc44993f34afecd9f9c22ca22abb2d396b997f03129c9926771ff1",
+        "version": "3bc70c7d3ece5483d8263888529b2debf4caf79de8b2454e488f77b4311bed03",
+        "signature": "3bc70c7d3ece5483d8263888529b2debf4caf79de8b2454e488f77b4311bed03",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/mediaconvert.d.ts": {
-        "version": "395e10c1147b65c5faf99b33cbe4702ed8d2ef0626007e0c0d78d9dd0d6e84ee",
-        "signature": "395e10c1147b65c5faf99b33cbe4702ed8d2ef0626007e0c0d78d9dd0d6e84ee",
+        "version": "5b6929c9f18b84ba70cdc35337ab112a7519cf4039f8a24bec893841f8a5f651",
+        "signature": "5b6929c9f18b84ba70cdc35337ab112a7519cf4039f8a24bec893841f8a5f651",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/medialive.d.ts": {
-        "version": "b8e34f726c6f83c5658b31bcb7440f42665533638ed8f4b6600e594ed1707303",
-        "signature": "b8e34f726c6f83c5658b31bcb7440f42665533638ed8f4b6600e594ed1707303",
+        "version": "d6ff48e03d10042850631c3226c2c36e799857db4d41f4b1bfb3f8ee7de42531",
+        "signature": "d6ff48e03d10042850631c3226c2c36e799857db4d41f4b1bfb3f8ee7de42531",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/mediapackage.d.ts": {
@@ -5047,8 +5052,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/mq.d.ts": {
-        "version": "9270ed24149bc3c45ccb4858e674d80bf2f811b43ecc9e328c3bfd3c770cd1ec",
-        "signature": "9270ed24149bc3c45ccb4858e674d80bf2f811b43ecc9e328c3bfd3c770cd1ec",
+        "version": "82c7fddaf3f2055dbf52f74cd91829fe9b45b8ea469af8af162dd07a59401fa4",
+        "signature": "82c7fddaf3f2055dbf52f74cd91829fe9b45b8ea469af8af162dd07a59401fa4",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/comprehend.d.ts": {
@@ -5082,8 +5087,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/sagemaker.d.ts": {
-        "version": "a186928eb135e457b62889d8d2e2e3178c597da63c3a7aada80fa7f1280aa31e",
-        "signature": "a186928eb135e457b62889d8d2e2e3178c597da63c3a7aada80fa7f1280aa31e",
+        "version": "0f37c6e17daf70c3b164abdff71b50773665cf2c0dfd1dbb813a59defb1bdb8f",
+        "signature": "0f37c6e17daf70c3b164abdff71b50773665cf2c0dfd1dbb813a59defb1bdb8f",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/translate.d.ts": {
@@ -5092,8 +5097,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/resourcegroups.d.ts": {
-        "version": "9444b35b14d0e7354946732c347f01a2c9fa6385b701c821f9a6531c422d8a46",
-        "signature": "9444b35b14d0e7354946732c347f01a2c9fa6385b701c821f9a6531c422d8a46",
+        "version": "08f4bd88df2ae6761710c3c79641363d3fcea1483ab65175db3322f505e439da",
+        "signature": "08f4bd88df2ae6761710c3c79641363d3fcea1483ab65175db3322f505e439da",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/alexaforbusiness.d.ts": {
@@ -5102,8 +5107,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/cloud9.d.ts": {
-        "version": "342dfd176e5856f9f539e6ed960ea90e17ed3835a6d12052a07d3fc3f55eedc0",
-        "signature": "342dfd176e5856f9f539e6ed960ea90e17ed3835a6d12052a07d3fc3f55eedc0",
+        "version": "90b4c37f68144fbbd08f8919420477d0ce3e0e2cc1677a01ea099689109992c2",
+        "signature": "90b4c37f68144fbbd08f8919420477d0ce3e0e2cc1677a01ea099689109992c2",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/serverlessapplicationrepository.d.ts": {
@@ -5112,8 +5117,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/servicediscovery.d.ts": {
-        "version": "0389f4738700688c09fcebf2cd03bf7960fc57d11f6df073b9615a3abea05803",
-        "signature": "0389f4738700688c09fcebf2cd03bf7960fc57d11f6df073b9615a3abea05803",
+        "version": "5f64e71b349553555f6489990609ffd244ed5e5ae072a9bd5ebaebb0b7522f68",
+        "signature": "5f64e71b349553555f6489990609ffd244ed5e5ae072a9bd5ebaebb0b7522f68",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/workmail.d.ts": {
@@ -5127,23 +5132,23 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/transcribeservice.d.ts": {
-        "version": "d66f766d903ea6726d5f308149fc1cd86c4fbd20a9228c3a9c1a9898e574b94e",
-        "signature": "d66f766d903ea6726d5f308149fc1cd86c4fbd20a9228c3a9c1a9898e574b94e",
+        "version": "20d574f0f2e6b20dc83343a7ec0a8adc5b5981211cf1e434e3d23aea0ac08afa",
+        "signature": "20d574f0f2e6b20dc83343a7ec0a8adc5b5981211cf1e434e3d23aea0ac08afa",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/connect.d.ts": {
-        "version": "4a40f27957350c912531b92c66e8184ca1acf1ebb915bb14891f3f30a1bc6a89",
-        "signature": "4a40f27957350c912531b92c66e8184ca1acf1ebb915bb14891f3f30a1bc6a89",
+        "version": "e032744a841c6ec4b5edeb5647abf56add009ebc0546ff89f057f4476c90cf1b",
+        "signature": "e032744a841c6ec4b5edeb5647abf56add009ebc0546ff89f057f4476c90cf1b",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/acmpca.d.ts": {
-        "version": "876dd9c41dba49894e7c5516a120215c3a08c4f859fe7e0e1d44d2c6dcbf40ea",
-        "signature": "876dd9c41dba49894e7c5516a120215c3a08c4f859fe7e0e1d44d2c6dcbf40ea",
+        "version": "a85600aa1b772c4117bed8efc6cad26f4955ac44f8b97f560be116599135a23e",
+        "signature": "a85600aa1b772c4117bed8efc6cad26f4955ac44f8b97f560be116599135a23e",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/fms.d.ts": {
-        "version": "ad40b212719072524ca8d6c7ce606467cc485fa0e4f4f20ff83139cb8ce558ee",
-        "signature": "ad40b212719072524ca8d6c7ce606467cc485fa0e4f4f20ff83139cb8ce558ee",
+        "version": "ae1529806aabaab0208619b54e84870f146bd16febb6cb5c715a12904ef190f3",
+        "signature": "ae1529806aabaab0208619b54e84870f146bd16febb6cb5c715a12904ef190f3",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/secretsmanager.d.ts": {
@@ -5152,8 +5157,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iotanalytics.d.ts": {
-        "version": "41684c50bc7739a43fe1bdb99d9dd08791f0535721155d5025ffcd7c8586599a",
-        "signature": "41684c50bc7739a43fe1bdb99d9dd08791f0535721155d5025ffcd7c8586599a",
+        "version": "d8c385a2d2c9c7ba776bf760ae61ddec066ab2d66468dd6e4125e6ec94e4f733",
+        "signature": "d8c385a2d2c9c7ba776bf760ae61ddec066ab2d66468dd6e4125e6ec94e4f733",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iot1clickdevicesservice.d.ts": {
@@ -5167,23 +5172,23 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/pi.d.ts": {
-        "version": "16c45ffa4b55610c32496e33d52b2d84174808d6676f1f4ea442b7400254ef83",
-        "signature": "16c45ffa4b55610c32496e33d52b2d84174808d6676f1f4ea442b7400254ef83",
+        "version": "8ca0bd6cd3026aa28968546836996d97ad1d4db6d1c8bef665899a15cdbc8645",
+        "signature": "8ca0bd6cd3026aa28968546836996d97ad1d4db6d1c8bef665899a15cdbc8645",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/neptune.d.ts": {
-        "version": "80a0d90f6a8892da4bc46267e0519c87d21b06cdca990f9eea3e4a29a976c4a9",
-        "signature": "80a0d90f6a8892da4bc46267e0519c87d21b06cdca990f9eea3e4a29a976c4a9",
+        "version": "92da99144ca57e15c2b6fd0df0abbcb22a86b036f55c6eebed4531b5c6cb5ff9",
+        "signature": "92da99144ca57e15c2b6fd0df0abbcb22a86b036f55c6eebed4531b5c6cb5ff9",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/mediatailor.d.ts": {
-        "version": "46a8a2f9954acdff5102e50ee2d836a1b2505a07966f68a1851634c13f56afca",
-        "signature": "46a8a2f9954acdff5102e50ee2d836a1b2505a07966f68a1851634c13f56afca",
+        "version": "8b1264cd60e8a67bf623fc78059b5a10e44d0cd1ac368075b35df7ce279e5148",
+        "signature": "8b1264cd60e8a67bf623fc78059b5a10e44d0cd1ac368075b35df7ce279e5148",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/eks.d.ts": {
-        "version": "80c78833752c3cbc333a16d157a94aa5dee3e485975688522b40e20278ea8b44",
-        "signature": "80c78833752c3cbc333a16d157a94aa5dee3e485975688522b40e20278ea8b44",
+        "version": "279b8eeaac34959ccc0bfd616fa6d32bfd28581b43a2c5bbfac8aed8ff5a0e73",
+        "signature": "279b8eeaac34959ccc0bfd616fa6d32bfd28581b43a2c5bbfac8aed8ff5a0e73",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/macie.d.ts": {
@@ -5202,8 +5207,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/chime.d.ts": {
-        "version": "fa8c72a8941bd4bcb958a7ed61ff9fb42d31135002b86cef792aa91ee8a519b1",
-        "signature": "fa8c72a8941bd4bcb958a7ed61ff9fb42d31135002b86cef792aa91ee8a519b1",
+        "version": "3db563367c0084192073df82aace2ef33adc173c57a8284fcb820a4aa44124e6",
+        "signature": "3db563367c0084192073df82aace2ef33adc173c57a8284fcb820a4aa44124e6",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/pinpointemail.d.ts": {
@@ -5212,13 +5217,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ram.d.ts": {
-        "version": "b8e70cf01d5523b80a460252f5ef9357c6e9befb7b80a5279f0cfee0cbf1c4e3",
-        "signature": "b8e70cf01d5523b80a460252f5ef9357c6e9befb7b80a5279f0cfee0cbf1c4e3",
+        "version": "33849d0f3dea010f40a1df83682cfa8d3ff5dec24069550a2abf7db0891d7874",
+        "signature": "33849d0f3dea010f40a1df83682cfa8d3ff5dec24069550a2abf7db0891d7874",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/route53resolver.d.ts": {
-        "version": "bad75629908ba9260fa684b15fa0a6ce8c5dcc1072f6b9fb66b7601abff9712e",
-        "signature": "bad75629908ba9260fa684b15fa0a6ce8c5dcc1072f6b9fb66b7601abff9712e",
+        "version": "939f8490f742757868c681b8444ea8c9c5e8bbffb74b4b8ef80c61daeb4ea109",
+        "signature": "939f8490f742757868c681b8444ea8c9c5e8bbffb74b4b8ef80c61daeb4ea109",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/pinpointsmsvoice.d.ts": {
@@ -5227,8 +5232,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/quicksight.d.ts": {
-        "version": "dfa22b5c7faefca1fa3667d42d1370a609e8460af874414fb6377cd88622ec47",
-        "signature": "dfa22b5c7faefca1fa3667d42d1370a609e8460af874414fb6377cd88622ec47",
+        "version": "81f5b4bcaa5ba26a6270b31b3582ddc92359449a6b83b2af87f98fff918fb2d9",
+        "signature": "81f5b4bcaa5ba26a6270b31b3582ddc92359449a6b83b2af87f98fff918fb2d9",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/rdsdataservice.d.ts": {
@@ -5242,8 +5247,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/datasync.d.ts": {
-        "version": "1668fafbe93de752ca697bdbd6fdf2697d9bd9bed4c56696a35647721b75484a",
-        "signature": "1668fafbe93de752ca697bdbd6fdf2697d9bd9bed4c56696a35647721b75484a",
+        "version": "dcf5a29a7e192609c2620a7c687149024be96b3df883f7fb14e8a450d5bb9c37",
+        "signature": "dcf5a29a7e192609c2620a7c687149024be96b3df883f7fb14e8a450d5bb9c37",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/robomaker.d.ts": {
@@ -5252,8 +5257,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/transfer.d.ts": {
-        "version": "7820ef0c0c57117e31288a9880c86bcedbc42d363359230e3a404a01fd56a8c4",
-        "signature": "7820ef0c0c57117e31288a9880c86bcedbc42d363359230e3a404a01fd56a8c4",
+        "version": "321891da2ae4351c981b6bed9af4e3c6b639bf644cf61db95cef018bb3179cb2",
+        "signature": "321891da2ae4351c981b6bed9af4e3c6b639bf644cf61db95cef018bb3179cb2",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/globalaccelerator.d.ts": {
@@ -5267,33 +5272,33 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/kinesisanalyticsv2.d.ts": {
-        "version": "f446648dc32ff4d77c1589bdf4c3c7db4bfe23648152d226825b1cea47c9acf8",
-        "signature": "f446648dc32ff4d77c1589bdf4c3c7db4bfe23648152d226825b1cea47c9acf8",
+        "version": "b2d36a7db39c5dd66b0e1eb71b5b83935efb6f7a52db5d79c089d6d0857a1d4d",
+        "signature": "b2d36a7db39c5dd66b0e1eb71b5b83935efb6f7a52db5d79c089d6d0857a1d4d",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/mediaconnect.d.ts": {
-        "version": "66f71e049e72199e05b17da968d64dcfef1a60a7681f035070f4d8f79c0e8886",
-        "signature": "66f71e049e72199e05b17da968d64dcfef1a60a7681f035070f4d8f79c0e8886",
+        "version": "b1cb5791736e6a4f26fe799226655e2b668b558acf1215f5676bce1063b1a47c",
+        "signature": "b1cb5791736e6a4f26fe799226655e2b668b558acf1215f5676bce1063b1a47c",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/fsx.d.ts": {
-        "version": "460753ddfd17183a0773c0420a143adb63f232da651a6046db353156aa654569",
-        "signature": "460753ddfd17183a0773c0420a143adb63f232da651a6046db353156aa654569",
+        "version": "4700e22852189d88ede988fd92b258f96461de431dec36da484c0810b81e22e6",
+        "signature": "4700e22852189d88ede988fd92b258f96461de431dec36da484c0810b81e22e6",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/securityhub.d.ts": {
-        "version": "c2f7edb4467a9c7571357df81b6f648942df650b00b128cb57240fdce9a61723",
-        "signature": "c2f7edb4467a9c7571357df81b6f648942df650b00b128cb57240fdce9a61723",
+        "version": "4a25e2298f283eaa035d473cbd50426a523ffbd58c0faf4d3ff1d9caaa0f9883",
+        "signature": "4a25e2298f283eaa035d473cbd50426a523ffbd58c0faf4d3ff1d9caaa0f9883",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/appmesh.d.ts": {
-        "version": "71d5b5ded2b52d7bce3a066c9bd81a68cd3c554eb919fe20c4a0ecfcc777adba",
-        "signature": "71d5b5ded2b52d7bce3a066c9bd81a68cd3c554eb919fe20c4a0ecfcc777adba",
+        "version": "eaa92a2353583664da74de2b86917e37b3fb589accc2d9efe17131e0e10eb696",
+        "signature": "eaa92a2353583664da74de2b86917e37b3fb589accc2d9efe17131e0e10eb696",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/licensemanager.d.ts": {
-        "version": "c1231f8fbdcfb91d9cdb4fd47b5acb050ccd5defde98ab4fcd7f1e6549a14c4d",
-        "signature": "c1231f8fbdcfb91d9cdb4fd47b5acb050ccd5defde98ab4fcd7f1e6549a14c4d",
+        "version": "0783502ebc60414387970ed43eca9955d3e956be2f7413b40979603a8ea1264d",
+        "signature": "0783502ebc60414387970ed43eca9955d3e956be2f7413b40979603a8ea1264d",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/kafka.d.ts": {
@@ -5312,8 +5317,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/docdb.d.ts": {
-        "version": "d349913fdbffccdc780ceb9ae6206b35c02b367672285f21778d19eb82ee76e3",
-        "signature": "d349913fdbffccdc780ceb9ae6206b35c02b367672285f21778d19eb82ee76e3",
+        "version": "c9effcd6a7922afb895ec7d314fe4c86d9d1e008052a433a6d712b1f4cb709cc",
+        "signature": "c9effcd6a7922afb895ec7d314fe4c86d9d1e008052a433a6d712b1f4cb709cc",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/backup.d.ts": {
@@ -5332,13 +5337,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/managedblockchain.d.ts": {
-        "version": "dd4cda8e10998883b0e84e38ca17d97a90c241c58916ddd7d4d4499d65f445cb",
-        "signature": "dd4cda8e10998883b0e84e38ca17d97a90c241c58916ddd7d4d4499d65f445cb",
+        "version": "c7a551ba5a13a9640ae1b2cd6e27e5eb1eef107f7ca588d4d2515b26143ca285",
+        "signature": "c7a551ba5a13a9640ae1b2cd6e27e5eb1eef107f7ca588d4d2515b26143ca285",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/mediapackagevod.d.ts": {
-        "version": "3305824b3c2e3dbece93ea5db7028d4f8fdb63de0445feff36dddb53685bf821",
-        "signature": "3305824b3c2e3dbece93ea5db7028d4f8fdb63de0445feff36dddb53685bf821",
+        "version": "68e37c667e8c15cfa8b383c7b870bcb381a7c03ef10692c00d92bfd06d717bbd",
+        "signature": "68e37c667e8c15cfa8b383c7b870bcb381a7c03ef10692c00d92bfd06d717bbd",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/groundstation.d.ts": {
@@ -5352,18 +5357,18 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iotevents.d.ts": {
-        "version": "c7f372113efeee2e387753e671feb6d863d0d9a7e9ec61fd6b442e722ae9dd69",
-        "signature": "c7f372113efeee2e387753e671feb6d863d0d9a7e9ec61fd6b442e722ae9dd69",
+        "version": "c8a91ecf377d9a7378d51022d6fbf8f6b3faa55938717388ff3d95b91cf9f69c",
+        "signature": "c8a91ecf377d9a7378d51022d6fbf8f6b3faa55938717388ff3d95b91cf9f69c",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ioteventsdata.d.ts": {
-        "version": "df5b6e9f1f8ca320daf4b5b169890061688360beecb574b3bcf8ed0efeaaec8b",
-        "signature": "df5b6e9f1f8ca320daf4b5b169890061688360beecb574b3bcf8ed0efeaaec8b",
+        "version": "4e3a2b16ce736f539e9a109b14de194fa6d823026541a3fead8fe0727c2ba89a",
+        "signature": "4e3a2b16ce736f539e9a109b14de194fa6d823026541a3fead8fe0727c2ba89a",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/personalize.d.ts": {
-        "version": "955813726a9172038115cee051c18a08e91134b9699d248228cfd324e3b7ccf5",
-        "signature": "955813726a9172038115cee051c18a08e91134b9699d248228cfd324e3b7ccf5",
+        "version": "7b4c8edd456c7c8b1df3ce5cd210c07714d69b66c6d27711d0603d550ccceb69",
+        "signature": "7b4c8edd456c7c8b1df3ce5cd210c07714d69b66c6d27711d0603d550ccceb69",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/personalizeevents.d.ts": {
@@ -5392,18 +5397,18 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/eventbridge.d.ts": {
-        "version": "f94de72d04a993768d13df226da52903682e0c41a3d08eaab3820262393961e6",
-        "signature": "f94de72d04a993768d13df226da52903682e0c41a3d08eaab3820262393961e6",
+        "version": "427f0b7d1d3ba495e868466571b8b9af48658335143ddbb51fb89284abf26747",
+        "signature": "427f0b7d1d3ba495e868466571b8b9af48658335143ddbb51fb89284abf26747",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/lakeformation.d.ts": {
-        "version": "046be8db1c478917ee00a22e1eb6fbc6c206fc9e8e4b2e730a5c9ab5e98f13aa",
-        "signature": "046be8db1c478917ee00a22e1eb6fbc6c206fc9e8e4b2e730a5c9ab5e98f13aa",
+        "version": "59c05b7a252af7bbfd02ba9151aa4dfea87bb1a962f125b031d1fdf047d2db51",
+        "signature": "59c05b7a252af7bbfd02ba9151aa4dfea87bb1a962f125b031d1fdf047d2db51",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/forecastservice.d.ts": {
-        "version": "b81063a996918c1e29fcc931834e2f494fd9bc85daf96842d30d8dc16ddf2ef9",
-        "signature": "b81063a996918c1e29fcc931834e2f494fd9bc85daf96842d30d8dc16ddf2ef9",
+        "version": "c76ae9a05c1aa6df1e63f9c8adde24d6952b57f6b1687843f2b0a6b98af9acc8",
+        "signature": "c76ae9a05c1aa6df1e63f9c8adde24d6952b57f6b1687843f2b0a6b98af9acc8",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/forecastqueryservice.d.ts": {
@@ -5412,8 +5417,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/qldb.d.ts": {
-        "version": "64e8c0e51a7424178b11e747a4010bcdaaa055e87f42ed33808d2304c13cf226",
-        "signature": "64e8c0e51a7424178b11e747a4010bcdaaa055e87f42ed33808d2304c13cf226",
+        "version": "86596df07d1a90345c30f189b521635d106167f3d61f749f2326bec50007f421",
+        "signature": "86596df07d1a90345c30f189b521635d106167f3d61f749f2326bec50007f421",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/qldbsession.d.ts": {
@@ -5482,8 +5487,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/wafv2.d.ts": {
-        "version": "008650c68ea0a47d45c7e4787e5c0693b6f15008bf00358fcb17a8f1dc17c83a",
-        "signature": "008650c68ea0a47d45c7e4787e5c0693b6f15008bf00358fcb17a8f1dc17c83a",
+        "version": "706da07bdd3c4af30cb21f34d9d9108b93dddf2937d9b0becbbc270cf1287840",
+        "signature": "706da07bdd3c4af30cb21f34d9d9108b93dddf2937d9b0becbbc270cf1287840",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/elasticinference.d.ts": {
@@ -5492,8 +5497,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/imagebuilder.d.ts": {
-        "version": "8d46973e1f2603f1a1deefc89fb848b7f5f8c190039a3bbd407d4ff07efbbe0c",
-        "signature": "8d46973e1f2603f1a1deefc89fb848b7f5f8c190039a3bbd407d4ff07efbbe0c",
+        "version": "54508b4dc1ef1c28073ed1354fe98345f27422ecd457a3ce195c6c433f69e14f",
+        "signature": "54508b4dc1ef1c28073ed1354fe98345f27422ecd457a3ce195c6c433f69e14f",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/schemas.d.ts": {
@@ -5507,8 +5512,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/codegurureviewer.d.ts": {
-        "version": "9969aab6fce84b8d81367d8212410b4d930daeee9af60810ed82130e563784a7",
-        "signature": "9969aab6fce84b8d81367d8212410b4d930daeee9af60810ed82130e563784a7",
+        "version": "a88d840475d4f609d0f65e7d70bd9e42fe72595079cf2382d4a9479853368447",
+        "signature": "a88d840475d4f609d0f65e7d70bd9e42fe72595079cf2382d4a9479853368447",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/codeguruprofiler.d.ts": {
@@ -5517,18 +5522,18 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/computeoptimizer.d.ts": {
-        "version": "d3be7c2acb670c5044b36b0f93a9f3b3225613766b58463d4a0318119009c669",
-        "signature": "d3be7c2acb670c5044b36b0f93a9f3b3225613766b58463d4a0318119009c669",
+        "version": "fcecfb615d0e25188c1de2450a1dae70829d48762beb2cdee8db53227a66e019",
+        "signature": "fcecfb615d0e25188c1de2450a1dae70829d48762beb2cdee8db53227a66e019",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/frauddetector.d.ts": {
-        "version": "cdee30ea41aa2cb0101e0b2933ecfad87dafa617151c06439ddcde76589ef73c",
-        "signature": "cdee30ea41aa2cb0101e0b2933ecfad87dafa617151c06439ddcde76589ef73c",
+        "version": "3096a6b38cfe7307e749534983422ad451f17c28e6ba2aec2950645f56d6b4f2",
+        "signature": "3096a6b38cfe7307e749534983422ad451f17c28e6ba2aec2950645f56d6b4f2",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/kendra.d.ts": {
-        "version": "9802a6b036bc3f579a07562b19118c3cd14d7010fee2bc9f13798ffe45bcd2fc",
-        "signature": "9802a6b036bc3f579a07562b19118c3cd14d7010fee2bc9f13798ffe45bcd2fc",
+        "version": "1bfc79f6f3e4079ccc709fcc33af51fc806f76dbe8f79cb780fe647c2b61b8d2",
+        "signature": "1bfc79f6f3e4079ccc709fcc33af51fc806f76dbe8f79cb780fe647c2b61b8d2",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/networkmanager.d.ts": {
@@ -5537,13 +5542,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/outposts.d.ts": {
-        "version": "b277e2503256e3852d44ee123101454e483b52a08af01147a3f2ca51bc2b3c36",
-        "signature": "b277e2503256e3852d44ee123101454e483b52a08af01147a3f2ca51bc2b3c36",
+        "version": "ad954cd6bb71c70fe65c1ad833a0c9450885ffa33f7edbaea69e64a827b52a3f",
+        "signature": "ad954cd6bb71c70fe65c1ad833a0c9450885ffa33f7edbaea69e64a827b52a3f",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/augmentedairuntime.d.ts": {
-        "version": "df5876c374ca65b471ec67c3e97474c950b2a434a3650fbfc73e1e4fd25042e4",
-        "signature": "df5876c374ca65b471ec67c3e97474c950b2a434a3650fbfc73e1e4fd25042e4",
+        "version": "0e81c3314f4b049834403deae6924c02b103ccc91108c12691e7b39806a0d29b",
+        "signature": "0e81c3314f4b049834403deae6924c02b103ccc91108c12691e7b39806a0d29b",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ebs.d.ts": {
@@ -5557,8 +5562,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/detective.d.ts": {
-        "version": "17cc9d7537f4c22d6c27c4dda1a720ebce5d815cdfca507b2c6df3bfd51b6ce1",
-        "signature": "17cc9d7537f4c22d6c27c4dda1a720ebce5d815cdfca507b2c6df3bfd51b6ce1",
+        "version": "1edc513882ba9ff88df0044d9c6d50e726853512334dde47602909798982a50b",
+        "signature": "1edc513882ba9ff88df0044d9c6d50e726853512334dde47602909798982a50b",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/codestarconnections.d.ts": {
@@ -5572,18 +5577,18 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iotsitewise.d.ts": {
-        "version": "f3bcc0bc097d529d22501d1902daf3a3710b798d3a66cc958feb99d2c3820643",
-        "signature": "f3bcc0bc097d529d22501d1902daf3a3710b798d3a66cc958feb99d2c3820643",
+        "version": "2a3f253ea43d4a05abf427afdcc22435e40984564af511a09e62766e83163ba9",
+        "signature": "2a3f253ea43d4a05abf427afdcc22435e40984564af511a09e62766e83163ba9",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/macie2.d.ts": {
-        "version": "95b49d2a6a40a76699da0b96b28a6d8f6edd2799ad40948c0fd8616f4aa2a428",
-        "signature": "95b49d2a6a40a76699da0b96b28a6d8f6edd2799ad40948c0fd8616f4aa2a428",
+        "version": "dde0d66801c67f194ed1c46b158523ae16d3e516d4ebcfb40dcc4d0f5d28c345",
+        "signature": "dde0d66801c67f194ed1c46b158523ae16d3e516d4ebcfb40dcc4d0f5d28c345",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/codeartifact.d.ts": {
-        "version": "b04a43e3f22daa2c55e1888ea40b7a2e0d9d14033810a1a8d806b0f48c2be22a",
-        "signature": "b04a43e3f22daa2c55e1888ea40b7a2e0d9d14033810a1a8d806b0f48c2be22a",
+        "version": "c7ba1c8e534145cfc55468e1bc51181f387cfe9576dd00b07177fcc81507fafa",
+        "signature": "c7ba1c8e534145cfc55468e1bc51181f387cfe9576dd00b07177fcc81507fafa",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/honeycode.d.ts": {
@@ -5597,8 +5602,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/braket.d.ts": {
-        "version": "85e0720fb4e0caa01fe4378ff2f88ec6b21372c79da7f74925e1ff58e32fbcd7",
-        "signature": "85e0720fb4e0caa01fe4378ff2f88ec6b21372c79da7f74925e1ff58e32fbcd7",
+        "version": "bfad14d0e2aed29cb565fcef02719b0a501d96864792a98af575c25a1e4eeab5",
+        "signature": "bfad14d0e2aed29cb565fcef02719b0a501d96864792a98af575c25a1e4eeab5",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/identitystore.d.ts": {
@@ -5607,13 +5612,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/appflow.d.ts": {
-        "version": "a12ac4ea9ee1b63f618c630760e509a290840ff202f88f3eb21064debbbf8da5",
-        "signature": "a12ac4ea9ee1b63f618c630760e509a290840ff202f88f3eb21064debbbf8da5",
+        "version": "c91068efc6ffd61c7e5f0b7c1ed7cf1feb45bcdaa77a18ab88997a079e30cdb0",
+        "signature": "c91068efc6ffd61c7e5f0b7c1ed7cf1feb45bcdaa77a18ab88997a079e30cdb0",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/redshiftdata.d.ts": {
-        "version": "6f7359d41319d295aa91c93f6c81f4bbbcc2a497ea897c78bac6da2e7d22d238",
-        "signature": "6f7359d41319d295aa91c93f6c81f4bbbcc2a497ea897c78bac6da2e7d22d238",
+        "version": "372e32bd7728e287d24c441bf71ad5876e80ed713b4d509acc651077daaea0b4",
+        "signature": "372e32bd7728e287d24c441bf71ad5876e80ed713b4d509acc651077daaea0b4",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ssoadmin.d.ts": {
@@ -5637,8 +5642,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/databrew.d.ts": {
-        "version": "f2d0c3feae47ec4c56a128acfc9ab4317c8f2042ebbba4e9c900be015884ddd8",
-        "signature": "f2d0c3feae47ec4c56a128acfc9ab4317c8f2042ebbba4e9c900be015884ddd8",
+        "version": "09eb152b335c01e0e53c64bbf8ecd15f810857bdf5cacb5c28b751e3ca2f45d4",
+        "signature": "09eb152b335c01e0e53c64bbf8ecd15f810857bdf5cacb5c28b751e3ca2f45d4",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/servicecatalogappregistry.d.ts": {
@@ -5652,13 +5657,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/mwaa.d.ts": {
-        "version": "51cab831edcc7ad8894277066f63f3d965cfc0dee3e43be43a90d946d8d9f584",
-        "signature": "51cab831edcc7ad8894277066f63f3d965cfc0dee3e43be43a90d946d8d9f584",
+        "version": "c28deccfe1ddcd36bab1f6ea65668dbf14ec83c42d6114abbc7185bf4045febc",
+        "signature": "c28deccfe1ddcd36bab1f6ea65668dbf14ec83c42d6114abbc7185bf4045febc",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/amplifybackend.d.ts": {
-        "version": "89343e0383d7da83145b49ff7270aecba34d08f741f5aa289a3f231a00f20ddc",
-        "signature": "89343e0383d7da83145b49ff7270aecba34d08f741f5aa289a3f231a00f20ddc",
+        "version": "1ecb8690030c8f67851ed0cb0dd6218187b5594fe32f7dd58fc8a188b464b620",
+        "signature": "1ecb8690030c8f67851ed0cb0dd6218187b5594fe32f7dd58fc8a188b464b620",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/appintegrations.d.ts": {
@@ -5672,8 +5677,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/devopsguru.d.ts": {
-        "version": "27913a26f10c8f3a904aec14c394df858242694301e58aaeddd7011f24be2f5a",
-        "signature": "27913a26f10c8f3a904aec14c394df858242694301e58aaeddd7011f24be2f5a",
+        "version": "c67875fd298720e19b3ca51279aaf98a8373ee22288b272c999e3528fc1638b6",
+        "signature": "c67875fd298720e19b3ca51279aaf98a8373ee22288b272c999e3528fc1638b6",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/ecrpublic.d.ts": {
@@ -5687,8 +5692,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/sagemakerfeaturestoreruntime.d.ts": {
-        "version": "8ac8e3479a49a300f82dcfc8c26223e57e76097009979eed7e94f03739105a30",
-        "signature": "8ac8e3479a49a300f82dcfc8c26223e57e76097009979eed7e94f03739105a30",
+        "version": "828a070b786dbb2360989e9df4bc4f91470cb9302abe1c3f13ce132f131324de",
+        "signature": "828a070b786dbb2360989e9df4bc4f91470cb9302abe1c3f13ce132f131324de",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/customerprofiles.d.ts": {
@@ -5722,13 +5727,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/greengrassv2.d.ts": {
-        "version": "c772ba8b532af506ac1ae649486c387ce2804a3c847bc236a07164046df551f0",
-        "signature": "c772ba8b532af506ac1ae649486c387ce2804a3c847bc236a07164046df551f0",
+        "version": "2351840edef84249365ca64bf375c76e192e0d4d6281a0973d0561afdf12e649",
+        "signature": "2351840edef84249365ca64bf375c76e192e0d4d6281a0973d0561afdf12e649",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iotdeviceadvisor.d.ts": {
-        "version": "58b4dcb0d571a54d8a0ca8581875cf1d39e36934f0648e7525259a6a095bd13a",
-        "signature": "58b4dcb0d571a54d8a0ca8581875cf1d39e36934f0648e7525259a6a095bd13a",
+        "version": "12adccf0aa79a3e1b86bbc814e5a8857ac29c1c9ec64e3e19ca31c4a4d2de108",
+        "signature": "12adccf0aa79a3e1b86bbc814e5a8857ac29c1c9ec64e3e19ca31c4a4d2de108",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iotfleethub.d.ts": {
@@ -5737,13 +5742,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/iotwireless.d.ts": {
-        "version": "c95adff329327ec9c175e77daeac3f284c1ed28c360f2e8c9d926d7d6331ecbb",
-        "signature": "c95adff329327ec9c175e77daeac3f284c1ed28c360f2e8c9d926d7d6331ecbb",
+        "version": "0eb87d98d8ce3af769377b299bd3d102661fffe883a26edc32008da6102c22c6",
+        "signature": "0eb87d98d8ce3af769377b299bd3d102661fffe883a26edc32008da6102c22c6",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/location.d.ts": {
-        "version": "a59ae17f91ad19d4ede950a2e543b78e2462ec125a73a24e6369eb27043dbaba",
-        "signature": "a59ae17f91ad19d4ede950a2e543b78e2462ec125a73a24e6369eb27043dbaba",
+        "version": "a296c63ca9b0429ea4c6347a8cc58a40878a532bd1089e98a95d6a0577492b7e",
+        "signature": "a296c63ca9b0429ea4c6347a8cc58a40878a532bd1089e98a95d6a0577492b7e",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/wellarchitected.d.ts": {
@@ -5752,13 +5757,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/lexmodelsv2.d.ts": {
-        "version": "47af112d7319468b47bfa6923aebce049f2b48d96b301e0a2d44dd4e8784ae15",
-        "signature": "47af112d7319468b47bfa6923aebce049f2b48d96b301e0a2d44dd4e8784ae15",
+        "version": "c67187190577d62a225a1119b7b3fab1fc80391cfec7b58a49a437ac3760ec26",
+        "signature": "c67187190577d62a225a1119b7b3fab1fc80391cfec7b58a49a437ac3760ec26",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/lexruntimev2.d.ts": {
-        "version": "f212bc58da0e82661ab4bbcafd5e6e90baeffb91b70d5c83afd66ed823ef5554",
-        "signature": "f212bc58da0e82661ab4bbcafd5e6e90baeffb91b70d5c83afd66ed823ef5554",
+        "version": "4dd8b98b9cefad0a9322dfb9fed1abcdd47106b75898e43f09fcf03bc0e2cbc0",
+        "signature": "4dd8b98b9cefad0a9322dfb9fed1abcdd47106b75898e43f09fcf03bc0e2cbc0",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/fis.d.ts": {
@@ -5767,13 +5772,13 @@
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/lookoutmetrics.d.ts": {
-        "version": "d8a183aab424f6c633809d84b242d6e152af52dbc42fbe68f69d7d52565e2aa6",
-        "signature": "d8a183aab424f6c633809d84b242d6e152af52dbc42fbe68f69d7d52565e2aa6",
+        "version": "e325d6fb05611d356744c55940f79975182cf793000adc3421d0617a841e40fc",
+        "signature": "e325d6fb05611d356744c55940f79975182cf793000adc3421d0617a841e40fc",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/mgn.d.ts": {
-        "version": "bc768d872b6178f2d54d20cfbdd1e88217b2388ce32b55f235e8e7c4d3a9c627",
-        "signature": "bc768d872b6178f2d54d20cfbdd1e88217b2388ce32b55f235e8e7c4d3a9c627",
+        "version": "a2bff58fd7b5bcec9e0a52f2422dc5cb014832ace6e260f08f140bedaa9b5e0a",
+        "signature": "a2bff58fd7b5bcec9e0a52f2422dc5cb014832ace6e260f08f140bedaa9b5e0a",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/clients/lookoutequipment.d.ts": {
@@ -5796,14 +5801,39 @@
         "signature": "c36b94a162b1b62eee567df54059b6a948ba118dd374baa56989ebd9340d00b6",
         "affectsGlobalScope": false
       },
+      "../node_modules/aws-sdk/clients/ssmcontacts.d.ts": {
+        "version": "a796e16ff16de71b3a678ce1f4eb40ea1af4146ba64757060924a572ae1d3b88",
+        "signature": "a796e16ff16de71b3a678ce1f4eb40ea1af4146ba64757060924a572ae1d3b88",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/aws-sdk/clients/ssmincidents.d.ts": {
+        "version": "f6a4c233aff174569d3f593fdad2acf259aba857e570d2a2c13765f623a2ae42",
+        "signature": "f6a4c233aff174569d3f593fdad2acf259aba857e570d2a2c13765f623a2ae42",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/aws-sdk/clients/applicationcostprofiler.d.ts": {
+        "version": "7af694e130763293d9e1db57eb57b4f000759fb5240812754537fcb2a4b7ddc0",
+        "signature": "7af694e130763293d9e1db57eb57b4f000759fb5240812754537fcb2a4b7ddc0",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/aws-sdk/clients/apprunner.d.ts": {
+        "version": "ff980af1d42f81bff464f3b319a7be12f50b92f33b980ba03038781841058a56",
+        "signature": "ff980af1d42f81bff464f3b319a7be12f50b92f33b980ba03038781841058a56",
+        "affectsGlobalScope": false
+      },
+      "../node_modules/aws-sdk/clients/proton.d.ts": {
+        "version": "17effa11fdf8f7dd25141d5b6e5ea1e4e5a14fcf3ccc2c3861ed2d289460021c",
+        "signature": "17effa11fdf8f7dd25141d5b6e5ea1e4e5a14fcf3ccc2c3861ed2d289460021c",
+        "affectsGlobalScope": false
+      },
       "../node_modules/aws-sdk/clients/all.d.ts": {
-        "version": "70a2aad2fd470b2cbb5893e93e6ff36c1b407f575094997c0fcbf21e750f5535",
-        "signature": "70a2aad2fd470b2cbb5893e93e6ff36c1b407f575094997c0fcbf21e750f5535",
+        "version": "b8e494ff866c9a7b8d96dd0fe7453516efb51a6079cbd27f71e2a3bfb8f7cecc",
+        "signature": "b8e494ff866c9a7b8d96dd0fe7453516efb51a6079cbd27f71e2a3bfb8f7cecc",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/lib/config_service_placeholders.d.ts": {
-        "version": "152181936fbe0a03bda0d57184d1ac23849387c9bdf4c4da42565104724357cd",
-        "signature": "152181936fbe0a03bda0d57184d1ac23849387c9bdf4c4da42565104724357cd",
+        "version": "0ae9b178c6f26344502b0ac9e2b9e78434796ec3eabaeb918e464bb1e8a1ca3a",
+        "signature": "0ae9b178c6f26344502b0ac9e2b9e78434796ec3eabaeb918e464bb1e8a1ca3a",
         "affectsGlobalScope": false
       },
       "../node_modules/aws-sdk/lib/config.d.ts": {
@@ -5902,8 +5932,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@types/uuid/index.d.ts": {
-        "version": "96b49a9de749afcf92b5bce1d8cc42cfae6816cdf5ea36584fd9256b8b2e5292",
-        "signature": "96b49a9de749afcf92b5bce1d8cc42cfae6816cdf5ea36584fd9256b8b2e5292",
+        "version": "fab58e600970e66547644a44bc9918e3223aa2cbd9e8763cec004b2cfb48827e",
+        "signature": "fab58e600970e66547644a44bc9918e3223aa2cbd9e8763cec004b2cfb48827e",
         "affectsGlobalScope": false
       },
       "../src/modules/upload/services/upload.service.ts": {
@@ -6632,7 +6662,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/auth/services/auth.service.ts": {
-        "version": "118468c662ae98ca06593f9e6877a9e3f6483b1e29ae6565e857f492baeb89f6",
+        "version": "d2ede11396626cfae5d0bd831bd68395e4b3f9295a139c4148b2ed9deb7c8d96",
         "signature": "bce5e259656dd81f19efce8142eec4c84304ed299938c9bc4080afd8a2df7ef4",
         "affectsGlobalScope": false
       },
@@ -6652,8 +6682,8 @@
         "affectsGlobalScope": false
       },
       "../src/modules/auth/middlewares/auth.middleware.ts": {
-        "version": "9da67838714a0047b52d74cd41a4af90a6d5bdcaa8bac0956504e03187ba4b33",
-        "signature": "3cb744e428363dfad55f74881274b5e7f12c7891cc152752dc0b1478d5a5412d",
+        "version": "bd5e381f6be4cbfcb897218d50124a1f3760ae7d6bb04453eaec1d5e90529d9b",
+        "signature": "5291a82ddfc598d61a68ddc96e381c6d8d34243f568873c22d33deb6f6c42e0a",
         "affectsGlobalScope": false
       },
       "../src/modules/auth/middlewares/index.ts": {
@@ -6952,7 +6982,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/chat/chat.module.ts": {
-        "version": "55d6ab684a7ba93aebe267e6bd49f4da0a0ffd1dac9fe7e51a225331354bd82f",
+        "version": "00d48a596c9e3392a17bea9bff0649746bbe907e7f9a2c2292a1851ca0ef20f6",
         "signature": "22ab5f26ff2aa4cf463102b34ea2612bbc72dda2e516552cdd44a23ce806fa74",
         "affectsGlobalScope": false
       },
@@ -6962,7 +6992,7 @@
         "affectsGlobalScope": false
       },
       "../src/app.module.ts": {
-        "version": "0a370d7f20134a530ba0364f2635e6bd3602c36528a24bc80ddbc1f8844dc5c1",
+        "version": "eb3872bd588d49ef185ed7ebd11ff5bd47b97146ffe727b28e073f15fd08ca94",
         "signature": "9fc7f7b6ad854404973b8cba8e6d883f758237991968e9a3965d716d46f1da88",
         "affectsGlobalScope": false
       },
@@ -6972,18 +7002,18 @@
         "affectsGlobalScope": false
       },
       "../src/main.ts": {
-        "version": "35755dfaaa1b1b35eb14d2e2eaeb6e8c9888a6e24fb0c8d89fab6b5dc2cbbdcc",
+        "version": "41160f89d2bd17bfa2887e072c60774019c8d9b10ab9070bfa2285d39b45edc5",
         "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
         "affectsGlobalScope": false
       },
       "../src/modules/chat/lib/chat-message-sender-type.ts": {
-        "version": "f4a57873a5b317415ecd2f1be102f3e6d52cb26922f7e2a5ca875419198ed901",
+        "version": "fd82040332352a9bb1f7b02dfffd22eb460cc602f30643ac470764373cff7d12",
         "signature": "d55e254e7aac30ce7f72f76926f5af0d3842c931a025cd982bc94e417df768a3",
         "affectsGlobalScope": false
       },
       "../src/modules/chat/lib/constants.ts": {
-        "version": "0bfd426dc5c9d17517a0416699e774ec9f4dfbbe5af8cfbaf813e2d99130f67c",
-        "signature": "9428bf5228b968385ddb27002a515e9efe244c68daef23614337d4d16e555718",
+        "version": "e5a51e7d034fa9e7536158d1d76d1e23ac91f6a52828147ad0533cd049604cb3",
+        "signature": "96f863bc51e0eae1dfbcb8d92563e780cfa45fd352ea4708c5d8a954698ca4f6",
         "affectsGlobalScope": false
       },
       "../node_modules/@babel/types/lib/index.d.ts": {
@@ -7077,8 +7107,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@types/istanbul-reports/index.d.ts": {
-        "version": "905c3e8f7ddaa6c391b60c05b2f4c3931d7127ad717a080359db3df510b7bdab",
-        "signature": "905c3e8f7ddaa6c391b60c05b2f4c3931d7127ad717a080359db3df510b7bdab",
+        "version": "f5638f7c2f12a9a1a57b5c41b3c1ea7db3876c003bab68e6a57afd6bcc169af0",
+        "signature": "f5638f7c2f12a9a1a57b5c41b3c1ea7db3876c003bab68e6a57afd6bcc169af0",
         "affectsGlobalScope": false
       },
       "../node_modules/jest-diff/build/cleanupsemantic.d.ts": {
@@ -7117,8 +7147,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@types/jest/index.d.ts": {
-        "version": "bbc19287f48d4b3c753bd2c82dd9326af19cccbfa1506f859029dfcedc7c5522",
-        "signature": "bbc19287f48d4b3c753bd2c82dd9326af19cccbfa1506f859029dfcedc7c5522",
+        "version": "516a426e3960379f310107635b8f3a7e8c307c6c665080b128039d9299ec4087",
+        "signature": "516a426e3960379f310107635b8f3a7e8c307c6c665080b128039d9299ec4087",
         "affectsGlobalScope": true
       },
       "../node_modules/@types/json5/index.d.ts": {
@@ -7177,8 +7207,8 @@
         "affectsGlobalScope": false
       },
       "../node_modules/@types/zen-observable/index.d.ts": {
-        "version": "70c1b4a47ac88b6a165b57398db4609f1ac8af446e7dbf38939c7c08524d0c1d",
-        "signature": "70c1b4a47ac88b6a165b57398db4609f1ac8af446e7dbf38939c7c08524d0c1d",
+        "version": "09bba86d90385c19f2b69c0bf72d447ef6e5738964e3a344cb1f9e0270632be8",
+        "signature": "09bba86d90385c19f2b69c0bf72d447ef6e5738964e3a344cb1f9e0270632be8",
         "affectsGlobalScope": true
       }
     },
@@ -8130,7 +8160,7 @@
         "../node_modules/@types/node/index.d.ts"
       ],
       "../node_modules/@types/cookie-parser/index.d.ts": [
-        "../node_modules/@types/express/index.d.ts"
+        "../node_modules/@types/express/ts4.0/index.d.ts"
       ],
       "../node_modules/@types/cors/index.d.ts": [
         "../node_modules/@types/node/http.d.ts"
@@ -8154,16 +8184,16 @@
       "../node_modules/@types/eslint/lib/rules/index.d.ts": [
         "../node_modules/@types/eslint/index.d.ts"
       ],
-      "../node_modules/@types/express-serve-static-core/index.d.ts": [
+      "../node_modules/@types/express-serve-static-core/ts4.0/index.d.ts": [
         "../node_modules/@types/node/events.d.ts",
         "../node_modules/@types/node/http.d.ts",
         "../node_modules/@types/node/index.d.ts",
         "../node_modules/@types/qs/index.d.ts",
         "../node_modules/@types/range-parser/index.d.ts"
       ],
-      "../node_modules/@types/express/index.d.ts": [
+      "../node_modules/@types/express/ts4.0/index.d.ts": [
         "../node_modules/@types/body-parser/index.d.ts",
-        "../node_modules/@types/express-serve-static-core/index.d.ts",
+        "../node_modules/@types/express-serve-static-core/ts4.0/index.d.ts",
         "../node_modules/@types/qs/index.d.ts",
         "../node_modules/@types/serve-static/index.d.ts"
       ],
@@ -8413,8 +8443,10 @@
         "../node_modules/aws-sdk/clients/appflow.d.ts",
         "../node_modules/aws-sdk/clients/appintegrations.d.ts",
         "../node_modules/aws-sdk/clients/applicationautoscaling.d.ts",
+        "../node_modules/aws-sdk/clients/applicationcostprofiler.d.ts",
         "../node_modules/aws-sdk/clients/applicationinsights.d.ts",
         "../node_modules/aws-sdk/clients/appmesh.d.ts",
+        "../node_modules/aws-sdk/clients/apprunner.d.ts",
         "../node_modules/aws-sdk/clients/appstream.d.ts",
         "../node_modules/aws-sdk/clients/appsync.d.ts",
         "../node_modules/aws-sdk/clients/athena.d.ts",
@@ -8599,6 +8631,7 @@
         "../node_modules/aws-sdk/clients/pinpointsmsvoice.d.ts",
         "../node_modules/aws-sdk/clients/polly.d.ts",
         "../node_modules/aws-sdk/clients/pricing.d.ts",
+        "../node_modules/aws-sdk/clients/proton.d.ts",
         "../node_modules/aws-sdk/clients/qldb.d.ts",
         "../node_modules/aws-sdk/clients/qldbsession.d.ts",
         "../node_modules/aws-sdk/clients/quicksight.d.ts",
@@ -8640,6 +8673,8 @@
         "../node_modules/aws-sdk/clients/sns.d.ts",
         "../node_modules/aws-sdk/clients/sqs.d.ts",
         "../node_modules/aws-sdk/clients/ssm.d.ts",
+        "../node_modules/aws-sdk/clients/ssmcontacts.d.ts",
+        "../node_modules/aws-sdk/clients/ssmincidents.d.ts",
         "../node_modules/aws-sdk/clients/sso.d.ts",
         "../node_modules/aws-sdk/clients/ssoadmin.d.ts",
         "../node_modules/aws-sdk/clients/ssooidc.d.ts",
@@ -8736,6 +8771,13 @@
         "../node_modules/aws-sdk/lib/response.d.ts",
         "../node_modules/aws-sdk/lib/service.d.ts"
       ],
+      "../node_modules/aws-sdk/clients/applicationcostprofiler.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
       "../node_modules/aws-sdk/clients/applicationinsights.d.ts": [
         "../node_modules/aws-sdk/lib/config-base.d.ts",
         "../node_modules/aws-sdk/lib/error.d.ts",
@@ -8744,6 +8786,13 @@
         "../node_modules/aws-sdk/lib/service.d.ts"
       ],
       "../node_modules/aws-sdk/clients/appmesh.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
+      "../node_modules/aws-sdk/clients/apprunner.d.ts": [
         "../node_modules/aws-sdk/lib/config-base.d.ts",
         "../node_modules/aws-sdk/lib/error.d.ts",
         "../node_modules/aws-sdk/lib/request.d.ts",
@@ -10059,6 +10108,13 @@
         "../node_modules/aws-sdk/lib/response.d.ts",
         "../node_modules/aws-sdk/lib/service.d.ts"
       ],
+      "../node_modules/aws-sdk/clients/proton.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
       "../node_modules/aws-sdk/clients/qldb.d.ts": [
         "../node_modules/aws-sdk/lib/config-base.d.ts",
         "../node_modules/aws-sdk/lib/error.d.ts",
@@ -10348,6 +10404,20 @@
         "../node_modules/aws-sdk/lib/service.d.ts"
       ],
       "../node_modules/aws-sdk/clients/ssm.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
+      "../node_modules/aws-sdk/clients/ssmcontacts.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
+      "../node_modules/aws-sdk/clients/ssmincidents.d.ts": [
         "../node_modules/aws-sdk/lib/config-base.d.ts",
         "../node_modules/aws-sdk/lib/error.d.ts",
         "../node_modules/aws-sdk/lib/request.d.ts",
@@ -12078,6 +12148,7 @@
         "../node_modules/typeorm/driver/aurora-data-api-pg/auroradataapipostgresconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/aurora-data-api/auroradataapiconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/better-sqlite3/bettersqlite3connectionoptions.d.ts",
+        "../node_modules/typeorm/driver/capacitor/capacitorconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/cockroachdb/cockroachconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/cordova/cordovaconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/expo/expoconnectionoptions.d.ts",
@@ -12210,6 +12281,9 @@
         "../node_modules/typeorm/metadata/types/closuretreeoptions.d.ts",
         "../node_modules/typeorm/metadata/types/treetypes.d.ts"
       ],
+      "../node_modules/typeorm/decorator/tree/treeparent.d.ts": [
+        "../node_modules/typeorm/metadata/types/ondeletetype.d.ts"
+      ],
       "../node_modules/typeorm/driver/aurora-data-api-pg/auroradataapipostgresconnectionoptions.d.ts": [
         "../node_modules/typeorm/connection/baseconnectionoptions.d.ts"
       ],
@@ -12218,6 +12292,9 @@
         "../node_modules/typeorm/driver/aurora-data-api/auroradataapiconnectioncredentialsoptions.d.ts"
       ],
       "../node_modules/typeorm/driver/better-sqlite3/bettersqlite3connectionoptions.d.ts": [
+        "../node_modules/typeorm/connection/baseconnectionoptions.d.ts"
+      ],
+      "../node_modules/typeorm/driver/capacitor/capacitorconnectionoptions.d.ts": [
         "../node_modules/typeorm/connection/baseconnectionoptions.d.ts"
       ],
       "../node_modules/typeorm/driver/cockroachdb/cockroachconnectioncredentialsoptions.d.ts": [
@@ -13307,7 +13384,7 @@
         "../src/lib/queries/constants.ts"
       ],
       "../src/lib/typings/index.ts": [
-        "../node_modules/@types/express/index.d.ts",
+        "../node_modules/@types/express/ts4.0/index.d.ts",
         "../node_modules/socket.io/dist/index.d.ts",
         "../src/modules/user/index.ts"
       ],
@@ -13356,7 +13433,7 @@
         "../node_modules/@nestjs/common/index.d.ts",
         "../node_modules/@nestjs/jwt/index.d.ts",
         "../node_modules/@types/bcryptjs/index.d.ts",
-        "../node_modules/@types/express/index.d.ts",
+        "../node_modules/@types/express/ts4.0/index.d.ts",
         "../node_modules/@types/uuid/index.d.ts",
         "../node_modules/jdenticon/types/module.d.ts",
         "../src/modules/auth/decorators/index.ts",
@@ -13413,7 +13490,7 @@
         "../node_modules/@nestjs/common/index.d.ts",
         "../node_modules/@nestjs/websockets/index.d.ts",
         "../node_modules/@types/cookie/index.d.ts",
-        "../node_modules/@types/express/index.d.ts",
+        "../node_modules/@types/express/ts4.0/index.d.ts",
         "../node_modules/socket.io/dist/index.d.ts",
         "../src/lib/typings/index.ts",
         "../src/lib/websocket/index.ts",
@@ -13438,9 +13515,10 @@
       ],
       "../src/modules/auth/middlewares/auth.middleware.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
-        "../node_modules/@types/express/index.d.ts",
+        "../node_modules/@types/express/ts4.0/index.d.ts",
         "../src/lib/typings/index.ts",
-        "../src/modules/auth/services/index.ts"
+        "../src/modules/auth/services/index.ts",
+        "../src/modules/user/index.ts"
       ],
       "../src/modules/auth/middlewares/index.ts": [
         "../src/modules/auth/middlewares/auth.middleware.ts"
@@ -13449,7 +13527,7 @@
         "../node_modules/@nestjs/common/index.d.ts",
         "../node_modules/@nestjs/config/index.d.ts",
         "../node_modules/@nestjs/jwt/index.d.ts",
-        "../node_modules/@types/express/index.d.ts",
+        "../node_modules/@types/express/ts4.0/index.d.ts",
         "../node_modules/@types/uuid/index.d.ts",
         "../src/modules/auth/services/refresh-session.service.ts",
         "../src/modules/user/index.ts"
@@ -14763,7 +14841,7 @@
         "../node_modules/@types/node/index.d.ts"
       ],
       "../node_modules/@types/cookie-parser/index.d.ts": [
-        "../node_modules/@types/express/index.d.ts"
+        "../node_modules/@types/express/ts4.0/index.d.ts"
       ],
       "../node_modules/@types/cors/index.d.ts": [
         "../node_modules/@types/node/http.d.ts"
@@ -14787,16 +14865,16 @@
       "../node_modules/@types/eslint/lib/rules/index.d.ts": [
         "../node_modules/@types/eslint/index.d.ts"
       ],
-      "../node_modules/@types/express-serve-static-core/index.d.ts": [
+      "../node_modules/@types/express-serve-static-core/ts4.0/index.d.ts": [
         "../node_modules/@types/node/events.d.ts",
         "../node_modules/@types/node/http.d.ts",
         "../node_modules/@types/node/index.d.ts",
         "../node_modules/@types/qs/index.d.ts",
         "../node_modules/@types/range-parser/index.d.ts"
       ],
-      "../node_modules/@types/express/index.d.ts": [
+      "../node_modules/@types/express/ts4.0/index.d.ts": [
         "../node_modules/@types/body-parser/index.d.ts",
-        "../node_modules/@types/express-serve-static-core/index.d.ts",
+        "../node_modules/@types/express-serve-static-core/ts4.0/index.d.ts",
         "../node_modules/@types/qs/index.d.ts",
         "../node_modules/@types/serve-static/index.d.ts"
       ],
@@ -15046,8 +15124,10 @@
         "../node_modules/aws-sdk/clients/appflow.d.ts",
         "../node_modules/aws-sdk/clients/appintegrations.d.ts",
         "../node_modules/aws-sdk/clients/applicationautoscaling.d.ts",
+        "../node_modules/aws-sdk/clients/applicationcostprofiler.d.ts",
         "../node_modules/aws-sdk/clients/applicationinsights.d.ts",
         "../node_modules/aws-sdk/clients/appmesh.d.ts",
+        "../node_modules/aws-sdk/clients/apprunner.d.ts",
         "../node_modules/aws-sdk/clients/appstream.d.ts",
         "../node_modules/aws-sdk/clients/appsync.d.ts",
         "../node_modules/aws-sdk/clients/athena.d.ts",
@@ -15232,6 +15312,7 @@
         "../node_modules/aws-sdk/clients/pinpointsmsvoice.d.ts",
         "../node_modules/aws-sdk/clients/polly.d.ts",
         "../node_modules/aws-sdk/clients/pricing.d.ts",
+        "../node_modules/aws-sdk/clients/proton.d.ts",
         "../node_modules/aws-sdk/clients/qldb.d.ts",
         "../node_modules/aws-sdk/clients/qldbsession.d.ts",
         "../node_modules/aws-sdk/clients/quicksight.d.ts",
@@ -15273,6 +15354,8 @@
         "../node_modules/aws-sdk/clients/sns.d.ts",
         "../node_modules/aws-sdk/clients/sqs.d.ts",
         "../node_modules/aws-sdk/clients/ssm.d.ts",
+        "../node_modules/aws-sdk/clients/ssmcontacts.d.ts",
+        "../node_modules/aws-sdk/clients/ssmincidents.d.ts",
         "../node_modules/aws-sdk/clients/sso.d.ts",
         "../node_modules/aws-sdk/clients/ssoadmin.d.ts",
         "../node_modules/aws-sdk/clients/ssooidc.d.ts",
@@ -15369,6 +15452,13 @@
         "../node_modules/aws-sdk/lib/response.d.ts",
         "../node_modules/aws-sdk/lib/service.d.ts"
       ],
+      "../node_modules/aws-sdk/clients/applicationcostprofiler.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
       "../node_modules/aws-sdk/clients/applicationinsights.d.ts": [
         "../node_modules/aws-sdk/lib/config-base.d.ts",
         "../node_modules/aws-sdk/lib/error.d.ts",
@@ -15377,6 +15467,13 @@
         "../node_modules/aws-sdk/lib/service.d.ts"
       ],
       "../node_modules/aws-sdk/clients/appmesh.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
+      "../node_modules/aws-sdk/clients/apprunner.d.ts": [
         "../node_modules/aws-sdk/lib/config-base.d.ts",
         "../node_modules/aws-sdk/lib/error.d.ts",
         "../node_modules/aws-sdk/lib/request.d.ts",
@@ -16692,6 +16789,13 @@
         "../node_modules/aws-sdk/lib/response.d.ts",
         "../node_modules/aws-sdk/lib/service.d.ts"
       ],
+      "../node_modules/aws-sdk/clients/proton.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
       "../node_modules/aws-sdk/clients/qldb.d.ts": [
         "../node_modules/aws-sdk/lib/config-base.d.ts",
         "../node_modules/aws-sdk/lib/error.d.ts",
@@ -16981,6 +17085,20 @@
         "../node_modules/aws-sdk/lib/service.d.ts"
       ],
       "../node_modules/aws-sdk/clients/ssm.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
+      "../node_modules/aws-sdk/clients/ssmcontacts.d.ts": [
+        "../node_modules/aws-sdk/lib/config-base.d.ts",
+        "../node_modules/aws-sdk/lib/error.d.ts",
+        "../node_modules/aws-sdk/lib/request.d.ts",
+        "../node_modules/aws-sdk/lib/response.d.ts",
+        "../node_modules/aws-sdk/lib/service.d.ts"
+      ],
+      "../node_modules/aws-sdk/clients/ssmincidents.d.ts": [
         "../node_modules/aws-sdk/lib/config-base.d.ts",
         "../node_modules/aws-sdk/lib/error.d.ts",
         "../node_modules/aws-sdk/lib/request.d.ts",
@@ -18711,6 +18829,7 @@
         "../node_modules/typeorm/driver/aurora-data-api-pg/auroradataapipostgresconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/aurora-data-api/auroradataapiconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/better-sqlite3/bettersqlite3connectionoptions.d.ts",
+        "../node_modules/typeorm/driver/capacitor/capacitorconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/cockroachdb/cockroachconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/cordova/cordovaconnectionoptions.d.ts",
         "../node_modules/typeorm/driver/expo/expoconnectionoptions.d.ts",
@@ -18843,6 +18962,9 @@
         "../node_modules/typeorm/metadata/types/closuretreeoptions.d.ts",
         "../node_modules/typeorm/metadata/types/treetypes.d.ts"
       ],
+      "../node_modules/typeorm/decorator/tree/treeparent.d.ts": [
+        "../node_modules/typeorm/metadata/types/ondeletetype.d.ts"
+      ],
       "../node_modules/typeorm/driver/aurora-data-api-pg/auroradataapipostgresconnectionoptions.d.ts": [
         "../node_modules/typeorm/connection/baseconnectionoptions.d.ts"
       ],
@@ -18851,6 +18973,9 @@
         "../node_modules/typeorm/driver/aurora-data-api/auroradataapiconnectioncredentialsoptions.d.ts"
       ],
       "../node_modules/typeorm/driver/better-sqlite3/bettersqlite3connectionoptions.d.ts": [
+        "../node_modules/typeorm/connection/baseconnectionoptions.d.ts"
+      ],
+      "../node_modules/typeorm/driver/capacitor/capacitorconnectionoptions.d.ts": [
         "../node_modules/typeorm/connection/baseconnectionoptions.d.ts"
       ],
       "../node_modules/typeorm/driver/cockroachdb/cockroachconnectioncredentialsoptions.d.ts": [
@@ -19926,7 +20051,7 @@
         "../src/lib/queries/constants.ts"
       ],
       "../src/lib/typings/index.ts": [
-        "../node_modules/@types/express/index.d.ts",
+        "../node_modules/@types/express/ts4.0/index.d.ts",
         "../node_modules/socket.io/dist/index.d.ts",
         "../src/modules/user/index.ts"
       ],
@@ -19955,7 +20080,7 @@
       ],
       "../src/modules/auth/auth.controller.ts": [
         "../node_modules/@nestjs/jwt/index.d.ts",
-        "../node_modules/@types/express/index.d.ts",
+        "../node_modules/@types/express/ts4.0/index.d.ts",
         "../src/modules/auth/dtos/index.ts",
         "../src/modules/auth/services/index.ts",
         "../src/modules/upload/index.ts",
@@ -20002,9 +20127,10 @@
       ],
       "../src/modules/auth/middlewares/auth.middleware.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
-        "../node_modules/@types/express/index.d.ts",
+        "../node_modules/@types/express/ts4.0/index.d.ts",
         "../src/lib/typings/index.ts",
-        "../src/modules/auth/services/index.ts"
+        "../src/modules/auth/services/index.ts",
+        "../src/modules/user/index.ts"
       ],
       "../src/modules/auth/middlewares/index.ts": [
         "../src/modules/auth/middlewares/auth.middleware.ts"
@@ -20012,7 +20138,7 @@
       "../src/modules/auth/services/auth.service.ts": [
         "../node_modules/@nestjs/config/index.d.ts",
         "../node_modules/@nestjs/jwt/index.d.ts",
-        "../node_modules/@types/express/index.d.ts",
+        "../node_modules/@types/express/ts4.0/index.d.ts",
         "../src/modules/auth/services/refresh-session.service.ts",
         "../src/modules/user/index.ts"
       ],
@@ -20301,1444 +20427,7 @@
         "../src/modules/user/entities/index.ts"
       ]
     },
-    "semanticDiagnosticsPerFile": [
-      "../node_modules/@babel/parser/typings/babel-parser.d.ts",
-      "../node_modules/@babel/types/lib/index.d.ts",
-      "../node_modules/@nestjs/common/cache/cache.constants.d.ts",
-      "../node_modules/@nestjs/common/cache/cache.module.d.ts",
-      "../node_modules/@nestjs/common/cache/decorators/cache-key.decorator.d.ts",
-      "../node_modules/@nestjs/common/cache/decorators/cache-ttl.decorator.d.ts",
-      "../node_modules/@nestjs/common/cache/decorators/index.d.ts",
-      "../node_modules/@nestjs/common/cache/index.d.ts",
-      "../node_modules/@nestjs/common/cache/interceptors/cache.interceptor.d.ts",
-      "../node_modules/@nestjs/common/cache/interceptors/index.d.ts",
-      "../node_modules/@nestjs/common/cache/interfaces/cache-manager.interface.d.ts",
-      "../node_modules/@nestjs/common/cache/interfaces/cache-module.interface.d.ts",
-      "../node_modules/@nestjs/common/cache/interfaces/index.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/apply-decorators.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/bind.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/catch.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/controller.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/dependencies.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/exception-filters.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/index.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/inject.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/injectable.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/optional.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/set-metadata.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/use-guards.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/use-interceptors.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/core/use-pipes.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/http/create-route-param-metadata.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/http/header.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/http/http-code.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/http/index.d.ts",
-      "../node_modules/@nestjs/common/decorators/http/redirect.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/http/render.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/http/request-mapping.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/http/route-params.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/http/sse.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/index.d.ts",
-      "../node_modules/@nestjs/common/decorators/modules/global.decorator.d.ts",
-      "../node_modules/@nestjs/common/decorators/modules/index.d.ts",
-      "../node_modules/@nestjs/common/decorators/modules/module.decorator.d.ts",
-      "../node_modules/@nestjs/common/enums/http-status.enum.d.ts",
-      "../node_modules/@nestjs/common/enums/index.d.ts",
-      "../node_modules/@nestjs/common/enums/request-method.enum.d.ts",
-      "../node_modules/@nestjs/common/enums/shutdown-signal.enum.d.ts",
-      "../node_modules/@nestjs/common/exceptions/bad-gateway.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/bad-request.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/conflict.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/forbidden.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/gateway-timeout.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/gone.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/http-version-not-supported.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/http.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/im-a-teapot.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/index.d.ts",
-      "../node_modules/@nestjs/common/exceptions/internal-server-error.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/method-not-allowed.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/misdirected.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/not-acceptable.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/not-found.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/not-implemented.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/payload-too-large.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/precondition-failed.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/request-timeout.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/service-unavailable.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/unauthorized.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/unprocessable-entity.exception.d.ts",
-      "../node_modules/@nestjs/common/exceptions/unsupported-media-type.exception.d.ts",
-      "../node_modules/@nestjs/common/http/http.module.d.ts",
-      "../node_modules/@nestjs/common/http/http.service.d.ts",
-      "../node_modules/@nestjs/common/http/index.d.ts",
-      "../node_modules/@nestjs/common/http/interfaces/http-module.interface.d.ts",
-      "../node_modules/@nestjs/common/http/interfaces/index.d.ts",
-      "../node_modules/@nestjs/common/index.d.ts",
-      "../node_modules/@nestjs/common/interfaces/abstract.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/controllers/controller-metadata.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/controllers/controller.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/exceptions/exception-filter.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/exceptions/rpc-exception-filter.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/exceptions/ws-exception-filter.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/external/class-transform-options.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/external/cors-options.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/external/https-options.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/external/validation-error.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/external/validator-options.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/features/arguments-host.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/features/can-activate.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/features/custom-route-param-factory.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/features/execution-context.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/features/nest-interceptor.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/features/paramtype.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/features/pipe-transform.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/hooks/before-application-shutdown.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/hooks/index.d.ts",
-      "../node_modules/@nestjs/common/interfaces/hooks/on-application-bootstrap.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/hooks/on-application-shutdown.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/hooks/on-destroy.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/hooks/on-init.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/http/http-server.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/http/index.d.ts",
-      "../node_modules/@nestjs/common/interfaces/http/message-event.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/index.d.ts",
-      "../node_modules/@nestjs/common/interfaces/injectable.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/microservices/nest-hybrid-application-options.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/microservices/nest-microservice-options.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/middleware/index.d.ts",
-      "../node_modules/@nestjs/common/interfaces/middleware/middleware-config-proxy.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/middleware/middleware-configuration.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/middleware/middleware-consumer.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/middleware/nest-middleware.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/modules/dynamic-module.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/modules/forward-reference.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/modules/index.d.ts",
-      "../node_modules/@nestjs/common/interfaces/modules/introspection-result.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/modules/module-metadata.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/modules/nest-module.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/modules/provider.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/nest-application-context-options.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/nest-application-context.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/nest-application-options.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/nest-application.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/nest-microservice.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/scope-options.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/type.interface.d.ts",
-      "../node_modules/@nestjs/common/interfaces/websockets/web-socket-adapter.interface.d.ts",
-      "../node_modules/@nestjs/common/pipes/default-value.pipe.d.ts",
-      "../node_modules/@nestjs/common/pipes/index.d.ts",
-      "../node_modules/@nestjs/common/pipes/parse-array.pipe.d.ts",
-      "../node_modules/@nestjs/common/pipes/parse-bool.pipe.d.ts",
-      "../node_modules/@nestjs/common/pipes/parse-int.pipe.d.ts",
-      "../node_modules/@nestjs/common/pipes/parse-uuid.pipe.d.ts",
-      "../node_modules/@nestjs/common/pipes/validation.pipe.d.ts",
-      "../node_modules/@nestjs/common/serializer/class-serializer.interceptor.d.ts",
-      "../node_modules/@nestjs/common/serializer/decorators/index.d.ts",
-      "../node_modules/@nestjs/common/serializer/decorators/serialize-options.decorator.d.ts",
-      "../node_modules/@nestjs/common/serializer/index.d.ts",
-      "../node_modules/@nestjs/common/services/index.d.ts",
-      "../node_modules/@nestjs/common/services/logger.service.d.ts",
-      "../node_modules/@nestjs/common/utils/forward-ref.util.d.ts",
-      "../node_modules/@nestjs/common/utils/http-error-by-code.util.d.ts",
-      "../node_modules/@nestjs/common/utils/index.d.ts",
-      "../node_modules/@nestjs/common/utils/shared.utils.d.ts",
-      "../node_modules/@nestjs/config/dist/config.module.d.ts",
-      "../node_modules/@nestjs/config/dist/config.service.d.ts",
-      "../node_modules/@nestjs/config/dist/index.d.ts",
-      "../node_modules/@nestjs/config/dist/interfaces/config-factory.interface.d.ts",
-      "../node_modules/@nestjs/config/dist/interfaces/config-module-options.interface.d.ts",
-      "../node_modules/@nestjs/config/dist/interfaces/index.d.ts",
-      "../node_modules/@nestjs/config/dist/types/config.type.d.ts",
-      "../node_modules/@nestjs/config/dist/types/index.d.ts",
-      "../node_modules/@nestjs/config/dist/types/no-infer.type.d.ts",
-      "../node_modules/@nestjs/config/dist/utils/get-config-token.util.d.ts",
-      "../node_modules/@nestjs/config/dist/utils/index.d.ts",
-      "../node_modules/@nestjs/config/dist/utils/register-as.util.d.ts",
-      "../node_modules/@nestjs/config/index.d.ts",
-      "../node_modules/@nestjs/core/adapters/http-adapter.d.ts",
-      "../node_modules/@nestjs/core/adapters/index.d.ts",
-      "../node_modules/@nestjs/core/application-config.d.ts",
-      "../node_modules/@nestjs/core/constants.d.ts",
-      "../node_modules/@nestjs/core/discovery/discovery-module.d.ts",
-      "../node_modules/@nestjs/core/discovery/discovery-service.d.ts",
-      "../node_modules/@nestjs/core/discovery/index.d.ts",
-      "../node_modules/@nestjs/core/exceptions/base-exception-filter.d.ts",
-      "../node_modules/@nestjs/core/exceptions/index.d.ts",
-      "../node_modules/@nestjs/core/helpers/context-id-factory.d.ts",
-      "../node_modules/@nestjs/core/helpers/http-adapter-host.d.ts",
-      "../node_modules/@nestjs/core/helpers/index.d.ts",
-      "../node_modules/@nestjs/core/index.d.ts",
-      "../node_modules/@nestjs/core/injector/container.d.ts",
-      "../node_modules/@nestjs/core/injector/index.d.ts",
-      "../node_modules/@nestjs/core/injector/injector.d.ts",
-      "../node_modules/@nestjs/core/injector/inquirer/index.d.ts",
-      "../node_modules/@nestjs/core/injector/inquirer/inquirer-constants.d.ts",
-      "../node_modules/@nestjs/core/injector/instance-wrapper.d.ts",
-      "../node_modules/@nestjs/core/injector/module-ref.d.ts",
-      "../node_modules/@nestjs/core/injector/module-token-factory.d.ts",
-      "../node_modules/@nestjs/core/injector/module.d.ts",
-      "../node_modules/@nestjs/core/injector/modules-container.d.ts",
-      "../node_modules/@nestjs/core/metadata-scanner.d.ts",
-      "../node_modules/@nestjs/core/middleware/builder.d.ts",
-      "../node_modules/@nestjs/core/middleware/index.d.ts",
-      "../node_modules/@nestjs/core/middleware/routes-mapper.d.ts",
-      "../node_modules/@nestjs/core/nest-application-context.d.ts",
-      "../node_modules/@nestjs/core/nest-application.d.ts",
-      "../node_modules/@nestjs/core/nest-factory.d.ts",
-      "../node_modules/@nestjs/core/router/index.d.ts",
-      "../node_modules/@nestjs/core/router/request/index.d.ts",
-      "../node_modules/@nestjs/core/router/request/request-constants.d.ts",
-      "../node_modules/@nestjs/core/services/index.d.ts",
-      "../node_modules/@nestjs/core/services/reflector.service.d.ts",
-      "../node_modules/@nestjs/jwt/dist/index.d.ts",
-      "../node_modules/@nestjs/jwt/dist/interfaces/index.d.ts",
-      "../node_modules/@nestjs/jwt/dist/interfaces/jwt-module-options.interface.d.ts",
-      "../node_modules/@nestjs/jwt/dist/jwt.module.d.ts",
-      "../node_modules/@nestjs/jwt/dist/jwt.service.d.ts",
-      "../node_modules/@nestjs/jwt/index.d.ts",
-      "../node_modules/@nestjs/platform-express/adapters/express-adapter.d.ts",
-      "../node_modules/@nestjs/platform-express/adapters/index.d.ts",
-      "../node_modules/@nestjs/platform-express/index.d.ts",
-      "../node_modules/@nestjs/platform-express/interfaces/index.d.ts",
-      "../node_modules/@nestjs/platform-express/interfaces/nest-express-application.interface.d.ts",
-      "../node_modules/@nestjs/platform-express/interfaces/serve-static-options.interface.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/index.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/interceptors/any-files.interceptor.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/interceptors/file-fields.interceptor.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/interceptors/file.interceptor.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/interceptors/files.interceptor.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/interceptors/index.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/interfaces/files-upload-module.interface.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/interfaces/index.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/interfaces/multer-options.interface.d.ts",
-      "../node_modules/@nestjs/platform-express/multer/multer.module.d.ts",
-      "../node_modules/@nestjs/serve-static/dist/index.d.ts",
-      "../node_modules/@nestjs/serve-static/dist/interfaces/serve-static-options.interface.d.ts",
-      "../node_modules/@nestjs/serve-static/dist/loaders/abstract.loader.d.ts",
-      "../node_modules/@nestjs/serve-static/dist/loaders/express.loader.d.ts",
-      "../node_modules/@nestjs/serve-static/dist/loaders/fastify.loader.d.ts",
-      "../node_modules/@nestjs/serve-static/dist/loaders/noop.loader.d.ts",
-      "../node_modules/@nestjs/serve-static/dist/serve-static.constants.d.ts",
-      "../node_modules/@nestjs/serve-static/dist/serve-static.module.d.ts",
-      "../node_modules/@nestjs/serve-static/dist/serve-static.providers.d.ts",
-      "../node_modules/@nestjs/serve-static/index.d.ts",
-      "../node_modules/@nestjs/typeorm/dist/common/index.d.ts",
-      "../node_modules/@nestjs/typeorm/dist/common/typeorm.decorators.d.ts",
-      "../node_modules/@nestjs/typeorm/dist/common/typeorm.utils.d.ts",
-      "../node_modules/@nestjs/typeorm/dist/index.d.ts",
-      "../node_modules/@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type.d.ts",
-      "../node_modules/@nestjs/typeorm/dist/interfaces/index.d.ts",
-      "../node_modules/@nestjs/typeorm/dist/interfaces/typeorm-options.interface.d.ts",
-      "../node_modules/@nestjs/typeorm/dist/typeorm.module.d.ts",
-      "../node_modules/@nestjs/typeorm/index.d.ts",
-      "../node_modules/@nestjs/websockets/adapters/index.d.ts",
-      "../node_modules/@nestjs/websockets/adapters/ws-adapter.d.ts",
-      "../node_modules/@nestjs/websockets/constants.d.ts",
-      "../node_modules/@nestjs/websockets/decorators/connected-socket.decorator.d.ts",
-      "../node_modules/@nestjs/websockets/decorators/gateway-server.decorator.d.ts",
-      "../node_modules/@nestjs/websockets/decorators/index.d.ts",
-      "../node_modules/@nestjs/websockets/decorators/message-body.decorator.d.ts",
-      "../node_modules/@nestjs/websockets/decorators/socket-gateway.decorator.d.ts",
-      "../node_modules/@nestjs/websockets/decorators/subscribe-message.decorator.d.ts",
-      "../node_modules/@nestjs/websockets/errors/index.d.ts",
-      "../node_modules/@nestjs/websockets/errors/ws-exception.d.ts",
-      "../node_modules/@nestjs/websockets/exceptions/base-ws-exception-filter.d.ts",
-      "../node_modules/@nestjs/websockets/exceptions/index.d.ts",
-      "../node_modules/@nestjs/websockets/gateway-metadata-explorer.d.ts",
-      "../node_modules/@nestjs/websockets/index.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/gateway-metadata.interface.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/hooks/index.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/hooks/on-gateway-connection.interface.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/hooks/on-gateway-disconnect.interface.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/hooks/on-gateway-init.interface.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/index.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/nest-gateway.interface.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/socket-events-host.interface.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/web-socket-server.interface.d.ts",
-      "../node_modules/@nestjs/websockets/interfaces/ws-response.interface.d.ts",
-      "../node_modules/@types/babel__core/index.d.ts",
-      "../node_modules/@types/babel__generator/index.d.ts",
-      "../node_modules/@types/babel__template/index.d.ts",
-      "../node_modules/@types/babel__traverse/ts4.1/index.d.ts",
-      "../node_modules/@types/bcryptjs/index.d.ts",
-      "../node_modules/@types/body-parser/index.d.ts",
-      "../node_modules/@types/component-emitter/index.d.ts",
-      "../node_modules/@types/connect/index.d.ts",
-      "../node_modules/@types/cookie-parser/index.d.ts",
-      "../node_modules/@types/cookie/index.d.ts",
-      "../node_modules/@types/cookiejar/index.d.ts",
-      "../node_modules/@types/cors/index.d.ts",
-      "../node_modules/@types/engine.io/index.d.ts",
-      "../node_modules/@types/eslint-scope/index.d.ts",
-      "../node_modules/@types/eslint-visitor-keys/index.d.ts",
-      "../node_modules/@types/eslint/helpers.d.ts",
-      "../node_modules/@types/eslint/index.d.ts",
-      "../node_modules/@types/eslint/lib/rules/index.d.ts",
-      "../node_modules/@types/estree/index.d.ts",
-      "../node_modules/@types/express-serve-static-core/index.d.ts",
-      "../node_modules/@types/express/index.d.ts",
-      "../node_modules/@types/graceful-fs/index.d.ts",
-      "../node_modules/@types/istanbul-lib-coverage/index.d.ts",
-      "../node_modules/@types/istanbul-lib-report/index.d.ts",
-      "../node_modules/@types/istanbul-reports/index.d.ts",
-      "../node_modules/@types/jest/index.d.ts",
-      "../node_modules/@types/json-schema/index.d.ts",
-      "../node_modules/@types/json5/index.d.ts",
-      "../node_modules/@types/jsonwebtoken/index.d.ts",
-      "../node_modules/@types/mime/index.d.ts",
-      "../node_modules/@types/node/assert.d.ts",
-      "../node_modules/@types/node/async_hooks.d.ts",
-      "../node_modules/@types/node/base.d.ts",
-      "../node_modules/@types/node/buffer.d.ts",
-      "../node_modules/@types/node/child_process.d.ts",
-      "../node_modules/@types/node/cluster.d.ts",
-      "../node_modules/@types/node/console.d.ts",
-      "../node_modules/@types/node/constants.d.ts",
-      "../node_modules/@types/node/crypto.d.ts",
-      "../node_modules/@types/node/dgram.d.ts",
-      "../node_modules/@types/node/dns.d.ts",
-      "../node_modules/@types/node/domain.d.ts",
-      "../node_modules/@types/node/events.d.ts",
-      "../node_modules/@types/node/fs.d.ts",
-      "../node_modules/@types/node/globals.d.ts",
-      "../node_modules/@types/node/globals.global.d.ts",
-      "../node_modules/@types/node/http.d.ts",
-      "../node_modules/@types/node/http2.d.ts",
-      "../node_modules/@types/node/https.d.ts",
-      "../node_modules/@types/node/index.d.ts",
-      "../node_modules/@types/node/inspector.d.ts",
-      "../node_modules/@types/node/module.d.ts",
-      "../node_modules/@types/node/net.d.ts",
-      "../node_modules/@types/node/os.d.ts",
-      "../node_modules/@types/node/path.d.ts",
-      "../node_modules/@types/node/perf_hooks.d.ts",
-      "../node_modules/@types/node/process.d.ts",
-      "../node_modules/@types/node/punycode.d.ts",
-      "../node_modules/@types/node/querystring.d.ts",
-      "../node_modules/@types/node/readline.d.ts",
-      "../node_modules/@types/node/repl.d.ts",
-      "../node_modules/@types/node/stream.d.ts",
-      "../node_modules/@types/node/string_decoder.d.ts",
-      "../node_modules/@types/node/timers.d.ts",
-      "../node_modules/@types/node/tls.d.ts",
-      "../node_modules/@types/node/trace_events.d.ts",
-      "../node_modules/@types/node/ts3.6/base.d.ts",
-      "../node_modules/@types/node/tty.d.ts",
-      "../node_modules/@types/node/url.d.ts",
-      "../node_modules/@types/node/util.d.ts",
-      "../node_modules/@types/node/v8.d.ts",
-      "../node_modules/@types/node/vm.d.ts",
-      "../node_modules/@types/node/wasi.d.ts",
-      "../node_modules/@types/node/worker_threads.d.ts",
-      "../node_modules/@types/node/zlib.d.ts",
-      "../node_modules/@types/normalize-package-data/index.d.ts",
-      "../node_modules/@types/parse-json/index.d.ts",
-      "../node_modules/@types/prettier/index.d.ts",
-      "../node_modules/@types/qs/index.d.ts",
-      "../node_modules/@types/range-parser/index.d.ts",
-      "../node_modules/@types/serve-static/index.d.ts",
-      "../node_modules/@types/serve-static/node_modules/@types/mime/index.d.ts",
-      "../node_modules/@types/socket.io-parser/index.d.ts",
-      "../node_modules/@types/socket.io/index.d.ts",
-      "../node_modules/@types/stack-utils/index.d.ts",
-      "../node_modules/@types/superagent/index.d.ts",
-      "../node_modules/@types/supertest/index.d.ts",
-      "../node_modules/@types/uuid/index.d.ts",
-      "../node_modules/@types/validator/index.d.ts",
-      "../node_modules/@types/yargs-parser/index.d.ts",
-      "../node_modules/@types/yargs/index.d.ts",
-      "../node_modules/@types/zen-observable/index.d.ts",
-      "../node_modules/aws-sdk/clients/accessanalyzer.d.ts",
-      "../node_modules/aws-sdk/clients/acm.d.ts",
-      "../node_modules/aws-sdk/clients/acmpca.d.ts",
-      "../node_modules/aws-sdk/clients/alexaforbusiness.d.ts",
-      "../node_modules/aws-sdk/clients/all.d.ts",
-      "../node_modules/aws-sdk/clients/amp.d.ts",
-      "../node_modules/aws-sdk/clients/amplify.d.ts",
-      "../node_modules/aws-sdk/clients/amplifybackend.d.ts",
-      "../node_modules/aws-sdk/clients/apigateway.d.ts",
-      "../node_modules/aws-sdk/clients/apigatewaymanagementapi.d.ts",
-      "../node_modules/aws-sdk/clients/apigatewayv2.d.ts",
-      "../node_modules/aws-sdk/clients/appconfig.d.ts",
-      "../node_modules/aws-sdk/clients/appflow.d.ts",
-      "../node_modules/aws-sdk/clients/appintegrations.d.ts",
-      "../node_modules/aws-sdk/clients/applicationautoscaling.d.ts",
-      "../node_modules/aws-sdk/clients/applicationinsights.d.ts",
-      "../node_modules/aws-sdk/clients/appmesh.d.ts",
-      "../node_modules/aws-sdk/clients/appstream.d.ts",
-      "../node_modules/aws-sdk/clients/appsync.d.ts",
-      "../node_modules/aws-sdk/clients/athena.d.ts",
-      "../node_modules/aws-sdk/clients/auditmanager.d.ts",
-      "../node_modules/aws-sdk/clients/augmentedairuntime.d.ts",
-      "../node_modules/aws-sdk/clients/autoscaling.d.ts",
-      "../node_modules/aws-sdk/clients/autoscalingplans.d.ts",
-      "../node_modules/aws-sdk/clients/backup.d.ts",
-      "../node_modules/aws-sdk/clients/batch.d.ts",
-      "../node_modules/aws-sdk/clients/braket.d.ts",
-      "../node_modules/aws-sdk/clients/budgets.d.ts",
-      "../node_modules/aws-sdk/clients/chime.d.ts",
-      "../node_modules/aws-sdk/clients/cloud9.d.ts",
-      "../node_modules/aws-sdk/clients/clouddirectory.d.ts",
-      "../node_modules/aws-sdk/clients/cloudformation.d.ts",
-      "../node_modules/aws-sdk/clients/cloudfront.d.ts",
-      "../node_modules/aws-sdk/clients/cloudhsm.d.ts",
-      "../node_modules/aws-sdk/clients/cloudhsmv2.d.ts",
-      "../node_modules/aws-sdk/clients/cloudsearch.d.ts",
-      "../node_modules/aws-sdk/clients/cloudsearchdomain.d.ts",
-      "../node_modules/aws-sdk/clients/cloudtrail.d.ts",
-      "../node_modules/aws-sdk/clients/cloudwatch.d.ts",
-      "../node_modules/aws-sdk/clients/cloudwatchevents.d.ts",
-      "../node_modules/aws-sdk/clients/cloudwatchlogs.d.ts",
-      "../node_modules/aws-sdk/clients/codeartifact.d.ts",
-      "../node_modules/aws-sdk/clients/codebuild.d.ts",
-      "../node_modules/aws-sdk/clients/codecommit.d.ts",
-      "../node_modules/aws-sdk/clients/codedeploy.d.ts",
-      "../node_modules/aws-sdk/clients/codeguruprofiler.d.ts",
-      "../node_modules/aws-sdk/clients/codegurureviewer.d.ts",
-      "../node_modules/aws-sdk/clients/codepipeline.d.ts",
-      "../node_modules/aws-sdk/clients/codestar.d.ts",
-      "../node_modules/aws-sdk/clients/codestarconnections.d.ts",
-      "../node_modules/aws-sdk/clients/codestarnotifications.d.ts",
-      "../node_modules/aws-sdk/clients/cognitoidentity.d.ts",
-      "../node_modules/aws-sdk/clients/cognitoidentityserviceprovider.d.ts",
-      "../node_modules/aws-sdk/clients/cognitosync.d.ts",
-      "../node_modules/aws-sdk/clients/comprehend.d.ts",
-      "../node_modules/aws-sdk/clients/comprehendmedical.d.ts",
-      "../node_modules/aws-sdk/clients/computeoptimizer.d.ts",
-      "../node_modules/aws-sdk/clients/configservice.d.ts",
-      "../node_modules/aws-sdk/clients/connect.d.ts",
-      "../node_modules/aws-sdk/clients/connectcontactlens.d.ts",
-      "../node_modules/aws-sdk/clients/connectparticipant.d.ts",
-      "../node_modules/aws-sdk/clients/costexplorer.d.ts",
-      "../node_modules/aws-sdk/clients/cur.d.ts",
-      "../node_modules/aws-sdk/clients/customerprofiles.d.ts",
-      "../node_modules/aws-sdk/clients/databrew.d.ts",
-      "../node_modules/aws-sdk/clients/dataexchange.d.ts",
-      "../node_modules/aws-sdk/clients/datapipeline.d.ts",
-      "../node_modules/aws-sdk/clients/datasync.d.ts",
-      "../node_modules/aws-sdk/clients/dax.d.ts",
-      "../node_modules/aws-sdk/clients/detective.d.ts",
-      "../node_modules/aws-sdk/clients/devicefarm.d.ts",
-      "../node_modules/aws-sdk/clients/devopsguru.d.ts",
-      "../node_modules/aws-sdk/clients/directconnect.d.ts",
-      "../node_modules/aws-sdk/clients/directoryservice.d.ts",
-      "../node_modules/aws-sdk/clients/discovery.d.ts",
-      "../node_modules/aws-sdk/clients/dlm.d.ts",
-      "../node_modules/aws-sdk/clients/dms.d.ts",
-      "../node_modules/aws-sdk/clients/docdb.d.ts",
-      "../node_modules/aws-sdk/clients/dynamodb.d.ts",
-      "../node_modules/aws-sdk/clients/dynamodbstreams.d.ts",
-      "../node_modules/aws-sdk/clients/ebs.d.ts",
-      "../node_modules/aws-sdk/clients/ec2.d.ts",
-      "../node_modules/aws-sdk/clients/ec2instanceconnect.d.ts",
-      "../node_modules/aws-sdk/clients/ecr.d.ts",
-      "../node_modules/aws-sdk/clients/ecrpublic.d.ts",
-      "../node_modules/aws-sdk/clients/ecs.d.ts",
-      "../node_modules/aws-sdk/clients/efs.d.ts",
-      "../node_modules/aws-sdk/clients/eks.d.ts",
-      "../node_modules/aws-sdk/clients/elasticache.d.ts",
-      "../node_modules/aws-sdk/clients/elasticbeanstalk.d.ts",
-      "../node_modules/aws-sdk/clients/elasticinference.d.ts",
-      "../node_modules/aws-sdk/clients/elastictranscoder.d.ts",
-      "../node_modules/aws-sdk/clients/elb.d.ts",
-      "../node_modules/aws-sdk/clients/elbv2.d.ts",
-      "../node_modules/aws-sdk/clients/emr.d.ts",
-      "../node_modules/aws-sdk/clients/emrcontainers.d.ts",
-      "../node_modules/aws-sdk/clients/es.d.ts",
-      "../node_modules/aws-sdk/clients/eventbridge.d.ts",
-      "../node_modules/aws-sdk/clients/finspace.d.ts",
-      "../node_modules/aws-sdk/clients/finspacedata.d.ts",
-      "../node_modules/aws-sdk/clients/firehose.d.ts",
-      "../node_modules/aws-sdk/clients/fis.d.ts",
-      "../node_modules/aws-sdk/clients/fms.d.ts",
-      "../node_modules/aws-sdk/clients/forecastqueryservice.d.ts",
-      "../node_modules/aws-sdk/clients/forecastservice.d.ts",
-      "../node_modules/aws-sdk/clients/frauddetector.d.ts",
-      "../node_modules/aws-sdk/clients/fsx.d.ts",
-      "../node_modules/aws-sdk/clients/gamelift.d.ts",
-      "../node_modules/aws-sdk/clients/glacier.d.ts",
-      "../node_modules/aws-sdk/clients/globalaccelerator.d.ts",
-      "../node_modules/aws-sdk/clients/glue.d.ts",
-      "../node_modules/aws-sdk/clients/greengrass.d.ts",
-      "../node_modules/aws-sdk/clients/greengrassv2.d.ts",
-      "../node_modules/aws-sdk/clients/groundstation.d.ts",
-      "../node_modules/aws-sdk/clients/guardduty.d.ts",
-      "../node_modules/aws-sdk/clients/health.d.ts",
-      "../node_modules/aws-sdk/clients/healthlake.d.ts",
-      "../node_modules/aws-sdk/clients/honeycode.d.ts",
-      "../node_modules/aws-sdk/clients/iam.d.ts",
-      "../node_modules/aws-sdk/clients/identitystore.d.ts",
-      "../node_modules/aws-sdk/clients/imagebuilder.d.ts",
-      "../node_modules/aws-sdk/clients/importexport.d.ts",
-      "../node_modules/aws-sdk/clients/inspector.d.ts",
-      "../node_modules/aws-sdk/clients/iot.d.ts",
-      "../node_modules/aws-sdk/clients/iot1clickdevicesservice.d.ts",
-      "../node_modules/aws-sdk/clients/iot1clickprojects.d.ts",
-      "../node_modules/aws-sdk/clients/iotanalytics.d.ts",
-      "../node_modules/aws-sdk/clients/iotdata.d.ts",
-      "../node_modules/aws-sdk/clients/iotdeviceadvisor.d.ts",
-      "../node_modules/aws-sdk/clients/iotevents.d.ts",
-      "../node_modules/aws-sdk/clients/ioteventsdata.d.ts",
-      "../node_modules/aws-sdk/clients/iotfleethub.d.ts",
-      "../node_modules/aws-sdk/clients/iotjobsdataplane.d.ts",
-      "../node_modules/aws-sdk/clients/iotsecuretunneling.d.ts",
-      "../node_modules/aws-sdk/clients/iotsitewise.d.ts",
-      "../node_modules/aws-sdk/clients/iotthingsgraph.d.ts",
-      "../node_modules/aws-sdk/clients/iotwireless.d.ts",
-      "../node_modules/aws-sdk/clients/ivs.d.ts",
-      "../node_modules/aws-sdk/clients/kafka.d.ts",
-      "../node_modules/aws-sdk/clients/kendra.d.ts",
-      "../node_modules/aws-sdk/clients/kinesis.d.ts",
-      "../node_modules/aws-sdk/clients/kinesisanalytics.d.ts",
-      "../node_modules/aws-sdk/clients/kinesisanalyticsv2.d.ts",
-      "../node_modules/aws-sdk/clients/kinesisvideo.d.ts",
-      "../node_modules/aws-sdk/clients/kinesisvideoarchivedmedia.d.ts",
-      "../node_modules/aws-sdk/clients/kinesisvideomedia.d.ts",
-      "../node_modules/aws-sdk/clients/kinesisvideosignalingchannels.d.ts",
-      "../node_modules/aws-sdk/clients/kms.d.ts",
-      "../node_modules/aws-sdk/clients/lakeformation.d.ts",
-      "../node_modules/aws-sdk/clients/lambda.d.ts",
-      "../node_modules/aws-sdk/clients/lexmodelbuildingservice.d.ts",
-      "../node_modules/aws-sdk/clients/lexmodelsv2.d.ts",
-      "../node_modules/aws-sdk/clients/lexruntime.d.ts",
-      "../node_modules/aws-sdk/clients/lexruntimev2.d.ts",
-      "../node_modules/aws-sdk/clients/licensemanager.d.ts",
-      "../node_modules/aws-sdk/clients/lightsail.d.ts",
-      "../node_modules/aws-sdk/clients/location.d.ts",
-      "../node_modules/aws-sdk/clients/lookoutequipment.d.ts",
-      "../node_modules/aws-sdk/clients/lookoutmetrics.d.ts",
-      "../node_modules/aws-sdk/clients/lookoutvision.d.ts",
-      "../node_modules/aws-sdk/clients/machinelearning.d.ts",
-      "../node_modules/aws-sdk/clients/macie.d.ts",
-      "../node_modules/aws-sdk/clients/macie2.d.ts",
-      "../node_modules/aws-sdk/clients/managedblockchain.d.ts",
-      "../node_modules/aws-sdk/clients/marketplacecatalog.d.ts",
-      "../node_modules/aws-sdk/clients/marketplacecommerceanalytics.d.ts",
-      "../node_modules/aws-sdk/clients/marketplaceentitlementservice.d.ts",
-      "../node_modules/aws-sdk/clients/marketplacemetering.d.ts",
-      "../node_modules/aws-sdk/clients/mediaconnect.d.ts",
-      "../node_modules/aws-sdk/clients/mediaconvert.d.ts",
-      "../node_modules/aws-sdk/clients/medialive.d.ts",
-      "../node_modules/aws-sdk/clients/mediapackage.d.ts",
-      "../node_modules/aws-sdk/clients/mediapackagevod.d.ts",
-      "../node_modules/aws-sdk/clients/mediastore.d.ts",
-      "../node_modules/aws-sdk/clients/mediastoredata.d.ts",
-      "../node_modules/aws-sdk/clients/mediatailor.d.ts",
-      "../node_modules/aws-sdk/clients/mgn.d.ts",
-      "../node_modules/aws-sdk/clients/migrationhub.d.ts",
-      "../node_modules/aws-sdk/clients/migrationhubconfig.d.ts",
-      "../node_modules/aws-sdk/clients/mobile.d.ts",
-      "../node_modules/aws-sdk/clients/mobileanalytics.d.ts",
-      "../node_modules/aws-sdk/clients/mq.d.ts",
-      "../node_modules/aws-sdk/clients/mturk.d.ts",
-      "../node_modules/aws-sdk/clients/mwaa.d.ts",
-      "../node_modules/aws-sdk/clients/neptune.d.ts",
-      "../node_modules/aws-sdk/clients/networkfirewall.d.ts",
-      "../node_modules/aws-sdk/clients/networkmanager.d.ts",
-      "../node_modules/aws-sdk/clients/nimble.d.ts",
-      "../node_modules/aws-sdk/clients/opsworks.d.ts",
-      "../node_modules/aws-sdk/clients/opsworkscm.d.ts",
-      "../node_modules/aws-sdk/clients/organizations.d.ts",
-      "../node_modules/aws-sdk/clients/outposts.d.ts",
-      "../node_modules/aws-sdk/clients/personalize.d.ts",
-      "../node_modules/aws-sdk/clients/personalizeevents.d.ts",
-      "../node_modules/aws-sdk/clients/personalizeruntime.d.ts",
-      "../node_modules/aws-sdk/clients/pi.d.ts",
-      "../node_modules/aws-sdk/clients/pinpoint.d.ts",
-      "../node_modules/aws-sdk/clients/pinpointemail.d.ts",
-      "../node_modules/aws-sdk/clients/pinpointsmsvoice.d.ts",
-      "../node_modules/aws-sdk/clients/polly.d.ts",
-      "../node_modules/aws-sdk/clients/pricing.d.ts",
-      "../node_modules/aws-sdk/clients/qldb.d.ts",
-      "../node_modules/aws-sdk/clients/qldbsession.d.ts",
-      "../node_modules/aws-sdk/clients/quicksight.d.ts",
-      "../node_modules/aws-sdk/clients/ram.d.ts",
-      "../node_modules/aws-sdk/clients/rds.d.ts",
-      "../node_modules/aws-sdk/clients/rdsdataservice.d.ts",
-      "../node_modules/aws-sdk/clients/redshift.d.ts",
-      "../node_modules/aws-sdk/clients/redshiftdata.d.ts",
-      "../node_modules/aws-sdk/clients/rekognition.d.ts",
-      "../node_modules/aws-sdk/clients/resourcegroups.d.ts",
-      "../node_modules/aws-sdk/clients/resourcegroupstaggingapi.d.ts",
-      "../node_modules/aws-sdk/clients/robomaker.d.ts",
-      "../node_modules/aws-sdk/clients/route53.d.ts",
-      "../node_modules/aws-sdk/clients/route53domains.d.ts",
-      "../node_modules/aws-sdk/clients/route53resolver.d.ts",
-      "../node_modules/aws-sdk/clients/s3.d.ts",
-      "../node_modules/aws-sdk/clients/s3control.d.ts",
-      "../node_modules/aws-sdk/clients/s3outposts.d.ts",
-      "../node_modules/aws-sdk/clients/sagemaker.d.ts",
-      "../node_modules/aws-sdk/clients/sagemakeredge.d.ts",
-      "../node_modules/aws-sdk/clients/sagemakerfeaturestoreruntime.d.ts",
-      "../node_modules/aws-sdk/clients/sagemakerruntime.d.ts",
-      "../node_modules/aws-sdk/clients/savingsplans.d.ts",
-      "../node_modules/aws-sdk/clients/schemas.d.ts",
-      "../node_modules/aws-sdk/clients/secretsmanager.d.ts",
-      "../node_modules/aws-sdk/clients/securityhub.d.ts",
-      "../node_modules/aws-sdk/clients/serverlessapplicationrepository.d.ts",
-      "../node_modules/aws-sdk/clients/servicecatalog.d.ts",
-      "../node_modules/aws-sdk/clients/servicecatalogappregistry.d.ts",
-      "../node_modules/aws-sdk/clients/servicediscovery.d.ts",
-      "../node_modules/aws-sdk/clients/servicequotas.d.ts",
-      "../node_modules/aws-sdk/clients/ses.d.ts",
-      "../node_modules/aws-sdk/clients/sesv2.d.ts",
-      "../node_modules/aws-sdk/clients/shield.d.ts",
-      "../node_modules/aws-sdk/clients/signer.d.ts",
-      "../node_modules/aws-sdk/clients/simpledb.d.ts",
-      "../node_modules/aws-sdk/clients/sms.d.ts",
-      "../node_modules/aws-sdk/clients/snowball.d.ts",
-      "../node_modules/aws-sdk/clients/sns.d.ts",
-      "../node_modules/aws-sdk/clients/sqs.d.ts",
-      "../node_modules/aws-sdk/clients/ssm.d.ts",
-      "../node_modules/aws-sdk/clients/sso.d.ts",
-      "../node_modules/aws-sdk/clients/ssoadmin.d.ts",
-      "../node_modules/aws-sdk/clients/ssooidc.d.ts",
-      "../node_modules/aws-sdk/clients/stepfunctions.d.ts",
-      "../node_modules/aws-sdk/clients/storagegateway.d.ts",
-      "../node_modules/aws-sdk/clients/sts.d.ts",
-      "../node_modules/aws-sdk/clients/support.d.ts",
-      "../node_modules/aws-sdk/clients/swf.d.ts",
-      "../node_modules/aws-sdk/clients/synthetics.d.ts",
-      "../node_modules/aws-sdk/clients/textract.d.ts",
-      "../node_modules/aws-sdk/clients/timestreamquery.d.ts",
-      "../node_modules/aws-sdk/clients/timestreamwrite.d.ts",
-      "../node_modules/aws-sdk/clients/transcribeservice.d.ts",
-      "../node_modules/aws-sdk/clients/transfer.d.ts",
-      "../node_modules/aws-sdk/clients/translate.d.ts",
-      "../node_modules/aws-sdk/clients/waf.d.ts",
-      "../node_modules/aws-sdk/clients/wafregional.d.ts",
-      "../node_modules/aws-sdk/clients/wafv2.d.ts",
-      "../node_modules/aws-sdk/clients/wellarchitected.d.ts",
-      "../node_modules/aws-sdk/clients/workdocs.d.ts",
-      "../node_modules/aws-sdk/clients/worklink.d.ts",
-      "../node_modules/aws-sdk/clients/workmail.d.ts",
-      "../node_modules/aws-sdk/clients/workmailmessageflow.d.ts",
-      "../node_modules/aws-sdk/clients/workspaces.d.ts",
-      "../node_modules/aws-sdk/clients/xray.d.ts",
-      "../node_modules/aws-sdk/index.d.ts",
-      "../node_modules/aws-sdk/lib/cloudfront/signer.d.ts",
-      "../node_modules/aws-sdk/lib/config-base.d.ts",
-      "../node_modules/aws-sdk/lib/config.d.ts",
-      "../node_modules/aws-sdk/lib/config_service_placeholders.d.ts",
-      "../node_modules/aws-sdk/lib/config_use_dualstack.d.ts",
-      "../node_modules/aws-sdk/lib/core.d.ts",
-      "../node_modules/aws-sdk/lib/credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/chainable_temporary_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/cognito_identity_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/credential_provider_chain.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/ec2_metadata_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/ecs_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/environment_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/file_system_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/process_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/remote_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/saml_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/shared_ini_file_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/temporary_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/token_file_web_identity_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/credentials/web_identity_credentials.d.ts",
-      "../node_modules/aws-sdk/lib/dynamodb/converter.d.ts",
-      "../node_modules/aws-sdk/lib/dynamodb/document_client.d.ts",
-      "../node_modules/aws-sdk/lib/endpoint.d.ts",
-      "../node_modules/aws-sdk/lib/error.d.ts",
-      "../node_modules/aws-sdk/lib/event-stream/event-stream.d.ts",
-      "../node_modules/aws-sdk/lib/event_listeners.d.ts",
-      "../node_modules/aws-sdk/lib/http_request.d.ts",
-      "../node_modules/aws-sdk/lib/http_response.d.ts",
-      "../node_modules/aws-sdk/lib/metadata_service.d.ts",
-      "../node_modules/aws-sdk/lib/polly/presigner.d.ts",
-      "../node_modules/aws-sdk/lib/rds/signer.d.ts",
-      "../node_modules/aws-sdk/lib/request.d.ts",
-      "../node_modules/aws-sdk/lib/response.d.ts",
-      "../node_modules/aws-sdk/lib/s3/managed_upload.d.ts",
-      "../node_modules/aws-sdk/lib/s3/presigned_post.d.ts",
-      "../node_modules/aws-sdk/lib/service.d.ts",
-      "../node_modules/aws-sdk/lib/services/cloudfront.d.ts",
-      "../node_modules/aws-sdk/lib/services/dynamodb.d.ts",
-      "../node_modules/aws-sdk/lib/services/glacier.d.ts",
-      "../node_modules/aws-sdk/lib/services/polly.d.ts",
-      "../node_modules/aws-sdk/lib/services/s3.d.ts",
-      "../node_modules/aws-sdk/lib/shared-ini/ini-loader.d.ts",
-      "../node_modules/axios/index.d.ts",
-      "../node_modules/class-validator/types/container.d.ts",
-      "../node_modules/class-validator/types/decorator/array/arraycontains.d.ts",
-      "../node_modules/class-validator/types/decorator/array/arraymaxsize.d.ts",
-      "../node_modules/class-validator/types/decorator/array/arrayminsize.d.ts",
-      "../node_modules/class-validator/types/decorator/array/arraynotcontains.d.ts",
-      "../node_modules/class-validator/types/decorator/array/arraynotempty.d.ts",
-      "../node_modules/class-validator/types/decorator/array/arrayunique.d.ts",
-      "../node_modules/class-validator/types/decorator/common/allow.d.ts",
-      "../node_modules/class-validator/types/decorator/common/equals.d.ts",
-      "../node_modules/class-validator/types/decorator/common/isdefined.d.ts",
-      "../node_modules/class-validator/types/decorator/common/isempty.d.ts",
-      "../node_modules/class-validator/types/decorator/common/isin.d.ts",
-      "../node_modules/class-validator/types/decorator/common/islatitude.d.ts",
-      "../node_modules/class-validator/types/decorator/common/islatlong.d.ts",
-      "../node_modules/class-validator/types/decorator/common/islongitude.d.ts",
-      "../node_modules/class-validator/types/decorator/common/isnotempty.d.ts",
-      "../node_modules/class-validator/types/decorator/common/isnotin.d.ts",
-      "../node_modules/class-validator/types/decorator/common/isoptional.d.ts",
-      "../node_modules/class-validator/types/decorator/common/notequals.d.ts",
-      "../node_modules/class-validator/types/decorator/common/validate.d.ts",
-      "../node_modules/class-validator/types/decorator/common/validateby.d.ts",
-      "../node_modules/class-validator/types/decorator/common/validateif.d.ts",
-      "../node_modules/class-validator/types/decorator/common/validatenested.d.ts",
-      "../node_modules/class-validator/types/decorator/common/validatepromise.d.ts",
-      "../node_modules/class-validator/types/decorator/date/maxdate.d.ts",
-      "../node_modules/class-validator/types/decorator/date/mindate.d.ts",
-      "../node_modules/class-validator/types/decorator/decorators.d.ts",
-      "../node_modules/class-validator/types/decorator/number/isdivisibleby.d.ts",
-      "../node_modules/class-validator/types/decorator/number/isnegative.d.ts",
-      "../node_modules/class-validator/types/decorator/number/ispositive.d.ts",
-      "../node_modules/class-validator/types/decorator/number/max.d.ts",
-      "../node_modules/class-validator/types/decorator/number/min.d.ts",
-      "../node_modules/class-validator/types/decorator/object/isinstance.d.ts",
-      "../node_modules/class-validator/types/decorator/object/isnotemptyobject.d.ts",
-      "../node_modules/class-validator/types/decorator/string/contains.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isalpha.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isalphanumeric.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isascii.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isbase32.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isbase64.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isbic.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isbooleanstring.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isbtcaddress.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isbytelength.d.ts",
-      "../node_modules/class-validator/types/decorator/string/iscreditcard.d.ts",
-      "../node_modules/class-validator/types/decorator/string/iscurrency.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isdatauri.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isdatestring.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isdecimal.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isean.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isemail.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isethereumaddress.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isfirebasepushid.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isfqdn.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isfullwidth.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ishalfwidth.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ishash.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ishexadecimal.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ishexcolor.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ishsl.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isiban.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isidentitycard.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isip.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isisbn.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isisin.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isiso31661alpha2.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isiso31661alpha3.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isiso8601.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isisrc.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isissn.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isjson.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isjwt.d.ts",
-      "../node_modules/class-validator/types/decorator/string/islocale.d.ts",
-      "../node_modules/class-validator/types/decorator/string/islowercase.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ismacaddress.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ismagneturi.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ismilitarytime.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ismimetype.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ismobilephone.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ismongoid.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ismultibyte.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isnumberstring.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isoctal.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ispassportnumber.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isphonenumber.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isport.d.ts",
-      "../node_modules/class-validator/types/decorator/string/ispostalcode.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isrfc3339.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isrgbcolor.d.ts",
-      "../node_modules/class-validator/types/decorator/string/issemver.d.ts",
-      "../node_modules/class-validator/types/decorator/string/issurrogatepair.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isuppercase.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isurl.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isuuid.d.ts",
-      "../node_modules/class-validator/types/decorator/string/isvariablewidth.d.ts",
-      "../node_modules/class-validator/types/decorator/string/length.d.ts",
-      "../node_modules/class-validator/types/decorator/string/matches.d.ts",
-      "../node_modules/class-validator/types/decorator/string/maxlength.d.ts",
-      "../node_modules/class-validator/types/decorator/string/minlength.d.ts",
-      "../node_modules/class-validator/types/decorator/string/notcontains.d.ts",
-      "../node_modules/class-validator/types/decorator/typechecker/isarray.d.ts",
-      "../node_modules/class-validator/types/decorator/typechecker/isboolean.d.ts",
-      "../node_modules/class-validator/types/decorator/typechecker/isdate.d.ts",
-      "../node_modules/class-validator/types/decorator/typechecker/isenum.d.ts",
-      "../node_modules/class-validator/types/decorator/typechecker/isint.d.ts",
-      "../node_modules/class-validator/types/decorator/typechecker/isnumber.d.ts",
-      "../node_modules/class-validator/types/decorator/typechecker/isobject.d.ts",
-      "../node_modules/class-validator/types/decorator/typechecker/isstring.d.ts",
-      "../node_modules/class-validator/types/decorator/validationoptions.d.ts",
-      "../node_modules/class-validator/types/index.d.ts",
-      "../node_modules/class-validator/types/metadata/constraintmetadata.d.ts",
-      "../node_modules/class-validator/types/metadata/metadatastorage.d.ts",
-      "../node_modules/class-validator/types/metadata/validationmetadata.d.ts",
-      "../node_modules/class-validator/types/metadata/validationmetadataargs.d.ts",
-      "../node_modules/class-validator/types/register-decorator.d.ts",
-      "../node_modules/class-validator/types/validation-schema/validationschema.d.ts",
-      "../node_modules/class-validator/types/validation/validationarguments.d.ts",
-      "../node_modules/class-validator/types/validation/validationerror.d.ts",
-      "../node_modules/class-validator/types/validation/validationtypes.d.ts",
-      "../node_modules/class-validator/types/validation/validator.d.ts",
-      "../node_modules/class-validator/types/validation/validatorconstraintinterface.d.ts",
-      "../node_modules/class-validator/types/validation/validatoroptions.d.ts",
-      "../node_modules/jdenticon/types/env.d.ts",
-      "../node_modules/jdenticon/types/module.d.ts",
-      "../node_modules/jest-diff/build/cleanupsemantic.d.ts",
-      "../node_modules/jest-diff/build/difflines.d.ts",
-      "../node_modules/jest-diff/build/index.d.ts",
-      "../node_modules/jest-diff/build/printdiffs.d.ts",
-      "../node_modules/jest-diff/build/types.d.ts",
-      "../node_modules/pretty-format/build/index.d.ts",
-      "../node_modules/pretty-format/build/types.d.ts",
-      "../node_modules/reflect-metadata/index.d.ts",
-      "../node_modules/rxjs/index.d.ts",
-      "../node_modules/rxjs/internal/asyncsubject.d.ts",
-      "../node_modules/rxjs/internal/behaviorsubject.d.ts",
-      "../node_modules/rxjs/internal/config.d.ts",
-      "../node_modules/rxjs/internal/innersubscribe.d.ts",
-      "../node_modules/rxjs/internal/innersubscriber.d.ts",
-      "../node_modules/rxjs/internal/notification.d.ts",
-      "../node_modules/rxjs/internal/observable.d.ts",
-      "../node_modules/rxjs/internal/observable/bindcallback.d.ts",
-      "../node_modules/rxjs/internal/observable/bindnodecallback.d.ts",
-      "../node_modules/rxjs/internal/observable/combinelatest.d.ts",
-      "../node_modules/rxjs/internal/observable/concat.d.ts",
-      "../node_modules/rxjs/internal/observable/connectableobservable.d.ts",
-      "../node_modules/rxjs/internal/observable/defer.d.ts",
-      "../node_modules/rxjs/internal/observable/empty.d.ts",
-      "../node_modules/rxjs/internal/observable/forkjoin.d.ts",
-      "../node_modules/rxjs/internal/observable/from.d.ts",
-      "../node_modules/rxjs/internal/observable/fromevent.d.ts",
-      "../node_modules/rxjs/internal/observable/fromeventpattern.d.ts",
-      "../node_modules/rxjs/internal/observable/generate.d.ts",
-      "../node_modules/rxjs/internal/observable/iif.d.ts",
-      "../node_modules/rxjs/internal/observable/interval.d.ts",
-      "../node_modules/rxjs/internal/observable/merge.d.ts",
-      "../node_modules/rxjs/internal/observable/never.d.ts",
-      "../node_modules/rxjs/internal/observable/of.d.ts",
-      "../node_modules/rxjs/internal/observable/onerrorresumenext.d.ts",
-      "../node_modules/rxjs/internal/observable/pairs.d.ts",
-      "../node_modules/rxjs/internal/observable/partition.d.ts",
-      "../node_modules/rxjs/internal/observable/race.d.ts",
-      "../node_modules/rxjs/internal/observable/range.d.ts",
-      "../node_modules/rxjs/internal/observable/throwerror.d.ts",
-      "../node_modules/rxjs/internal/observable/timer.d.ts",
-      "../node_modules/rxjs/internal/observable/using.d.ts",
-      "../node_modules/rxjs/internal/observable/zip.d.ts",
-      "../node_modules/rxjs/internal/operator.d.ts",
-      "../node_modules/rxjs/internal/operators/audit.d.ts",
-      "../node_modules/rxjs/internal/operators/audittime.d.ts",
-      "../node_modules/rxjs/internal/operators/buffer.d.ts",
-      "../node_modules/rxjs/internal/operators/buffercount.d.ts",
-      "../node_modules/rxjs/internal/operators/buffertime.d.ts",
-      "../node_modules/rxjs/internal/operators/buffertoggle.d.ts",
-      "../node_modules/rxjs/internal/operators/bufferwhen.d.ts",
-      "../node_modules/rxjs/internal/operators/catcherror.d.ts",
-      "../node_modules/rxjs/internal/operators/combineall.d.ts",
-      "../node_modules/rxjs/internal/operators/combinelatest.d.ts",
-      "../node_modules/rxjs/internal/operators/concat.d.ts",
-      "../node_modules/rxjs/internal/operators/concatall.d.ts",
-      "../node_modules/rxjs/internal/operators/concatmap.d.ts",
-      "../node_modules/rxjs/internal/operators/concatmapto.d.ts",
-      "../node_modules/rxjs/internal/operators/count.d.ts",
-      "../node_modules/rxjs/internal/operators/debounce.d.ts",
-      "../node_modules/rxjs/internal/operators/debouncetime.d.ts",
-      "../node_modules/rxjs/internal/operators/defaultifempty.d.ts",
-      "../node_modules/rxjs/internal/operators/delay.d.ts",
-      "../node_modules/rxjs/internal/operators/delaywhen.d.ts",
-      "../node_modules/rxjs/internal/operators/dematerialize.d.ts",
-      "../node_modules/rxjs/internal/operators/distinct.d.ts",
-      "../node_modules/rxjs/internal/operators/distinctuntilchanged.d.ts",
-      "../node_modules/rxjs/internal/operators/distinctuntilkeychanged.d.ts",
-      "../node_modules/rxjs/internal/operators/elementat.d.ts",
-      "../node_modules/rxjs/internal/operators/endwith.d.ts",
-      "../node_modules/rxjs/internal/operators/every.d.ts",
-      "../node_modules/rxjs/internal/operators/exhaust.d.ts",
-      "../node_modules/rxjs/internal/operators/exhaustmap.d.ts",
-      "../node_modules/rxjs/internal/operators/expand.d.ts",
-      "../node_modules/rxjs/internal/operators/filter.d.ts",
-      "../node_modules/rxjs/internal/operators/finalize.d.ts",
-      "../node_modules/rxjs/internal/operators/find.d.ts",
-      "../node_modules/rxjs/internal/operators/findindex.d.ts",
-      "../node_modules/rxjs/internal/operators/first.d.ts",
-      "../node_modules/rxjs/internal/operators/groupby.d.ts",
-      "../node_modules/rxjs/internal/operators/ignoreelements.d.ts",
-      "../node_modules/rxjs/internal/operators/isempty.d.ts",
-      "../node_modules/rxjs/internal/operators/last.d.ts",
-      "../node_modules/rxjs/internal/operators/map.d.ts",
-      "../node_modules/rxjs/internal/operators/mapto.d.ts",
-      "../node_modules/rxjs/internal/operators/materialize.d.ts",
-      "../node_modules/rxjs/internal/operators/max.d.ts",
-      "../node_modules/rxjs/internal/operators/merge.d.ts",
-      "../node_modules/rxjs/internal/operators/mergeall.d.ts",
-      "../node_modules/rxjs/internal/operators/mergemap.d.ts",
-      "../node_modules/rxjs/internal/operators/mergemapto.d.ts",
-      "../node_modules/rxjs/internal/operators/mergescan.d.ts",
-      "../node_modules/rxjs/internal/operators/min.d.ts",
-      "../node_modules/rxjs/internal/operators/multicast.d.ts",
-      "../node_modules/rxjs/internal/operators/observeon.d.ts",
-      "../node_modules/rxjs/internal/operators/onerrorresumenext.d.ts",
-      "../node_modules/rxjs/internal/operators/pairwise.d.ts",
-      "../node_modules/rxjs/internal/operators/partition.d.ts",
-      "../node_modules/rxjs/internal/operators/pluck.d.ts",
-      "../node_modules/rxjs/internal/operators/publish.d.ts",
-      "../node_modules/rxjs/internal/operators/publishbehavior.d.ts",
-      "../node_modules/rxjs/internal/operators/publishlast.d.ts",
-      "../node_modules/rxjs/internal/operators/publishreplay.d.ts",
-      "../node_modules/rxjs/internal/operators/race.d.ts",
-      "../node_modules/rxjs/internal/operators/reduce.d.ts",
-      "../node_modules/rxjs/internal/operators/refcount.d.ts",
-      "../node_modules/rxjs/internal/operators/repeat.d.ts",
-      "../node_modules/rxjs/internal/operators/repeatwhen.d.ts",
-      "../node_modules/rxjs/internal/operators/retry.d.ts",
-      "../node_modules/rxjs/internal/operators/retrywhen.d.ts",
-      "../node_modules/rxjs/internal/operators/sample.d.ts",
-      "../node_modules/rxjs/internal/operators/sampletime.d.ts",
-      "../node_modules/rxjs/internal/operators/scan.d.ts",
-      "../node_modules/rxjs/internal/operators/sequenceequal.d.ts",
-      "../node_modules/rxjs/internal/operators/share.d.ts",
-      "../node_modules/rxjs/internal/operators/sharereplay.d.ts",
-      "../node_modules/rxjs/internal/operators/single.d.ts",
-      "../node_modules/rxjs/internal/operators/skip.d.ts",
-      "../node_modules/rxjs/internal/operators/skiplast.d.ts",
-      "../node_modules/rxjs/internal/operators/skipuntil.d.ts",
-      "../node_modules/rxjs/internal/operators/skipwhile.d.ts",
-      "../node_modules/rxjs/internal/operators/startwith.d.ts",
-      "../node_modules/rxjs/internal/operators/subscribeon.d.ts",
-      "../node_modules/rxjs/internal/operators/switchall.d.ts",
-      "../node_modules/rxjs/internal/operators/switchmap.d.ts",
-      "../node_modules/rxjs/internal/operators/switchmapto.d.ts",
-      "../node_modules/rxjs/internal/operators/take.d.ts",
-      "../node_modules/rxjs/internal/operators/takelast.d.ts",
-      "../node_modules/rxjs/internal/operators/takeuntil.d.ts",
-      "../node_modules/rxjs/internal/operators/takewhile.d.ts",
-      "../node_modules/rxjs/internal/operators/tap.d.ts",
-      "../node_modules/rxjs/internal/operators/throttle.d.ts",
-      "../node_modules/rxjs/internal/operators/throttletime.d.ts",
-      "../node_modules/rxjs/internal/operators/throwifempty.d.ts",
-      "../node_modules/rxjs/internal/operators/timeinterval.d.ts",
-      "../node_modules/rxjs/internal/operators/timeout.d.ts",
-      "../node_modules/rxjs/internal/operators/timeoutwith.d.ts",
-      "../node_modules/rxjs/internal/operators/timestamp.d.ts",
-      "../node_modules/rxjs/internal/operators/toarray.d.ts",
-      "../node_modules/rxjs/internal/operators/window.d.ts",
-      "../node_modules/rxjs/internal/operators/windowcount.d.ts",
-      "../node_modules/rxjs/internal/operators/windowtime.d.ts",
-      "../node_modules/rxjs/internal/operators/windowtoggle.d.ts",
-      "../node_modules/rxjs/internal/operators/windowwhen.d.ts",
-      "../node_modules/rxjs/internal/operators/withlatestfrom.d.ts",
-      "../node_modules/rxjs/internal/operators/zip.d.ts",
-      "../node_modules/rxjs/internal/operators/zipall.d.ts",
-      "../node_modules/rxjs/internal/outersubscriber.d.ts",
-      "../node_modules/rxjs/internal/replaysubject.d.ts",
-      "../node_modules/rxjs/internal/scheduled/scheduled.d.ts",
-      "../node_modules/rxjs/internal/scheduler.d.ts",
-      "../node_modules/rxjs/internal/scheduler/action.d.ts",
-      "../node_modules/rxjs/internal/scheduler/animationframe.d.ts",
-      "../node_modules/rxjs/internal/scheduler/animationframescheduler.d.ts",
-      "../node_modules/rxjs/internal/scheduler/asap.d.ts",
-      "../node_modules/rxjs/internal/scheduler/asapscheduler.d.ts",
-      "../node_modules/rxjs/internal/scheduler/async.d.ts",
-      "../node_modules/rxjs/internal/scheduler/asyncaction.d.ts",
-      "../node_modules/rxjs/internal/scheduler/asyncscheduler.d.ts",
-      "../node_modules/rxjs/internal/scheduler/queue.d.ts",
-      "../node_modules/rxjs/internal/scheduler/queuescheduler.d.ts",
-      "../node_modules/rxjs/internal/scheduler/virtualtimescheduler.d.ts",
-      "../node_modules/rxjs/internal/subject.d.ts",
-      "../node_modules/rxjs/internal/subscriber.d.ts",
-      "../node_modules/rxjs/internal/subscription.d.ts",
-      "../node_modules/rxjs/internal/symbol/observable.d.ts",
-      "../node_modules/rxjs/internal/types.d.ts",
-      "../node_modules/rxjs/internal/util/argumentoutofrangeerror.d.ts",
-      "../node_modules/rxjs/internal/util/emptyerror.d.ts",
-      "../node_modules/rxjs/internal/util/identity.d.ts",
-      "../node_modules/rxjs/internal/util/isobservable.d.ts",
-      "../node_modules/rxjs/internal/util/noop.d.ts",
-      "../node_modules/rxjs/internal/util/objectunsubscribederror.d.ts",
-      "../node_modules/rxjs/internal/util/pipe.d.ts",
-      "../node_modules/rxjs/internal/util/timeouterror.d.ts",
-      "../node_modules/rxjs/internal/util/unsubscriptionerror.d.ts",
-      "../node_modules/rxjs/operators/index.d.ts",
-      "../node_modules/socket.io-adapter/dist/index.d.ts",
-      "../node_modules/socket.io-parser/dist/index.d.ts",
-      "../node_modules/socket.io/dist/client.d.ts",
-      "../node_modules/socket.io/dist/index.d.ts",
-      "../node_modules/socket.io/dist/namespace.d.ts",
-      "../node_modules/socket.io/dist/socket.d.ts",
-      "../node_modules/typeorm/cache/queryresultcache.d.ts",
-      "../node_modules/typeorm/cache/queryresultcacheoptions.d.ts",
-      "../node_modules/typeorm/common/deeppartial.d.ts",
-      "../node_modules/typeorm/common/entityfieldsnames.d.ts",
-      "../node_modules/typeorm/common/entitytarget.d.ts",
-      "../node_modules/typeorm/common/objectliteral.d.ts",
-      "../node_modules/typeorm/common/objecttype.d.ts",
-      "../node_modules/typeorm/connection/baseconnectionoptions.d.ts",
-      "../node_modules/typeorm/connection/connection.d.ts",
-      "../node_modules/typeorm/connection/connectionmanager.d.ts",
-      "../node_modules/typeorm/connection/connectionoptions.d.ts",
-      "../node_modules/typeorm/connection/connectionoptionsreader.d.ts",
-      "../node_modules/typeorm/container.d.ts",
-      "../node_modules/typeorm/decorator/check.d.ts",
-      "../node_modules/typeorm/decorator/columns/column.d.ts",
-      "../node_modules/typeorm/decorator/columns/createdatecolumn.d.ts",
-      "../node_modules/typeorm/decorator/columns/deletedatecolumn.d.ts",
-      "../node_modules/typeorm/decorator/columns/objectidcolumn.d.ts",
-      "../node_modules/typeorm/decorator/columns/primarycolumn.d.ts",
-      "../node_modules/typeorm/decorator/columns/primarygeneratedcolumn.d.ts",
-      "../node_modules/typeorm/decorator/columns/updatedatecolumn.d.ts",
-      "../node_modules/typeorm/decorator/columns/versioncolumn.d.ts",
-      "../node_modules/typeorm/decorator/columns/viewcolumn.d.ts",
-      "../node_modules/typeorm/decorator/entity-view/viewentity.d.ts",
-      "../node_modules/typeorm/decorator/entity/childentity.d.ts",
-      "../node_modules/typeorm/decorator/entity/entity.d.ts",
-      "../node_modules/typeorm/decorator/entity/tableinheritance.d.ts",
-      "../node_modules/typeorm/decorator/entityrepository.d.ts",
-      "../node_modules/typeorm/decorator/exclusion.d.ts",
-      "../node_modules/typeorm/decorator/generated.d.ts",
-      "../node_modules/typeorm/decorator/index.d.ts",
-      "../node_modules/typeorm/decorator/listeners/afterinsert.d.ts",
-      "../node_modules/typeorm/decorator/listeners/afterload.d.ts",
-      "../node_modules/typeorm/decorator/listeners/afterremove.d.ts",
-      "../node_modules/typeorm/decorator/listeners/afterupdate.d.ts",
-      "../node_modules/typeorm/decorator/listeners/beforeinsert.d.ts",
-      "../node_modules/typeorm/decorator/listeners/beforeremove.d.ts",
-      "../node_modules/typeorm/decorator/listeners/beforeupdate.d.ts",
-      "../node_modules/typeorm/decorator/listeners/eventsubscriber.d.ts",
-      "../node_modules/typeorm/decorator/options/columncommonoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/columnembeddedoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/columnenumoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/columnhstoreoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/columnnumericoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/columnoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/columnwithlengthoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/columnwithwidthoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/entityoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/indexoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/joincolumnoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/jointablemultiplecolumnsoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/jointableoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/primarygeneratedcolumnnumericoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/primarygeneratedcolumnuuidoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/relationoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/spatialcolumnoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/transactionoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/valuetransformer.d.ts",
-      "../node_modules/typeorm/decorator/options/viewcolumnoptions.d.ts",
-      "../node_modules/typeorm/decorator/options/viewentityoptions.d.ts",
-      "../node_modules/typeorm/decorator/relations/joincolumn.d.ts",
-      "../node_modules/typeorm/decorator/relations/jointable.d.ts",
-      "../node_modules/typeorm/decorator/relations/manytomany.d.ts",
-      "../node_modules/typeorm/decorator/relations/manytoone.d.ts",
-      "../node_modules/typeorm/decorator/relations/onetomany.d.ts",
-      "../node_modules/typeorm/decorator/relations/onetoone.d.ts",
-      "../node_modules/typeorm/decorator/relations/relationcount.d.ts",
-      "../node_modules/typeorm/decorator/relations/relationid.d.ts",
-      "../node_modules/typeorm/decorator/transaction/transaction.d.ts",
-      "../node_modules/typeorm/decorator/transaction/transactionmanager.d.ts",
-      "../node_modules/typeorm/decorator/transaction/transactionrepository.d.ts",
-      "../node_modules/typeorm/decorator/tree/tree.d.ts",
-      "../node_modules/typeorm/decorator/tree/treechildren.d.ts",
-      "../node_modules/typeorm/decorator/tree/treelevelcolumn.d.ts",
-      "../node_modules/typeorm/decorator/tree/treeparent.d.ts",
-      "../node_modules/typeorm/decorator/unique.d.ts",
-      "../node_modules/typeorm/driver/aurora-data-api-pg/auroradataapipostgresconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/aurora-data-api/auroradataapiconnectioncredentialsoptions.d.ts",
-      "../node_modules/typeorm/driver/aurora-data-api/auroradataapiconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/better-sqlite3/bettersqlite3connectionoptions.d.ts",
-      "../node_modules/typeorm/driver/cockroachdb/cockroachconnectioncredentialsoptions.d.ts",
-      "../node_modules/typeorm/driver/cockroachdb/cockroachconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/cordova/cordovaconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/driver.d.ts",
-      "../node_modules/typeorm/driver/expo/expoconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/mongodb/mongoconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/mongodb/mongoqueryrunner.d.ts",
-      "../node_modules/typeorm/driver/mongodb/typings.d.ts",
-      "../node_modules/typeorm/driver/mysql/mysqlconnectioncredentialsoptions.d.ts",
-      "../node_modules/typeorm/driver/mysql/mysqlconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/nativescript/nativescriptconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/oracle/oracleconnectioncredentialsoptions.d.ts",
-      "../node_modules/typeorm/driver/oracle/oracleconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/postgres/postgresconnectioncredentialsoptions.d.ts",
-      "../node_modules/typeorm/driver/postgres/postgresconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/query.d.ts",
-      "../node_modules/typeorm/driver/react-native/reactnativeconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/sap/sapconnectioncredentialsoptions.d.ts",
-      "../node_modules/typeorm/driver/sap/sapconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/sqlinmemory.d.ts",
-      "../node_modules/typeorm/driver/sqlite/sqliteconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/sqljs/sqljsconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/authentication/azureactivedirectoryaccesstokenauthentication.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/authentication/azureactivedirectorymsiappserviceauthentication.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/authentication/azureactivedirectorymsivmauthentication.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/authentication/azureactivedirectorypasswordauthentication.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/authentication/azureactivedirectoryserviceprincipalsecret.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/authentication/defaultauthentication.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/authentication/ntlmauthentication.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/mssqlparameter.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/sqlserverconnectioncredentialsoptions.d.ts",
-      "../node_modules/typeorm/driver/sqlserver/sqlserverconnectionoptions.d.ts",
-      "../node_modules/typeorm/driver/types/columntypes.d.ts",
-      "../node_modules/typeorm/driver/types/databasetype.d.ts",
-      "../node_modules/typeorm/driver/types/datatypedefaults.d.ts",
-      "../node_modules/typeorm/driver/types/isolationlevel.d.ts",
-      "../node_modules/typeorm/driver/types/mappedcolumntypes.d.ts",
-      "../node_modules/typeorm/driver/types/replicationmode.d.ts",
-      "../node_modules/typeorm/entity-manager/entitymanager.d.ts",
-      "../node_modules/typeorm/entity-manager/mongoentitymanager.d.ts",
-      "../node_modules/typeorm/entity-manager/sqljsentitymanager.d.ts",
-      "../node_modules/typeorm/entity-schema/entityschema.d.ts",
-      "../node_modules/typeorm/entity-schema/entityschemacheckoptions.d.ts",
-      "../node_modules/typeorm/entity-schema/entityschemacolumnoptions.d.ts",
-      "../node_modules/typeorm/entity-schema/entityschemaexclusionoptions.d.ts",
-      "../node_modules/typeorm/entity-schema/entityschemaindexoptions.d.ts",
-      "../node_modules/typeorm/entity-schema/entityschemaoptions.d.ts",
-      "../node_modules/typeorm/entity-schema/entityschemarelationoptions.d.ts",
-      "../node_modules/typeorm/entity-schema/entityschemauniqueoptions.d.ts",
-      "../node_modules/typeorm/error/alreadyhasactiveconnectionerror.d.ts",
-      "../node_modules/typeorm/error/cannotattachtreechildrenentityerror.d.ts",
-      "../node_modules/typeorm/error/cannotconnectalreadyconnectederror.d.ts",
-      "../node_modules/typeorm/error/cannotcreateentityidmaperror.d.ts",
-      "../node_modules/typeorm/error/cannotdetermineentityerror.d.ts",
-      "../node_modules/typeorm/error/cannotexecutenotconnectederror.d.ts",
-      "../node_modules/typeorm/error/cannotgetentitymanagernotconnectederror.d.ts",
-      "../node_modules/typeorm/error/cannotreflectmethodparametertypeerror.d.ts",
-      "../node_modules/typeorm/error/circularrelationserror.d.ts",
-      "../node_modules/typeorm/error/columntypeundefinederror.d.ts",
-      "../node_modules/typeorm/error/connectionisnotseterror.d.ts",
-      "../node_modules/typeorm/error/connectionnotfounderror.d.ts",
-      "../node_modules/typeorm/error/customrepositorycannotinheritrepositoryerror.d.ts",
-      "../node_modules/typeorm/error/customrepositorydoesnothaveentityerror.d.ts",
-      "../node_modules/typeorm/error/customrepositorynotfounderror.d.ts",
-      "../node_modules/typeorm/error/datatypenotsupportederror.d.ts",
-      "../node_modules/typeorm/error/driveroptionnotseterror.d.ts",
-      "../node_modules/typeorm/error/driverpackagenotinstallederror.d.ts",
-      "../node_modules/typeorm/error/entitycolumnnotfound.d.ts",
-      "../node_modules/typeorm/error/entitymetadatanotfounderror.d.ts",
-      "../node_modules/typeorm/error/entitynotfounderror.d.ts",
-      "../node_modules/typeorm/error/findrelationsnotfounderror.d.ts",
-      "../node_modules/typeorm/error/index.d.ts",
-      "../node_modules/typeorm/error/initializedrelationerror.d.ts",
-      "../node_modules/typeorm/error/insertvaluesmissingerror.d.ts",
-      "../node_modules/typeorm/error/limitonupdatenotsupportederror.d.ts",
-      "../node_modules/typeorm/error/locknotsupportedongivendrivererror.d.ts",
-      "../node_modules/typeorm/error/metadataalreadyexistserror.d.ts",
-      "../node_modules/typeorm/error/metadatawithsuchnamealreadyexistserror.d.ts",
-      "../node_modules/typeorm/error/missingdeletedatecolumnerror.d.ts",
-      "../node_modules/typeorm/error/missingdrivererror.d.ts",
-      "../node_modules/typeorm/error/missingjoincolumnerror.d.ts",
-      "../node_modules/typeorm/error/missingjointableerror.d.ts",
-      "../node_modules/typeorm/error/missingprimarycolumnerror.d.ts",
-      "../node_modules/typeorm/error/mustbeentityerror.d.ts",
-      "../node_modules/typeorm/error/namingstrategynotfounderror.d.ts",
-      "../node_modules/typeorm/error/noconnectionforrepositoryerror.d.ts",
-      "../node_modules/typeorm/error/noconnectionoptionerror.d.ts",
-      "../node_modules/typeorm/error/noneedtoreleaseentitymanagererror.d.ts",
-      "../node_modules/typeorm/error/noversionorupdatedatecolumnerror.d.ts",
-      "../node_modules/typeorm/error/offsetwithoutlimitnotsupportederror.d.ts",
-      "../node_modules/typeorm/error/optimisticlockcannotbeusederror.d.ts",
-      "../node_modules/typeorm/error/optimisticlockversionmismatcherror.d.ts",
-      "../node_modules/typeorm/error/persistedentitynotfounderror.d.ts",
-      "../node_modules/typeorm/error/pessimisticlocktransactionrequirederror.d.ts",
-      "../node_modules/typeorm/error/primarycolumncannotbenullableerror.d.ts",
-      "../node_modules/typeorm/error/queryfailederror.d.ts",
-      "../node_modules/typeorm/error/queryrunneralreadyreleasederror.d.ts",
-      "../node_modules/typeorm/error/queryrunnerprovideralreadyreleasederror.d.ts",
-      "../node_modules/typeorm/error/repositorynotfounderror.d.ts",
-      "../node_modules/typeorm/error/repositorynottreeerror.d.ts",
-      "../node_modules/typeorm/error/returningstatementnotsupportederror.d.ts",
-      "../node_modules/typeorm/error/subjectremovedandupdatederror.d.ts",
-      "../node_modules/typeorm/error/subjectwithoutidentifiererror.d.ts",
-      "../node_modules/typeorm/error/transactionalreadystartederror.d.ts",
-      "../node_modules/typeorm/error/transactionnotstartederror.d.ts",
-      "../node_modules/typeorm/error/treerepositorynotsupportederror.d.ts",
-      "../node_modules/typeorm/error/updatevaluesmissingerror.d.ts",
-      "../node_modules/typeorm/error/usingjoincolumnisnotallowederror.d.ts",
-      "../node_modules/typeorm/error/usingjoincolumnonlyononesideallowederror.d.ts",
-      "../node_modules/typeorm/error/usingjointableisnotallowederror.d.ts",
-      "../node_modules/typeorm/error/usingjointableonlyononesideallowederror.d.ts",
-      "../node_modules/typeorm/find-options/findconditions.d.ts",
-      "../node_modules/typeorm/find-options/findmanyoptions.d.ts",
-      "../node_modules/typeorm/find-options/findoneoptions.d.ts",
-      "../node_modules/typeorm/find-options/findoperator.d.ts",
-      "../node_modules/typeorm/find-options/findoperatortype.d.ts",
-      "../node_modules/typeorm/find-options/findoptionsutils.d.ts",
-      "../node_modules/typeorm/find-options/joinoptions.d.ts",
-      "../node_modules/typeorm/find-options/operator/any.d.ts",
-      "../node_modules/typeorm/find-options/operator/between.d.ts",
-      "../node_modules/typeorm/find-options/operator/equal.d.ts",
-      "../node_modules/typeorm/find-options/operator/ilike.d.ts",
-      "../node_modules/typeorm/find-options/operator/in.d.ts",
-      "../node_modules/typeorm/find-options/operator/isnull.d.ts",
-      "../node_modules/typeorm/find-options/operator/lessthan.d.ts",
-      "../node_modules/typeorm/find-options/operator/lessthanorequal.d.ts",
-      "../node_modules/typeorm/find-options/operator/like.d.ts",
-      "../node_modules/typeorm/find-options/operator/morethan.d.ts",
-      "../node_modules/typeorm/find-options/operator/morethanorequal.d.ts",
-      "../node_modules/typeorm/find-options/operator/not.d.ts",
-      "../node_modules/typeorm/find-options/operator/raw.d.ts",
-      "../node_modules/typeorm/find-options/orderbycondition.d.ts",
-      "../node_modules/typeorm/index.d.ts",
-      "../node_modules/typeorm/logger/advancedconsolelogger.d.ts",
-      "../node_modules/typeorm/logger/filelogger.d.ts",
-      "../node_modules/typeorm/logger/logger.d.ts",
-      "../node_modules/typeorm/logger/loggeroptions.d.ts",
-      "../node_modules/typeorm/logger/simpleconsolelogger.d.ts",
-      "../node_modules/typeorm/metadata-args/checkmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/columnmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/discriminatorvaluemetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/embeddedmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/entitylistenermetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/entityrepositorymetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/entitysubscribermetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/exclusionmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/generatedmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/indexmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/inheritancemetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/joincolumnmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/jointablemetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/metadataargsstorage.d.ts",
-      "../node_modules/typeorm/metadata-args/namingstrategymetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/relationcountmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/relationidmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/relationmetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/tablemetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/transactionentitymetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/transactionrepositorymetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/treemetadataargs.d.ts",
-      "../node_modules/typeorm/metadata-args/types/columnmode.d.ts",
-      "../node_modules/typeorm/metadata-args/uniquemetadataargs.d.ts",
-      "../node_modules/typeorm/metadata/checkmetadata.d.ts",
-      "../node_modules/typeorm/metadata/columnmetadata.d.ts",
-      "../node_modules/typeorm/metadata/embeddedmetadata.d.ts",
-      "../node_modules/typeorm/metadata/entitylistenermetadata.d.ts",
-      "../node_modules/typeorm/metadata/entitymetadata.d.ts",
-      "../node_modules/typeorm/metadata/exclusionmetadata.d.ts",
-      "../node_modules/typeorm/metadata/foreignkeymetadata.d.ts",
-      "../node_modules/typeorm/metadata/indexmetadata.d.ts",
-      "../node_modules/typeorm/metadata/relationcountmetadata.d.ts",
-      "../node_modules/typeorm/metadata/relationidmetadata.d.ts",
-      "../node_modules/typeorm/metadata/relationmetadata.d.ts",
-      "../node_modules/typeorm/metadata/types/closuretreeoptions.d.ts",
-      "../node_modules/typeorm/metadata/types/deferrabletype.d.ts",
-      "../node_modules/typeorm/metadata/types/eventlistenertypes.d.ts",
-      "../node_modules/typeorm/metadata/types/ondeletetype.d.ts",
-      "../node_modules/typeorm/metadata/types/onupdatetype.d.ts",
-      "../node_modules/typeorm/metadata/types/propertytypeinfunction.d.ts",
-      "../node_modules/typeorm/metadata/types/relationtypeinfunction.d.ts",
-      "../node_modules/typeorm/metadata/types/relationtypes.d.ts",
-      "../node_modules/typeorm/metadata/types/tabletypes.d.ts",
-      "../node_modules/typeorm/metadata/types/treetypes.d.ts",
-      "../node_modules/typeorm/metadata/uniquemetadata.d.ts",
-      "../node_modules/typeorm/migration/migration.d.ts",
-      "../node_modules/typeorm/migration/migrationexecutor.d.ts",
-      "../node_modules/typeorm/migration/migrationinterface.d.ts",
-      "../node_modules/typeorm/naming-strategy/defaultnamingstrategy.d.ts",
-      "../node_modules/typeorm/naming-strategy/namingstrategyinterface.d.ts",
-      "../node_modules/typeorm/persistence/subject.d.ts",
-      "../node_modules/typeorm/persistence/subjectchangemap.d.ts",
-      "../node_modules/typeorm/platform/platformtools.d.ts",
-      "../node_modules/typeorm/query-builder/alias.d.ts",
-      "../node_modules/typeorm/query-builder/brackets.d.ts",
-      "../node_modules/typeorm/query-builder/deletequerybuilder.d.ts",
-      "../node_modules/typeorm/query-builder/insertquerybuilder.d.ts",
-      "../node_modules/typeorm/query-builder/joinattribute.d.ts",
-      "../node_modules/typeorm/query-builder/querybuilder.d.ts",
-      "../node_modules/typeorm/query-builder/queryexpressionmap.d.ts",
-      "../node_modules/typeorm/query-builder/querypartialentity.d.ts",
-      "../node_modules/typeorm/query-builder/relation-count/relationcountattribute.d.ts",
-      "../node_modules/typeorm/query-builder/relation-id/relationidattribute.d.ts",
-      "../node_modules/typeorm/query-builder/relationidloader.d.ts",
-      "../node_modules/typeorm/query-builder/relationloader.d.ts",
-      "../node_modules/typeorm/query-builder/relationquerybuilder.d.ts",
-      "../node_modules/typeorm/query-builder/result/deleteresult.d.ts",
-      "../node_modules/typeorm/query-builder/result/insertresult.d.ts",
-      "../node_modules/typeorm/query-builder/result/updateresult.d.ts",
-      "../node_modules/typeorm/query-builder/selectquery.d.ts",
-      "../node_modules/typeorm/query-builder/selectquerybuilder.d.ts",
-      "../node_modules/typeorm/query-builder/selectquerybuilderoption.d.ts",
-      "../node_modules/typeorm/query-builder/softdeletequerybuilder.d.ts",
-      "../node_modules/typeorm/query-builder/transformer/plainobjecttonewentitytransformer.d.ts",
-      "../node_modules/typeorm/query-builder/updatequerybuilder.d.ts",
-      "../node_modules/typeorm/query-builder/whereexpression.d.ts",
-      "../node_modules/typeorm/query-runner/queryrunner.d.ts",
-      "../node_modules/typeorm/repository/abstractrepository.d.ts",
-      "../node_modules/typeorm/repository/baseentity.d.ts",
-      "../node_modules/typeorm/repository/mongorepository.d.ts",
-      "../node_modules/typeorm/repository/removeoptions.d.ts",
-      "../node_modules/typeorm/repository/repository.d.ts",
-      "../node_modules/typeorm/repository/saveoptions.d.ts",
-      "../node_modules/typeorm/repository/treerepository.d.ts",
-      "../node_modules/typeorm/schema-builder/options/tablecheckoptions.d.ts",
-      "../node_modules/typeorm/schema-builder/options/tablecolumnoptions.d.ts",
-      "../node_modules/typeorm/schema-builder/options/tableexclusionoptions.d.ts",
-      "../node_modules/typeorm/schema-builder/options/tableforeignkeyoptions.d.ts",
-      "../node_modules/typeorm/schema-builder/options/tableindexoptions.d.ts",
-      "../node_modules/typeorm/schema-builder/options/tableoptions.d.ts",
-      "../node_modules/typeorm/schema-builder/options/tableuniqueoptions.d.ts",
-      "../node_modules/typeorm/schema-builder/options/viewoptions.d.ts",
-      "../node_modules/typeorm/schema-builder/schemabuilder.d.ts",
-      "../node_modules/typeorm/schema-builder/table/table.d.ts",
-      "../node_modules/typeorm/schema-builder/table/tablecheck.d.ts",
-      "../node_modules/typeorm/schema-builder/table/tablecolumn.d.ts",
-      "../node_modules/typeorm/schema-builder/table/tableexclusion.d.ts",
-      "../node_modules/typeorm/schema-builder/table/tableforeignkey.d.ts",
-      "../node_modules/typeorm/schema-builder/table/tableindex.d.ts",
-      "../node_modules/typeorm/schema-builder/table/tableunique.d.ts",
-      "../node_modules/typeorm/schema-builder/view/view.d.ts",
-      "../node_modules/typeorm/subscriber/broadcaster.d.ts",
-      "../node_modules/typeorm/subscriber/broadcasterresult.d.ts",
-      "../node_modules/typeorm/subscriber/entitysubscriberinterface.d.ts",
-      "../node_modules/typeorm/subscriber/event/insertevent.d.ts",
-      "../node_modules/typeorm/subscriber/event/loadevent.d.ts",
-      "../node_modules/typeorm/subscriber/event/removeevent.d.ts",
-      "../node_modules/typeorm/subscriber/event/transactioncommitevent.d.ts",
-      "../node_modules/typeorm/subscriber/event/transactionrollbackevent.d.ts",
-      "../node_modules/typeorm/subscriber/event/transactionstartevent.d.ts",
-      "../node_modules/typeorm/subscriber/event/updateevent.d.ts",
-      "../node_modules/typescript/lib/lib.dom.d.ts",
-      "../node_modules/typescript/lib/lib.dom.iterable.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.collection.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.core.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.generator.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.iterable.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.promise.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.proxy.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.reflect.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.symbol.d.ts",
-      "../node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts",
-      "../node_modules/typescript/lib/lib.es2016.array.include.d.ts",
-      "../node_modules/typescript/lib/lib.es2016.d.ts",
-      "../node_modules/typescript/lib/lib.es2017.d.ts",
-      "../node_modules/typescript/lib/lib.es2017.full.d.ts",
-      "../node_modules/typescript/lib/lib.es2017.intl.d.ts",
-      "../node_modules/typescript/lib/lib.es2017.object.d.ts",
-      "../node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts",
-      "../node_modules/typescript/lib/lib.es2017.string.d.ts",
-      "../node_modules/typescript/lib/lib.es2017.typedarrays.d.ts",
-      "../node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts",
-      "../node_modules/typescript/lib/lib.es2018.asynciterable.d.ts",
-      "../node_modules/typescript/lib/lib.es2018.d.ts",
-      "../node_modules/typescript/lib/lib.es2018.intl.d.ts",
-      "../node_modules/typescript/lib/lib.es2018.promise.d.ts",
-      "../node_modules/typescript/lib/lib.es2018.regexp.d.ts",
-      "../node_modules/typescript/lib/lib.es2020.bigint.d.ts",
-      "../node_modules/typescript/lib/lib.es5.d.ts",
-      "../node_modules/typescript/lib/lib.esnext.intl.d.ts",
-      "../node_modules/typescript/lib/lib.scripthost.d.ts",
-      "../node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
-      "../src/app.module.ts",
-      "../src/config/database.config.ts",
-      "../src/config/index.ts",
-      "../src/config/jwt.config.ts",
-      "../src/config/s3.config.ts",
-      "../src/lib/files/constants.ts",
-      "../src/lib/files/extensions.ts",
-      "../src/lib/files/index.ts",
-      "../src/lib/operators/index.ts",
-      "../src/lib/queries/constants.ts",
-      "../src/lib/queries/index.ts",
-      "../src/lib/typings/index.ts",
-      "../src/lib/utils/index.ts",
-      "../src/lib/websocket/exception-filters/bad-request-transformation.filter.ts",
-      "../src/lib/websocket/exception-filters/index.ts",
-      "../src/lib/websocket/index.ts",
-      "../src/lib/websocket/websocket.adapter.ts",
-      "../src/lib/websocket/websocket.module.ts",
-      "../src/lib/websocket/websocket.service.ts",
-      "../src/main.ts",
-      "../src/modules/auth/auth.controller.ts",
-      "../src/modules/auth/auth.module.ts",
-      "../src/modules/auth/decorators/get-user.decorator.ts",
-      "../src/modules/auth/decorators/index.ts",
-      "../src/modules/auth/dtos/index.ts",
-      "../src/modules/auth/dtos/login.dto.ts",
-      "../src/modules/auth/dtos/refresh-tokens.dto.ts",
-      "../src/modules/auth/dtos/register.dto.ts",
-      "../src/modules/auth/entities/index.ts",
-      "../src/modules/auth/entities/refresh-session.entity.ts",
-      "../src/modules/auth/gateways/auth.gateway.ts",
-      "../src/modules/auth/gateways/index.ts",
-      "../src/modules/auth/guards/index.ts",
-      "../src/modules/auth/guards/is-authorized.guard.ts",
-      "../src/modules/auth/index.ts",
-      "../src/modules/auth/middlewares/auth.middleware.ts",
-      "../src/modules/auth/middlewares/index.ts",
-      "../src/modules/auth/services/auth.service.ts",
-      "../src/modules/auth/services/index.ts",
-      "../src/modules/auth/services/refresh-session.service.ts",
-      "../src/modules/chat/chat.module.ts",
-      "../src/modules/chat/entities/direct-chat-member.entity.ts",
-      "../src/modules/chat/entities/direct-chat-message.entity.ts",
-      "../src/modules/chat/entities/direct-chat.entity.ts",
-      "../src/modules/chat/entities/group-chat-member.entity.ts",
-      "../src/modules/chat/entities/group-chat-message.entity.ts",
-      "../src/modules/chat/entities/group-chat.entity.ts",
-      "../src/modules/chat/entities/index.ts",
-      "../src/modules/chat/gateways/direct-chat.gateway.ts",
-      "../src/modules/chat/gateways/dtos/add-group-chat-member.dto.ts",
-      "../src/modules/chat/gateways/dtos/ban-direct-chat-partner.dto.ts",
-      "../src/modules/chat/gateways/dtos/create-direct-chat-message.dto.ts",
-      "../src/modules/chat/gateways/dtos/create-group-chat-message.dto.ts",
-      "../src/modules/chat/gateways/dtos/create-group-chat.dto.ts",
-      "../src/modules/chat/gateways/dtos/get-direct-chat-attachments.dto.ts",
-      "../src/modules/chat/gateways/dtos/get-direct-chat-messages.dto.ts",
-      "../src/modules/chat/gateways/dtos/get-direct-chat.dto.ts",
-      "../src/modules/chat/gateways/dtos/get-group-chat-attachments.dto.ts",
-      "../src/modules/chat/gateways/dtos/get-group-chat-messages.dto.ts",
-      "../src/modules/chat/gateways/dtos/get-group-chat.dto.ts",
-      "../src/modules/chat/gateways/dtos/index.ts",
-      "../src/modules/chat/gateways/dtos/leave-group-chat.dto.ts",
-      "../src/modules/chat/gateways/dtos/read-direct-message.dto.ts",
-      "../src/modules/chat/gateways/dtos/read-group-message.dto.ts",
-      "../src/modules/chat/gateways/dtos/remove-group-chat-member.dto.ts",
-      "../src/modules/chat/gateways/dtos/subscribe-group-chats.dto.ts",
-      "../src/modules/chat/gateways/dtos/unban-direct-chat-partner.dto.ts",
-      "../src/modules/chat/gateways/events/direct-chat.events.ts",
-      "../src/modules/chat/gateways/events/group-chat.events.ts",
-      "../src/modules/chat/gateways/events/index.ts",
-      "../src/modules/chat/gateways/group-chat.gateway.ts",
-      "../src/modules/chat/gateways/index.ts",
-      "../src/modules/chat/index.ts",
-      "../src/modules/chat/lib/chat-message-sender-type.ts",
-      "../src/modules/chat/lib/constants.ts",
-      "../src/modules/chat/lib/group-chat-member-roles.ts",
-      "../src/modules/chat/lib/typings.ts",
-      "../src/modules/chat/services/direct-chat-member.service.ts",
-      "../src/modules/chat/services/direct-chat-message.service.ts",
-      "../src/modules/chat/services/direct-chat.service.ts",
-      "../src/modules/chat/services/group-chat-member.service.ts",
-      "../src/modules/chat/services/group-chat-message.service.ts",
-      "../src/modules/chat/services/group-chat.service.ts",
-      "../src/modules/chat/services/index.ts",
-      "../src/modules/profile/dtos/index.ts",
-      "../src/modules/profile/dtos/update-profile.dto.ts",
-      "../src/modules/profile/index.ts",
-      "../src/modules/profile/profile.controller.ts",
-      "../src/modules/profile/profile.module.ts",
-      "../src/modules/upload/entities/file.entity.ts",
-      "../src/modules/upload/entities/index.ts",
-      "../src/modules/upload/index.ts",
-      "../src/modules/upload/lib/typings.ts",
-      "../src/modules/upload/services/file.service.ts",
-      "../src/modules/upload/services/index.ts",
-      "../src/modules/upload/services/upload.service.ts",
-      "../src/modules/upload/upload.controller.ts",
-      "../src/modules/upload/upload.module.ts",
-      "../src/modules/user/dtos/get-users-by-login-query.dto.ts",
-      "../src/modules/user/dtos/index.ts",
-      "../src/modules/user/entities/index.ts",
-      "../src/modules/user/entities/user.entity.ts",
-      "../src/modules/user/index.ts",
-      "../src/modules/user/lib/reserved-logins.ts",
-      "../src/modules/user/lib/typings.ts",
-      "../src/modules/user/lib/user-roles.ts",
-      "../src/modules/user/user.controller.ts",
-      "../src/modules/user/user.module.ts",
-      "../src/modules/user/user.service.ts"
-    ]
+    "semanticDiagnosticsPerFile": []
   },
-  "version": "3.9.9"
+  "version": "3.9.10"
 }

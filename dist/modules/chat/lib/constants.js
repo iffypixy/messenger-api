@@ -1,5 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.minimalNumberOfMembersToCreateGroupChat = void 0;
-exports.minimalNumberOfMembersToCreateGroupChat = 2;
+exports.minNumberOfGroupChatMembers = void 0;
+exports.minNumberOfGroupChatMembers = 2;
 //# sourceMappingURL=constants.js.map

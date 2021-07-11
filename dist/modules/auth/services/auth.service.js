@@ -26,10 +26,7 @@ let AuthService = class AuthService {
     async findUserByAccessToken(token) {
         try {
             const { userId } = await this.jwtService.verifyAsync(token);
-            const user = await this.userService.findById(userId);
-            if (!user)
-                return null;
-            return this.userService.save(Object.assign(Object.assign({}, user), { lastSeen: new Date() }));
+            return this.userService.findById(userId);
         }
         catch (error) {
             return null;

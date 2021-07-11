@@ -11,22 +11,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthMiddleware = void 0;
 const common_1 = require("@nestjs/common");
+const user_1 = require("../../user");
 const typings_1 = require("../../../lib/typings");
 const services_1 = require("../services");
 let AuthMiddleware = class AuthMiddleware {
-    constructor(authService) {
+    constructor(authService, userService) {
         this.authService = authService;
+        this.userService = userService;
     }
     async use(req, res, next) {
         const token = req.cookies["access-token"];
-        if (token)
-            req.user = await this.authService.findUserByAccessToken(token);
+        const user = await this.authService.findUserByAccessToken(token);
+        if (user)
+            req.user = await this.userService.save(Object.assign(Object.assign({}, user), { lastSeen: new Date() }));
         next();
     }
 };
 AuthMiddleware = __decorate([
     common_1.Injectable(),
-    __metadata("design:paramtypes", [services_1.AuthService])
+    __metadata("design:paramtypes", [services_1.AuthService,
+        user_1.UserService])
 ], AuthMiddleware);
 exports.AuthMiddleware = AuthMiddleware;
 //# sourceMappingURL=auth.middleware.js.map

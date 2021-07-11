@@ -14,7 +14,7 @@ async function bootstrap() {
     app.use(cookieParser());
     app.useWebSocketAdapter(new websocket_1.WebsocketAdapter(app, cors));
     app.useGlobalPipes(new common_1.ValidationPipe({ transform: true }));
-    app.setGlobalPrefix("/v1/api");
+    app.setGlobalPrefix("/v1");
     await app.listen(process.env.PORT);
 }
 bootstrap();
