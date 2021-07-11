@@ -1,1 +1,1 @@
-export const minimalNumberOfMembersToCreateGroupChat = 2;
+export const minNumberOfGroupChatMembers = 2;

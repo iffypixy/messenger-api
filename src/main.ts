@@ -18,7 +18,7 @@ async function bootstrap() {
   app.useWebSocketAdapter(new WebsocketAdapter(app, cors));
   app.useGlobalPipes(new ValidationPipe({transform: true}));
 
-  app.setGlobalPrefix("/v1/api");
+  app.setGlobalPrefix("/v1");
 
   await app.listen(process.env.PORT);
 }
