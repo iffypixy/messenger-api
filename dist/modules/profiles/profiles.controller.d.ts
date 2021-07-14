@@ -4,8 +4,8 @@ import { BufferedFile } from "@lib/typings";
 import { UpdateProfileDto } from "./dtos";
 export declare class ProfilesController {
     private readonly usersService;
-    private readonly uploadService;
-    constructor(usersService: UsersService, uploadService: UploadsService);
+    private readonly uploadsService;
+    constructor(usersService: UsersService, uploadsService: UploadsService);
     updateProfile(user: User, { username }: UpdateProfileDto, bufferedFile: BufferedFile): Promise<{
         credentials: UserPublicData;
     }>;

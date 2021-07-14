@@ -29,7 +29,7 @@ import {
   SubscribeChatsDto
 } from "../dtos/groups";
 
-const minAmountOfMembers = 2;
+const minAmountOfMembers = 3;
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
@@ -122,10 +122,9 @@ export class GroupsGateway {
       text: dto.text, sender: member
     });
 
-    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
+    socket.to(chat.id).emit(clientEvents.MESSAGE, {
       details: chat.public,
-      message: message.public,
-      member: member.public
+      message: message.public
     });
 
     return {
@@ -175,14 +174,22 @@ export class GroupsGateway {
 
       const isOwn = user.id === socket.user.id;
 
-      await this.membersService.create({
+      const member = await this.membersService.create({
         user, chat,
         role: isOwn ? "owner" : "member"
       });
 
       const sockets = await this.websocketService.getSocketsByUserId(this.wss, user.id);
 
-      sockets.forEach((socket) => socket.join(chat.id));
+      sockets.forEach((socket) => {
+        socket.join(chat.id);
+
+        if (!isOwn) socket.emit(clientEvents.CHAT_CREATED, {
+          details: chat.public,
+          member: member.public,
+          participants: users.length
+        });
+      });
     }
 
     const message = await this.messagesService.create({
@@ -190,11 +197,7 @@ export class GroupsGateway {
       text: `${member.user.username} has created the chat!`
     });
 
-    this.wss.to(chat.id).emit(clientEvents.CHAT_CREATED, {
-      details: chat.public
-    });
-
-    this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
       details: chat.public,
       message: message.public
     });
@@ -247,6 +250,10 @@ export class GroupsGateway {
       role: "member"
     });
 
+    const participants = await this.membersService.count({
+      where: {chat}
+    });
+
     this.wss.to(chat.id).emit(clientEvents.MEMBER_ADDED, {
       details: chat.public
     });
@@ -257,6 +264,8 @@ export class GroupsGateway {
       socket.join(chat.id);
 
       socket.emit(clientEvents.ADDED, {
+        participants,
+        member: added.public,
         details: chat.public
       });
     });
@@ -266,7 +275,7 @@ export class GroupsGateway {
       text: `${added.user.username} has joined!`
     });
 
-    this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
       details: chat.public,
       message: message.public
     });
@@ -317,7 +326,7 @@ export class GroupsGateway {
       text: `${member.user.username} has been kicked!`
     });
 
-    this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
       details: chat.public,
       message: message.public
     });
@@ -368,7 +377,7 @@ export class GroupsGateway {
       text: `${member.user.username} left the chat!`
     });
 
-    this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
       details: chat.public,
       message: message.public
     });
@@ -415,7 +424,7 @@ export class GroupsGateway {
           text: `${replacement.user.username} is chat owner now!`
         });
 
-        this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+        this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
           details: chat.public,
           message: message.public
         });

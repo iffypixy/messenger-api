@@ -24,14 +24,14 @@ const files_1 = require("../../lib/files");
 const utils_1 = require("../../lib/utils");
 const dtos_1 = require("./dtos");
 let ProfilesController = class ProfilesController {
-    constructor(usersService, uploadService) {
+    constructor(usersService, uploadsService) {
         this.usersService = usersService;
-        this.uploadService = uploadService;
+        this.uploadsService = uploadsService;
     }
     async updateProfile(user, { username }, bufferedFile) {
         if (!bufferedFile)
             throw new common_1.BadRequestException("File is required");
-        const avatar = (await this.uploadService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
+        const avatar = (await this.uploadsService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
         const partial = { username, avatar };
         utils_1.clearObject(partial);
         const updated = await this.usersService.save(Object.assign(Object.assign({}, user), partial));

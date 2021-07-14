@@ -22,7 +22,7 @@ import {FilesService, UploadsService} from "./services";
 @Controller("upload")
 export class UploadsController {
   constructor(
-    private readonly uploadService: UploadsService,
+    private readonly uploadsService: UploadsService,
     private readonly filesService: FilesService
   ) {
   }
@@ -46,7 +46,7 @@ export class UploadsController {
 
     const ext = `.${mime.getExtension(mimetype)}`;
 
-    const {Location: url} = await this.uploadService.upload(buffer, mimetype);
+    const {Location: url} = await this.uploadsService.upload(buffer, mimetype);
 
     const file = await this.filesService.create({
       name: originalname, user,

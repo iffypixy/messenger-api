@@ -34,19 +34,13 @@ let DirectMessagesService = class DirectMessagesService {
     count(options) {
         return this.repository.count(options);
     }
-    delete(criteria) {
-        return this.repository.delete(criteria);
-    }
     update(criteria, partial) {
         return this.repository.update(criteria, partial);
-    }
-    findAndCount(options) {
-        return this.repository.findAndCount(options);
     }
     save(partial, options) {
         return this.repository.save(partial, options);
     }
-    findWithAttachments(attachment, options) {
+    findAttachments(type, options) {
         for (const key in options.order) {
             options.order = {
                 [`message.${key}`]: options.order[key]
@@ -61,7 +55,7 @@ let DirectMessagesService = class DirectMessagesService {
             .leftJoinAndSelect("message.images", "images")
             .leftJoinAndSelect("message.parent", "parent")
             .where(options.where)
-            .andWhere(`${attachment} is not null`)
+            .andWhere(`${type} is not null`)
             .orderBy(options.order)
             .skip(options.skip)
             .take(options.take)

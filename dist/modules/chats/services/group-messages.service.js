@@ -37,7 +37,7 @@ let GroupMessagesService = class GroupMessagesService {
     update(criteria, partial) {
         return this.repository.update(criteria, partial);
     }
-    findWithAttachments(attachment, options) {
+    findAttachments(type, options) {
         for (const key in options.order) {
             options.order = {
                 [`message.${key}`]: options.order[key]
@@ -51,7 +51,7 @@ let GroupMessagesService = class GroupMessagesService {
             .leftJoinAndSelect("message.images", "images")
             .leftJoinAndSelect("message.parent", "parent")
             .where(options.where)
-            .andWhere(`${attachment} is not null`)
+            .andWhere(`${type} is not null`)
             .orderBy(options.order)
             .skip(options.skip)
             .take(options.take)

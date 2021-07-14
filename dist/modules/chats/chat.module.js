@@ -17,6 +17,10 @@ const services_1 = require("./services");
 const entities_1 = require("./entities");
 const controllers_1 = require("./controllers");
 let ChatModule = class ChatModule {
+    configure(consumer) {
+        consumer.apply(auth_1.AuthMiddleware)
+            .forRoutes(controllers_1.DirectsController, controllers_1.GroupsController);
+    }
 };
 ChatModule = __decorate([
     common_1.Module({

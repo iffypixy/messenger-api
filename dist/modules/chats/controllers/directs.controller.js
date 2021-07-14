@@ -144,7 +144,7 @@ let DirectsController = class DirectsController {
             .findOneByUsers([user, partner], { createNew: false });
         if (!chat)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messagesService.findWithAttachments("images", {
+        const messages = await this.messagesService.findAttachments("images", {
             skip: dto.skip,
             where: { chat },
             order: {
@@ -173,7 +173,7 @@ let DirectsController = class DirectsController {
             .findOneByUsers([user, partner], { createNew: false });
         if (!chat)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messagesService.findWithAttachments("audio", {
+        const messages = await this.messagesService.findAttachments("audio", {
             skip: +dto.skip,
             where: { chat },
             order: {
@@ -199,7 +199,7 @@ let DirectsController = class DirectsController {
             .findOneByUsers([user, partner], { createNew: false });
         if (!chat)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messagesService.findWithAttachments("files", {
+        const messages = await this.messagesService.findAttachments("files", {
             skip: +dto.skip,
             where: { chat },
             order: {

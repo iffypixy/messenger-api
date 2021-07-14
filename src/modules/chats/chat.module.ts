@@ -1,9 +1,9 @@
-import {Module} from "@nestjs/common";
+import {MiddlewareConsumer, Module, NestModule} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 
 import {UploadsModule} from "@modules/uploads";
 import {UsersModule} from "@modules/users";
-import {AuthModule} from "@modules/auth";
+import {AuthMiddleware, AuthModule} from "@modules/auth";
 import {GroupsGateway, DirectsGateway} from "./gateways";
 import {DirectMembersService, DirectMessagesService, DirectsService, GroupsService, GroupMessagesService, GroupMembersService} from "./services";
 import {Group, GroupMember, GroupMessage, Direct, DirectMember, DirectMessage} from "./entities";
@@ -35,5 +35,9 @@ import {DirectsController, GroupsController} from "./controllers";
   ],
   controllers: [DirectsController, GroupsController]
 })
-export class ChatModule {
+export class ChatModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AuthMiddleware)
+      .forRoutes(DirectsController, GroupsController);
+  }
 }

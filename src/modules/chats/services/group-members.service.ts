@@ -41,10 +41,6 @@ export class GroupMembersService {
     return this.repository.delete(criteria);
   }
 
-  update(criteria: FindConditions<GroupMember>, partial: DeepPartial<GroupMember>): Promise<UpdateResult> {
-    return this.repository.update(criteria, partial);
-  }
-
   save(partial: DeepPartial<GroupMember>, options?: SaveOptions): Promise<GroupMember> {
     return this.repository.save(partial, options);
   }

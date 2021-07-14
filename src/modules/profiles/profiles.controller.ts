@@ -15,7 +15,7 @@ import {UpdateProfileDto} from "./dtos";
 export class ProfilesController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly uploadService: UploadsService
+    private readonly uploadsService: UploadsService
   ) {}
 
   @UseInterceptors(
@@ -40,7 +40,7 @@ export class ProfilesController {
   ): Promise<{credentials: UserPublicData}> {
     if (!bufferedFile) throw new BadRequestException("File is required");
 
-    const avatar = (await this.uploadService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
+    const avatar = (await this.uploadsService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
 
     const partial = {username, avatar};
 

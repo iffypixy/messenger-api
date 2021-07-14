@@ -7,10 +7,10 @@ import { AuthService, RefreshSessionsService } from "./services";
 export declare class AuthController {
     private readonly usersService;
     private readonly jwtService;
-    private readonly refreshSessionService;
+    private readonly refreshSessionsService;
     private readonly authService;
-    private readonly uploadService;
-    constructor(usersService: UsersService, jwtService: JwtService, refreshSessionService: RefreshSessionsService, authService: AuthService, uploadService: UploadsService);
+    private readonly uploadsService;
+    constructor(usersService: UsersService, jwtService: JwtService, refreshSessionsService: RefreshSessionsService, authService: AuthService, uploadsService: UploadsService);
     register({ username, password, fingerprint }: RegisterDto, res: Response): Promise<{
         credentials: UserPublicData;
     }>;

@@ -37,23 +37,15 @@ export class DirectMessagesService {
     return this.repository.count(options);
   }
 
-  delete(criteria: FindConditions<DirectMessage>): Promise<DeleteResult> {
-    return this.repository.delete(criteria);
-  }
-
   update(criteria: FindConditions<DirectMessage>, partial: DeepPartial<DirectMessage>): Promise<UpdateResult> {
     return this.repository.update(criteria, partial);
-  }
-
-  findAndCount(options: FindManyOptions<DirectMessage>): Promise<[DirectMessage[], number]> {
-    return this.repository.findAndCount(options);
   }
 
   save(partial: DeepPartial<DirectMessage>, options?: SaveOptions): Promise<DirectMessage> {
     return this.repository.save(partial, options);
   }
 
-  findWithAttachments(attachment: "images" | "files" | "audio", options: FindManyOptions<DirectMessage>) {
+  findAttachments(type: "images" | "files" | "audio", options: FindManyOptions<DirectMessage>) {
     for (const key in options.order) {
       options.order = {
         [`message.${key}`]: options.order[key]
@@ -69,7 +61,7 @@ export class DirectMessagesService {
       .leftJoinAndSelect("message.images", "images")
       .leftJoinAndSelect("message.parent", "parent")
       .where(options.where)
-      .andWhere(`${attachment} is not null`)
+      .andWhere(`${type} is not null`)
       .orderBy(options.order as OrderByCondition)
       .skip(options.skip)
       .take(options.take)

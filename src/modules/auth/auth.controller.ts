@@ -17,9 +17,9 @@ export class AuthController {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly refreshSessionService: RefreshSessionsService,
+    private readonly refreshSessionsService: RefreshSessionsService,
     private readonly authService: AuthService,
-    private readonly uploadService: UploadsService
+    private readonly uploadsService: UploadsService
   ) {
   }
 
@@ -40,7 +40,7 @@ export class AuthController {
 
     const png = jdenticon.toPng(v4(), 300);
 
-    const avatar = (await this.uploadService.upload(png, "image/png")).Location;
+    const avatar = (await this.uploadsService.upload(png, "image/png")).Location;
 
     const user = await this.usersService.create({
       username, avatar,
@@ -75,7 +75,7 @@ export class AuthController {
 
     if (!doPasswordsMatch) throw error;
 
-    await this.refreshSessionService.delete({fingerprint});
+    await this.refreshSessionsService.delete({fingerprint});
 
     const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);
 
@@ -100,7 +100,7 @@ export class AuthController {
 
     if (!token) throw error;
 
-    const session = await this.refreshSessionService.findOne({
+    const session = await this.refreshSessionsService.findOne({
       where: {fingerprint, token}
     });
 
@@ -110,7 +110,7 @@ export class AuthController {
 
     if (isExpired) throw error;
 
-    await this.refreshSessionService.delete({
+    await this.refreshSessionsService.delete({
       id: session.id
     });
 
@@ -139,6 +139,6 @@ export class AuthController {
     res.cookie("access-token", null);
     res.cookie("refresh-token", null);
 
-    await this.refreshSessionService.delete({token});
+    await this.refreshSessionsService.delete({token});
   }
 }

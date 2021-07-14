@@ -26,7 +26,7 @@ const websocket_1 = require("../../../lib/websocket");
 const services_1 = require("../services");
 const events_1 = require("./events");
 const groups_1 = require("../dtos/groups");
-const minAmountOfMembers = 2;
+const minAmountOfMembers = 3;
 let GroupsGateway = class GroupsGateway {
     constructor(membersService, messagesService, chatsService, filesService, usersService, websocketService) {
         this.membersService = membersService;
@@ -93,10 +93,9 @@ let GroupsGateway = class GroupsGateway {
             chat, parent, audio, files, images,
             text: dto.text, sender: member
         });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
+        socket.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
             details: chat.public,
-            message: message.public,
-            member: member.public
+            message: message.public
         });
         return {
             message: message.public
@@ -129,21 +128,26 @@ let GroupsGateway = class GroupsGateway {
         for (let i = 0; i < users.length; i++) {
             const user = users[0];
             const isOwn = user.id === socket.user.id;
-            await this.membersService.create({
+            const member = await this.membersService.create({
                 user, chat,
                 role: isOwn ? "owner" : "member"
             });
             const sockets = await this.websocketService.getSocketsByUserId(this.wss, user.id);
-            sockets.forEach((socket) => socket.join(chat.id));
+            sockets.forEach((socket) => {
+                socket.join(chat.id);
+                if (!isOwn)
+                    socket.emit(events_1.groupChatClientEvents.CHAT_CREATED, {
+                        details: chat.public,
+                        member: member.public,
+                        participants: users.length
+                    });
+            });
         }
         const message = await this.messagesService.create({
             chat, isSystem: true,
             text: `${member.user.username} has created the chat!`
         });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.CHAT_CREATED, {
-            details: chat.public
-        });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
             details: chat.public,
             message: message.public
         });
@@ -185,6 +189,9 @@ let GroupsGateway = class GroupsGateway {
             chat, user,
             role: "member"
         });
+        const participants = await this.membersService.count({
+            where: { chat }
+        });
         this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MEMBER_ADDED, {
             details: chat.public
         });
@@ -192,6 +199,8 @@ let GroupsGateway = class GroupsGateway {
         sockets.forEach((socket) => {
             socket.join(chat.id);
             socket.emit(events_1.groupChatClientEvents.ADDED, {
+                participants,
+                member: added.public,
                 details: chat.public
             });
         });
@@ -199,7 +208,7 @@ let GroupsGateway = class GroupsGateway {
             isSystem: true, chat,
             text: `${added.user.username} has joined!`
         });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
             details: chat.public,
             message: message.public
         });
@@ -239,7 +248,7 @@ let GroupsGateway = class GroupsGateway {
             isSystem: true, chat,
             text: `${member.user.username} has been kicked!`
         });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
             details: chat.public,
             message: message.public
         });
@@ -277,7 +286,7 @@ let GroupsGateway = class GroupsGateway {
             chat, isSystem: true,
             text: `${member.user.username} left the chat!`
         });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
             details: chat.public,
             message: message.public
         });
@@ -313,7 +322,7 @@ let GroupsGateway = class GroupsGateway {
                     chat, isSystem: true,
                     text: `${replacement.user.username} is chat owner now!`
                 });
-                this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+                this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
                     details: chat.public,
                     message: message.public
                 });

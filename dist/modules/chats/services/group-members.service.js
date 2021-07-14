@@ -37,9 +37,6 @@ let GroupMembersService = class GroupMembersService {
     delete(criteria) {
         return this.repository.delete(criteria);
     }
-    update(criteria, partial) {
-        return this.repository.update(criteria, partial);
-    }
     save(partial, options) {
         return this.repository.save(partial, options);
     }

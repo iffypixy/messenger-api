@@ -121,7 +121,7 @@ let GroupsController = class GroupsController {
         });
         if (!member)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messagesService.findWithAttachments("images", {
+        const messages = await this.messagesService.findAttachments("images", {
             where: {
                 chat: { id }
             },
@@ -147,7 +147,7 @@ let GroupsController = class GroupsController {
         });
         if (!member)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messagesService.findWithAttachments("audio", {
+        const messages = await this.messagesService.findAttachments("audio", {
             where: {
                 chat: { id }
             },
@@ -170,7 +170,7 @@ let GroupsController = class GroupsController {
         });
         if (!member)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messagesService.findWithAttachments("files", {
+        const messages = await this.messagesService.findAttachments("files", {
             where: {
                 chat: { id }
             },

@@ -21,7 +21,9 @@ export class DirectsController {
   }
 
   @Get()
-  async getChats(@GetUser() user: User): Promise<{
+  async getChats(
+    @GetUser() user: User
+  ): Promise<{
     chats: {
       details: DirectPublicData;
       partner: DirectMemberPublicData;
@@ -189,7 +191,7 @@ export class DirectsController {
 
     if (!chat) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messagesService.findWithAttachments("images", {
+    const messages = await this.messagesService.findAttachments("images", {
       skip: dto.skip,
       where: {chat},
       order: {
@@ -234,7 +236,7 @@ export class DirectsController {
 
     if (!chat) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messagesService.findWithAttachments("audio", {
+    const messages = await this.messagesService.findAttachments("audio", {
       skip: +dto.skip,
       where: {chat},
       order: {
@@ -276,7 +278,7 @@ export class DirectsController {
 
     if (!chat) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messagesService.findWithAttachments("files", {
+    const messages = await this.messagesService.findAttachments("files", {
       skip: +dto.skip,
       where: {chat},
       order: {

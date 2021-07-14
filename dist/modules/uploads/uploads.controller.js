@@ -24,8 +24,8 @@ const files_1 = require("../../lib/files");
 const typings_1 = require("../../lib/typings");
 const services_1 = require("./services");
 let UploadsController = class UploadsController {
-    constructor(uploadService, filesService) {
-        this.uploadService = uploadService;
+    constructor(uploadsService, filesService) {
+        this.uploadsService = uploadsService;
         this.filesService = filesService;
     }
     async upload(bufferedFile, user) {
@@ -33,7 +33,7 @@ let UploadsController = class UploadsController {
             throw new common_1.BadRequestException("File is required");
         const { mimetype, size, originalname, buffer } = bufferedFile;
         const ext = `.${mime.getExtension(mimetype)}`;
-        const { Location: url } = await this.uploadService.upload(buffer, mimetype);
+        const { Location: url } = await this.uploadsService.upload(buffer, mimetype);
         const file = await this.filesService.create({
             name: originalname, user,
             size, extension: ext, url

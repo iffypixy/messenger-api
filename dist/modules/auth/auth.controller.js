@@ -25,12 +25,12 @@ const guards_1 = require("./guards");
 const dtos_1 = require("./dtos");
 const services_1 = require("./services");
 let AuthController = class AuthController {
-    constructor(usersService, jwtService, refreshSessionService, authService, uploadService) {
+    constructor(usersService, jwtService, refreshSessionsService, authService, uploadsService) {
         this.usersService = usersService;
         this.jwtService = jwtService;
-        this.refreshSessionService = refreshSessionService;
+        this.refreshSessionsService = refreshSessionsService;
         this.authService = authService;
-        this.uploadService = uploadService;
+        this.uploadsService = uploadsService;
     }
     async register({ username, password, fingerprint }, res) {
         const existed = await this.usersService.findOne({
@@ -41,7 +41,7 @@ let AuthController = class AuthController {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const png = jdenticon.toPng(uuid_1.v4(), 300);
-        const avatar = (await this.uploadService.upload(png, "image/png")).Location;
+        const avatar = (await this.uploadsService.upload(png, "image/png")).Location;
         const user = await this.usersService.create({
             username, avatar,
             password: hashedPassword,
@@ -64,7 +64,7 @@ let AuthController = class AuthController {
         const doPasswordsMatch = await bcrypt.compare(password, user.password);
         if (!doPasswordsMatch)
             throw error;
-        await this.refreshSessionService.delete({ fingerprint });
+        await this.refreshSessionsService.delete({ fingerprint });
         const { accessToken, refreshToken } = await this.authService.getJWTs(user, fingerprint);
         res.cookie("access-token", accessToken, this.authService.accessTokenCookieOptions);
         res.cookie("refresh-token", refreshToken, this.authService.refreshTokenCookieOptions);
@@ -77,7 +77,7 @@ let AuthController = class AuthController {
         const error = new common_1.BadRequestException("Invalid refresh token");
         if (!token)
             throw error;
-        const session = await this.refreshSessionService.findOne({
+        const session = await this.refreshSessionsService.findOne({
             where: { fingerprint, token }
         });
         if (!session)
@@ -85,7 +85,7 @@ let AuthController = class AuthController {
         const isExpired = Date.now() - Number(session.expiresAt) >= 0;
         if (isExpired)
             throw error;
-        await this.refreshSessionService.delete({
+        await this.refreshSessionsService.delete({
             id: session.id
         });
         const { accessToken, refreshToken: newRefreshToken } = await this.authService.getJWTs(session.user, fingerprint);
@@ -101,7 +101,7 @@ let AuthController = class AuthController {
         const token = req.cookies["refresh-token"];
         res.cookie("access-token", null);
         res.cookie("refresh-token", null);
-        await this.refreshSessionService.delete({ token });
+        await this.refreshSessionsService.delete({ token });
     }
 };
 __decorate([

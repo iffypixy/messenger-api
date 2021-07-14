@@ -8,5 +8,5 @@ export declare class GroupMessagesService {
     findOne(options: FindOneOptions<GroupMessage>): Promise<GroupMessage>;
     count(options: FindManyOptions<GroupMessage>): Promise<number>;
     update(criteria: FindConditions<GroupMessage>, partial: DeepPartial<GroupMessage>): Promise<UpdateResult>;
-    findWithAttachments(attachment: "images" | "files" | "audio", options: FindManyOptions<GroupMessage>): Promise<GroupMessage[]>;
+    findAttachments(type: "images" | "files" | "audio", options: FindManyOptions<GroupMessage>): Promise<GroupMessage[]>;
 }
