@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var get_messages_dto_1 = require("./get-messages.dto");
+Object.defineProperty(exports, "GetMessagesDto", { enumerable: true, get: function () { return get_messages_dto_1.GetMessagesDto; } });
+var get_attachments_dto_1 = require("./get-attachments.dto");
+Object.defineProperty(exports, "GetAttachmentsDto", { enumerable: true, get: function () { return get_attachments_dto_1.GetAttachmentsDto; } });
+var read_message_dto_1 = require("./read-message.dto");
+Object.defineProperty(exports, "ReadMessageDto", { enumerable: true, get: function () { return read_message_dto_1.ReadMessageDto; } });
+var create_message_dto_1 = require("./create-message.dto");
+Object.defineProperty(exports, "CreateMessageDto", { enumerable: true, get: function () { return create_message_dto_1.CreateMessageDto; } });
+var add_member_dto_1 = require("./add-member.dto");
+Object.defineProperty(exports, "AddMemberDto", { enumerable: true, get: function () { return add_member_dto_1.AddMemberDto; } });
+var create_chat_dto_1 = require("./create-chat.dto");
+Object.defineProperty(exports, "CreateChatDto", { enumerable: true, get: function () { return create_chat_dto_1.CreateChatDto; } });
+var kick_member_dto_1 = require("./kick-member.dto");
+Object.defineProperty(exports, "KickMemberDto", { enumerable: true, get: function () { return kick_member_dto_1.KickMemberDto; } });
+var leave_chat_dto_1 = require("./leave-chat.dto");
+Object.defineProperty(exports, "LeaveChatDto", { enumerable: true, get: function () { return leave_chat_dto_1.LeaveChatDto; } });
+var subscribe_chats_dto_1 = require("./subscribe-chats.dto");
+Object.defineProperty(exports, "SubscribeChatsDto", { enumerable: true, get: function () { return subscribe_chats_dto_1.SubscribeChatsDto; } });
+//# sourceMappingURL=index.js.map

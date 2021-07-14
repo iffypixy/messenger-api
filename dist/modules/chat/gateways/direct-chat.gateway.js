@@ -94,7 +94,7 @@ let DirectChatGateway = class DirectChatGateway {
     async handleGettingMessages(socket, dto) {
         const { chat } = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
         if (!chat)
-            throw new websockets_1.WsException("Invalid credentials.");
+            throw new websockets_1.WsException("Invalid credentials");
         const messages = await this.messageService.find({
             where: { chat },
             skip: +dto.skip,

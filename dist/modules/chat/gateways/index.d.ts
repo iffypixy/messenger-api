@@ -1,2 +1,2 @@
-export { DirectChatGateway } from "./direct-chat.gateway";
-export { GroupChatGateway } from "./group-chat.gateway";
+export { DirectGateway } from "./direct.gateway";
+export { GroupGateway } from "./group.gateway";

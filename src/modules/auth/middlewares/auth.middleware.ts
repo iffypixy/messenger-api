@@ -1,7 +1,7 @@
 import {Injectable, NestMiddleware} from "@nestjs/common";
 import {NextFunction, Response} from "express";
 
-import {UserService} from "@modules/user";
+import {UsersService} from "@modules/users";
 import {ExtendedRequest} from "@lib/typings";
 import {AuthService} from "../services";
 
@@ -9,7 +9,7 @@ import {AuthService} from "../services";
 export class AuthMiddleware implements NestMiddleware {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UserService
+    private readonly userService: UsersService
   ) {
   }
 

@@ -1,4 +1,4 @@
-import { User } from "@modules/user";
+import { User } from "@modules/users";
 import { ID } from "@lib/typings";
 export declare class RefreshSession {
     id: ID;

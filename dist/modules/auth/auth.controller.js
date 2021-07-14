@@ -18,8 +18,8 @@ const jwt_1 = require("@nestjs/jwt");
 const jdenticon = require("jdenticon");
 const uuid_1 = require("uuid");
 const bcrypt = require("bcryptjs");
-const upload_1 = require("../upload");
-const user_1 = require("../user");
+const uploads_1 = require("../uploads");
+const users_1 = require("../users");
 const decorators_1 = require("./decorators");
 const guards_1 = require("./guards");
 const dtos_1 = require("./dtos");
@@ -37,7 +37,7 @@ let AuthController = class AuthController {
             where: { username }
         });
         if (existed)
-            throw new common_1.BadRequestException("This login has been already used.");
+            throw new common_1.BadRequestException("This login has been already used");
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const png = jdenticon.toPng(uuid_1.v4(), 300);
@@ -58,7 +58,7 @@ let AuthController = class AuthController {
         const user = await this.userService.findOne({
             where: { username }
         });
-        const error = new common_1.BadRequestException("Invalid credentials.");
+        const error = new common_1.BadRequestException("Invalid credentials");
         if (!user)
             throw error;
         const doPasswordsMatch = await bcrypt.compare(password, user.password);
@@ -74,7 +74,7 @@ let AuthController = class AuthController {
     }
     async refreshTokens({ fingerprint }, req, res) {
         const token = req.cookies["refresh-token"];
-        const error = new common_1.BadRequestException("Invalid refresh token.");
+        const error = new common_1.BadRequestException("Invalid refresh token");
         if (!token)
             throw error;
         const session = await this.refreshSessionService.findOne({
@@ -94,7 +94,7 @@ let AuthController = class AuthController {
     }
     getCredentials(user) {
         return {
-            credentials: user_1.publiciseUser(user)
+            credentials: user.public
         };
     }
     async logout(req, res) {
@@ -136,7 +136,7 @@ __decorate([
     common_1.Get("credentials"),
     __param(0, decorators_1.GetUser()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_1.User]),
+    __metadata("design:paramtypes", [users_1.User]),
     __metadata("design:returntype", Object)
 ], AuthController.prototype, "getCredentials", null);
 __decorate([
@@ -150,11 +150,11 @@ __decorate([
 ], AuthController.prototype, "logout", null);
 AuthController = __decorate([
     common_1.Controller("auth"),
-    __metadata("design:paramtypes", [user_1.UserService,
+    __metadata("design:paramtypes", [users_1.UsersService,
         jwt_1.JwtService,
-        services_1.RefreshSessionService,
+        services_1.RefreshSessionsService,
         services_1.AuthService,
-        upload_1.UploadService])
+        uploads_1.UploadsService])
 ], AuthController);
 exports.AuthController = AuthController;
 //# sourceMappingURL=auth.controller.js.map

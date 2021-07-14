@@ -5,21 +5,21 @@ import * as jdenticon from "jdenticon";
 import {v4} from "uuid";
 import * as bcrypt from "bcryptjs";
 
-import {UploadService} from "@modules/upload";
-import {User, UserService, UserPublicData, publiciseUser} from "@modules/user";
+import {UploadsService} from "@modules/uploads";
+import {User, UsersService, UserPublicData} from "@modules/users";
 import {GetUser} from "./decorators";
 import {IsAuthorizedGuard} from "./guards";
 import {LoginDto, RegisterDto, RefreshTokensDto} from "./dtos";
-import {AuthService, RefreshSessionService} from "./services";
+import {AuthService, RefreshSessionsService} from "./services";
 
 @Controller("auth")
 export class AuthController {
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly refreshSessionService: RefreshSessionService,
+    private readonly refreshSessionService: RefreshSessionsService,
     private readonly authService: AuthService,
-    private readonly uploadService: UploadService
+    private readonly uploadService: UploadsService
   ) {
   }
 
@@ -33,7 +33,7 @@ export class AuthController {
       where: {username}
     });
 
-    if (existed) throw new BadRequestException("This login has been already used.");
+    if (existed) throw new BadRequestException("This login has been already used");
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -67,7 +67,7 @@ export class AuthController {
       where: {username}
     });
 
-    const error = new BadRequestException("Invalid credentials.");
+    const error = new BadRequestException("Invalid credentials");
 
     if (!user) throw error;
 
@@ -96,7 +96,7 @@ export class AuthController {
   ): Promise<void> {
     const token: string = req.cookies["refresh-token"];
 
-    const error = new BadRequestException("Invalid refresh token.");
+    const error = new BadRequestException("Invalid refresh token");
 
     if (!token) throw error;
 
@@ -122,9 +122,11 @@ export class AuthController {
 
   @UseGuards(IsAuthorizedGuard)
   @Get("credentials")
-  getCredentials(@GetUser() user: User): {credentials: UserPublicData} {
+  getCredentials(
+    @GetUser() user: User
+  ): {credentials: UserPublicData} {
     return {
-      credentials: publiciseUser(user)
+      credentials: user.public
     };
   }
 

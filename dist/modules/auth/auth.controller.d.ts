@@ -1,16 +1,16 @@
 import { JwtService } from "@nestjs/jwt";
 import { Response, Request } from "express";
-import { UploadService } from "@modules/upload";
-import { User, UserService, UserPublicData } from "@modules/user";
+import { UploadsService } from "@modules/uploads";
+import { User, UsersService, UserPublicData } from "@modules/users";
 import { LoginDto, RegisterDto, RefreshTokensDto } from "./dtos";
-import { AuthService, RefreshSessionService } from "./services";
+import { AuthService, RefreshSessionsService } from "./services";
 export declare class AuthController {
     private readonly userService;
     private readonly jwtService;
     private readonly refreshSessionService;
     private readonly authService;
     private readonly uploadService;
-    constructor(userService: UserService, jwtService: JwtService, refreshSessionService: RefreshSessionService, authService: AuthService, uploadService: UploadService);
+    constructor(userService: UsersService, jwtService: JwtService, refreshSessionService: RefreshSessionsService, authService: AuthService, uploadService: UploadsService);
     register({ username, password, fingerprint }: RegisterDto, res: Response): Promise<{
         credentials: UserPublicData;
     }>;

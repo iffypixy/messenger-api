@@ -1,4 +1,4 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_1 = require("../../modules/user");
+const users_1 = require("../../modules/users");
 //# sourceMappingURL=index.js.map

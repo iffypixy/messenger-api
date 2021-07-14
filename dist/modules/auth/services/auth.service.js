@@ -14,8 +14,8 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const uuid_1 = require("uuid");
 const config_1 = require("@nestjs/config");
-const user_1 = require("../../user");
-const refresh_session_service_1 = require("./refresh-session.service");
+const users_1 = require("../../users");
+const refresh_sessions_service_1 = require("./refresh-sessions.service");
 let AuthService = class AuthService {
     constructor(userService, jwtService, refreshSessionService, configService) {
         this.userService = userService;
@@ -63,9 +63,9 @@ let AuthService = class AuthService {
 };
 AuthService = __decorate([
     common_1.Injectable(),
-    __metadata("design:paramtypes", [user_1.UserService,
+    __metadata("design:paramtypes", [users_1.UsersService,
         jwt_1.JwtService,
-        refresh_session_service_1.RefreshSessionService,
+        refresh_sessions_service_1.RefreshSessionsService,
         config_1.ConfigService])
 ], AuthService);
 exports.AuthService = AuthService;

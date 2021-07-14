@@ -36,7 +36,7 @@ let ProfileController = class ProfileController {
         utils_1.clearObject(partial);
         const updated = await this.userService.save(Object.assign(Object.assign({}, user), partial));
         return {
-            credentials: user_1.publiciseUser(updated)
+            credentials: updated.public
         };
     }
 };
