@@ -24,8 +24,8 @@ const files_1 = require("../../lib/files");
 const utils_1 = require("../../lib/utils");
 const dtos_1 = require("./dtos");
 let ProfilesController = class ProfilesController {
-    constructor(userService, uploadService) {
-        this.userService = userService;
+    constructor(usersService, uploadService) {
+        this.usersService = usersService;
         this.uploadService = uploadService;
     }
     async updateProfile(user, { username }, bufferedFile) {
@@ -34,7 +34,7 @@ let ProfilesController = class ProfilesController {
         const avatar = (await this.uploadService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
         const partial = { username, avatar };
         utils_1.clearObject(partial);
-        const updated = await this.userService.save(Object.assign(Object.assign({}, user), partial));
+        const updated = await this.usersService.save(Object.assign(Object.assign({}, user), partial));
         return {
             credentials: updated.public
         };

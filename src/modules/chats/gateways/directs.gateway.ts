@@ -15,10 +15,10 @@ import {UsersService} from "@modules/users";
 import {ExtendedSocket} from "@lib/typings";
 import {extensions} from "@lib/files";
 import {BadRequestTransformationFilter, WebsocketService} from "@lib/websocket";
-import {LessThanDate} from "@lib/operators";
+import {LessThanOrEqualDate} from "@lib/operators";
 import {DirectMembersService, DirectMessagesService, DirectsService} from "../services";
 import {CreateMessageDto, BanPartnerDto, UnbanPartnerDto, ReadMessageDto} from "../dtos/directs";
-import {DirectMemberPublicData, DirectMessagePublicData, DirectPublicData} from "../entities";
+import {DirectMessagePublicData} from "../entities";
 import {directChatServerEvents as serverEvents, directChatClientEvents as clientEvents} from "./events";
 
 @UsePipes(ValidationPipe)
@@ -26,11 +26,11 @@ import {directChatServerEvents as serverEvents, directChatClientEvents as client
 @WebSocketGateway()
 export class DirectsGateway {
   constructor(
-    private readonly memberService: DirectMembersService,
-    private readonly messageService: DirectMessagesService,
-    private readonly chatService: DirectsService,
-    private readonly fileService: FilesService,
-    private readonly userService: UsersService,
+    private readonly membersService: DirectMembersService,
+    private readonly messagesService: DirectMessagesService,
+    private readonly chatsService: DirectsService,
+    private readonly filesService: FilesService,
+    private readonly usersService: UsersService,
     private readonly websocketsService: WebsocketService
   ) {
   }
@@ -43,77 +43,62 @@ export class DirectsGateway {
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: CreateMessageDto
   ): Promise<{message: DirectMessagePublicData}> {
-    const error = new WsException("Invalid credentials.");
+    if (dto.partnerId === socket.user.id) throw new WsException("Not permitted to send message to yourself");
 
-    if (dto.partner === socket.user.id) throw error;
-
-    const partner = await this.userService.findOne({
+    const partner = await this.usersService.findOne({
       where: {
-        id: dto.partner
+        id: dto.partnerId
       }
     });
 
-    if (!partner) throw error;
+    if (!partner) throw new WsException("Partner is not found");
 
-    let {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
+    let {chat, first, second} = await this.chatsService
+      .findOneByUsers([socket.user, partner], {createNew: true});
 
-    if (chat && (first.isBanned || second.isBanned)) throw new WsException("No permission to send message to this partner.");
+    if (first.isBanned || second.isBanned)
+      throw new WsException("Not permitted to send message to this partner");
 
-    if (!chat) {
-      chat = await this.chatService.create({});
-
-      first = await this.memberService.create({
-        user: socket.user, chat
-      });
-
-      second = await this.memberService.create({
-        user: partner, chat
-      });
-    }
-
-    const parent = dto.parent && await this.messageService.findOne({
+    const parent = dto.parentId && await this.messagesService.findOne({
       where: {
-        id: dto.parent, chat
+        id: dto.parentId, chat
       }
     });
 
-    const files = dto.files && await this.fileService.find({
+    const audio = dto.audioId ? await this.filesService.findOne({
       where: {
-        id: In(dto.files),
-        user: socket.user
-      }
-    });
-
-    const images = dto.images && await this.fileService.find({
-      where: {
-        id: In(dto.images),
-        user: socket.user,
-        extension: In(extensions.images)
-      }
-    });
-
-    const audio = dto.audio && await this.fileService.findOne({
-      where: {
-        id: dto.audio,
+        id: dto.audioId,
         user: socket.user,
         extension: In(extensions.audios)
       }
-    });
+    }) : null;
 
-    const message = await this.messageService.create({
-      chat, parent, audio,
-      files: !audio ? files : null,
-      images: !audio ? images : null,
-      text: !audio ? dto.text : null,
-      sender: first
+    const files = (dto.filesIds && !audio) ? await this.filesService.find({
+      where: {
+        id: In(dto.filesIds),
+        user: socket.user
+      }
+    }) : null;
+
+    const images = (dto.imagesIds && !audio) ? await this.filesService.find({
+      where: {
+        id: In(dto.imagesIds),
+        user: socket.user,
+        extension: In(extensions.images)
+      }
+    }) : null;
+
+    const message = await this.messagesService.create({
+      chat, parent, audio, files, images,
+      text: dto.text, sender: first
     });
 
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
 
     sockets.forEach((client) => {
       socket.to(client.id).emit(clientEvents.MESSAGE, {
+        details: chat.public,
         message: message.public,
-        chat: chat.public,
         partner: first.public,
         isBanned: second.public.isBanned
       });
@@ -128,82 +113,92 @@ export class DirectsGateway {
   async handleBanningPartner(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: BanPartnerDto
-  ): Promise<{chat: {partner: DirectMemberPublicData; isBanned: boolean} & DirectPublicData}> {
-    const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
+  ): Promise<void> {
+    const partner = await this.usersService.findOne({
+      where: {
+        id: dto.partnerId
+      }
+    });
 
-    if (!chat) throw new WsException("Chat is not found.");
+    if (!partner) throw new WsException("Partner is not found");
 
-    if (second.isBanned) throw new WsException("Partner has been already banned.");
+    const {chat, first, second} = await this.chatsService
+      .findOneByUsers([socket.user, partner], {createNew: false});
 
-    const member = await this.memberService.save({
-      ...second,
-      isBanned: true
+    if (!chat) throw new WsException("Chat is not found");
+
+    if (second.isBanned) throw new WsException("Partner has been already banned");
+
+    await this.membersService.save({
+      ...second, isBanned: true
     });
 
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
 
     sockets.forEach((client) => {
       socket.to(client.id).emit(clientEvents.BANNED, {
-        chat: chat.public,
+        details: chat.public,
         partner: first.public
       });
     });
-
-    return {
-      chat: {
-        ...chat.public,
-        partner: member.public,
-        isBanned: first.isBanned
-      }
-    };
   }
 
   @SubscribeMessage(serverEvents.UNBAN_PARTNER)
   async handleUnbanningPartner(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: UnbanPartnerDto
-  ): Promise<{chat: {partner: DirectMemberPublicData; isBanned: boolean} & DirectPublicData}> {
-    const {chat, first, second} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
+  ): Promise<void> {
+    const partner = await this.usersService.findOne({
+      where: {
+        id: dto.partnerId
+      }
+    });
 
-    if (!chat) throw new WsException("Chat is not found.");
+    if (!partner) throw new WsException("Partner is not found");
 
-    if (!second.isBanned) throw new WsException("Partner has been already unbanned.");
+    const {chat, first, second} = await this.chatsService
+      .findOneByUsers([socket.user, partner], {createNew: false});
 
-    const member = await this.memberService.save({
-      ...second,
-      isBanned: false
+    if (!chat) throw new WsException("Chat is not found");
+
+    if (!second.isBanned) throw new WsException("Partner has been already unbanned");
+
+    await this.membersService.save({
+      ...second, isBanned: false
     });
 
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
 
     sockets.forEach((client) => {
       socket.to(client.id).emit(clientEvents.UNBANNED, {
-        chat: chat.public,
+        details: chat.public,
         partner: first.public
       });
     });
-
-    return {
-      chat: {
-        ...chat.public,
-        partner: member.public,
-        isBanned: first.isBanned
-      }
-    };
   }
 
   @SubscribeMessage(serverEvents.READ_MESSAGE)
   async handleReadingMessage(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: ReadMessageDto
-  ): Promise<{chat: DirectPublicData; message: DirectMessagePublicData}> {
-    const {chat, first} = await this.chatService.findOneByUsersIds([socket.user.id, dto.partner]);
-
-    if (!chat) throw new WsException("Chat is not found.");
-
-    const message = await this.messageService.findOne({
+  ): Promise<void> {
+    const partner = await this.usersService.findOne({
       where: {
-        chat, id: dto.message,
+        id: dto.partnerId
+      }
+    });
+
+    if (!partner) throw new WsException("Partner is not found");
+
+    const {chat, first, second} = await this.chatsService
+      .findOneByUsers([socket.user, partner], {createNew: false});
+
+    if (!chat) throw new WsException("Chat is not found");
+
+    const message = await this.messagesService.findOne({
+      where: {
+        chat,
+        id: dto.messageId,
         isRead: false,
         sender: {
           id: Not(first.id)
@@ -211,17 +206,11 @@ export class DirectsGateway {
       }
     });
 
-    if (!message) throw new WsException("Message is not found.");
+    if (!message) throw new WsException("Message is not found");
 
-    await this.messageService.update({
-      id: message.id
-    }, {
-      isRead: true
-    });
-
-    await this.messageService.update({
+    await this.messagesService.update({
       chat,
-      createdAt: LessThanDate(message.createdAt),
+      createdAt: LessThanOrEqualDate(message.createdAt),
       isRead: false,
       sender: {
         id: Not(first.id)
@@ -230,19 +219,15 @@ export class DirectsGateway {
       isRead: true
     });
 
-    const sockets = this.websocketsService.getSocketsByUserId(this.wss, dto.partner);
+    const sockets = this.websocketsService.getSocketsByUserId(this.wss, dto.partnerId);
 
     sockets.forEach((client) => {
       socket.to(client.id).emit(clientEvents.MESSAGE_READ, {
         message: message.public,
-        chat: chat.public,
-        partner: first.public
+        details: chat.public,
+        partner: first.public,
+        isBanned: second.isBanned
       });
     });
-
-    return {
-      message: message.public,
-      chat: chat.public
-    };
   }
 }

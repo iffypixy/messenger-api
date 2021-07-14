@@ -17,6 +17,6 @@ class LeaveChatDto {
 __decorate([
     class_validator_1.IsUUID(4),
     __metadata("design:type", String)
-], LeaveChatDto.prototype, "group", void 0);
+], LeaveChatDto.prototype, "groupId", void 0);
 exports.LeaveChatDto = LeaveChatDto;
 //# sourceMappingURL=leave-chat.dto.js.map

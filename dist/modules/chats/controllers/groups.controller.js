@@ -23,16 +23,16 @@ const services_1 = require("../services");
 const queries_1 = require("../../../lib/queries");
 const groups_1 = require("../dtos/groups");
 let GroupsController = class GroupsController {
-    constructor(memberService, messageService, chatService) {
-        this.memberService = memberService;
-        this.messageService = messageService;
-        this.chatService = chatService;
+    constructor(membersService, messagesService, chatsService) {
+        this.membersService = membersService;
+        this.messagesService = messagesService;
+        this.chatsService = chatsService;
     }
     async getChats(user) {
-        const members = await this.memberService.find({
+        const members = await this.membersService.find({
             where: { user }
         });
-        const messages = await this.messageService.find({
+        const messages = await this.messagesService.find({
             where: {
                 chat: {
                     id: typeorm_1.In(members.map(({ chat }) => chat.id))
@@ -46,7 +46,7 @@ let GroupsController = class GroupsController {
         const unreads = [];
         for (let i = 0; i < members.length; i++) {
             const member = members[i];
-            const amount = await this.messageService.count({
+            const amount = await this.messagesService.count({
                 where: [{
                         chat: member.chat,
                         isRead: false,
@@ -77,7 +77,7 @@ let GroupsController = class GroupsController {
         };
     }
     async getMessages(user, id, dto) {
-        const messages = await this.messageService.find({
+        const messages = await this.messagesService.find({
             where: {
                 chat: { id }
             },
@@ -94,15 +94,15 @@ let GroupsController = class GroupsController {
         };
     }
     async getChat(user, id) {
-        const chat = await this.chatService.findOne({
+        const chat = await this.chatsService.findOne({
             where: { id }
         });
-        const member = await this.memberService.findOne({
+        const member = await this.membersService.findOne({
             where: { chat, user }
         });
         if (!member)
             throw new common_1.BadRequestException("Chat is not found");
-        const participants = await this.memberService.count({
+        const participants = await this.membersService.count({
             where: { chat }
         });
         return {
@@ -114,14 +114,14 @@ let GroupsController = class GroupsController {
         };
     }
     async getAttachedImages(user, id) {
-        const member = await this.memberService.findOne({
+        const member = await this.membersService.findOne({
             where: {
                 chat: { id }, user
             }
         });
         if (!member)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messageService.findWithAttachments("images", {
+        const messages = await this.messagesService.findWithAttachments("images", {
             where: {
                 chat: { id }
             },
@@ -140,14 +140,14 @@ let GroupsController = class GroupsController {
         };
     }
     async getAttachedAudios(user, id) {
-        const member = await this.memberService.findOne({
+        const member = await this.membersService.findOne({
             where: {
                 chat: { id }, user
             }
         });
         if (!member)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messageService.findWithAttachments("audio", {
+        const messages = await this.messagesService.findWithAttachments("audio", {
             where: {
                 chat: { id }
             },
@@ -163,14 +163,14 @@ let GroupsController = class GroupsController {
         };
     }
     async getAttachedFiles(user, id) {
-        const member = await this.memberService.findOne({
+        const member = await this.membersService.findOne({
             where: {
                 chat: { id }, user
             }
         });
         if (!member)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messageService.findWithAttachments("files", {
+        const messages = await this.messagesService.findWithAttachments("files", {
             where: {
                 chat: { id }
             },

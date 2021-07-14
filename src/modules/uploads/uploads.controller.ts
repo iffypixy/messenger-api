@@ -23,7 +23,7 @@ import {FilesService, UploadsService} from "./services";
 export class UploadsController {
   constructor(
     private readonly uploadService: UploadsService,
-    private readonly fileService: FilesService
+    private readonly filesService: FilesService
   ) {
   }
 
@@ -48,7 +48,7 @@ export class UploadsController {
 
     const {Location: url} = await this.uploadService.upload(buffer, mimetype);
 
-    const file = await this.fileService.create({
+    const file = await this.filesService.create({
       name: originalname, user,
       size, extension: ext, url
     });

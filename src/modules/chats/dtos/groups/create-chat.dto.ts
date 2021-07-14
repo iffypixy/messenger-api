@@ -5,7 +5,7 @@ export class CreateChatDto {
   @IsUUID(4, {
     each: true
   })
-  members: ID[];
+  membersIds: ID[];
 
   @IsOptional()
   @IsString({
@@ -15,5 +15,5 @@ export class CreateChatDto {
 
   @IsOptional()
   @IsUUID(4)
-  avatar?: string;
+  avatarId?: string;
 }

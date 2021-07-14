@@ -19,11 +19,11 @@ const typings_1 = require("../../lib/typings");
 const users_service_1 = require("./users.service");
 const dtos_1 = require("./dtos");
 let UsersController = class UsersController {
-    constructor(userService) {
-        this.userService = userService;
+    constructor(usersService) {
+        this.usersService = usersService;
     }
     async getByLoginQuery({ query }) {
-        const users = await this.userService.find({
+        const users = await this.usersService.find({
             where: {
                 username: typeorm_1.ILike(query)
             }
@@ -33,7 +33,7 @@ let UsersController = class UsersController {
         };
     }
     async getById(id) {
-        const user = await this.userService.findById(id);
+        const user = await this.usersService.findById(id);
         if (!user)
             throw new common_1.NotFoundException("User is not found");
         return {

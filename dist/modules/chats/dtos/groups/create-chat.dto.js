@@ -19,7 +19,7 @@ __decorate([
         each: true
     }),
     __metadata("design:type", Array)
-], CreateChatDto.prototype, "members", void 0);
+], CreateChatDto.prototype, "membersIds", void 0);
 __decorate([
     class_validator_1.IsOptional(),
     class_validator_1.IsString({
@@ -31,6 +31,6 @@ __decorate([
     class_validator_1.IsOptional(),
     class_validator_1.IsUUID(4),
     __metadata("design:type", String)
-], CreateChatDto.prototype, "avatar", void 0);
+], CreateChatDto.prototype, "avatarId", void 0);
 exports.CreateChatDto = CreateChatDto;
 //# sourceMappingURL=create-chat.dto.js.map

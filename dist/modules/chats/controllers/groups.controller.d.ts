@@ -5,10 +5,10 @@ import { GroupsService, GroupMembersService, GroupMessagesService } from "../ser
 import { GroupMemberPublicData, GroupMessagePublicData, GroupPublicData } from "../entities";
 import { GetMessagesDto } from "../dtos/groups";
 export declare class GroupsController {
-    private readonly memberService;
-    private readonly messageService;
-    private readonly chatService;
-    constructor(memberService: GroupMembersService, messageService: GroupMessagesService, chatService: GroupsService);
+    private readonly membersService;
+    private readonly messagesService;
+    private readonly chatsService;
+    constructor(membersService: GroupMembersService, messagesService: GroupMessagesService, chatsService: GroupsService);
     getChats(user: User): Promise<{
         chats: {
             details: GroupPublicData;

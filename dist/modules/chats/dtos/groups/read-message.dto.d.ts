@@ -1,5 +1,5 @@
 import { ID } from "@lib/typings";
 export declare class ReadMessageDto {
-    group: ID;
-    message: ID;
+    groupId: ID;
+    messageId: ID;
 }

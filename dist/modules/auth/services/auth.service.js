@@ -17,8 +17,8 @@ const config_1 = require("@nestjs/config");
 const users_1 = require("../../users");
 const refresh_sessions_service_1 = require("./refresh-sessions.service");
 let AuthService = class AuthService {
-    constructor(userService, jwtService, refreshSessionService, configService) {
-        this.userService = userService;
+    constructor(usersService, jwtService, refreshSessionService, configService) {
+        this.usersService = usersService;
         this.jwtService = jwtService;
         this.refreshSessionService = refreshSessionService;
         this.configService = configService;
@@ -26,7 +26,7 @@ let AuthService = class AuthService {
     async findUserByAccessToken(token) {
         try {
             const { userId } = await this.jwtService.verifyAsync(token);
-            return this.userService.findById(userId);
+            return this.usersService.findById(userId);
         }
         catch (error) {
             return null;

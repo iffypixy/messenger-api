@@ -5,7 +5,7 @@ import { ExtendedRequest } from "@lib/typings";
 import { AuthService } from "../services";
 export declare class AuthMiddleware implements NestMiddleware {
     private readonly authService;
-    private readonly userService;
-    constructor(authService: AuthService, userService: UsersService);
+    private readonly usersService;
+    constructor(authService: AuthService, usersService: UsersService);
     use(req: ExtendedRequest, res: Response, next: NextFunction): Promise<void>;
 }

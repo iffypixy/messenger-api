@@ -17,10 +17,10 @@ class ReadMessageDto {
 __decorate([
     class_validator_1.IsUUID(4),
     __metadata("design:type", String)
-], ReadMessageDto.prototype, "group", void 0);
+], ReadMessageDto.prototype, "groupId", void 0);
 __decorate([
     class_validator_1.IsUUID(4),
     __metadata("design:type", String)
-], ReadMessageDto.prototype, "message", void 0);
+], ReadMessageDto.prototype, "messageId", void 0);
 exports.ReadMessageDto = ReadMessageDto;
 //# sourceMappingURL=read-message.dto.js.map

@@ -2,7 +2,7 @@ import {BadRequestException, Body, Controller, Get, Query} from "@nestjs/common"
 import {In, Not} from "typeorm";
 
 import {GetUser} from "@modules/auth";
-import {User} from "@modules/users";
+import {User, UsersService} from "@modules/users";
 import {FilePublicData} from "@modules/uploads";
 import {ID} from "@lib/typings";
 import {queryLimit} from "@lib/queries";
@@ -13,9 +13,10 @@ import {GetMessagesDto, GetAttachmentsDto} from "../dtos/directs";
 @Controller("directs")
 export class DirectsController {
   constructor(
-    private readonly memberService: DirectMembersService,
-    private readonly messageService: DirectMessagesService,
-    private readonly chatService: DirectsService
+    private readonly membersService: DirectMembersService,
+    private readonly messagesService: DirectMessagesService,
+    private readonly chatsService: DirectsService,
+    private readonly usersService: UsersService
   ) {
   }
 
@@ -27,15 +28,15 @@ export class DirectsController {
       lastMessage: DirectMessagePublicData;
       isBanned: boolean;
       unread: number;
-    }[]
+    }[];
   }> {
-    const members = await this.memberService.find({
+    const members = await this.membersService.find({
       where: {user}
     });
 
     const chatsIds = members.map(({chat}) => chat.id);
 
-    const partners = await this.memberService.find({
+    const partners = await this.membersService.find({
       where: {
         chat: {
           id: In(chatsIds)
@@ -46,7 +47,7 @@ export class DirectsController {
       }
     });
 
-    const messages = await this.messageService.find({
+    const messages = await this.messagesService.find({
       where: {
         chat: {
           id: In(chatsIds)
@@ -63,7 +64,7 @@ export class DirectsController {
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
 
-      const amount = await this.messageService.count({
+      const amount = await this.messagesService.count({
         where: {
           chat: member.chat,
           isRead: false,
@@ -101,11 +102,20 @@ export class DirectsController {
     @Query("partnerId") partnerId: ID,
     @Body() dto: GetMessagesDto
   ): Promise<{messages: DirectMessagePublicData[]}> {
-    const {chat} = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+    const partner = await this.usersService.findOne({
+      where: {
+        id: partnerId
+      }
+    });
+
+    if (!partner) throw new BadRequestException("Partner is not found");
+
+    const {chat} = await this.chatsService
+      .findOneByUsers([user, partner], {createNew: false});
 
     if (!chat) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messageService.find({
+    const messages = await this.messagesService.find({
       where: {chat},
       skip: +dto.skip,
       take: queryLimit,
@@ -130,9 +140,18 @@ export class DirectsController {
       details: DirectPublicData;
       partner: DirectMemberPublicData;
       isBanned: boolean;
-    }
+    };
   }> {
-    const {chat, first, second} = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+    const partner = await this.usersService.findOne({
+      where: {
+        id: partnerId
+      }
+    });
+
+    if (!partner) throw new BadRequestException("Partner is not found");
+
+    const {chat, first, second} = await this.chatsService
+      .findOneByUsers([user, partner], {createNew: false});
 
     if (!chat) throw new BadRequestException("Chat is not found");
 
@@ -155,13 +174,22 @@ export class DirectsController {
       id: ID;
       url: string;
       createdAt: Date;
-    }[]
+    }[];
   }> {
-    const {chat} = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+    const partner = await this.usersService.findOne({
+      where: {
+        id: partnerId
+      }
+    });
+
+    if (!partner) throw new BadRequestException("Partner is not found");
+
+    const {chat} = await this.chatsService
+      .findOneByUsers([user, partner], {createNew: false});
 
     if (!chat) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messageService.findWithAttachments("images", {
+    const messages = await this.messagesService.findWithAttachments("images", {
       skip: dto.skip,
       where: {chat},
       order: {
@@ -191,13 +219,22 @@ export class DirectsController {
       id: ID;
       url: string;
       createdAt: Date;
-    }[]
+    }[];
   }> {
-    const {chat} = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+    const partner = await this.usersService.findOne({
+      where: {
+        id: partnerId
+      }
+    });
+
+    if (!partner) throw new BadRequestException("Partner is not found");
+
+    const {chat} = await this.chatsService
+      .findOneByUsers([user, partner], {createNew: false});
 
     if (!chat) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messageService.findWithAttachments("audio", {
+    const messages = await this.messagesService.findWithAttachments("audio", {
       skip: +dto.skip,
       where: {chat},
       order: {
@@ -224,13 +261,22 @@ export class DirectsController {
       id: ID;
       file: FilePublicData;
       createdAt: Date;
-    }[]
+    }[];
   }> {
-    const {chat} = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+    const partner = await this.usersService.findOne({
+      where: {
+        id: partnerId
+      }
+    });
+
+    if (!partner) throw new BadRequestException("Partner is not found");
+
+    const {chat} = await this.chatsService
+      .findOneByUsers([user, partner], {createNew: false});
 
     if (!chat) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messageService.findWithAttachments("files", {
+    const messages = await this.messagesService.findWithAttachments("files", {
       skip: +dto.skip,
       where: {chat},
       order: {

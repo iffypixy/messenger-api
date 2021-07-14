@@ -4,5 +4,5 @@ import {ID} from "@lib/typings";
 
 export class UnbanPartnerDto {
   @IsUUID(4)
-  partner: ID;
+  partnerId: ID;
 }

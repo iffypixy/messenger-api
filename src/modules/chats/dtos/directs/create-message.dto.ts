@@ -13,28 +13,28 @@ export class CreateMessageDto {
     each: true,
     message: "Audio must be type of uuid"
   })
-  audio?: ID = null;
+  audioId?: ID = null;
 
   @IsOptional()
   @IsUUID("4", {
     each: true,
     message: "File must be type of uuid"
   })
-  files?: ID[] = [];
+  filesIds?: ID[] = [];
 
   @IsOptional()
   @IsUUID("4", {
     each: true,
     message: "Image must be type of uuid"
   })
-  images?: ID[] = [];
+  imagesIds?: ID[] = [];
 
   @IsOptional()
   @IsUUID("4", {
     message: "Parent must be type of uuid"
   })
-  parent?: ID;
+  parentId?: ID;
 
   @IsUUID(4)
-  partner: ID;
+  partnerId: ID;
 }

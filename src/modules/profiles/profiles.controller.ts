@@ -14,7 +14,7 @@ import {UpdateProfileDto} from "./dtos";
 @Controller("profile")
 export class ProfilesController {
   constructor(
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     private readonly uploadService: UploadsService
   ) {}
 
@@ -46,7 +46,7 @@ export class ProfilesController {
 
     clearObject(partial);
 
-    const updated = await this.userService.save({
+    const updated = await this.usersService.save({
       ...user, ...partial
     });
 

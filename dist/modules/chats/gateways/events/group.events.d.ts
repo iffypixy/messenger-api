@@ -15,6 +15,7 @@ export declare const serverEvents: {
 };
 export declare const clientEvents: {
     MESSAGE: string;
+    SYSTEM_MESSAGE: string;
     CHAT_CREATED: string;
     MEMBER_ADDED: string;
     MEMBER_KICKED: string;

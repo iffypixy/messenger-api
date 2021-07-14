@@ -17,6 +17,6 @@ class BanPartnerDto {
 __decorate([
     class_validator_1.IsUUID(4),
     __metadata("design:type", String)
-], BanPartnerDto.prototype, "partner", void 0);
+], BanPartnerDto.prototype, "partnerId", void 0);
 exports.BanPartnerDto = BanPartnerDto;
 //# sourceMappingURL=ban-partner.dto.js.map

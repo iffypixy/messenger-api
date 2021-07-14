@@ -25,15 +25,15 @@ const guards_1 = require("./guards");
 const dtos_1 = require("./dtos");
 const services_1 = require("./services");
 let AuthController = class AuthController {
-    constructor(userService, jwtService, refreshSessionService, authService, uploadService) {
-        this.userService = userService;
+    constructor(usersService, jwtService, refreshSessionService, authService, uploadService) {
+        this.usersService = usersService;
         this.jwtService = jwtService;
         this.refreshSessionService = refreshSessionService;
         this.authService = authService;
         this.uploadService = uploadService;
     }
     async register({ username, password, fingerprint }, res) {
-        const existed = await this.userService.findOne({
+        const existed = await this.usersService.findOne({
             where: { username }
         });
         if (existed)
@@ -42,7 +42,7 @@ let AuthController = class AuthController {
         const hashedPassword = await bcrypt.hash(password, salt);
         const png = jdenticon.toPng(uuid_1.v4(), 300);
         const avatar = (await this.uploadService.upload(png, "image/png")).Location;
-        const user = await this.userService.create({
+        const user = await this.usersService.create({
             username, avatar,
             password: hashedPassword,
             role: "user", lastSeen: new Date()
@@ -55,7 +55,7 @@ let AuthController = class AuthController {
         };
     }
     async login({ username, password, fingerprint }, res) {
-        const user = await this.userService.findOne({
+        const user = await this.usersService.findOne({
             where: { username }
         });
         const error = new common_1.BadRequestException("Invalid credentials");

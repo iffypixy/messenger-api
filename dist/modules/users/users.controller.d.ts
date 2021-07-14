@@ -3,8 +3,8 @@ import { UsersService } from "./users.service";
 import { GetUsersByLoginQueryDto } from "./dtos";
 import { UserPublicData } from "./entities";
 export declare class UsersController {
-    private readonly userService;
-    constructor(userService: UsersService);
+    private readonly usersService;
+    constructor(usersService: UsersService);
     getByLoginQuery({ query }: GetUsersByLoginQueryDto): Promise<{
         users: UserPublicData[];
     }>;

@@ -6,5 +6,5 @@ export class SubscribeChatsDto {
   @IsUUID(4, {
     each: true
   })
-  groups: ID[];
+  groupsIds: ID[];
 }

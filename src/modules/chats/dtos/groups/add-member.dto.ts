@@ -4,8 +4,8 @@ import {ID} from "@lib/typings";
 
 export class AddMemberDto {
   @IsUUID(4)
-  member: ID;
+  memberId: ID;
 
   @IsUUID(4)
-  group: ID;
+  groupId: ID;
 }

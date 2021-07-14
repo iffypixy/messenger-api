@@ -8,21 +8,15 @@ import {
 } from "@nestjs/websockets";
 import {UseFilters, UsePipes, ValidationPipe} from "@nestjs/common";
 import {Server} from "socket.io";
-import {In, IsNull, Not} from "typeorm";
+import {In, Not} from "typeorm";
 
 import {FilesService} from "@modules/uploads";
 import {UsersService} from "@modules/users";
 import {ExtendedSocket} from "@lib/typings";
 import {extensions} from "@lib/files";
-import {LessThanDate} from "@lib/operators";
+import {LessThanOrEqualDate} from "@lib/operators";
 import {BadRequestTransformationFilter, WebsocketService} from "@lib/websocket";
-import {
-  DirectPublicData,
-  GroupMemberPublicData,
-  GroupMessagePublicData,
-  GroupPublicData,
-  GroupMember
-} from "../entities";
+import {DirectPublicData, GroupPublicData} from "../entities";
 import {GroupMembersService, GroupMessagesService, GroupsService} from "../services";
 import {groupChatServerEvents as serverEvents, groupChatClientEvents as clientEvents} from "./events";
 import {
@@ -35,16 +29,18 @@ import {
   SubscribeChatsDto
 } from "../dtos/groups";
 
+const minAmountOfMembers = 2;
+
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
 @WebSocketGateway()
 export class GroupsGateway {
   constructor(
-    private readonly memberService: GroupMembersService,
-    private readonly messageService: GroupMessagesService,
-    private readonly chatService: GroupsService,
-    private readonly fileService: FilesService,
-    private readonly userService: UsersService,
+    private readonly membersService: GroupMembersService,
+    private readonly messagesService: GroupMessagesService,
+    private readonly chatsService: GroupsService,
+    private readonly filesService: FilesService,
+    private readonly usersService: UsersService,
     private readonly websocketService: WebsocketService
   ) {
   }
@@ -53,14 +49,14 @@ export class GroupsGateway {
   wss: Server;
 
   @SubscribeMessage(serverEvents.SUBSCRIBE)
-  async handleSubscribingChat(
+  async subscribeChats(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: SubscribeChatsDto
   ): Promise<void> {
-    const members = await this.memberService.find({
+    const members = await this.membersService.find({
       where: {
         chat: {
-          id: In(dto.groups)
+          id: In(dto.groupsIds)
         },
         user: socket.user
       }
@@ -72,80 +68,63 @@ export class GroupsGateway {
   }
 
   @SubscribeMessage(serverEvents.CREATE_MESSAGE)
-  async handleCreatingMessage(
+  async createMessage(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: CreateMessageDto
   ): Promise<{message: DirectPublicData}> {
-    const chat = await this.chatService.findOne({
+    const chat = await this.chatsService.findOne({
       where: {
-        id: dto.group
+        id: dto.groupId
       }
     });
 
-    if (!chat) throw new WsException("Chat is not found.");
+    if (!chat) throw new WsException("Chat is not found");
 
-    const member = await this.memberService.findOne({
+    const member = await this.membersService.findOne({
       where: {
         chat, user: socket.user
       }
     });
 
-    if (!member) throw new WsException("You are not a member of this chats.");
+    if (!member) throw new WsException("Chat is not found");
 
-    const parent = dto.parent && await this.messageService.findOne({
+    const parent = dto.parentId && await this.messagesService.findOne({
       where: {
-        id: dto.parent, chat
+        id: dto.parentId, chat
       }
     });
 
-    const files = dto.files && await this.fileService.find({
+    const audio = dto.audioId ? await this.filesService.findOne({
       where: {
-        id: In(dto.files),
-        user: socket.user
-      }
-    });
-
-    const images = dto.images && await this.fileService.find({
-      where: {
-        id: In(dto.images),
-        user: socket.user,
-        extension: In(extensions.images)
-      }
-    });
-
-    const audio = dto.audio && await this.fileService.findOne({
-      where: {
-        id: dto.audio,
+        id: dto.audioId,
         user: socket.user,
         extension: In(extensions.audios)
       }
-    });
+    }) : null;
 
-    const numberOfUnreadMessages = await this.messageService.count({
-      where: [{
-        chat: member.chat,
-        isRead: false,
-        sender: {
-          id: Not(member.id)
-        }
-      }, {
-        chat: member.chat,
-        isRead: false,
-        sender: IsNull()
-      }]
-    });
+    const files = (dto.filesIds && !audio) ? await this.filesService.find({
+      where: {
+        id: In(dto.filesIds),
+        user: socket.user
+      }
+    }) : null;
 
-    const message = await this.messageService.create({
-      chat, parent, audio,
-      files: !audio ? files : null,
-      images: !audio ? images : null,
-      text: !audio ? dto.text : null,
-      sender: member
+    const images = (dto.imagesIds && !audio) ? await this.filesService.find({
+      where: {
+        id: In(dto.imagesIds),
+        user: socket.user,
+        extension: In(extensions.images)
+      }
+    }) : null;
+
+    const message = await this.messagesService.create({
+      chat, parent, audio, files, images,
+      text: dto.text, sender: member
     });
 
     this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
+      details: chat.public,
       message: message.public,
-      chat: chat.public,
       member: member.public
     });
 
@@ -155,144 +134,121 @@ export class GroupsGateway {
   }
 
   @SubscribeMessage(serverEvents.CREATE_CHAT)
-  async handleCreatingChat(
+  async createChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: CreateChatDto
-  ): Promise<{chat: {member: GroupMemberPublicData; numberOfMembers: number} & GroupPublicData}> {
-    const users = (await this.userService.find({
+  ): Promise<{
+    chat: {
+      details: GroupPublicData;
+    };
+  }> {
+    const users = await this.usersService.find({
       where: {
-        id: In(dto.members)
+        id: In(dto.membersIds)
       }
-    })).filter((user) => user.id !== socket.user.id);
+    });
 
-    if (!users.length) throw new WsException("No valid members");
+    if (users.length < minAmountOfMembers) throw new WsException("Not enough members to create a group");
 
-    const title = dto.title || `${socket.user.username} ${users.reduce((prev, current) => `${prev}${current.username} `, "").trim()}`;
+    const title = dto.title || `${socket.user.username}${users.reduce((prev, current) => ` ${prev}${current.username}`, "")}`;
 
-    const avatar = dto.avatar && await this.fileService.findOne({
+    const image = dto.avatarId ? await this.filesService.findOne({
       where: {
-        id: dto.avatar,
+        id: dto.avatarId,
         user: socket.user,
         extension: In(extensions.images)
       }
+    }) : null;
+
+    const chat = await this.chatsService.create({
+      title, avatar: image && image.url
     });
 
-    const chat = await this.chatService.create({
-      title, avatar: avatar && avatar.url
+    const member = await this.membersService.create({
+      chat,
+      role: "owner",
+      user: socket.user
     });
-
-    const members: GroupMember[] = [];
-
-    const member = await this.memberService.create({
-      user: socket.user,
-      chat, role: "owner"
-    });
-
-    members.push(member);
-
-    const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
-
-    sockets.forEach((socket) => socket.join(chat.id));
 
     for (let i = 0; i < users.length; i++) {
       const user = users[0];
 
-      const member = await this.memberService.create({
-        user, chat, role: "member"
-      });
+      const isOwn = user.id === socket.user.id;
 
-      members.push(member);
+      await this.membersService.create({
+        user, chat,
+        role: isOwn ? "owner" : "member"
+      });
 
       const sockets = await this.websocketService.getSocketsByUserId(this.wss, user.id);
 
       sockets.forEach((socket) => socket.join(chat.id));
     }
 
-    const message = await this.messageService.create({
+    const message = await this.messagesService.create({
       chat, isSystem: true,
       text: `${member.user.username} has created the chat!`
     });
 
     this.wss.to(chat.id).emit(clientEvents.CHAT_CREATED, {
-      chat: chat.public,
-      member: member.public
+      details: chat.public
     });
 
-    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
-      chat: chat.public,
+    this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+      details: chat.public,
       message: message.public
     });
 
     return {
       chat: {
-        ...chat.public,
-        member: member.public,
-        numberOfMembers: members.length
+        details: chat.public
       }
     };
   }
 
   @SubscribeMessage(serverEvents.ADD_MEMBER)
-  async handleAddingMember(
+  async addMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: AddMemberDto
-  ): Promise<{chat: {member: GroupMemberPublicData; numberOfMembers: number} & GroupPublicData}> {
-    const chat = await this.chatService.findOne({
+  ): Promise<void> {
+    const chat = await this.chatsService.findOne({
       where: {
-        id: dto.group
+        id: dto.groupId
       }
     });
 
-    if (!chat) throw new WsException("Chat is not found.");
+    if (!chat) throw new WsException("Chat is not found");
 
-    const member = await this.memberService.findOne({
+    const member = await this.membersService.findOne({
       where: {
-        chat, user: socket.user,
-        role: "owner"
+        chat, role: "owner",
+        user: socket.user
       }
     });
 
-    if (!member) throw new WsException("You do not have permission to add members.");
+    if (!member) throw new WsException("Not permitted to add members");
 
-    const user = await this.userService.findOne({
+    const user = await this.usersService.findOne({
       where: {
-        id: dto.member
+        id: dto.memberId
       }
     });
 
-    if (!user) throw new WsException("User not found.");
+    if (!user) throw new WsException("User is not found");
 
-    const existed = await this.memberService.findOne({
-      where: {
-        chat, user
-      }
+    const existed = await this.membersService.findOne({
+      where: {chat, user}
     });
 
-    if (existed)
-      throw new WsException("User has already been a member of this chats.");
+    if (existed) throw new WsException("User has been already a member of this chat");
 
-    const added = await this.memberService.create({
-      role: "member", chat, user
-    });
-
-    const numberOfMembers = await this.memberService.count({
-      where: {chat}
-    });
-
-    const message = await this.messageService.create({
-      isSystem: true, chat,
-      text: `${added.user.username} has joined!`
+    const added = await this.membersService.create({
+      chat, user,
+      role: "member"
     });
 
     this.wss.to(chat.id).emit(clientEvents.MEMBER_ADDED, {
-      chat: chat.public,
-      member: member.public,
-      numberOfMembers
-    });
-
-    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
-      chat: chat.public,
-      message: message.public
+      details: chat.public
     });
 
     const sockets = this.websocketService.getSocketsByUserId(this.wss, added.user.id);
@@ -301,69 +257,69 @@ export class GroupsGateway {
       socket.join(chat.id);
 
       socket.emit(clientEvents.ADDED, {
-        chat: chat.public,
-        member: added.public
+        details: chat.public
       });
     });
 
-    return {
-      chat: {
-        ...chat.public,
-        member: added.public,
-        numberOfMembers
-      }
-    };
+    const message = await this.messagesService.create({
+      isSystem: true, chat,
+      text: `${added.user.username} has joined!`
+    });
+
+    this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+      details: chat.public,
+      message: message.public
+    });
   }
 
   @SubscribeMessage(serverEvents.KICK_MEMBER)
-  async handleRemovingMember(
+  async kickMember(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: KickMemberDto
-  ): Promise<{chat: {member: GroupMemberPublicData; numberOfMembers: number} & GroupPublicData}> {
-    const chat = await this.chatService.findOne({
+  ): Promise<void> {
+    const chat = await this.chatsService.findOne({
       where: {
-        id: dto.group
+        id: dto.groupId
       }
     });
 
-    if (!chat) throw new WsException("Chat is not found.");
+    if (!chat) throw new WsException("Chat is not found");
 
-    const owner = await this.memberService.findOne({
+    const member = await this.membersService.findOne({
       where: {
-        chat, user: socket.user,
-        role: "owner"
+        chat, role: "owner",
+        user: socket.user
       }
     });
 
-    if (!owner) throw new WsException("You do not have permission to add members.");
+    if (!member) throw new WsException("Not permitted to kick members");
 
-    const user = await this.userService.findOne({
+    const user = await this.usersService.findOne({
       where: {
-        id: dto.member
+        id: dto.memberId
       }
     });
 
-    if (!user) throw new WsException("User not found.");
+    if (!user) throw new WsException("User not found");
 
-    const member = await this.memberService.findOne({
-      where: {
-        user, chat
-      }
+    const existed = await this.membersService.findOne({
+      where: {user, chat}
     });
 
-    if (!member) throw new WsException("User is not a member of this chats.");
+    if (!existed) throw new WsException("User has not been added yet");
 
-    await this.memberService.delete({
-      id: member.id
+    await this.membersService.delete({
+      id: existed.id
     });
 
-    const numberOfMembers = await this.memberService.count({
-      where: {chat}
-    });
-
-    const message = await this.messageService.create({
+    const message = await this.messagesService.create({
       isSystem: true, chat,
       text: `${member.user.username} has been kicked!`
+    });
+
+    this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+      details: chat.public,
+      message: message.public
     });
 
     const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
@@ -372,63 +328,64 @@ export class GroupsGateway {
       socket.leave(chat.id);
 
       socket.emit(clientEvents.KICKED, {
-        chat: chat.public
+        details: chat.public
       });
     });
 
     this.wss.to(chat.id).emit(clientEvents.MEMBER_KICKED, {
-      member: member.public,
-      chat: chat.public,
-      numberOfMembers
+      details: chat.public,
+      member: member.public
     });
-
-    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
-      message: message.public,
-      chat: chat.public
-    });
-
-    return {
-      chat: {
-        ...chat.public,
-        member: member.public,
-        numberOfMembers
-      }
-    };
   }
 
   @SubscribeMessage(serverEvents.LEAVE)
-  async handleLeavingChat(
+  async leaveChat(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: LeaveChatDto
-  ): Promise<{chat: GroupPublicData}> {
-    const chat = await this.chatService.findOne({
+  ): Promise<void> {
+    const chat = await this.chatsService.findOne({
       where: {
-        id: dto.group
+        id: dto.groupId
       }
     });
 
-    if (!chat) throw new WsException("Chat is not found.");
+    if (!chat) throw new WsException("Chat is not found");
 
-    const member = await this.memberService.findOne({
+    const member = await this.membersService.findOne({
       where: {
         chat, user: socket.user
       }
     });
 
-    if (!member) throw new WsException("You are not a member of this chats.");
+    if (!member) throw new WsException("You are not member of this chat");
 
-    await this.memberService.delete({
+    await this.membersService.delete({
       id: member.id
+    });
+
+    const message = await this.messagesService.create({
+      chat, isSystem: true,
+      text: `${member.user.username} left the chat!`
+    });
+
+    this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+      details: chat.public,
+      message: message.public
     });
 
     const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
 
-    sockets.forEach((socket) => socket.leave(chat.id));
+    sockets.forEach((socket) => {
+      socket.leave(chat.id);
+    });
 
-    let replacement: GroupMember | null = null;
+    this.wss.to(chat.id).emit(clientEvents.MEMBER_LEFT, {
+      details: chat.public,
+      member: member.public
+    });
 
     if (member.isOwner) {
-      const candidate = await this.memberService.findOne({
+      const candidate = await this.membersService.findOne({
         where: {
           chat, user: {
             id: Not(member.user.id)
@@ -440,81 +397,57 @@ export class GroupsGateway {
       });
 
       if (candidate) {
-        replacement = await this.memberService.save({
-          ...candidate,
-          role: "owner"
+        const replacement = await this.membersService.save({
+          ...candidate, role: "owner"
+        });
+
+        const sockets = this.websocketService.getSocketsByUserId(this.wss, replacement.user.id);
+
+        sockets.forEach((socket) => {
+          socket.emit(clientEvents.OWNER_REPLACEMENT, {
+            details: chat.public,
+            member: replacement.public
+          });
+        });
+
+        const message = await this.messagesService.create({
+          chat, isSystem: true,
+          text: `${replacement.user.username} is chat owner now!`
+        });
+
+        this.wss.to(chat.id).emit(clientEvents.SYSTEM_MESSAGE, {
+          details: chat.public,
+          message: message.public
         });
       }
     }
-
-    const numberOfMembers = await this.memberService.count({
-      where: {chat}
-    });
-
-    const message = await this.messageService.create({
-      chat, isSystem: true,
-      text: `${member.user.username} left the chat!`
-    });
-
-    this.wss.to(chat.id).emit(clientEvents.MEMBER_LEFT, {
-      chat: chat.public,
-      member: member.public,
-      numberOfMembers
-    });
-
-    this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
-      chat: chat.public,
-      message: message.public
-    });
-
-    if (replacement) {
-      const message = await this.messageService.create({
-        chat, isSystem: true,
-        text: `${replacement.user.username} is chat owner now!`
-      });
-
-      this.wss.to(chat.id).emit(clientEvents.MESSAGE, {
-        chat: chat.public,
-        message: message.public
-      });
-
-      const sockets = this.websocketService.getSocketsByUserId(this.wss, replacement.user.id);
-
-      sockets.forEach((socket) => socket.emit(clientEvents.OWNER_REPLACEMENT, {
-        chat: chat.public,
-        member: replacement.public
-      }));
-    }
-
-    return {
-      chat: chat.public
-    };
   }
 
   @SubscribeMessage(serverEvents.READ_MESSAGE)
   async handleReadingMessage(
     @ConnectedSocket() socket: ExtendedSocket,
     @MessageBody() dto: ReadMessageDto
-  ): Promise<{message: GroupMessagePublicData; chat: GroupPublicData}> {
-    const chat = await this.chatService.findOne({
+  ): Promise<void> {
+    const chat = await this.chatsService.findOne({
       where: {
-        id: dto.group
+        id: dto.groupId
       }
     });
 
     if (!chat) throw new WsException("Chat is not found");
 
-    const member = await this.memberService.findOne({
+    const member = await this.membersService.findOne({
       where: {
         chat, user: socket.user
       }
     });
 
-    if (!member) throw new WsException("You are not a member of this chats");
+    if (!member) throw new WsException("You are not member of this chat");
 
-    const message = await this.messageService.findOne({
+    const message = await this.messagesService.findOne({
       where: {
-        chat, id: dto.message,
+        chat,
+        id: dto.messageId,
         isRead: false,
         sender: {
           id: Not(member.id)
@@ -524,15 +457,9 @@ export class GroupsGateway {
 
     if (!message) throw new WsException("Message is not found");
 
-    await this.messageService.update({
-      id: message.id
-    }, {
-      isRead: true
-    });
-
-    await this.messageService.update({
+    await this.messagesService.update({
       chat,
-      createdAt: LessThanDate(message.createdAt),
+      createdAt: LessThanOrEqualDate(message.createdAt),
       isRead: false,
       sender: {
         id: Not(member.id)
@@ -542,13 +469,8 @@ export class GroupsGateway {
     });
 
     this.wss.to(chat.id).emit(clientEvents.MESSAGE_READ, {
-      message: message.public,
-      chat: chat.public
+      details: chat.public,
+      message: message.public
     });
-
-    return {
-      message: message.public,
-      chat: chat.public
-    };
   }
 }

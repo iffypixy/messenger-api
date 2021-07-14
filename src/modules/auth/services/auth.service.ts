@@ -10,7 +10,7 @@ import {RefreshSessionsService} from "./refresh-sessions.service";
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly refreshSessionService: RefreshSessionsService,
     private readonly configService: ConfigService
@@ -20,7 +20,7 @@ export class AuthService {
     try {
       const {userId} = await this.jwtService.verifyAsync(token);
 
-      return this.userService.findById(userId);
+      return this.usersService.findById(userId);
     } catch (error) {
       return null;
     }

@@ -26,20 +26,21 @@ const websocket_1 = require("../../../lib/websocket");
 const services_1 = require("../services");
 const events_1 = require("./events");
 const groups_1 = require("../dtos/groups");
+const minAmountOfMembers = 2;
 let GroupsGateway = class GroupsGateway {
-    constructor(memberService, messageService, chatService, fileService, userService, websocketService) {
-        this.memberService = memberService;
-        this.messageService = messageService;
-        this.chatService = chatService;
-        this.fileService = fileService;
-        this.userService = userService;
+    constructor(membersService, messagesService, chatsService, filesService, usersService, websocketService) {
+        this.membersService = membersService;
+        this.messagesService = messagesService;
+        this.chatsService = chatsService;
+        this.filesService = filesService;
+        this.usersService = usersService;
         this.websocketService = websocketService;
     }
-    async handleSubscribingChat(socket, dto) {
-        const members = await this.memberService.find({
+    async subscribeChats(socket, dto) {
+        const members = await this.membersService.find({
             where: {
                 chat: {
-                    id: typeorm_1.In(dto.groups)
+                    id: typeorm_1.In(dto.groupsIds)
                 },
                 user: socket.user
             }
@@ -48,271 +49,248 @@ let GroupsGateway = class GroupsGateway {
             socket.join(chat.id);
         });
     }
-    async handleCreatingMessage(socket, dto) {
-        const chat = await this.chatService.findOne({
+    async createMessage(socket, dto) {
+        const chat = await this.chatsService.findOne({
             where: {
-                id: dto.group
+                id: dto.groupId
             }
         });
         if (!chat)
-            throw new websockets_1.WsException("Chat is not found.");
-        const member = await this.memberService.findOne({
+            throw new websockets_1.WsException("Chat is not found");
+        const member = await this.membersService.findOne({
             where: {
                 chat, user: socket.user
             }
         });
         if (!member)
-            throw new websockets_1.WsException("You are not a member of this chats.");
-        const parent = dto.parent && await this.messageService.findOne({
+            throw new websockets_1.WsException("Chat is not found");
+        const parent = dto.parentId && await this.messagesService.findOne({
             where: {
-                id: dto.parent, chat
+                id: dto.parentId, chat
             }
         });
-        const files = dto.files && await this.fileService.find({
+        const audio = dto.audioId ? await this.filesService.findOne({
             where: {
-                id: typeorm_1.In(dto.files),
-                user: socket.user
-            }
-        });
-        const images = dto.images && await this.fileService.find({
-            where: {
-                id: typeorm_1.In(dto.images),
-                user: socket.user,
-                extension: typeorm_1.In(files_1.extensions.images)
-            }
-        });
-        const audio = dto.audio && await this.fileService.findOne({
-            where: {
-                id: dto.audio,
+                id: dto.audioId,
                 user: socket.user,
                 extension: typeorm_1.In(files_1.extensions.audios)
             }
-        });
-        const numberOfUnreadMessages = await this.messageService.count({
-            where: [{
-                    chat: member.chat,
-                    isRead: false,
-                    sender: {
-                        id: typeorm_1.Not(member.id)
-                    }
-                }, {
-                    chat: member.chat,
-                    isRead: false,
-                    sender: typeorm_1.IsNull()
-                }]
-        });
-        const message = await this.messageService.create({
-            chat, parent, audio,
-            files: !audio ? files : null,
-            images: !audio ? images : null,
-            text: !audio ? dto.text : null,
-            sender: member
+        }) : null;
+        const files = (dto.filesIds && !audio) ? await this.filesService.find({
+            where: {
+                id: typeorm_1.In(dto.filesIds),
+                user: socket.user
+            }
+        }) : null;
+        const images = (dto.imagesIds && !audio) ? await this.filesService.find({
+            where: {
+                id: typeorm_1.In(dto.imagesIds),
+                user: socket.user,
+                extension: typeorm_1.In(files_1.extensions.images)
+            }
+        }) : null;
+        const message = await this.messagesService.create({
+            chat, parent, audio, files, images,
+            text: dto.text, sender: member
         });
         this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
+            details: chat.public,
             message: message.public,
-            chat: chat.public,
             member: member.public
         });
         return {
             message: message.public
         };
     }
-    async handleCreatingChat(socket, dto) {
-        const users = (await this.userService.find({
+    async createChat(socket, dto) {
+        const users = await this.usersService.find({
             where: {
-                id: typeorm_1.In(dto.members)
+                id: typeorm_1.In(dto.membersIds)
             }
-        })).filter((user) => user.id !== socket.user.id);
-        if (!users.length)
-            throw new websockets_1.WsException("No valid members");
-        const title = dto.title || `${socket.user.username} ${users.reduce((prev, current) => `${prev}${current.username} `, "").trim()}`;
-        const avatar = dto.avatar && await this.fileService.findOne({
+        });
+        if (users.length < minAmountOfMembers)
+            throw new websockets_1.WsException("Not enough members to create a group");
+        const title = dto.title || `${socket.user.username}${users.reduce((prev, current) => ` ${prev}${current.username}`, "")}`;
+        const image = dto.avatarId ? await this.filesService.findOne({
             where: {
-                id: dto.avatar,
+                id: dto.avatarId,
                 user: socket.user,
                 extension: typeorm_1.In(files_1.extensions.images)
             }
+        }) : null;
+        const chat = await this.chatsService.create({
+            title, avatar: image && image.url
         });
-        const chat = await this.chatService.create({
-            title, avatar: avatar && avatar.url
+        const member = await this.membersService.create({
+            chat,
+            role: "owner",
+            user: socket.user
         });
-        const members = [];
-        const member = await this.memberService.create({
-            user: socket.user,
-            chat, role: "owner"
-        });
-        members.push(member);
-        const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
-        sockets.forEach((socket) => socket.join(chat.id));
         for (let i = 0; i < users.length; i++) {
             const user = users[0];
-            const member = await this.memberService.create({
-                user, chat, role: "member"
+            const isOwn = user.id === socket.user.id;
+            await this.membersService.create({
+                user, chat,
+                role: isOwn ? "owner" : "member"
             });
-            members.push(member);
             const sockets = await this.websocketService.getSocketsByUserId(this.wss, user.id);
             sockets.forEach((socket) => socket.join(chat.id));
         }
-        const message = await this.messageService.create({
+        const message = await this.messagesService.create({
             chat, isSystem: true,
             text: `${member.user.username} has created the chat!`
         });
         this.wss.to(chat.id).emit(events_1.groupChatClientEvents.CHAT_CREATED, {
-            chat: chat.public,
-            member: member.public
+            details: chat.public
         });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
-            chat: chat.public,
+        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+            details: chat.public,
             message: message.public
         });
         return {
-            chat: Object.assign(Object.assign({}, chat.public), { member: member.public, numberOfMembers: members.length })
+            chat: {
+                details: chat.public
+            }
         };
     }
-    async handleAddingMember(socket, dto) {
-        const chat = await this.chatService.findOne({
+    async addMember(socket, dto) {
+        const chat = await this.chatsService.findOne({
             where: {
-                id: dto.group
+                id: dto.groupId
             }
         });
         if (!chat)
-            throw new websockets_1.WsException("Chat is not found.");
-        const member = await this.memberService.findOne({
+            throw new websockets_1.WsException("Chat is not found");
+        const member = await this.membersService.findOne({
             where: {
-                chat, user: socket.user,
-                role: "owner"
+                chat, role: "owner",
+                user: socket.user
             }
         });
         if (!member)
-            throw new websockets_1.WsException("You do not have permission to add members.");
-        const user = await this.userService.findOne({
+            throw new websockets_1.WsException("Not permitted to add members");
+        const user = await this.usersService.findOne({
             where: {
-                id: dto.member
+                id: dto.memberId
             }
         });
         if (!user)
-            throw new websockets_1.WsException("User not found.");
-        const existed = await this.memberService.findOne({
-            where: {
-                chat, user
-            }
+            throw new websockets_1.WsException("User is not found");
+        const existed = await this.membersService.findOne({
+            where: { chat, user }
         });
         if (existed)
-            throw new websockets_1.WsException("User has already been a member of this chats.");
-        const added = await this.memberService.create({
-            role: "member", chat, user
-        });
-        const numberOfMembers = await this.memberService.count({
-            where: { chat }
-        });
-        const message = await this.messageService.create({
-            isSystem: true, chat,
-            text: `${added.user.username} has joined!`
+            throw new websockets_1.WsException("User has been already a member of this chat");
+        const added = await this.membersService.create({
+            chat, user,
+            role: "member"
         });
         this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MEMBER_ADDED, {
-            chat: chat.public,
-            member: member.public,
-            numberOfMembers
-        });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
-            chat: chat.public,
-            message: message.public
+            details: chat.public
         });
         const sockets = this.websocketService.getSocketsByUserId(this.wss, added.user.id);
         sockets.forEach((socket) => {
             socket.join(chat.id);
             socket.emit(events_1.groupChatClientEvents.ADDED, {
-                chat: chat.public,
-                member: added.public
+                details: chat.public
             });
         });
-        return {
-            chat: Object.assign(Object.assign({}, chat.public), { member: added.public, numberOfMembers })
-        };
+        const message = await this.messagesService.create({
+            isSystem: true, chat,
+            text: `${added.user.username} has joined!`
+        });
+        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+            details: chat.public,
+            message: message.public
+        });
     }
-    async handleRemovingMember(socket, dto) {
-        const chat = await this.chatService.findOne({
+    async kickMember(socket, dto) {
+        const chat = await this.chatsService.findOne({
             where: {
-                id: dto.group
+                id: dto.groupId
             }
         });
         if (!chat)
-            throw new websockets_1.WsException("Chat is not found.");
-        const owner = await this.memberService.findOne({
+            throw new websockets_1.WsException("Chat is not found");
+        const member = await this.membersService.findOne({
             where: {
-                chat, user: socket.user,
-                role: "owner"
-            }
-        });
-        if (!owner)
-            throw new websockets_1.WsException("You do not have permission to add members.");
-        const user = await this.userService.findOne({
-            where: {
-                id: dto.member
-            }
-        });
-        if (!user)
-            throw new websockets_1.WsException("User not found.");
-        const member = await this.memberService.findOne({
-            where: {
-                user, chat
+                chat, role: "owner",
+                user: socket.user
             }
         });
         if (!member)
-            throw new websockets_1.WsException("User is not a member of this chats.");
-        await this.memberService.delete({
-            id: member.id
+            throw new websockets_1.WsException("Not permitted to kick members");
+        const user = await this.usersService.findOne({
+            where: {
+                id: dto.memberId
+            }
         });
-        const numberOfMembers = await this.memberService.count({
-            where: { chat }
+        if (!user)
+            throw new websockets_1.WsException("User not found");
+        const existed = await this.membersService.findOne({
+            where: { user, chat }
         });
-        const message = await this.messageService.create({
+        if (!existed)
+            throw new websockets_1.WsException("User has not been added yet");
+        await this.membersService.delete({
+            id: existed.id
+        });
+        const message = await this.messagesService.create({
             isSystem: true, chat,
             text: `${member.user.username} has been kicked!`
+        });
+        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+            details: chat.public,
+            message: message.public
         });
         const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
         sockets.forEach((socket) => {
             socket.leave(chat.id);
             socket.emit(events_1.groupChatClientEvents.KICKED, {
-                chat: chat.public
+                details: chat.public
             });
         });
         this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MEMBER_KICKED, {
-            member: member.public,
-            chat: chat.public,
-            numberOfMembers
+            details: chat.public,
+            member: member.public
         });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
-            message: message.public,
-            chat: chat.public
-        });
-        return {
-            chat: Object.assign(Object.assign({}, chat.public), { member: member.public, numberOfMembers })
-        };
     }
-    async handleLeavingChat(socket, dto) {
-        const chat = await this.chatService.findOne({
+    async leaveChat(socket, dto) {
+        const chat = await this.chatsService.findOne({
             where: {
-                id: dto.group
+                id: dto.groupId
             }
         });
         if (!chat)
-            throw new websockets_1.WsException("Chat is not found.");
-        const member = await this.memberService.findOne({
+            throw new websockets_1.WsException("Chat is not found");
+        const member = await this.membersService.findOne({
             where: {
                 chat, user: socket.user
             }
         });
         if (!member)
-            throw new websockets_1.WsException("You are not a member of this chats.");
-        await this.memberService.delete({
+            throw new websockets_1.WsException("You are not member of this chat");
+        await this.membersService.delete({
             id: member.id
         });
+        const message = await this.messagesService.create({
+            chat, isSystem: true,
+            text: `${member.user.username} left the chat!`
+        });
+        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+            details: chat.public,
+            message: message.public
+        });
         const sockets = this.websocketService.getSocketsByUserId(this.wss, member.user.id);
-        sockets.forEach((socket) => socket.leave(chat.id));
-        let replacement = null;
+        sockets.forEach((socket) => {
+            socket.leave(chat.id);
+        });
+        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MEMBER_LEFT, {
+            details: chat.public,
+            member: member.public
+        });
         if (member.isOwner) {
-            const candidate = await this.memberService.findOne({
+            const candidate = await this.membersService.findOne({
                 where: {
                     chat, user: {
                         id: typeorm_1.Not(member.user.id)
@@ -323,62 +301,44 @@ let GroupsGateway = class GroupsGateway {
                 }
             });
             if (candidate) {
-                replacement = await this.memberService.save(Object.assign(Object.assign({}, candidate), { role: "owner" }));
+                const replacement = await this.membersService.save(Object.assign(Object.assign({}, candidate), { role: "owner" }));
+                const sockets = this.websocketService.getSocketsByUserId(this.wss, replacement.user.id);
+                sockets.forEach((socket) => {
+                    socket.emit(events_1.groupChatClientEvents.OWNER_REPLACEMENT, {
+                        details: chat.public,
+                        member: replacement.public
+                    });
+                });
+                const message = await this.messagesService.create({
+                    chat, isSystem: true,
+                    text: `${replacement.user.username} is chat owner now!`
+                });
+                this.wss.to(chat.id).emit(events_1.groupChatClientEvents.SYSTEM_MESSAGE, {
+                    details: chat.public,
+                    message: message.public
+                });
             }
         }
-        const numberOfMembers = await this.memberService.count({
-            where: { chat }
-        });
-        const message = await this.messageService.create({
-            chat, isSystem: true,
-            text: `${member.user.username} left the chat!`
-        });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MEMBER_LEFT, {
-            chat: chat.public,
-            member: member.public,
-            numberOfMembers
-        });
-        this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
-            chat: chat.public,
-            message: message.public
-        });
-        if (replacement) {
-            const message = await this.messageService.create({
-                chat, isSystem: true,
-                text: `${replacement.user.username} is chat owner now!`
-            });
-            this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE, {
-                chat: chat.public,
-                message: message.public
-            });
-            const sockets = this.websocketService.getSocketsByUserId(this.wss, replacement.user.id);
-            sockets.forEach((socket) => socket.emit(events_1.groupChatClientEvents.OWNER_REPLACEMENT, {
-                chat: chat.public,
-                member: replacement.public
-            }));
-        }
-        return {
-            chat: chat.public
-        };
     }
     async handleReadingMessage(socket, dto) {
-        const chat = await this.chatService.findOne({
+        const chat = await this.chatsService.findOne({
             where: {
-                id: dto.group
+                id: dto.groupId
             }
         });
         if (!chat)
             throw new websockets_1.WsException("Chat is not found");
-        const member = await this.memberService.findOne({
+        const member = await this.membersService.findOne({
             where: {
                 chat, user: socket.user
             }
         });
         if (!member)
-            throw new websockets_1.WsException("You are not a member of this chats");
-        const message = await this.messageService.findOne({
+            throw new websockets_1.WsException("You are not member of this chat");
+        const message = await this.messagesService.findOne({
             where: {
-                chat, id: dto.message,
+                chat,
+                id: dto.messageId,
                 isRead: false,
                 sender: {
                     id: typeorm_1.Not(member.id)
@@ -387,14 +347,9 @@ let GroupsGateway = class GroupsGateway {
         });
         if (!message)
             throw new websockets_1.WsException("Message is not found");
-        await this.messageService.update({
-            id: message.id
-        }, {
-            isRead: true
-        });
-        await this.messageService.update({
+        await this.messagesService.update({
             chat,
-            createdAt: operators_1.LessThanDate(message.createdAt),
+            createdAt: operators_1.LessThanOrEqualDate(message.createdAt),
             isRead: false,
             sender: {
                 id: typeorm_1.Not(member.id)
@@ -403,13 +358,9 @@ let GroupsGateway = class GroupsGateway {
             isRead: true
         });
         this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE_READ, {
-            message: message.public,
-            chat: chat.public
+            details: chat.public,
+            message: message.public
         });
-        return {
-            message: message.public,
-            chat: chat.public
-        };
     }
 };
 __decorate([
@@ -423,7 +374,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, groups_1.SubscribeChatsDto]),
     __metadata("design:returntype", Promise)
-], GroupsGateway.prototype, "handleSubscribingChat", null);
+], GroupsGateway.prototype, "subscribeChats", null);
 __decorate([
     websockets_1.SubscribeMessage(events_1.groupChatServerEvents.CREATE_MESSAGE),
     __param(0, websockets_1.ConnectedSocket()),
@@ -431,7 +382,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, groups_1.CreateMessageDto]),
     __metadata("design:returntype", Promise)
-], GroupsGateway.prototype, "handleCreatingMessage", null);
+], GroupsGateway.prototype, "createMessage", null);
 __decorate([
     websockets_1.SubscribeMessage(events_1.groupChatServerEvents.CREATE_CHAT),
     __param(0, websockets_1.ConnectedSocket()),
@@ -439,7 +390,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, groups_1.CreateChatDto]),
     __metadata("design:returntype", Promise)
-], GroupsGateway.prototype, "handleCreatingChat", null);
+], GroupsGateway.prototype, "createChat", null);
 __decorate([
     websockets_1.SubscribeMessage(events_1.groupChatServerEvents.ADD_MEMBER),
     __param(0, websockets_1.ConnectedSocket()),
@@ -447,7 +398,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, groups_1.AddMemberDto]),
     __metadata("design:returntype", Promise)
-], GroupsGateway.prototype, "handleAddingMember", null);
+], GroupsGateway.prototype, "addMember", null);
 __decorate([
     websockets_1.SubscribeMessage(events_1.groupChatServerEvents.KICK_MEMBER),
     __param(0, websockets_1.ConnectedSocket()),
@@ -455,7 +406,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, groups_1.KickMemberDto]),
     __metadata("design:returntype", Promise)
-], GroupsGateway.prototype, "handleRemovingMember", null);
+], GroupsGateway.prototype, "kickMember", null);
 __decorate([
     websockets_1.SubscribeMessage(events_1.groupChatServerEvents.LEAVE),
     __param(0, websockets_1.ConnectedSocket()),
@@ -463,7 +414,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, groups_1.LeaveChatDto]),
     __metadata("design:returntype", Promise)
-], GroupsGateway.prototype, "handleLeavingChat", null);
+], GroupsGateway.prototype, "leaveChat", null);
 __decorate([
     websockets_1.SubscribeMessage(events_1.groupChatServerEvents.READ_MESSAGE),
     __param(0, websockets_1.ConnectedSocket()),

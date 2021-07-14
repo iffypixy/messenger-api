@@ -1,6 +1,6 @@
 import { ID } from "@lib/typings";
 export declare class CreateChatDto {
-    members: ID[];
+    membersIds: ID[];
     title?: string;
-    avatar?: string;
+    avatarId?: string;
 }

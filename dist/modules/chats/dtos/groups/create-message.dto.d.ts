@@ -1,9 +1,9 @@
 import { ID } from "@lib/typings";
 export declare class CreateMessageDto {
     text?: string;
-    audio?: ID;
-    files?: ID[];
-    images?: ID[];
-    parent?: ID;
-    group: ID;
+    audioId?: ID;
+    filesIds?: ID[];
+    imagesIds?: ID[];
+    parentId?: ID;
+    groupId: ID;
 }

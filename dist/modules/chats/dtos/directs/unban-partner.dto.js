@@ -17,6 +17,6 @@ class UnbanPartnerDto {
 __decorate([
     class_validator_1.IsUUID(4),
     __metadata("design:type", String)
-], UnbanPartnerDto.prototype, "partner", void 0);
+], UnbanPartnerDto.prototype, "partnerId", void 0);
 exports.UnbanPartnerDto = UnbanPartnerDto;
 //# sourceMappingURL=unban-partner.dto.js.map

@@ -5,33 +5,20 @@ import { ExtendedSocket } from "@lib/typings";
 import { WebsocketService } from "@lib/websocket";
 import { DirectMembersService, DirectMessagesService, DirectsService } from "../services";
 import { CreateMessageDto, BanPartnerDto, UnbanPartnerDto, ReadMessageDto } from "../dtos/directs";
-import { DirectMemberPublicData, DirectMessagePublicData, DirectPublicData } from "../entities";
+import { DirectMessagePublicData } from "../entities";
 export declare class DirectsGateway {
-    private readonly memberService;
-    private readonly messageService;
-    private readonly chatService;
-    private readonly fileService;
-    private readonly userService;
+    private readonly membersService;
+    private readonly messagesService;
+    private readonly chatsService;
+    private readonly filesService;
+    private readonly usersService;
     private readonly websocketsService;
-    constructor(memberService: DirectMembersService, messageService: DirectMessagesService, chatService: DirectsService, fileService: FilesService, userService: UsersService, websocketsService: WebsocketService);
+    constructor(membersService: DirectMembersService, messagesService: DirectMessagesService, chatsService: DirectsService, filesService: FilesService, usersService: UsersService, websocketsService: WebsocketService);
     wss: Server;
     handleCreatingMessage(socket: ExtendedSocket, dto: CreateMessageDto): Promise<{
         message: DirectMessagePublicData;
     }>;
-    handleBanningPartner(socket: ExtendedSocket, dto: BanPartnerDto): Promise<{
-        chat: {
-            partner: DirectMemberPublicData;
-            isBanned: boolean;
-        } & DirectPublicData;
-    }>;
-    handleUnbanningPartner(socket: ExtendedSocket, dto: UnbanPartnerDto): Promise<{
-        chat: {
-            partner: DirectMemberPublicData;
-            isBanned: boolean;
-        } & DirectPublicData;
-    }>;
-    handleReadingMessage(socket: ExtendedSocket, dto: ReadMessageDto): Promise<{
-        chat: DirectPublicData;
-        message: DirectMessagePublicData;
-    }>;
+    handleBanningPartner(socket: ExtendedSocket, dto: BanPartnerDto): Promise<void>;
+    handleUnbanningPartner(socket: ExtendedSocket, dto: UnbanPartnerDto): Promise<void>;
+    handleReadingMessage(socket: ExtendedSocket, dto: ReadMessageDto): Promise<void>;
 }

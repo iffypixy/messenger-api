@@ -1,6 +1,6 @@
-import {LessThan} from "typeorm";
+import {LessThanOrEqual} from "typeorm";
 import * as format from "dateformat";
 
 const scheme = "yyyy-mm-dd HH:MM:ss.l";
 
-export const LessThanDate = (date: Date) => LessThan(`${format(date, scheme)}000`);
+export const LessThanOrEqualDate = (date: Date) => LessThanOrEqual(`${format(date, scheme)}000`);

@@ -19,6 +19,6 @@ __decorate([
         each: true
     }),
     __metadata("design:type", Array)
-], SubscribeChatsDto.prototype, "groups", void 0);
+], SubscribeChatsDto.prototype, "groupsIds", void 0);
 exports.SubscribeChatsDto = SubscribeChatsDto;
 //# sourceMappingURL=subscribe-chats.dto.js.map

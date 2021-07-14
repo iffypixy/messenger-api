@@ -13,9 +13,9 @@ import {GetMessagesDto} from "../dtos/groups";
 @Controller("groups")
 export class GroupsController {
   constructor(
-    private readonly memberService: GroupMembersService,
-    private readonly messageService: GroupMessagesService,
-    private readonly chatService: GroupsService
+    private readonly membersService: GroupMembersService,
+    private readonly messagesService: GroupMessagesService,
+    private readonly chatsService: GroupsService
   ) {
   }
 
@@ -30,11 +30,11 @@ export class GroupsController {
       unreads: number;
     }[];
   }> {
-    const members = await this.memberService.find({
+    const members = await this.membersService.find({
       where: {user}
     });
 
-    const messages = await this.messageService.find({
+    const messages = await this.messagesService.find({
       where: {
         chat: {
           id: In(members.map(({chat}) => chat.id))
@@ -51,7 +51,7 @@ export class GroupsController {
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
 
-      const amount = await this.messageService.count({
+      const amount = await this.messagesService.count({
         where: [{
           chat: member.chat,
           isRead: false,
@@ -91,7 +91,7 @@ export class GroupsController {
     @Query("id") id: ID,
     @Body() dto: GetMessagesDto
   ): Promise<{messages: GroupMessagePublicData[]}> {
-    const messages = await this.messageService.find({
+    const messages = await this.messagesService.find({
       where: {
         chat: {id}
       },
@@ -120,17 +120,17 @@ export class GroupsController {
       participants: number;
     };
   }> {
-    const chat = await this.chatService.findOne({
+    const chat = await this.chatsService.findOne({
       where: {id}
     });
 
-    const member = await this.memberService.findOne({
+    const member = await this.membersService.findOne({
       where: {chat, user}
     });
 
     if (!member) throw new BadRequestException("Chat is not found");
 
-    const participants = await this.memberService.count({
+    const participants = await this.membersService.count({
       where: {chat}
     });
 
@@ -154,7 +154,7 @@ export class GroupsController {
       createdAt: Date;
     }[];
   }> {
-    const member = await this.memberService.findOne({
+    const member = await this.membersService.findOne({
       where: {
         chat: {id}, user
       }
@@ -162,7 +162,7 @@ export class GroupsController {
 
     if (!member) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messageService.findWithAttachments("images", {
+    const messages = await this.messagesService.findWithAttachments("images", {
       where: {
         chat: {id}
       },
@@ -194,7 +194,7 @@ export class GroupsController {
       createdAt: Date;
     }[];
   }> {
-    const member = await this.memberService.findOne({
+    const member = await this.membersService.findOne({
       where: {
         chat: {id}, user
       }
@@ -202,7 +202,7 @@ export class GroupsController {
 
     if (!member) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messageService.findWithAttachments("audio", {
+    const messages = await this.messagesService.findWithAttachments("audio", {
       where: {
         chat: {id}
       },
@@ -231,7 +231,7 @@ export class GroupsController {
       createdAt: Date;
     }[];
   }> {
-    const member = await this.memberService.findOne({
+    const member = await this.membersService.findOne({
       where: {
         chat: {id}, user
       }
@@ -239,7 +239,7 @@ export class GroupsController {
 
     if (!member) throw new BadRequestException("Chat is not found");
 
-    const messages = await this.messageService.findWithAttachments("files", {
+    const messages = await this.messagesService.findWithAttachments("files", {
       where: {
         chat: {id}
       },

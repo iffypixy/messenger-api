@@ -17,14 +17,12 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const users_1 = require("../../users");
-const typings_1 = require("../../../lib/typings");
 const entities_1 = require("../entities");
 const direct_members_service_1 = require("./direct-members.service");
 let DirectsService = class DirectsService {
-    constructor(repository, memberService, userService) {
+    constructor(repository, membersService) {
         this.repository = repository;
-        this.memberService = memberService;
-        this.userService = userService;
+        this.membersService = membersService;
     }
     create(partial) {
         const chat = this.repository.create(partial);
@@ -33,32 +31,27 @@ let DirectsService = class DirectsService {
     find(options) {
         return this.repository.find(options);
     }
-    async findOneByUsersIds(ids) {
-        const firsts = await this.memberService.find({
+    async findOneByUsers(users, { createNew }) {
+        const firsts = await this.membersService.find({
             where: {
-                user: {
-                    id: ids[0]
-                }
+                user: users[0]
             }
         });
-        const seconds = await this.memberService.find({
+        const seconds = await this.membersService.find({
             where: {
-                user: {
-                    id: ids[1]
-                }
+                user: users[1]
             }
         });
-        let first = firsts.find((first) => seconds.findIndex((second) => second.chat.id === first.chat.id) !== -1) || null;
-        let second = first && seconds.find((second) => second.chat.id === first.chat.id);
-        if (!first) {
+        let first = firsts.find(({ chat }) => seconds
+            .findIndex((second) => second.chat.id === chat.id) !== -1) || null;
+        let second = first && seconds.find(({ chat }) => chat.id === first.chat.id);
+        if (!first && createNew) {
             const chat = await this.create({});
-            const firstUser = await this.userService.findById(ids[0]);
-            first = await this.memberService.create({
-                user: firstUser, chat
+            first = await this.membersService.create({
+                user: users[0], chat
             });
-            const secondUser = await this.userService.findById(ids[1]);
-            second = await this.memberService.create({
-                user: secondUser, chat
+            second = await this.membersService.create({
+                user: users[1], chat
             });
         }
         return {
@@ -71,8 +64,7 @@ DirectsService = __decorate([
     common_1.Injectable(),
     __param(0, typeorm_1.InjectRepository(entities_1.Direct)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        direct_members_service_1.DirectMembersService,
-        users_1.UsersService])
+        direct_members_service_1.DirectMembersService])
 ], DirectsService);
 exports.DirectsService = DirectsService;
 //# sourceMappingURL=directs.service.js.map

@@ -19,6 +19,7 @@ exports.serverEvents = {
 };
 exports.clientEvents = {
     MESSAGE: `${prefix}:MESSAGE`,
+    SYSTEM_MESSAGE: `${prefix}:SYSTEM_MESSAGE`,
     CHAT_CREATED: `${prefix}:CHAT_CREATED`,
     MEMBER_ADDED: `${prefix}:MEMBER_ADDED`,
     MEMBER_KICKED: `${prefix}:MEMBER_KICKED`,

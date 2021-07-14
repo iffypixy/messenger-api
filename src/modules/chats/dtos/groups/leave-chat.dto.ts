@@ -4,5 +4,5 @@ import {ID} from "@lib/typings";
 
 export class LeaveChatDto {
   @IsUUID(4)
-  group: ID;
+  groupId: ID;
 }

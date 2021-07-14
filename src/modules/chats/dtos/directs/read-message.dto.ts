@@ -4,8 +4,8 @@ import {ID} from "@lib/typings";
 
 export class ReadMessageDto {
   @IsUUID(4)
-  partner: ID;
+  partnerId: ID;
 
   @IsUUID(4)
-  message: ID;
+  messageId: ID;
 }

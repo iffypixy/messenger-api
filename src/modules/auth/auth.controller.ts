@@ -15,7 +15,7 @@ import {AuthService, RefreshSessionsService} from "./services";
 @Controller("auth")
 export class AuthController {
   constructor(
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly refreshSessionService: RefreshSessionsService,
     private readonly authService: AuthService,
@@ -29,7 +29,7 @@ export class AuthController {
     @Body() {username, password, fingerprint}: RegisterDto,
     @Res({passthrough: true}) res: Response
   ): Promise<{credentials: UserPublicData}> {
-    const existed = await this.userService.findOne({
+    const existed = await this.usersService.findOne({
       where: {username}
     });
 
@@ -42,7 +42,7 @@ export class AuthController {
 
     const avatar = (await this.uploadService.upload(png, "image/png")).Location;
 
-    const user = await this.userService.create({
+    const user = await this.usersService.create({
       username, avatar,
       password: hashedPassword,
       role: "user", lastSeen: new Date()
@@ -63,7 +63,7 @@ export class AuthController {
     @Body() {username, password, fingerprint}: LoginDto,
     @Res({passthrough: true}) res: Response
   ): Promise<{credentials: UserPublicData}> {
-    const user = await this.userService.findOne({
+    const user = await this.usersService.findOne({
       where: {username}
     });
 

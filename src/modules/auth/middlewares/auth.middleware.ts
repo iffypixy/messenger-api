@@ -9,7 +9,7 @@ import {AuthService} from "../services";
 export class AuthMiddleware implements NestMiddleware {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UsersService
+    private readonly usersService: UsersService
   ) {
   }
 
@@ -22,7 +22,7 @@ export class AuthMiddleware implements NestMiddleware {
 
     const user = await this.authService.findUserByAccessToken(token);
 
-    if (user) req.user = await this.userService.save({
+    if (user) req.user = await this.usersService.save({
       ...user, lastSeen: new Date()
     });
 

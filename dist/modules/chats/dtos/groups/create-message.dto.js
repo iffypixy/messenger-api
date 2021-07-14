@@ -14,9 +14,9 @@ const class_validator_1 = require("class-validator");
 const typings_1 = require("../../../../lib/typings");
 class CreateMessageDto {
     constructor() {
-        this.audio = null;
-        this.files = [];
-        this.images = [];
+        this.audioId = null;
+        this.filesIds = [];
+        this.imagesIds = [];
     }
 }
 __decorate([
@@ -32,7 +32,7 @@ __decorate([
         message: "Audio must be type of uuid"
     }),
     __metadata("design:type", String)
-], CreateMessageDto.prototype, "audio", void 0);
+], CreateMessageDto.prototype, "audioId", void 0);
 __decorate([
     class_validator_1.IsOptional(),
     class_validator_1.IsUUID("4", {
@@ -40,7 +40,7 @@ __decorate([
         message: "File must be type of uuid"
     }),
     __metadata("design:type", Array)
-], CreateMessageDto.prototype, "files", void 0);
+], CreateMessageDto.prototype, "filesIds", void 0);
 __decorate([
     class_validator_1.IsOptional(),
     class_validator_1.IsUUID("4", {
@@ -48,17 +48,17 @@ __decorate([
         message: "Image must be type of uuid"
     }),
     __metadata("design:type", Array)
-], CreateMessageDto.prototype, "images", void 0);
+], CreateMessageDto.prototype, "imagesIds", void 0);
 __decorate([
     class_validator_1.IsOptional(),
     class_validator_1.IsUUID("4", {
         message: "Parent must be type of uuid"
     }),
     __metadata("design:type", String)
-], CreateMessageDto.prototype, "parent", void 0);
+], CreateMessageDto.prototype, "parentId", void 0);
 __decorate([
     class_validator_1.IsUUID(4),
     __metadata("design:type", String)
-], CreateMessageDto.prototype, "group", void 0);
+], CreateMessageDto.prototype, "groupId", void 0);
 exports.CreateMessageDto = CreateMessageDto;
 //# sourceMappingURL=create-message.dto.js.map

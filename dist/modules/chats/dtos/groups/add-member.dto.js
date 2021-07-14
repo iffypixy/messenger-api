@@ -17,10 +17,10 @@ class AddMemberDto {
 __decorate([
     class_validator_1.IsUUID(4),
     __metadata("design:type", String)
-], AddMemberDto.prototype, "member", void 0);
+], AddMemberDto.prototype, "memberId", void 0);
 __decorate([
     class_validator_1.IsUUID(4),
     __metadata("design:type", String)
-], AddMemberDto.prototype, "group", void 0);
+], AddMemberDto.prototype, "groupId", void 0);
 exports.AddMemberDto = AddMemberDto;
 //# sourceMappingURL=add-member.dto.js.map

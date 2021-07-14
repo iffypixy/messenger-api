@@ -15,15 +15,15 @@ const users_1 = require("../../users");
 const typings_1 = require("../../../lib/typings");
 const services_1 = require("../services");
 let AuthMiddleware = class AuthMiddleware {
-    constructor(authService, userService) {
+    constructor(authService, usersService) {
         this.authService = authService;
-        this.userService = userService;
+        this.usersService = usersService;
     }
     async use(req, res, next) {
         const token = req.cookies["access-token"];
         const user = await this.authService.findUserByAccessToken(token);
         if (user)
-            req.user = await this.userService.save(Object.assign(Object.assign({}, user), { lastSeen: new Date() }));
+            req.user = await this.usersService.save(Object.assign(Object.assign({}, user), { lastSeen: new Date() }));
         next();
     }
 };

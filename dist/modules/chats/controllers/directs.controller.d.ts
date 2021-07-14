@@ -1,14 +1,15 @@
-import { User } from "@modules/users";
+import { User, UsersService } from "@modules/users";
 import { FilePublicData } from "@modules/uploads";
 import { ID } from "@lib/typings";
 import { DirectMembersService, DirectMessagesService, DirectsService } from "../services";
 import { DirectPublicData, DirectMemberPublicData, DirectMessagePublicData } from "../entities";
 import { GetMessagesDto, GetAttachmentsDto } from "../dtos/directs";
 export declare class DirectsController {
-    private readonly memberService;
-    private readonly messageService;
-    private readonly chatService;
-    constructor(memberService: DirectMembersService, messageService: DirectMessagesService, chatService: DirectsService);
+    private readonly membersService;
+    private readonly messagesService;
+    private readonly chatsService;
+    private readonly usersService;
+    constructor(membersService: DirectMembersService, messagesService: DirectMessagesService, chatsService: DirectsService, usersService: UsersService);
     getChats(user: User): Promise<{
         chats: {
             details: DirectPublicData;

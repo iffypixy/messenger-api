@@ -9,14 +9,14 @@ import {UserPublicData} from "./entities";
 @Controller("users")
 export class UsersController {
   constructor(
-    private readonly userService: UsersService
+    private readonly usersService: UsersService
   ) {}
 
   @Get("search")
   async getByLoginQuery(
     @Query() {query}: GetUsersByLoginQueryDto
   ): Promise<{users: UserPublicData[]}> {
-    const users = await this.userService.find({
+    const users = await this.usersService.find({
       where: {
         username: ILike(query)
       }
@@ -29,7 +29,7 @@ export class UsersController {
 
   @Get(":id")
   async getById(@Param("id") id: ID): Promise<{user: UserPublicData}> {
-    const user = await this.userService.findById(id);
+    const user = await this.usersService.findById(id);
 
     if (!user) throw new NotFoundException("User is not found");
 

@@ -2,8 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {DeepPartial, FindManyOptions, Repository} from "typeorm";
 
-import {UsersService} from "@modules/users";
-import {ID} from "@lib/typings";
+import {User} from "@modules/users";
 import {Direct, DirectMember} from "../entities";
 import {DirectMembersService} from "./direct-members.service";
 
@@ -12,8 +11,7 @@ export class DirectsService {
   constructor(
     @InjectRepository(Direct)
     private readonly repository: Repository<Direct>,
-    private readonly memberService: DirectMembersService,
-    private readonly userService: UsersService
+    private readonly membersService: DirectMembersService,
   ) {}
 
   create(partial: DeepPartial<Direct>): Promise<Direct> {
@@ -26,41 +24,33 @@ export class DirectsService {
     return this.repository.find(options);
   }
 
-  async findOneByUsersIds(ids: ID[]): Promise<{first: DirectMember | null; second: DirectMember | null; chat: Direct | null}> {
-    const firsts = await this.memberService.find({
+  async findOneByUsers(users: User[], {createNew}: {createNew: boolean}): Promise<{first: DirectMember | null; second: DirectMember | null; chat: Direct | null}> {
+    const firsts = await this.membersService.find({
       where: {
-        user: {
-          id: ids[0]
-        }
+        user: users[0]
       }
     });
 
-    const seconds = await this.memberService.find({
+    const seconds = await this.membersService.find({
       where: {
-        user: {
-          id: ids[1]
-        }
+        user: users[1]
       }
     });
 
-    let first = firsts.find((first) =>
-      seconds.findIndex((second) => second.chat.id === first.chat.id) !== -1) || null;
+    let first = firsts.find(({chat}) => seconds
+      .findIndex((second) => second.chat.id === chat.id) !== -1) || null;
 
-    let second = first && seconds.find((second) => second.chat.id === first.chat.id);
+    let second = first && seconds.find(({chat}) => chat.id === first.chat.id);
 
-    if (!first) {
+    if (!first && createNew) {
       const chat = await this.create({});
 
-      const firstUser = await this.userService.findById(ids[0]);
-
-      first = await this.memberService.create({
-        user: firstUser, chat
+      first = await this.membersService.create({
+        user: users[0], chat
       });
 
-      const secondUser = await this.userService.findById(ids[1]);
-
-      second = await this.memberService.create({
-        user: secondUser, chat
+      second = await this.membersService.create({
+        user: users[1], chat
       });
     }
 

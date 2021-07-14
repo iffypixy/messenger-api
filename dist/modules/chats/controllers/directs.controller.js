@@ -23,17 +23,18 @@ const queries_1 = require("../../../lib/queries");
 const services_1 = require("../services");
 const directs_1 = require("../dtos/directs");
 let DirectsController = class DirectsController {
-    constructor(memberService, messageService, chatService) {
-        this.memberService = memberService;
-        this.messageService = messageService;
-        this.chatService = chatService;
+    constructor(membersService, messagesService, chatsService, usersService) {
+        this.membersService = membersService;
+        this.messagesService = messagesService;
+        this.chatsService = chatsService;
+        this.usersService = usersService;
     }
     async getChats(user) {
-        const members = await this.memberService.find({
+        const members = await this.membersService.find({
             where: { user }
         });
         const chatsIds = members.map(({ chat }) => chat.id);
-        const partners = await this.memberService.find({
+        const partners = await this.membersService.find({
             where: {
                 chat: {
                     id: typeorm_1.In(chatsIds)
@@ -43,7 +44,7 @@ let DirectsController = class DirectsController {
                 }
             }
         });
-        const messages = await this.messageService.find({
+        const messages = await this.messagesService.find({
             where: {
                 chat: {
                     id: typeorm_1.In(chatsIds)
@@ -57,7 +58,7 @@ let DirectsController = class DirectsController {
         const unreads = [];
         for (let i = 0; i < members.length; i++) {
             const member = members[i];
-            const amount = await this.messageService.count({
+            const amount = await this.messagesService.count({
                 where: {
                     chat: member.chat,
                     isRead: false,
@@ -86,10 +87,18 @@ let DirectsController = class DirectsController {
         };
     }
     async getMessages(user, partnerId, dto) {
-        const { chat } = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+        const partner = await this.usersService.findOne({
+            where: {
+                id: partnerId
+            }
+        });
+        if (!partner)
+            throw new common_1.BadRequestException("Partner is not found");
+        const { chat } = await this.chatsService
+            .findOneByUsers([user, partner], { createNew: false });
         if (!chat)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messageService.find({
+        const messages = await this.messagesService.find({
             where: { chat },
             skip: +dto.skip,
             take: queries_1.queryLimit,
@@ -104,7 +113,15 @@ let DirectsController = class DirectsController {
         };
     }
     async getChat(user, partnerId) {
-        const { chat, first, second } = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+        const partner = await this.usersService.findOne({
+            where: {
+                id: partnerId
+            }
+        });
+        if (!partner)
+            throw new common_1.BadRequestException("Partner is not found");
+        const { chat, first, second } = await this.chatsService
+            .findOneByUsers([user, partner], { createNew: false });
         if (!chat)
             throw new common_1.BadRequestException("Chat is not found");
         return {
@@ -116,10 +133,18 @@ let DirectsController = class DirectsController {
         };
     }
     async getAttachedImages(user, partnerId, dto) {
-        const { chat } = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+        const partner = await this.usersService.findOne({
+            where: {
+                id: partnerId
+            }
+        });
+        if (!partner)
+            throw new common_1.BadRequestException("Partner is not found");
+        const { chat } = await this.chatsService
+            .findOneByUsers([user, partner], { createNew: false });
         if (!chat)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messageService.findWithAttachments("images", {
+        const messages = await this.messagesService.findWithAttachments("images", {
             skip: dto.skip,
             where: { chat },
             order: {
@@ -137,10 +162,18 @@ let DirectsController = class DirectsController {
         };
     }
     async getAttachedAudios(user, partnerId, dto) {
-        const { chat } = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+        const partner = await this.usersService.findOne({
+            where: {
+                id: partnerId
+            }
+        });
+        if (!partner)
+            throw new common_1.BadRequestException("Partner is not found");
+        const { chat } = await this.chatsService
+            .findOneByUsers([user, partner], { createNew: false });
         if (!chat)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messageService.findWithAttachments("audio", {
+        const messages = await this.messagesService.findWithAttachments("audio", {
             skip: +dto.skip,
             where: { chat },
             order: {
@@ -155,10 +188,18 @@ let DirectsController = class DirectsController {
         };
     }
     async getAttachedFiles(user, partnerId, dto) {
-        const { chat } = await this.chatService.findOneByUsersIds([user.id, partnerId]);
+        const partner = await this.usersService.findOne({
+            where: {
+                id: partnerId
+            }
+        });
+        if (!partner)
+            throw new common_1.BadRequestException("Partner is not found");
+        const { chat } = await this.chatsService
+            .findOneByUsers([user, partner], { createNew: false });
         if (!chat)
             throw new common_1.BadRequestException("Chat is not found");
-        const messages = await this.messageService.findWithAttachments("files", {
+        const messages = await this.messagesService.findWithAttachments("files", {
             skip: +dto.skip,
             where: { chat },
             order: {
@@ -231,7 +272,8 @@ DirectsController = __decorate([
     common_1.Controller("directs"),
     __metadata("design:paramtypes", [services_1.DirectMembersService,
         services_1.DirectMessagesService,
-        services_1.DirectsService])
+        services_1.DirectsService,
+        users_1.UsersService])
 ], DirectsController);
 exports.DirectsController = DirectsController;
 //# sourceMappingURL=directs.controller.js.map
