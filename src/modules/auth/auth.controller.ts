@@ -11,6 +11,7 @@ import {GetUser} from "./decorators";
 import {IsAuthorizedGuard} from "./guards";
 import {LoginDto, RegisterDto, RefreshTokensDto} from "./dtos";
 import {AuthService, RefreshSessionsService} from "./services";
+import {ILike} from "typeorm";
 
 @Controller("auth")
 export class AuthController {
@@ -30,7 +31,9 @@ export class AuthController {
     @Res({passthrough: true}) res: Response
   ): Promise<{credentials: UserPublicData}> {
     const existed = await this.usersService.findOne({
-      where: {username}
+      where: {
+        username: ILike(username)
+      }
     });
 
     if (existed) throw new BadRequestException("This login has been already used");
@@ -64,7 +67,9 @@ export class AuthController {
     @Res({passthrough: true}) res: Response
   ): Promise<{credentials: UserPublicData}> {
     const user = await this.usersService.findOne({
-      where: {username}
+      where: {
+        username: ILike(username)
+      }
     });
 
     const error = new BadRequestException("Invalid credentials");

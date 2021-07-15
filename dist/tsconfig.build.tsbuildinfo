@@ -6497,7 +6497,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/auth/auth.controller.ts": {
-        "version": "337f0e2753adc91895349bc84421eaa1c9a3a17ff468c8d89a827f0a718fd365",
+        "version": "96d045cb67b72f39dc0da9a758f3cca78b487cd7a544dc16d46a803c1d714d61",
         "signature": "bd26bd0b86278af53d4ca4ca31d12ffca1746f5f92785ab66e6b0eebe3aabd66",
         "affectsGlobalScope": false
       },
@@ -13319,6 +13319,7 @@
         "../node_modules/@types/express/ts4.0/index.d.ts",
         "../node_modules/@types/uuid/index.d.ts",
         "../node_modules/jdenticon/types/module.d.ts",
+        "../node_modules/typeorm/index.d.ts",
         "../src/modules/auth/decorators/index.ts",
         "../src/modules/auth/dtos/index.ts",
         "../src/modules/auth/guards/index.ts",

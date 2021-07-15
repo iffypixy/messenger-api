@@ -24,6 +24,7 @@ const decorators_1 = require("./decorators");
 const guards_1 = require("./guards");
 const dtos_1 = require("./dtos");
 const services_1 = require("./services");
+const typeorm_1 = require("typeorm");
 let AuthController = class AuthController {
     constructor(usersService, jwtService, refreshSessionsService, authService, uploadsService) {
         this.usersService = usersService;
@@ -34,7 +35,9 @@ let AuthController = class AuthController {
     }
     async register({ username, password, fingerprint }, res) {
         const existed = await this.usersService.findOne({
-            where: { username }
+            where: {
+                username: typeorm_1.ILike(username)
+            }
         });
         if (existed)
             throw new common_1.BadRequestException("This login has been already used");
@@ -56,7 +59,9 @@ let AuthController = class AuthController {
     }
     async login({ username, password, fingerprint }, res) {
         const user = await this.usersService.findOne({
-            where: { username }
+            where: {
+                username: typeorm_1.ILike(username)
+            }
         });
         const error = new common_1.BadRequestException("Invalid credentials");
         if (!user)
