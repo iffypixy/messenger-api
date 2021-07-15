@@ -310,7 +310,7 @@ let GroupsGateway = class GroupsGateway {
                 }
             });
             if (candidate) {
-                const replacement = await this.membersService.save(Object.assign(Object.assign({}, candidate), { role: "owner" }));
+                const replacement = (await this.membersService.update({ id: candidate.id }, { role: "owner" }, { retrieve: true }))[0];
                 const sockets = this.websocketService.getSocketsByUserId(this.wss, replacement.user.id);
                 sockets.forEach((socket) => {
                     socket.emit(events_1.groupChatClientEvents.OWNER_REPLACEMENT, {
@@ -363,9 +363,7 @@ let GroupsGateway = class GroupsGateway {
             sender: {
                 id: typeorm_1.Not(member.id)
             }
-        }, {
-            isRead: true
-        });
+        }, { isRead: true }, { retrieve: false });
         this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE_READ, {
             details: chat.public,
             message: message.public

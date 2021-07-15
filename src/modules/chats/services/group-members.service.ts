@@ -5,7 +5,7 @@ import {
   FindConditions,
   FindManyOptions,
   FindOneOptions,
-  Repository, SaveOptions,
+  Repository,
   UpdateResult
 } from "typeorm";
 import {InjectRepository} from "@nestjs/typeorm";
@@ -41,7 +41,13 @@ export class GroupMembersService {
     return this.repository.delete(criteria);
   }
 
-  save(partial: DeepPartial<GroupMember>, options?: SaveOptions): Promise<GroupMember> {
-    return this.repository.save(partial, options);
+  async update(criteria: FindConditions<GroupMember>, partial: DeepPartial<GroupMember>, {retrieve}: {
+    retrieve: boolean;
+  }): Promise<UpdateResult | GroupMember[]> {
+    let result: UpdateResult | GroupMember[] = await this.repository.update(criteria, partial);
+
+    if (retrieve) result = await this.repository.find({where: criteria});
+
+    return result;
   }
 }

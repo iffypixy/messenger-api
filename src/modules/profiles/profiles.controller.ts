@@ -46,12 +46,10 @@ export class ProfilesController {
 
     clearObject(partial);
 
-    const updated = await this.usersService.save({
-      ...user, ...partial
-    });
+    const users = await this.usersService.update({id: user.id}, partial, {retrieve: true}) as User[];
 
     return {
-      credentials: updated.public
+      credentials: users[0].public
     };
   }
 }

@@ -7,6 +7,8 @@ export declare class GroupMessagesService {
     create(partial: DeepPartial<GroupMessage>): Promise<GroupMessage>;
     findOne(options: FindOneOptions<GroupMessage>): Promise<GroupMessage>;
     count(options: FindManyOptions<GroupMessage>): Promise<number>;
-    update(criteria: FindConditions<GroupMessage>, partial: DeepPartial<GroupMessage>): Promise<UpdateResult>;
+    update(criteria: FindConditions<GroupMessage>, partial: DeepPartial<GroupMessage>, { retrieve }: {
+        retrieve: boolean;
+    }): Promise<UpdateResult | GroupMessage[]>;
     findAttachments(type: "images" | "files" | "audio", options: FindManyOptions<GroupMessage>): Promise<GroupMessage[]>;
 }

@@ -37,8 +37,11 @@ let GroupMembersService = class GroupMembersService {
     delete(criteria) {
         return this.repository.delete(criteria);
     }
-    save(partial, options) {
-        return this.repository.save(partial, options);
+    async update(criteria, partial, { retrieve }) {
+        let result = await this.repository.update(criteria, partial);
+        if (retrieve)
+            result = await this.repository.find({ where: criteria });
+        return result;
     }
 };
 GroupMembersService = __decorate([

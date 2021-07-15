@@ -34,8 +34,11 @@ let GroupMessagesService = class GroupMessagesService {
     count(options) {
         return this.repository.count(options);
     }
-    update(criteria, partial) {
-        return this.repository.update(criteria, partial);
+    async update(criteria, partial, { retrieve }) {
+        let result = await this.repository.update(criteria, partial);
+        if (retrieve)
+            result = await this.repository.find({ where: criteria });
+        return result;
     }
     findAttachments(type, options) {
         for (const key in options.order) {

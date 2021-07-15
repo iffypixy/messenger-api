@@ -6,7 +6,6 @@ import {
   FindManyOptions,
   FindOneOptions,
   Repository,
-  SaveOptions,
   UpdateResult
 } from "typeorm";
 
@@ -33,12 +32,14 @@ export class DirectMembersService {
     return this.repository.find(options);
   }
 
-  update(criteria: FindConditions<DirectMember>, partial: DeepPartial<DirectMember>): Promise<UpdateResult> {
-    return this.repository.update(criteria, partial);
-  }
+  async update(criteria: FindConditions<DirectMember>, partial: DeepPartial<DirectMember>, {retrieve}: {
+    retrieve: boolean;
+  }): Promise<UpdateResult | DirectMember[]> {
+    let result: UpdateResult | DirectMember[] = await this.repository.update(criteria, partial);
 
-  save(partial: DeepPartial<DirectMember>, options?: SaveOptions): Promise<DirectMember> {
-    return this.repository.save(partial, options);
+    if (retrieve) result = await this.repository.find({where: criteria});
+
+    return result;
   }
 }
 

@@ -17,7 +17,8 @@ export class GroupMessagesService {
   constructor(
     @InjectRepository(GroupMessage)
     private readonly repository: Repository<GroupMessage>
-  ) {}
+  ) {
+  }
 
   find(options: FindManyOptions<GroupMessage>): Promise<GroupMessage[]> {
     return this.repository.find(options);
@@ -37,8 +38,14 @@ export class GroupMessagesService {
     return this.repository.count(options);
   }
 
-  update(criteria: FindConditions<GroupMessage>, partial: DeepPartial<GroupMessage>): Promise<UpdateResult> {
-    return this.repository.update(criteria, partial);
+  async update(criteria: FindConditions<GroupMessage>, partial: DeepPartial<GroupMessage>, {retrieve}: {
+    retrieve: boolean;
+  }): Promise<UpdateResult | GroupMessage[]> {
+    let result: UpdateResult | GroupMessage[] = await this.repository.update(criteria, partial);
+
+    if (retrieve) result = await this.repository.find({where: criteria});
+
+    return result;
   }
 
   findAttachments(type: "images" | "files" | "audio", options: FindManyOptions<GroupMessage>) {

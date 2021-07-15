@@ -34,9 +34,9 @@ let ProfilesController = class ProfilesController {
         const avatar = (await this.uploadsService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
         const partial = { username, avatar };
         utils_1.clearObject(partial);
-        const updated = await this.usersService.save(Object.assign(Object.assign({}, user), partial));
+        const users = await this.usersService.update({ id: user.id }, partial, { retrieve: true });
         return {
-            credentials: updated.public
+            credentials: users[0].public
         };
     }
 };

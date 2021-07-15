@@ -105,7 +105,7 @@ let DirectsGateway = class DirectsGateway {
             throw new websockets_1.WsException("Chat is not found");
         if (second.isBanned)
             throw new websockets_1.WsException("Partner has been already banned");
-        await this.membersService.save(Object.assign(Object.assign({}, second), { isBanned: true }));
+        await this.membersService.update({ id: second.id }, { isBanned: true }, { retrieve: false });
         const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
         sockets.forEach((client) => {
             socket.to(client.id).emit(events_1.directChatClientEvents.BANNED, {
@@ -128,7 +128,7 @@ let DirectsGateway = class DirectsGateway {
             throw new websockets_1.WsException("Chat is not found");
         if (!second.isBanned)
             throw new websockets_1.WsException("Partner has been already unbanned");
-        await this.membersService.save(Object.assign(Object.assign({}, second), { isBanned: false }));
+        await this.membersService.update({ id: second.id }, { isBanned: false }, { retrieve: false });
         const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
         sockets.forEach((client) => {
             socket.to(client.id).emit(events_1.directChatClientEvents.UNBANNED, {
@@ -168,9 +168,7 @@ let DirectsGateway = class DirectsGateway {
             sender: {
                 id: typeorm_1.Not(first.id)
             }
-        }, {
-            isRead: true
-        });
+        }, { isRead: true }, { retrieve: false });
         const sockets = this.websocketsService.getSocketsByUserId(this.wss, dto.partnerId);
         sockets.forEach((client) => {
             socket.to(client.id).emit(events_1.directChatClientEvents.MESSAGE_READ, {

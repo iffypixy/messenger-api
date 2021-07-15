@@ -29,17 +29,17 @@ let UsersService = class UsersService {
     findById(id) {
         return this.repository.findOne({ id });
     }
-    update(criteria, partial) {
-        return this.repository.update(criteria, partial);
+    async update(criteria, partial, { retrieve }) {
+        let result = await this.repository.update(criteria, partial);
+        if (retrieve)
+            result = await this.repository.find({ where: criteria });
+        return result;
     }
     findOne(options) {
         return this.repository.findOne(options);
     }
     find(options) {
         return this.repository.find(options);
-    }
-    save(partial, options) {
-        return this.repository.save(partial, options);
     }
 };
 UsersService = __decorate([

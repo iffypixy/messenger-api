@@ -93,6 +93,7 @@ let AuthController = class AuthController {
         res.cookie("refresh-token", newRefreshToken, this.authService.refreshTokenCookieOptions);
     }
     getCredentials(user) {
+        console.log(user);
         return {
             credentials: user.public
         };

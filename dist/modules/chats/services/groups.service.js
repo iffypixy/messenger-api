@@ -28,6 +28,12 @@ let GroupsService = class GroupsService {
     findOne(options) {
         return this.repository.findOne(options);
     }
+    async update(criteria, partial, { retrieve }) {
+        let result = await this.repository.update(criteria, partial);
+        if (retrieve)
+            result = await this.repository.find({ where: criteria });
+        return result;
+    }
 };
 GroupsService = __decorate([
     common_1.Injectable(),

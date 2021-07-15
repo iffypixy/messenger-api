@@ -129,9 +129,11 @@ export class DirectsGateway {
 
     if (second.isBanned) throw new WsException("Partner has been already banned");
 
-    await this.membersService.save({
-      ...second, isBanned: true
-    });
+    await this.membersService.update(
+      {id: second.id},
+      {isBanned: true},
+      {retrieve: false}
+    );
 
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
 
@@ -163,9 +165,11 @@ export class DirectsGateway {
 
     if (!second.isBanned) throw new WsException("Partner has been already unbanned");
 
-    await this.membersService.save({
-      ...second, isBanned: false
-    });
+    await this.membersService.update(
+      {id: second.id},
+      {isBanned: false},
+      {retrieve: false}
+    );
 
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, second.user.id);
 
@@ -209,15 +213,16 @@ export class DirectsGateway {
     if (!message) throw new WsException("Message is not found");
 
     await this.messagesService.update({
-      chat,
-      createdAt: LessThanOrEqualDate(message.createdAt),
-      isRead: false,
-      sender: {
-        id: Not(first.id)
-      }
-    }, {
-      isRead: true
-    });
+        chat,
+        createdAt: LessThanOrEqualDate(message.createdAt),
+        isRead: false,
+        sender: {
+          id: Not(first.id)
+        }
+      },
+      {isRead: true},
+      {retrieve: false}
+    );
 
     const sockets = this.websocketsService.getSocketsByUserId(this.wss, dto.partnerId);
 

@@ -31,11 +31,11 @@ let DirectMembersService = class DirectMembersService {
     find(options) {
         return this.repository.find(options);
     }
-    update(criteria, partial) {
-        return this.repository.update(criteria, partial);
-    }
-    save(partial, options) {
-        return this.repository.save(partial, options);
+    async update(criteria, partial, { retrieve }) {
+        let result = await this.repository.update(criteria, partial);
+        if (retrieve)
+            result = await this.repository.find({ where: criteria });
+        return result;
     }
 };
 DirectMembersService = __decorate([

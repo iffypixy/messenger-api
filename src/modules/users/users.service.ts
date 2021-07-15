@@ -31,8 +31,14 @@ export class UsersService {
     return this.repository.findOne({id});
   }
 
-  update(criteria: FindConditions<User>, partial: DeepPartial<User>): Promise<UpdateResult> {
-    return this.repository.update(criteria, partial);
+  async update(criteria: FindConditions<User>, partial: DeepPartial<User>, {retrieve}: {
+    retrieve: boolean;
+  }): Promise<UpdateResult | User[]> {
+    let result: UpdateResult | User[] = await this.repository.update(criteria, partial);
+
+    if (retrieve) result = await this.repository.find({where: criteria});
+
+    return result;
   }
 
   findOne(options: FindOneOptions<User>): Promise<User> {
@@ -41,9 +47,5 @@ export class UsersService {
 
   find(options: FindManyOptions<User>): Promise<User[]> {
     return this.repository.find(options);
-  }
-
-  save(partial: DeepPartial<User>, options?: SaveOptions): Promise<User> {
-    return this.repository.save(partial, options);
   }
 }

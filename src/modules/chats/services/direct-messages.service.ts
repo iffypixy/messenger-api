@@ -10,7 +10,7 @@ import {
   UpdateResult
 } from "typeorm";
 
-import {DirectMessage} from "../entities";
+import {DirectMember, DirectMessage} from "../entities";
 
 @Injectable()
 export class DirectMessagesService {
@@ -37,12 +37,14 @@ export class DirectMessagesService {
     return this.repository.count(options);
   }
 
-  update(criteria: FindConditions<DirectMessage>, partial: DeepPartial<DirectMessage>): Promise<UpdateResult> {
-    return this.repository.update(criteria, partial);
-  }
+  async update(criteria: FindConditions<DirectMessage>, partial: DeepPartial<DirectMessage>, {retrieve}: {
+    retrieve: boolean;
+  }): Promise<UpdateResult | DirectMessage[]> {
+    let result: UpdateResult | DirectMessage[] = await this.repository.update(criteria, partial);
 
-  save(partial: DeepPartial<DirectMessage>, options?: SaveOptions): Promise<DirectMessage> {
-    return this.repository.save(partial, options);
+    if (retrieve) result = await this.repository.find({where: criteria});
+
+    return result;
   }
 
   findAttachments(type: "images" | "files" | "audio", options: FindManyOptions<DirectMessage>) {

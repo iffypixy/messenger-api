@@ -22,8 +22,9 @@ let AuthMiddleware = class AuthMiddleware {
     async use(req, res, next) {
         const token = req.cookies["access-token"];
         const user = await this.authService.findUserByAccessToken(token);
-        if (user)
-            req.user = await this.usersService.save(Object.assign(Object.assign({}, user), { lastSeen: new Date() }));
+        if (user) {
+            req.user = (await this.usersService.update({ id: user.id }, { lastSeen: new Date() }, { retrieve: true }))[0];
+        }
         next();
     }
 };

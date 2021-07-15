@@ -16,7 +16,7 @@ import {ExtendedSocket} from "@lib/typings";
 import {extensions} from "@lib/files";
 import {LessThanOrEqualDate} from "@lib/operators";
 import {BadRequestTransformationFilter, WebsocketService} from "@lib/websocket";
-import {DirectPublicData, GroupPublicData} from "../entities";
+import {DirectPublicData, GroupMember, GroupPublicData} from "../entities";
 import {GroupMembersService, GroupMessagesService, GroupsService} from "../services";
 import {groupChatServerEvents as serverEvents, groupChatClientEvents as clientEvents} from "./events";
 import {
@@ -406,9 +406,11 @@ export class GroupsGateway {
       });
 
       if (candidate) {
-        const replacement = await this.membersService.save({
-          ...candidate, role: "owner"
-        });
+        const replacement = (await this.membersService.update(
+          {id: candidate.id},
+          {role: "owner"},
+          {retrieve: true}
+        ) as GroupMember[])[0];
 
         const sockets = this.websocketService.getSocketsByUserId(this.wss, replacement.user.id);
 
@@ -467,15 +469,16 @@ export class GroupsGateway {
     if (!message) throw new WsException("Message is not found");
 
     await this.messagesService.update({
-      chat,
-      createdAt: LessThanOrEqualDate(message.createdAt),
-      isRead: false,
-      sender: {
-        id: Not(member.id)
-      }
-    }, {
-      isRead: true
-    });
+        chat,
+        createdAt: LessThanOrEqualDate(message.createdAt),
+        isRead: false,
+        sender: {
+          id: Not(member.id)
+        }
+      },
+      {isRead: true},
+      {retrieve: false}
+    );
 
     this.wss.to(chat.id).emit(clientEvents.MESSAGE_READ, {
       details: chat.public,
