@@ -1,10 +1,7 @@
-import {IsNumber, IsOptional, IsUUID} from "class-validator";
-
-import {ID} from "@lib/typings";
+import {IsNumberString} from "class-validator";
 
 export class GetMessagesDto {
-  @IsOptional()
-  @IsNumber({}, {
+  @IsNumberString({}, {
     message: "Skip must be type of number"
   })
   skip: number;

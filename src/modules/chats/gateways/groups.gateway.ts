@@ -14,7 +14,7 @@ import {FilesService} from "@modules/uploads";
 import {UsersService} from "@modules/users";
 import {ExtendedSocket} from "@lib/typings";
 import {extensions} from "@lib/files";
-import {LessThanOrEqualDate} from "@lib/operators";
+import {LessThanDate} from "@lib/operators";
 import {BadRequestTransformationFilter, WebsocketService} from "@lib/websocket";
 import {DirectPublicData, GroupMember, GroupPublicData} from "../entities";
 import {GroupMembersService, GroupMessagesService, GroupsService} from "../services";
@@ -468,14 +468,8 @@ export class GroupsGateway {
 
     if (!message) throw new WsException("Message is not found");
 
-    await this.messagesService.update({
-        chat,
-        createdAt: LessThanOrEqualDate(message.createdAt),
-        isRead: false,
-        sender: {
-          id: Not(member.id)
-        }
-      },
+    await this.messagesService.update(
+      {id: dto.messageId},
       {isRead: true},
       {retrieve: false}
     );

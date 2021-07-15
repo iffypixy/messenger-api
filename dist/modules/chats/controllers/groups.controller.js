@@ -199,8 +199,8 @@ __decorate([
 __decorate([
     common_1.Get(":id/messages"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("id")),
-    __param(2, common_1.Body()),
+    __param(1, common_1.Param("id")),
+    __param(2, common_1.Query()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String, groups_1.GetMessagesDto]),
     __metadata("design:returntype", Promise)
@@ -208,7 +208,7 @@ __decorate([
 __decorate([
     common_1.Get(":id"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("id")),
+    __param(1, common_1.Param("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String]),
     __metadata("design:returntype", Promise)
@@ -216,7 +216,7 @@ __decorate([
 __decorate([
     common_1.Get(":id/attached/images"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("id")),
+    __param(1, common_1.Param("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String]),
     __metadata("design:returntype", Promise)
@@ -224,7 +224,7 @@ __decorate([
 __decorate([
     common_1.Get(":id/attached/audios"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("id")),
+    __param(1, common_1.Param("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String]),
     __metadata("design:returntype", Promise)
@@ -232,7 +232,7 @@ __decorate([
 __decorate([
     common_1.Get(":id/attached/files"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("id")),
+    __param(1, common_1.Param("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String]),
     __metadata("design:returntype", Promise)

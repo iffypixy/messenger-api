@@ -15,7 +15,7 @@ import {UsersService} from "@modules/users";
 import {ExtendedSocket} from "@lib/typings";
 import {extensions} from "@lib/files";
 import {BadRequestTransformationFilter, WebsocketService} from "@lib/websocket";
-import {LessThanOrEqualDate} from "@lib/operators";
+import {LessThanDate} from "@lib/operators";
 import {DirectMembersService, DirectMessagesService, DirectsService} from "../services";
 import {CreateMessageDto, BanPartnerDto, UnbanPartnerDto, ReadMessageDto} from "../dtos/directs";
 import {DirectMessagePublicData} from "../entities";
@@ -212,9 +212,16 @@ export class DirectsGateway {
 
     if (!message) throw new WsException("Message is not found");
 
-    await this.messagesService.update({
+    await this.messagesService.update(
+      {id: dto.messageId},
+      {isRead: true},
+      {retrieve: false}
+    );
+
+    await this.messagesService.update(
+      {
         chat,
-        createdAt: LessThanOrEqualDate(message.createdAt),
+        createdAt: LessThanDate(message.createdAt),
         isRead: false,
         sender: {
           id: Not(first.id)

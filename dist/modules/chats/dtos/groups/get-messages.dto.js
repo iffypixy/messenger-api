@@ -11,12 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetMessagesDto = void 0;
 const class_validator_1 = require("class-validator");
-const typings_1 = require("../../../../lib/typings");
 class GetMessagesDto {
 }
 __decorate([
-    class_validator_1.IsOptional(),
-    class_validator_1.IsNumber({}, {
+    class_validator_1.IsNumberString({}, {
         message: "Skip must be type of number"
     }),
     __metadata("design:type", Number)

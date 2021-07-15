@@ -356,14 +356,7 @@ let GroupsGateway = class GroupsGateway {
         });
         if (!message)
             throw new websockets_1.WsException("Message is not found");
-        await this.messagesService.update({
-            chat,
-            createdAt: operators_1.LessThanOrEqualDate(message.createdAt),
-            isRead: false,
-            sender: {
-                id: typeorm_1.Not(member.id)
-            }
-        }, { isRead: true }, { retrieve: false });
+        await this.messagesService.update({ id: dto.messageId }, { isRead: true }, { retrieve: false });
         this.wss.to(chat.id).emit(events_1.groupChatClientEvents.MESSAGE_READ, {
             details: chat.public,
             message: message.public

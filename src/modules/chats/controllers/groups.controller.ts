@@ -1,4 +1,4 @@
-import {BadRequestException, Body, Controller, Get, Query} from "@nestjs/common";
+import {BadRequestException, Body, Controller, Get, Param, Query} from "@nestjs/common";
 import {In, IsNull, Not} from "typeorm";
 
 import {GetUser} from "@modules/auth";
@@ -88,8 +88,8 @@ export class GroupsController {
   @Get(":id/messages")
   async getMessages(
     @GetUser() user: User,
-    @Query("id") id: ID,
-    @Body() dto: GetMessagesDto
+    @Param("id") id: ID,
+    @Query() dto: GetMessagesDto
   ): Promise<{messages: GroupMessagePublicData[]}> {
     const messages = await this.messagesService.find({
       where: {
@@ -112,7 +112,7 @@ export class GroupsController {
   @Get(":id")
   async getChat(
     @GetUser() user: User,
-    @Query("id") id: ID
+    @Param("id") id: ID
   ): Promise<{
     chat: {
       details: GroupPublicData;
@@ -146,7 +146,7 @@ export class GroupsController {
   @Get(":id/attached/images")
   async getAttachedImages(
     @GetUser() user: User,
-    @Query("id") id: ID
+    @Param("id") id: ID
   ): Promise<{
     images: {
       id: ID;
@@ -186,7 +186,7 @@ export class GroupsController {
   @Get(":id/attached/audios")
   async getAttachedAudios(
     @GetUser() user: User,
-    @Query("id") id: ID
+    @Param("id") id: ID
   ): Promise<{
     audios: {
       id: ID;
@@ -223,7 +223,7 @@ export class GroupsController {
   @Get(":id/attached/files")
   async getAttachedFiles(
     @GetUser() user: User,
-    @Query("id") id: ID
+    @Param("id") id: ID
   ): Promise<{
     files: {
       id: ID;

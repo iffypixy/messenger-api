@@ -161,9 +161,10 @@ let DirectsGateway = class DirectsGateway {
         });
         if (!message)
             throw new websockets_1.WsException("Message is not found");
+        await this.messagesService.update({ id: dto.messageId }, { isRead: true }, { retrieve: false });
         await this.messagesService.update({
             chat,
-            createdAt: operators_1.LessThanOrEqualDate(message.createdAt),
+            createdAt: operators_1.LessThanDate(message.createdAt),
             isRead: false,
             sender: {
                 id: typeorm_1.Not(first.id)

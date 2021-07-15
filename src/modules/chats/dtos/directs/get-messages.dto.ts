@@ -1,7 +1,7 @@
-import {IsNumber} from "class-validator";
+import {IsNumberString} from "class-validator";
 
 export class GetMessagesDto {
-  @IsNumber({}, {
+  @IsNumberString({}, {
     message: "Skip must be type of number"
   })
   skip: number;

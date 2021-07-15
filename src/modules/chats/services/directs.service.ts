@@ -24,7 +24,9 @@ export class DirectsService {
     return this.repository.find(options);
   }
 
-  async findOneByUsers(users: User[], {createNew}: {createNew: boolean}): Promise<{first: DirectMember | null; second: DirectMember | null; chat: Direct | null}> {
+  async findOneByUsers(users: User[], {createNew}: {
+    createNew: boolean;
+  }): Promise<{first: DirectMember | null; second: DirectMember | null; chat: Direct | null}> {
     const firsts = await this.membersService.find({
       where: {
         user: users[0]
@@ -37,13 +39,14 @@ export class DirectsService {
       }
     });
 
-    let first = firsts.find(({chat}) => seconds
-      .findIndex((second) => second.chat.id === chat.id) !== -1) || null;
+    let first = firsts.find(({chat}) =>
+      seconds.findIndex((second) => second.chat.id === chat.id) !== -1) || null;
 
     let second = first && seconds.find(({chat}) => chat.id === first.chat.id);
+    let chat = first && first.chat;
 
-    if (!first && createNew) {
-      const chat = await this.create({});
+    if (!chat && createNew) {
+      chat = await this.create({});
 
       first = await this.membersService.create({
         user: users[0], chat
@@ -54,9 +57,6 @@ export class DirectsService {
       });
     }
 
-    return {
-      first, second,
-      chat: first.chat
-    };
+    return {chat, first, second};
   }
 }

@@ -42,11 +42,11 @@ let DirectsService = class DirectsService {
                 user: users[1]
             }
         });
-        let first = firsts.find(({ chat }) => seconds
-            .findIndex((second) => second.chat.id === chat.id) !== -1) || null;
+        let first = firsts.find(({ chat }) => seconds.findIndex((second) => second.chat.id === chat.id) !== -1) || null;
         let second = first && seconds.find(({ chat }) => chat.id === first.chat.id);
-        if (!first && createNew) {
-            const chat = await this.create({});
+        let chat = first && first.chat;
+        if (!chat && createNew) {
+            chat = await this.create({});
             first = await this.membersService.create({
                 user: users[0], chat
             });
@@ -54,10 +54,7 @@ let DirectsService = class DirectsService {
                 user: users[1], chat
             });
         }
-        return {
-            first, second,
-            chat: first.chat
-        };
+        return { chat, first, second };
     }
 };
 DirectsService = __decorate([

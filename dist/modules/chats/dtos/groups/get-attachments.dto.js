@@ -14,7 +14,7 @@ const class_validator_1 = require("class-validator");
 class GetAttachmentsDto {
 }
 __decorate([
-    class_validator_1.IsNumber({}, {
+    class_validator_1.IsNumberString({}, {
         message: "Skip must be type of number"
     }),
     __metadata("design:type", Number)

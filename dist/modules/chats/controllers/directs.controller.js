@@ -72,15 +72,17 @@ let DirectsController = class DirectsController {
             });
         }
         return {
-            chats: members.map((member) => {
+            chats: members
+                .filter((member) => messages.some(({ chat }) => chat.id === member.chat.id))
+                .map((member) => {
                 const partner = partners.find(({ chat }) => chat.id === member.chat.id);
-                const lastMessage = messages.find(({ chat }) => chat.id === member.chat.id) || null;
+                const message = messages.find(({ chat }) => chat.id === member.chat.id);
                 const { amount } = unreads.find(({ id }) => id === member.chat.id);
                 return {
                     details: member.chat.public,
                     partner: partner.public,
                     isBanned: member.public.isBanned,
-                    lastMessage: lastMessage && lastMessage.public,
+                    lastMessage: message.public,
                     unread: amount
                 };
             })
@@ -121,9 +123,7 @@ let DirectsController = class DirectsController {
         if (!partner)
             throw new common_1.BadRequestException("Partner is not found");
         const { chat, first, second } = await this.chatsService
-            .findOneByUsers([user, partner], { createNew: false });
-        if (!chat)
-            throw new common_1.BadRequestException("Chat is not found");
+            .findOneByUsers([user, partner], { createNew: true });
         return {
             chat: {
                 details: chat.public,
@@ -227,8 +227,8 @@ __decorate([
 __decorate([
     common_1.Get(":partnerId/messages"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("partnerId")),
-    __param(2, common_1.Body()),
+    __param(1, common_1.Param("partnerId")),
+    __param(2, common_1.Query()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String, directs_1.GetMessagesDto]),
     __metadata("design:returntype", Promise)
@@ -236,7 +236,7 @@ __decorate([
 __decorate([
     common_1.Get(":partnerId"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("partnerId")),
+    __param(1, common_1.Param("partnerId")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String]),
     __metadata("design:returntype", Promise)
@@ -244,8 +244,8 @@ __decorate([
 __decorate([
     common_1.Get(":partnerId/attached/images"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("partnerId")),
-    __param(2, common_1.Body()),
+    __param(1, common_1.Param("partnerId")),
+    __param(2, common_1.Query()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String, directs_1.GetAttachmentsDto]),
     __metadata("design:returntype", Promise)
@@ -253,8 +253,8 @@ __decorate([
 __decorate([
     common_1.Get(":partnerId/attached/audios"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("partnerId")),
-    __param(2, common_1.Body()),
+    __param(1, common_1.Param("partnerId")),
+    __param(2, common_1.Query()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String, directs_1.GetAttachmentsDto]),
     __metadata("design:returntype", Promise)
@@ -262,8 +262,8 @@ __decorate([
 __decorate([
     common_1.Get(":partnerId/attached/files"),
     __param(0, auth_1.GetUser()),
-    __param(1, common_1.Query("partnerId")),
-    __param(2, common_1.Body()),
+    __param(1, common_1.Param("partnerId")),
+    __param(2, common_1.Query()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [users_1.User, String, directs_1.GetAttachmentsDto]),
     __metadata("design:returntype", Promise)

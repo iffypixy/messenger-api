@@ -1,4 +1,4 @@
-import {BadRequestException, Body, Controller, Get, Query} from "@nestjs/common";
+import {BadRequestException, Controller, Get, Param, Query} from "@nestjs/common";
 import {In, Not} from "typeorm";
 
 import {GetUser} from "@modules/auth";
@@ -82,27 +82,29 @@ export class DirectsController {
     }
 
     return {
-      chats: members.map((member) => {
-        const partner = partners.find(({chat}) => chat.id === member.chat.id);
-        const lastMessage = messages.find(({chat}) => chat.id === member.chat.id) || null;
-        const {amount} = unreads.find(({id}) => id === member.chat.id);
+      chats: members
+        .filter((member) => messages.some(({chat}) => chat.id === member.chat.id))
+        .map((member) => {
+          const partner = partners.find(({chat}) => chat.id === member.chat.id);
+          const message = messages.find(({chat}) => chat.id === member.chat.id);
+          const {amount} = unreads.find(({id}) => id === member.chat.id);
 
-        return {
-          details: member.chat.public,
-          partner: partner.public,
-          isBanned: member.public.isBanned,
-          lastMessage: lastMessage && lastMessage.public,
-          unread: amount
-        };
-      })
+          return {
+            details: member.chat.public,
+            partner: partner.public,
+            isBanned: member.public.isBanned,
+            lastMessage: message.public,
+            unread: amount
+          };
+        })
     };
   }
 
   @Get(":partnerId/messages")
   async getMessages(
     @GetUser() user: User,
-    @Query("partnerId") partnerId: ID,
-    @Body() dto: GetMessagesDto
+    @Param("partnerId") partnerId: ID,
+    @Query() dto: GetMessagesDto
   ): Promise<{messages: DirectMessagePublicData[]}> {
     const partner = await this.usersService.findOne({
       where: {
@@ -136,7 +138,7 @@ export class DirectsController {
   @Get(":partnerId")
   async getChat(
     @GetUser() user: User,
-    @Query("partnerId") partnerId: ID
+    @Param("partnerId") partnerId: ID
   ): Promise<{
     chat: {
       details: DirectPublicData;
@@ -153,9 +155,7 @@ export class DirectsController {
     if (!partner) throw new BadRequestException("Partner is not found");
 
     const {chat, first, second} = await this.chatsService
-      .findOneByUsers([user, partner], {createNew: false});
-
-    if (!chat) throw new BadRequestException("Chat is not found");
+      .findOneByUsers([user, partner], {createNew: true});
 
     return {
       chat: {
@@ -169,8 +169,8 @@ export class DirectsController {
   @Get(":partnerId/attached/images")
   async getAttachedImages(
     @GetUser() user: User,
-    @Query("partnerId") partnerId: ID,
-    @Body() dto: GetAttachmentsDto
+    @Param("partnerId") partnerId: ID,
+    @Query() dto: GetAttachmentsDto
   ): Promise<{
     images: {
       id: ID;
@@ -214,8 +214,8 @@ export class DirectsController {
   @Get(":partnerId/attached/audios")
   async getAttachedAudios(
     @GetUser() user: User,
-    @Query("partnerId") partnerId: ID,
-    @Body() dto: GetAttachmentsDto
+    @Param("partnerId") partnerId: ID,
+    @Query() dto: GetAttachmentsDto
   ): Promise<{
     audios: {
       id: ID;
@@ -256,8 +256,8 @@ export class DirectsController {
   @Get(":partnerId/attached/files")
   async getAttachedFiles(
     @GetUser() user: User,
-    @Query("partnerId") partnerId: ID,
-    @Body() dto: GetAttachmentsDto
+    @Param("partnerId") partnerId: ID,
+    @Query() dto: GetAttachmentsDto
   ): Promise<{
     files: {
       id: ID;

@@ -125,8 +125,6 @@ export class AuthController {
   getCredentials(
     @GetUser() user: User
   ): {credentials: UserPublicData} {
-    console.log(user);
-
     return {
       credentials: user.public
     };
