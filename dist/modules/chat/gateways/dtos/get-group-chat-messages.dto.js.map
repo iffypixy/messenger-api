@@ -1,1 +1,0 @@
-{"version":3,"file":"get-group-chat-messages.dto.js","sourceRoot":"","sources":["../../../../../src/modules/chat/gateways/dtos/get-group-chat-messages.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAA6D;AAE7D,qDAAgC;AAEhC,MAAa,uBAAuB;CASnC;AAPC;IADC,wBAAM,CAAC,CAAC,CAAC;;sDACA;AAMV;IAJC,4BAAU,EAAE;IACZ,0BAAQ,CAAC,EAAE,EAAE;QACZ,OAAO,EAAE,6BAA6B;KACvC,CAAC;;qDACY;AARhB,0DASC"}
