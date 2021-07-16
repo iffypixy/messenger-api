@@ -7,7 +7,7 @@ import {FilePublicData} from "@modules/uploads";
 import {ID} from "@lib/typings";
 import {queryLimit} from "@lib/queries";
 import {DirectMembersService, DirectMessagesService, DirectsService} from "../services";
-import {DirectPublicData, DirectMemberPublicData, DirectMessagePublicData} from "../entities";
+import {DirectPublicData, DirectMemberPublicData, DirectMessagePublicData, DirectMessage} from "../entities";
 import {GetMessagesDto, GetAttachmentsDto} from "../dtos/directs";
 
 @Controller("directs")
@@ -36,12 +36,10 @@ export class DirectsController {
       where: {user}
     });
 
-    const chatsIds = members.map(({chat}) => chat.id);
-
     const partners = await this.membersService.find({
       where: {
         chat: {
-          id: In(chatsIds)
+          id: In(members.map(({chat}) => chat.id))
         },
         user: {
           id: Not(user.id)
@@ -49,22 +47,22 @@ export class DirectsController {
       }
     });
 
-    const messages = await this.messagesService.find({
-      where: {
-        chat: {
-          id: In(chatsIds)
-        }
-      },
-      take: 1,
-      order: {
-        createdAt: "DESC"
-      }
-    });
-
+    const messages: DirectMessage[] = [];
     const unreads: {id: ID; amount: number}[] = [];
 
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
+
+      const message = await this.messagesService.findOne({
+        where: {
+          chat: {
+            id: member.chat.id
+          }
+        },
+        order: {
+          createdAt: "DESC"
+        }
+      });
 
       const amount = await this.messagesService.count({
         where: {
@@ -75,6 +73,8 @@ export class DirectsController {
           }
         }
       });
+
+      messages.push(message);
 
       unreads.push({
         id: member.chat.id, amount

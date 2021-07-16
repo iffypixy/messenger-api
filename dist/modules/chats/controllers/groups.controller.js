@@ -32,20 +32,20 @@ let GroupsController = class GroupsController {
         const members = await this.membersService.find({
             where: { user }
         });
-        const messages = await this.messagesService.find({
-            where: {
-                chat: {
-                    id: typeorm_1.In(members.map(({ chat }) => chat.id))
-                }
-            },
-            take: 1,
-            order: {
-                createdAt: "DESC"
-            }
-        });
+        const messages = [];
         const unreads = [];
         for (let i = 0; i < members.length; i++) {
             const member = members[i];
+            const message = await this.messagesService.findOne({
+                where: {
+                    chat: {
+                        id: member.chat.id
+                    }
+                },
+                order: {
+                    createdAt: "DESC"
+                }
+            });
             const amount = await this.messagesService.count({
                 where: [{
                         chat: member.chat,
@@ -59,6 +59,7 @@ let GroupsController = class GroupsController {
                         sender: typeorm_1.IsNull()
                     }]
             });
+            messages.push(message);
             unreads.push({
                 id: member.chat.id, amount
             });

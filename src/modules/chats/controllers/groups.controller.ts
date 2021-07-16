@@ -6,7 +6,7 @@ import {FilePublicData} from "@modules/uploads";
 import {User} from "@modules/users";
 import {ID} from "@lib/typings";
 import {GroupsService, GroupMembersService, GroupMessagesService} from "../services";
-import {GroupMemberPublicData, GroupMessagePublicData, GroupPublicData} from "../entities";
+import {GroupMemberPublicData, GroupMessage, GroupMessagePublicData, GroupPublicData} from "../entities";
 import {queryLimit} from "@lib/queries";
 import {GetMessagesDto} from "../dtos/groups";
 
@@ -34,22 +34,22 @@ export class GroupsController {
       where: {user}
     });
 
-    const messages = await this.messagesService.find({
-      where: {
-        chat: {
-          id: In(members.map(({chat}) => chat.id))
-        }
-      },
-      take: 1,
-      order: {
-        createdAt: "DESC"
-      }
-    });
-
+    const messages: GroupMessage[] = [];
     const unreads: {id: ID; amount: number}[] = [];
 
     for (let i = 0; i < members.length; i++) {
       const member = members[i];
+
+      const message = await this.messagesService.findOne({
+        where: {
+          chat: {
+            id: member.chat.id
+          }
+        },
+        order: {
+          createdAt: "DESC"
+        }
+      });
 
       const amount = await this.messagesService.count({
         where: [{
@@ -64,6 +64,8 @@ export class GroupsController {
           sender: IsNull()
         }]
       });
+
+      messages.push(message);
 
       unreads.push({
         id: member.chat.id, amount

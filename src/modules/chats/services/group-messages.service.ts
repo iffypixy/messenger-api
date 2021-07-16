@@ -56,8 +56,9 @@ export class GroupMessagesService {
     }
 
     return this.repository.createQueryBuilder("message")
-      .leftJoinAndSelect("message.chats", "chat")
+      .leftJoinAndSelect("message.chat", "chat")
       .leftJoinAndSelect("message.sender", "sender")
+      .leftJoinAndSelect("sender.user", "user")
       .leftJoinAndSelect("message.files", "files")
       .leftJoinAndSelect("message.audio", "audio")
       .leftJoinAndSelect("message.images", "images")
