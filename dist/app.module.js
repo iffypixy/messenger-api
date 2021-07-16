@@ -11,11 +11,11 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const config_1 = require("@nestjs/config");
 const index_1 = require("./config");
-const user_1 = require("./modules/user");
+const users_1 = require("./modules/users");
 const auth_1 = require("./modules/auth");
-const upload_1 = require("./modules/upload");
-const profile_1 = require("./modules/profile");
-const chat_1 = require("./modules/chat");
+const uploads_1 = require("./modules/uploads");
+const profiles_1 = require("./modules/profiles");
+const chats_1 = require("./modules/chats");
 const websocket_1 = require("./lib/websocket");
 const env = process.env.NODE_ENV;
 let AppModule = class AppModule {
@@ -23,11 +23,11 @@ let AppModule = class AppModule {
 AppModule = __decorate([
     common_1.Module({
         imports: [
-            user_1.UserModule,
+            users_1.UsersModule,
             auth_1.AuthModule,
-            upload_1.UploadModule,
-            profile_1.ProfileModule,
-            chat_1.ChatModule,
+            uploads_1.UploadsModule,
+            profiles_1.ProfilesModule,
+            chats_1.ChatModule,
             websocket_1.WebsocketModule,
             config_1.ConfigModule.forRoot({
                 envFilePath: !!env ? `.env.${env}` : ".env.development",
@@ -46,15 +46,15 @@ AppModule = __decorate([
                     database: service.get("database.name"),
                     synchronize: service.get("database.synchronize"),
                     entities: [
-                        user_1.User,
+                        users_1.User,
                         auth_1.RefreshSession,
-                        upload_1.File,
-                        chat_1.DirectChat,
-                        chat_1.DirectChatMessage,
-                        chat_1.DirectChatMember,
-                        chat_1.GroupChat,
-                        chat_1.GroupChatMember,
-                        chat_1.GroupChatMessage
+                        uploads_1.File,
+                        chats_1.Direct,
+                        chats_1.DirectMessage,
+                        chats_1.DirectMember,
+                        chats_1.Group,
+                        chats_1.GroupMember,
+                        chats_1.GroupMessage
                     ]
                 })
             })

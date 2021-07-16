@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var direct_chat_gateway_1 = require("./direct-chat.gateway");
-Object.defineProperty(exports, "DirectChatGateway", { enumerable: true, get: function () { return direct_chat_gateway_1.DirectChatGateway; } });
-var group_chat_gateway_1 = require("./group-chat.gateway");
-Object.defineProperty(exports, "GroupChatGateway", { enumerable: true, get: function () { return group_chat_gateway_1.GroupChatGateway; } });
+var direct_gateway_1 = require("./direct.gateway");
+Object.defineProperty(exports, "DirectGateway", { enumerable: true, get: function () { return direct_gateway_1.DirectGateway; } });
+var group_gateway_1 = require("./group.gateway");
+Object.defineProperty(exports, "GroupGateway", { enumerable: true, get: function () { return group_gateway_1.GroupGateway; } });
 //# sourceMappingURL=index.js.map

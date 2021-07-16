@@ -1,9 +1,9 @@
 import { OnGatewayInit } from "@nestjs/websockets";
 import { Server } from "socket.io";
-import { RefreshSessionService } from "../services";
+import { AuthService } from "../services";
 export declare class AuthGateway implements OnGatewayInit {
-    private readonly refreshSessionService;
-    constructor(refreshSessionService: RefreshSessionService);
+    private readonly authService;
+    constructor(authService: AuthService);
     wss: Server;
     afterInit(): void;
 }

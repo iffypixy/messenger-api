@@ -1,4 +1,3 @@
 export { UploadModule } from "./upload.module";
-export { File } from "./entities";
+export { File, FilePublicData } from "./entities";
 export { FileService, UploadService } from "./services";
-export { FilePublicData } from "./lib/typings";

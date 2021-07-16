@@ -1,7 +1,7 @@
 import {Injectable, NestMiddleware} from "@nestjs/common";
 import {NextFunction, Response} from "express";
 
-import {UserService} from "@modules/user";
+import {User, UsersService} from "@modules/users";
 import {ExtendedRequest} from "@lib/typings";
 import {AuthService} from "../services";
 
@@ -9,7 +9,7 @@ import {AuthService} from "../services";
 export class AuthMiddleware implements NestMiddleware {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UserService
+    private readonly usersService: UsersService
   ) {
   }
 
@@ -22,9 +22,13 @@ export class AuthMiddleware implements NestMiddleware {
 
     const user = await this.authService.findUserByAccessToken(token);
 
-    if (user) req.user = await this.userService.save({
-      ...user, lastSeen: new Date()
-    });
+    if (user) {
+      req.user = (await this.usersService.update(
+        {id: user.id},
+        {lastSeen: new Date()},
+        {retrieve: true}
+      ) as User[])[0];
+    }
 
     next();
   }

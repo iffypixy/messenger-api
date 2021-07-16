@@ -6,14 +6,14 @@ import * as cookie from "cookie";
 
 import {BadRequestTransformationFilter} from "@lib/websocket";
 import {ExtendedSocket} from "@lib/typings";
-import {RefreshSessionService} from "../services";
+import {AuthService} from "../services";
 
 @UsePipes(ValidationPipe)
 @UseFilters(BadRequestTransformationFilter)
 @WebSocketGateway()
 export class AuthGateway implements OnGatewayInit {
   constructor(
-    private readonly refreshSessionService: RefreshSessionService
+    private readonly authService: AuthService
   ) {
   }
 
@@ -26,19 +26,17 @@ export class AuthGateway implements OnGatewayInit {
 
       const cookies = cookie.parse(socket.request.headers.cookie);
 
-      const token = cookies["refresh-token"];
+      const token: string = cookies["access-token"];
 
-      const error = new WsException("Invalid credentials.");
+      const error = new WsException("Invalid credentials");
 
       if (!token) return next(error);
 
-      const session = await this.refreshSessionService.findOne({
-        where: {token}
-      });
+      const user = await this.authService.findUserByAccessToken(token);
 
-      if (!session) throw error;
+      if (!user) throw error;
 
-      socket.user = session.user;
+      socket.user = user;
 
       next(null);
     });

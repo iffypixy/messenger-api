@@ -1,6 +1,6 @@
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 
-import {User} from "@modules/user";
+import {User} from "@modules/users";
 import {ID} from "@lib/typings";
 
 @Entity()

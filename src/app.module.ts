@@ -1,25 +1,23 @@
 import {Module} from "@nestjs/common";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {ConfigModule, ConfigService} from "@nestjs/config";
-import {ServeStaticModule} from "@nestjs/serve-static";
-import * as path from "path";
 
 import {databaseConfig, jwtConfig, s3Config} from "@config/index";
-import {UserModule, User} from "@modules/user";
+import {UsersModule, User} from "@modules/users";
 import {RefreshSession, AuthModule} from "@modules/auth";
-import {UploadModule, File} from "@modules/upload";
-import {ProfileModule} from "@modules/profile";
-import {ChatModule, GroupChat, GroupChatMember, GroupChatMessage, DirectChat, DirectChatMember, DirectChatMessage} from "@modules/chat";
+import {UploadsModule, File} from "@modules/uploads";
+import {ProfilesModule} from "@modules/profiles";
+import {ChatModule, Group, GroupMember, GroupMessage, Direct, DirectMember, DirectMessage} from "@modules/chats";
 import {WebsocketModule} from "@lib/websocket";
 
 const env = process.env.NODE_ENV;
 
 @Module({
   imports: [
-    UserModule,
+    UsersModule,
     AuthModule,
-    UploadModule,
-    ProfileModule,
+    UploadsModule,
+    ProfilesModule,
     ChatModule,
     WebsocketModule,
     ConfigModule.forRoot({
@@ -42,12 +40,12 @@ const env = process.env.NODE_ENV;
             User,
             RefreshSession,
             File,
-            DirectChat,
-            DirectChatMessage,
-            DirectChatMember,
-            GroupChat,
-            GroupChatMember,
-            GroupChatMessage
+            Direct,
+            DirectMessage,
+            DirectMember,
+            Group,
+            GroupMember,
+            GroupMessage
           ]
         })
       })

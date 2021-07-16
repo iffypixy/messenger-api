@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Socket } from "socket.io";
-import { User } from "@modules/user";
+import { User } from "@modules/users";
 export interface ExtendedRequest extends Request {
     user: User;
 }

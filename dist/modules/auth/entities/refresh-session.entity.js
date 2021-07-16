@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RefreshSession = void 0;
 const typeorm_1 = require("typeorm");
-const user_1 = require("../../user");
+const users_1 = require("../../users");
 const typings_1 = require("../../../lib/typings");
 let RefreshSession = class RefreshSession {
 };
@@ -20,12 +20,12 @@ __decorate([
     __metadata("design:type", String)
 ], RefreshSession.prototype, "id", void 0);
 __decorate([
-    typeorm_1.ManyToOne(() => user_1.User, {
+    typeorm_1.ManyToOne(() => users_1.User, {
         nullable: false,
         eager: true,
         cascade: true
     }),
-    __metadata("design:type", user_1.User)
+    __metadata("design:type", users_1.User)
 ], RefreshSession.prototype, "user", void 0);
 __decorate([
     typeorm_1.Column({

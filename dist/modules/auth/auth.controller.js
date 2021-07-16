@@ -18,31 +18,34 @@ const jwt_1 = require("@nestjs/jwt");
 const jdenticon = require("jdenticon");
 const uuid_1 = require("uuid");
 const bcrypt = require("bcryptjs");
-const upload_1 = require("../upload");
-const user_1 = require("../user");
+const uploads_1 = require("../uploads");
+const users_1 = require("../users");
 const decorators_1 = require("./decorators");
 const guards_1 = require("./guards");
 const dtos_1 = require("./dtos");
 const services_1 = require("./services");
+const typeorm_1 = require("typeorm");
 let AuthController = class AuthController {
-    constructor(userService, jwtService, refreshSessionService, authService, uploadService) {
-        this.userService = userService;
+    constructor(usersService, jwtService, refreshSessionsService, authService, uploadsService) {
+        this.usersService = usersService;
         this.jwtService = jwtService;
-        this.refreshSessionService = refreshSessionService;
+        this.refreshSessionsService = refreshSessionsService;
         this.authService = authService;
-        this.uploadService = uploadService;
+        this.uploadsService = uploadsService;
     }
     async register({ username, password, fingerprint }, res) {
-        const existed = await this.userService.findOne({
-            where: { username }
+        const existed = await this.usersService.findOne({
+            where: {
+                username: typeorm_1.ILike(username)
+            }
         });
         if (existed)
-            throw new common_1.BadRequestException("This login has been already used.");
+            throw new common_1.BadRequestException("This login has been already used");
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const png = jdenticon.toPng(uuid_1.v4(), 300);
-        const avatar = (await this.uploadService.upload(png, "image/png")).Location;
-        const user = await this.userService.create({
+        const avatar = (await this.uploadsService.upload(png, "image/png")).Location;
+        const user = await this.usersService.create({
             username, avatar,
             password: hashedPassword,
             role: "user", lastSeen: new Date()
@@ -55,16 +58,18 @@ let AuthController = class AuthController {
         };
     }
     async login({ username, password, fingerprint }, res) {
-        const user = await this.userService.findOne({
-            where: { username }
+        const user = await this.usersService.findOne({
+            where: {
+                username: typeorm_1.ILike(username)
+            }
         });
-        const error = new common_1.BadRequestException("Invalid credentials.");
+        const error = new common_1.BadRequestException("Invalid credentials");
         if (!user)
             throw error;
         const doPasswordsMatch = await bcrypt.compare(password, user.password);
         if (!doPasswordsMatch)
             throw error;
-        await this.refreshSessionService.delete({ fingerprint });
+        await this.refreshSessionsService.delete({ fingerprint });
         const { accessToken, refreshToken } = await this.authService.getJWTs(user, fingerprint);
         res.cookie("access-token", accessToken, this.authService.accessTokenCookieOptions);
         res.cookie("refresh-token", refreshToken, this.authService.refreshTokenCookieOptions);
@@ -74,10 +79,10 @@ let AuthController = class AuthController {
     }
     async refreshTokens({ fingerprint }, req, res) {
         const token = req.cookies["refresh-token"];
-        const error = new common_1.BadRequestException("Invalid refresh token.");
+        const error = new common_1.BadRequestException("Invalid refresh token");
         if (!token)
             throw error;
-        const session = await this.refreshSessionService.findOne({
+        const session = await this.refreshSessionsService.findOne({
             where: { fingerprint, token }
         });
         if (!session)
@@ -85,7 +90,7 @@ let AuthController = class AuthController {
         const isExpired = Date.now() - Number(session.expiresAt) >= 0;
         if (isExpired)
             throw error;
-        await this.refreshSessionService.delete({
+        await this.refreshSessionsService.delete({
             id: session.id
         });
         const { accessToken, refreshToken: newRefreshToken } = await this.authService.getJWTs(session.user, fingerprint);
@@ -94,14 +99,14 @@ let AuthController = class AuthController {
     }
     getCredentials(user) {
         return {
-            credentials: user_1.publiciseUser(user)
+            credentials: user.public
         };
     }
     async logout(req, res) {
         const token = req.cookies["refresh-token"];
         res.cookie("access-token", null);
         res.cookie("refresh-token", null);
-        await this.refreshSessionService.delete({ token });
+        await this.refreshSessionsService.delete({ token });
     }
 };
 __decorate([
@@ -136,7 +141,7 @@ __decorate([
     common_1.Get("credentials"),
     __param(0, decorators_1.GetUser()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_1.User]),
+    __metadata("design:paramtypes", [users_1.User]),
     __metadata("design:returntype", Object)
 ], AuthController.prototype, "getCredentials", null);
 __decorate([
@@ -150,11 +155,11 @@ __decorate([
 ], AuthController.prototype, "logout", null);
 AuthController = __decorate([
     common_1.Controller("auth"),
-    __metadata("design:paramtypes", [user_1.UserService,
+    __metadata("design:paramtypes", [users_1.UsersService,
         jwt_1.JwtService,
-        services_1.RefreshSessionService,
+        services_1.RefreshSessionsService,
         services_1.AuthService,
-        upload_1.UploadService])
+        uploads_1.UploadsService])
 ], AuthController);
 exports.AuthController = AuthController;
 //# sourceMappingURL=auth.controller.js.map

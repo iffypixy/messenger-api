@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var entities_1 = require("./entities");
 Object.defineProperty(exports, "User", { enumerable: true, get: function () { return entities_1.User; } });
-Object.defineProperty(exports, "publiciseUser", { enumerable: true, get: function () { return entities_1.publiciseUser; } });
 var user_module_1 = require("./user.module");
 Object.defineProperty(exports, "UserModule", { enumerable: true, get: function () { return user_module_1.UserModule; } });
 var reserved_logins_1 = require("./lib/reserved-logins");
