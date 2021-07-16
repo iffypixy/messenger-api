@@ -6417,7 +6417,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/auth/entities/refresh-session.entity.ts": {
-        "version": "c97a82c135cda13fe0424468b7124ca2c98e4e5cac7c7c1cb328d85aeceb0767",
+        "version": "423777d43eba3e424457ae933fe2fec99186c094bf44787e988bee3c924ef494",
         "signature": "4e1eeb2d284285d793d85ba55fc3a4840e4a857a06b1b9ee4dde73a0b11035d4",
         "affectsGlobalScope": false
       },
@@ -6427,7 +6427,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/auth/services/refresh-sessions.service.ts": {
-        "version": "3a4af2f336020307188bdc9e76aa63c1f6da2cdacd98dab2e4bc60bab6c75e2d",
+        "version": "10c5e5f2d1f55ffc3a2db4d7b2dc96b77a625564b60e184c29e6e6ebd7019c19",
         "signature": "82c62a3175a1c15d6c12570e2d9557d09c2a9d9600bca370b79dbe4821bdcb46",
         "affectsGlobalScope": false
       },
@@ -6437,7 +6437,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/auth/services/index.ts": {
-        "version": "562ccf6cee821fce03a3acf79222ed7a2923bddfa1b9fc62110175ec800ae889",
+        "version": "3387ec1f1bb87ae713e8e1704e48bff6f968b99d064b5fdb58dc1ef31c6ecb55",
         "signature": "486c7feae532117f26206c7f198c68ad3ab1eb6bc7cce88259c2e408a34858f3",
         "affectsGlobalScope": false
       },
@@ -6452,7 +6452,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/auth/middlewares/auth.middleware.ts": {
-        "version": "65c45a365161e664262f39b66ba7f8f006cc9bb8926d1e82d0d08e85884b9543",
+        "version": "d1769a50d76fb44cb055c2fa2fd3da374759a45bf6739e2168ac9c6adfb1a9f4",
         "signature": "120c1f1d6057e1ed353cdbda8658b10f98b777115e0695abc64a024c5ca5cd19",
         "affectsGlobalScope": false
       },
@@ -6497,12 +6497,12 @@
         "affectsGlobalScope": false
       },
       "../src/modules/auth/auth.controller.ts": {
-        "version": "96d045cb67b72f39dc0da9a758f3cca78b487cd7a544dc16d46a803c1d714d61",
+        "version": "56490c05c62482fbfcb66d351c07ee1f1544151cf80fef67bd326feabb05326d",
         "signature": "bd26bd0b86278af53d4ca4ca31d12ffca1746f5f92785ab66e6b0eebe3aabd66",
         "affectsGlobalScope": false
       },
       "../src/modules/auth/auth.module.ts": {
-        "version": "1c3352f71e49ca8b621a46e7f73ad6eaad57cc37f48cb9f7a23399322b92fe62",
+        "version": "8e266605d15545c2b910ec8a8264f015939181fcba5410eb137c10b2c758e834",
         "signature": "ca409f33f49963b25c64ed4a14772ae8984e6ee17e0b581497c30257a7f367fc",
         "affectsGlobalScope": false
       },
