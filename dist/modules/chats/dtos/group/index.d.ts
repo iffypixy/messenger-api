@@ -1,9 +1,0 @@
-export { GetMessagesDto } from "./get-messages.dto";
-export { GetAttachmentsDto } from "./get-attachments.dto";
-export { ReadMessageDto } from "./read-message.dto";
-export { CreateMessageDto } from "./create-message.dto";
-export { AddMemberDto } from "./add-member.dto";
-export { CreateChatDto } from "./create-chat.dto";
-export { KickMemberDto } from "./kick-member.dto";
-export { LeaveChatDto } from "./leave-chat.dto";
-export { SubscribeChatsDto } from "./subscribe-chats.dto";
