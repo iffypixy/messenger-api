@@ -1,0 +1,1 @@
+{"version":3,"file":"get-users-by-login-query.dto.js","sourceRoot":"","sources":["../../../../src/modules/user/dtos/get-users-by-login-query.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qDAAoD;AAEpD,MAAa,uBAAuB;CAQnC;AADC;IANC,0BAAQ,CAAC;QACR,OAAO,EAAE,8BAA8B;KACxC,CAAC;IACD,2BAAS,CAAC,CAAC,EAAE;QACZ,OAAO,EAAE,sCAAsC;KAChD,CAAC;;sDACY;AAPhB,0DAQC"}
