@@ -152,7 +152,8 @@ export const extensions = {
     "opus",
     "ra",
     "sln",
-    "vox"
+    "vox",
+    "mpga"
   ]
 };
 

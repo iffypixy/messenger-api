@@ -4092,7 +4092,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/files/extensions.ts": {
-        "version": "7ecbf61d4de127149d0912621384301e35e5a12b28cd5d14891b6ac9cd69af8f",
+        "version": "e39685672812158e0512b5e08f8e467008a832cac6f758ee66d319637ca77d94",
         "signature": "bfdfe1a8209b13e4c5098d48623e86e9ce978127bc40ad65a70f47cb47ea35da",
         "affectsGlobalScope": false
       },

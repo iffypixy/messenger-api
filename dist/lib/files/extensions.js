@@ -155,7 +155,8 @@ exports.extensions = {
         "opus",
         "ra",
         "sln",
-        "vox"
+        "vox",
+        "mpga"
     ]
 };
 exports.isImageExt = (ext) => exports.extensions.images.includes(ext);
