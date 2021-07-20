@@ -32,7 +32,7 @@ let UploadsController = class UploadsController {
         if (!bufferedFile)
             throw new common_1.BadRequestException("File is required");
         const { mimetype, size, originalname, buffer } = bufferedFile;
-        const ext = `.${mime.getExtension(mimetype)}`;
+        const ext = mime.getExtension(mimetype);
         const { Location: url } = await this.uploadsService.upload(buffer, mimetype);
         const file = await this.filesService.create({
             name: originalname, user,

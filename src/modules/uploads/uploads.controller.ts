@@ -44,7 +44,7 @@ export class UploadsController {
 
     const {mimetype, size, originalname, buffer} = bufferedFile;
 
-    const ext = `.${mime.getExtension(mimetype)}`;
+    const ext = mime.getExtension(mimetype);
 
     const {Location: url} = await this.uploadsService.upload(buffer, mimetype);
 

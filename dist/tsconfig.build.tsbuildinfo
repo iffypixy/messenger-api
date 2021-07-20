@@ -5712,7 +5712,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/uploads/uploads.controller.ts": {
-        "version": "c622d9d55216371b9ffe7e8b6049060a8cf211b5e7b2d0c4f9b2ed88e232c20d",
+        "version": "1e5bdce84010b5e83ea4743d2447fcfb8b3d003609909c1ce02a009e2e5e5ca4",
         "signature": "108c731195320154f37de66f25558063a509e753ab2e659638cf4296cc900808",
         "affectsGlobalScope": false
       },
