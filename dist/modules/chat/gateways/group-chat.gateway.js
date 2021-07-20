@@ -537,14 +537,14 @@ let GroupChatGateway = class GroupChatGateway {
             }
         });
         if (!chat)
-            throw new websockets_1.WsException("Chat is not found.");
+            throw new websockets_1.WsException("Chat is not found");
         const member = await this.memberService.findOne({
             where: {
                 chat, user: socket.user
             }
         });
         if (!member)
-            throw new websockets_1.WsException("You are not a member of this chat.");
+            throw new websockets_1.WsException("You are not a member of this chat");
         const message = await this.messageService.findOne({
             where: {
                 chat, id: dto.message,
@@ -555,7 +555,7 @@ let GroupChatGateway = class GroupChatGateway {
             }
         });
         if (!message)
-            throw new websockets_1.WsException("Message is not found.");
+            throw new websockets_1.WsException("Message is not found");
         await this.messageService.update({
             id: message.id
         }, {

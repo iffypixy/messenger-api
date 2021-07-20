@@ -5,21 +5,22 @@ import * as jdenticon from "jdenticon";
 import {v4} from "uuid";
 import * as bcrypt from "bcryptjs";
 
-import {UploadService} from "@modules/upload";
-import {User, UserService, UserPublicData, publiciseUser} from "@modules/user";
+import {UploadsService} from "@modules/uploads";
+import {User, UsersService, UserPublicData} from "@modules/users";
 import {GetUser} from "./decorators";
 import {IsAuthorizedGuard} from "./guards";
 import {LoginDto, RegisterDto, RefreshTokensDto} from "./dtos";
-import {AuthService, RefreshSessionService} from "./services";
+import {AuthService, RefreshSessionsService} from "./services";
+import {ILike} from "typeorm";
 
 @Controller("auth")
 export class AuthController {
   constructor(
-    private readonly userService: UserService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly refreshSessionService: RefreshSessionService,
+    private readonly refreshSessionsService: RefreshSessionsService,
     private readonly authService: AuthService,
-    private readonly uploadService: UploadService
+    private readonly uploadsService: UploadsService
   ) {
   }
 
@@ -29,20 +30,22 @@ export class AuthController {
     @Body() {username, password, fingerprint}: RegisterDto,
     @Res({passthrough: true}) res: Response
   ): Promise<{credentials: UserPublicData}> {
-    const existed = await this.userService.findOne({
-      where: {username}
+    const existed = await this.usersService.findOne({
+      where: {
+        username: ILike(username)
+      }
     });
 
-    if (existed) throw new BadRequestException("This login has been already used.");
+    if (existed) throw new BadRequestException("This login has been already used");
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const png = jdenticon.toPng(v4(), 300);
 
-    const avatar = (await this.uploadService.upload(png, "image/png")).Location;
+    const avatar = (await this.uploadsService.upload(png, "image/png")).Location;
 
-    const user = await this.userService.create({
+    const user = await this.usersService.create({
       username, avatar,
       password: hashedPassword,
       role: "user", lastSeen: new Date()
@@ -63,11 +66,13 @@ export class AuthController {
     @Body() {username, password, fingerprint}: LoginDto,
     @Res({passthrough: true}) res: Response
   ): Promise<{credentials: UserPublicData}> {
-    const user = await this.userService.findOne({
-      where: {username}
+    const user = await this.usersService.findOne({
+      where: {
+        username: ILike(username)
+      }
     });
 
-    const error = new BadRequestException("Invalid credentials.");
+    const error = new BadRequestException("Invalid credentials");
 
     if (!user) throw error;
 
@@ -75,7 +80,7 @@ export class AuthController {
 
     if (!doPasswordsMatch) throw error;
 
-    await this.refreshSessionService.delete({fingerprint});
+    await this.refreshSessionsService.delete({fingerprint});
 
     const {accessToken, refreshToken} = await this.authService.getJWTs(user, fingerprint);
 
@@ -96,11 +101,11 @@ export class AuthController {
   ): Promise<void> {
     const token: string = req.cookies["refresh-token"];
 
-    const error = new BadRequestException("Invalid refresh token.");
+    const error = new BadRequestException("Invalid refresh token");
 
     if (!token) throw error;
 
-    const session = await this.refreshSessionService.findOne({
+    const session = await this.refreshSessionsService.findOne({
       where: {fingerprint, token}
     });
 
@@ -110,7 +115,7 @@ export class AuthController {
 
     if (isExpired) throw error;
 
-    await this.refreshSessionService.delete({
+    await this.refreshSessionsService.delete({
       id: session.id
     });
 
@@ -122,9 +127,11 @@ export class AuthController {
 
   @UseGuards(IsAuthorizedGuard)
   @Get("credentials")
-  getCredentials(@GetUser() user: User): {credentials: UserPublicData} {
+  getCredentials(
+    @GetUser() user: User
+  ): {credentials: UserPublicData} {
     return {
-      credentials: publiciseUser(user)
+      credentials: user.public
     };
   }
 
@@ -137,6 +144,6 @@ export class AuthController {
     res.cookie("access-token", null);
     res.cookie("refresh-token", null);
 
-    await this.refreshSessionService.delete({token});
+    await this.refreshSessionsService.delete({token});
   }
 }

@@ -4,15 +4,15 @@ import {CookieOptions} from "express";
 import {v4} from "uuid";
 import {ConfigService} from "@nestjs/config";
 
-import {User, UserService} from "@modules/user";
-import {RefreshSessionService} from "./refresh-session.service";
+import {User, UsersService} from "@modules/users";
+import {RefreshSessionsService} from "./refresh-sessions.service";
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly refreshSessionService: RefreshSessionService,
+    private readonly refreshSessionService: RefreshSessionsService,
     private readonly configService: ConfigService
   ) {}
 
@@ -20,7 +20,7 @@ export class AuthService {
     try {
       const {userId} = await this.jwtService.verifyAsync(token);
 
-      return this.userService.findById(userId);
+      return this.usersService.findById(userId);
     } catch (error) {
       return null;
     }

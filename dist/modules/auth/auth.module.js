@@ -11,8 +11,8 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
-const upload_1 = require("../upload");
-const user_1 = require("../user");
+const uploads_1 = require("../uploads");
+const users_1 = require("../users");
 const gateways_1 = require("./gateways");
 const guards_1 = require("./guards");
 const entities_1 = require("./entities");
@@ -28,8 +28,8 @@ let AuthModule = class AuthModule {
 AuthModule = __decorate([
     common_1.Module({
         imports: [
-            user_1.UserModule,
-            upload_1.UploadModule,
+            users_1.UsersModule,
+            uploads_1.UploadsModule,
             jwt_1.JwtModule.registerAsync({
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
@@ -44,7 +44,7 @@ AuthModule = __decorate([
         ],
         providers: [
             middlewares_1.AuthMiddleware,
-            services_1.RefreshSessionService,
+            services_1.RefreshSessionsService,
             services_1.AuthService,
             guards_1.IsAuthorizedGuard,
             gateways_1.AuthGateway
@@ -54,7 +54,7 @@ AuthModule = __decorate([
             guards_1.IsAuthorizedGuard,
             middlewares_1.AuthMiddleware,
             jwt_1.JwtModule,
-            user_1.UserModule,
+            users_1.UsersModule,
             services_1.AuthService
         ]
     })

@@ -3,19 +3,19 @@ import {JwtModule} from "@nestjs/jwt";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
 
-import {UploadModule} from "@modules/upload";
-import {UserModule} from "@modules/user";
+import {UploadsModule} from "@modules/uploads";
+import {UsersModule} from "@modules/users";
 import {AuthGateway} from "./gateways";
 import {IsAuthorizedGuard} from "./guards";
 import {RefreshSession} from "./entities";
-import {RefreshSessionService, AuthService} from "./services";
+import {RefreshSessionsService, AuthService} from "./services";
 import {AuthMiddleware} from "./middlewares";
 import {AuthController} from "./auth.controller";
 
 @Module({
   imports: [
-    UserModule,
-    UploadModule,
+    UsersModule,
+    UploadsModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -30,7 +30,7 @@ import {AuthController} from "./auth.controller";
   ],
   providers: [
     AuthMiddleware,
-    RefreshSessionService,
+    RefreshSessionsService,
     AuthService,
     IsAuthorizedGuard,
     AuthGateway
@@ -40,7 +40,7 @@ import {AuthController} from "./auth.controller";
     IsAuthorizedGuard,
     AuthMiddleware,
     JwtModule,
-    UserModule,
+    UsersModule,
     AuthService
   ]
 })

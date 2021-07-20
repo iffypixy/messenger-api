@@ -15,6 +15,7 @@ const auth_1 = require("../auth");
 const gateways_1 = require("./gateways");
 const services_1 = require("./services");
 const entities_1 = require("./entities");
+const controllers_1 = require("./controllers");
 let ChatModule = class ChatModule {
 };
 ChatModule = __decorate([
@@ -24,24 +25,25 @@ ChatModule = __decorate([
             upload_1.UploadModule,
             user_1.UserModule,
             typeorm_1.TypeOrmModule.forFeature([
-                entities_1.DirectChat,
-                entities_1.DirectChatMember,
-                entities_1.DirectChatMessage,
-                entities_1.GroupChat,
-                entities_1.GroupChatMessage,
-                entities_1.GroupChatMember
+                entities_1.Direct,
+                entities_1.DirectMember,
+                entities_1.DirectMessage,
+                entities_1.Group,
+                entities_1.GroupMessage,
+                entities_1.GroupMember
             ])
         ],
         providers: [
-            services_1.DirectChatService,
-            services_1.DirectChatMessageService,
-            services_1.DirectChatMemberService,
-            services_1.GroupChatService,
-            services_1.GroupChatMemberService,
-            services_1.GroupChatMessageService,
-            gateways_1.DirectChatGateway,
-            gateways_1.GroupChatGateway
-        ]
+            services_1.DirectService,
+            services_1.DirectMessageService,
+            services_1.DirectMemberService,
+            services_1.GroupService,
+            services_1.GroupMemberService,
+            services_1.GroupMessageService,
+            gateways_1.DirectGateway,
+            gateways_1.GroupGateway
+        ],
+        controllers: [controllers_1.DirectController, controllers_1.GroupController]
     })
 ], ChatModule);
 exports.ChatModule = ChatModule;

@@ -1,15 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var direct_chat_service_1 = require("./direct-chat.service");
-Object.defineProperty(exports, "DirectChatService", { enumerable: true, get: function () { return direct_chat_service_1.DirectChatService; } });
-var direct_chat_member_service_1 = require("./direct-chat-member.service");
-Object.defineProperty(exports, "DirectChatMemberService", { enumerable: true, get: function () { return direct_chat_member_service_1.DirectChatMemberService; } });
-var direct_chat_message_service_1 = require("./direct-chat-message.service");
-Object.defineProperty(exports, "DirectChatMessageService", { enumerable: true, get: function () { return direct_chat_message_service_1.DirectChatMessageService; } });
-var group_chat_service_1 = require("./group-chat.service");
-Object.defineProperty(exports, "GroupChatService", { enumerable: true, get: function () { return group_chat_service_1.GroupChatService; } });
-var group_chat_message_service_1 = require("./group-chat-message.service");
-Object.defineProperty(exports, "GroupChatMessageService", { enumerable: true, get: function () { return group_chat_message_service_1.GroupChatMessageService; } });
-var group_chat_member_service_1 = require("./group-chat-member.service");
-Object.defineProperty(exports, "GroupChatMemberService", { enumerable: true, get: function () { return group_chat_member_service_1.GroupChatMemberService; } });
+var direct_service_1 = require("./direct.service");
+Object.defineProperty(exports, "DirectService", { enumerable: true, get: function () { return direct_service_1.DirectService; } });
+var direct_member_service_1 = require("./direct-member.service");
+Object.defineProperty(exports, "DirectMemberService", { enumerable: true, get: function () { return direct_member_service_1.DirectMemberService; } });
+var direct_message_service_1 = require("./direct-message.service");
+Object.defineProperty(exports, "DirectMessageService", { enumerable: true, get: function () { return direct_message_service_1.DirectMessageService; } });
+var group_service_1 = require("./group.service");
+Object.defineProperty(exports, "GroupService", { enumerable: true, get: function () { return group_service_1.GroupService; } });
+var group_message_service_1 = require("./group-message.service");
+Object.defineProperty(exports, "GroupMessageService", { enumerable: true, get: function () { return group_message_service_1.GroupMessageService; } });
+var group_member_service_1 = require("./group-member.service");
+Object.defineProperty(exports, "GroupMemberService", { enumerable: true, get: function () { return group_member_service_1.GroupMemberService; } });
 //# sourceMappingURL=index.js.map

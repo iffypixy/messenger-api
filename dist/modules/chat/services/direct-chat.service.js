@@ -56,7 +56,6 @@ let DirectChatService = class DirectChatService {
             first = await this.memberService.create({
                 user: firstUser, chat
             });
-            console.log(!!first, "da");
             const secondUser = await this.userService.findById(ids[1]);
             second = await this.memberService.create({
                 user: secondUser, chat

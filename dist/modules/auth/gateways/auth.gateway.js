@@ -18,24 +18,22 @@ const websocket_1 = require("../../../lib/websocket");
 const typings_1 = require("../../../lib/typings");
 const services_1 = require("../services");
 let AuthGateway = class AuthGateway {
-    constructor(refreshSessionService) {
-        this.refreshSessionService = refreshSessionService;
+    constructor(authService) {
+        this.authService = authService;
     }
     afterInit() {
         this.wss.use(async (socket, next) => {
             if (!!socket.user)
                 return next(null);
             const cookies = cookie.parse(socket.request.headers.cookie);
-            const token = cookies["refresh-token"];
-            const error = new websockets_1.WsException("Invalid credentials.");
+            const token = cookies["access-token"];
+            const error = new websockets_1.WsException("Invalid credentials");
             if (!token)
                 return next(error);
-            const session = await this.refreshSessionService.findOne({
-                where: { token }
-            });
-            if (!session)
+            const user = await this.authService.findUserByAccessToken(token);
+            if (!user)
                 throw error;
-            socket.user = session.user;
+            socket.user = user;
             next(null);
         });
     }
@@ -48,7 +46,7 @@ AuthGateway = __decorate([
     common_1.UsePipes(common_1.ValidationPipe),
     common_1.UseFilters(websocket_1.BadRequestTransformationFilter),
     websockets_1.WebSocketGateway(),
-    __metadata("design:paramtypes", [services_1.RefreshSessionService])
+    __metadata("design:paramtypes", [services_1.AuthService])
 ], AuthGateway);
 exports.AuthGateway = AuthGateway;
 //# sourceMappingURL=auth.gateway.js.map
