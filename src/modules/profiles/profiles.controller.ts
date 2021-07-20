@@ -24,7 +24,7 @@ export class ProfilesController {
       fileFilter: (_, file: BufferedFile, callback) => {
         const error = new BadRequestException("Invalid file extension");
 
-        const ext = `.${mime.getExtension(file.mimetype)}`;
+        const ext = mime.getExtension(file.mimetype);
 
         if (!isImageExt(ext)) return callback(error, false);
 
@@ -38,11 +38,15 @@ export class ProfilesController {
     @Body() {username}: UpdateProfileDto,
     @UploadedFile() bufferedFile: BufferedFile
   ): Promise<{credentials: UserPublicData}> {
-    if (!bufferedFile) throw new BadRequestException("File is required");
+    const partial: {
+      username: string | null;
+      avatar: string | null;
+    } = {
+      username, avatar: null
+    };
 
-    const avatar = (await this.uploadsService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
-
-    const partial = {username, avatar};
+    if (bufferedFile) partial.avatar =
+      (await this.uploadsService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
 
     clearObject(partial);
 

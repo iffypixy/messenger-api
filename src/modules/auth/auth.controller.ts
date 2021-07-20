@@ -138,11 +138,11 @@ export class AuthController {
   @UseGuards(IsAuthorizedGuard)
   @HttpCode(204)
   @Post("logout")
-  async logout(@Req() req: Request, @Res() res: Response): Promise<void> {
+  async logout(@Req() req: Request, @Res({passthrough: true}) res: Response): Promise<void> {
     const token: string = req.cookies["refresh-token"];
 
-    res.cookie("access-token", null);
-    res.cookie("refresh-token", null);
+    res.cookie("access-token", "");
+    res.cookie("refresh-token", "");
 
     await this.refreshSessionsService.delete({token});
   }
