@@ -104,8 +104,8 @@ let AuthController = class AuthController {
     }
     async logout(req, res) {
         const token = req.cookies["refresh-token"];
-        res.cookie("access-token", null);
-        res.cookie("refresh-token", null);
+        res.cookie("access-token", "");
+        res.cookie("refresh-token", "");
         await this.refreshSessionsService.delete({ token });
     }
 };
@@ -148,7 +148,7 @@ __decorate([
     common_1.UseGuards(guards_1.IsAuthorizedGuard),
     common_1.HttpCode(204),
     common_1.Post("logout"),
-    __param(0, common_1.Req()), __param(1, common_1.Res()),
+    __param(0, common_1.Req()), __param(1, common_1.Res({ passthrough: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)

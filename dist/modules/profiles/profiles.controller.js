@@ -29,10 +29,12 @@ let ProfilesController = class ProfilesController {
         this.uploadsService = uploadsService;
     }
     async updateProfile(user, { username }, bufferedFile) {
-        if (!bufferedFile)
-            throw new common_1.BadRequestException("File is required");
-        const avatar = (await this.uploadsService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
-        const partial = { username, avatar };
+        const partial = {
+            username, avatar: null
+        };
+        if (bufferedFile)
+            partial.avatar =
+                (await this.uploadsService.upload(bufferedFile.buffer, bufferedFile.mimetype)).Location;
         utils_1.clearObject(partial);
         const users = await this.usersService.update({ id: user.id }, partial, { retrieve: true });
         return {
@@ -45,7 +47,7 @@ __decorate([
         limits: { fileSize: files_1.maxFileSize },
         fileFilter: (_, file, callback) => {
             const error = new common_1.BadRequestException("Invalid file extension");
-            const ext = `.${mime.getExtension(file.mimetype)}`;
+            const ext = mime.getExtension(file.mimetype);
             if (!files_1.isImageExt(ext))
                 return callback(error, false);
             callback(null, true);
